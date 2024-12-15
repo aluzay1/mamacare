@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospitals Directory - Welbodi Coner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">WƐLBƆDI KƆNA</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="chat.html">Live Chat</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="directory">
+        <h1>Find a Hospital in Sierra Leone</h1>
+        <div class="filter">
+            <select id="specializationFilter">
+                <option value="">All Specializations</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Orthopedics">Orthopedics</option>
+                <option value="Pediatrics">Pediatrics</option>
+                <option value="Obstetrics">Obstetrics</option>
+                <option value="Gynecology">Gynecology</option>
+                <option value="Surgery">Surgery</option>
+                <option value="General Medicine">General Medicine</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Intensive Care">Intensive Care</option>
+                <option value="Emergency Services">Emergency Services</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search by name" onkeyup="filterHospitals()">
+        </div>
+        <div class="hospital-list" id="hospitalList">
+        </div>
+    </section>
+
+    <script>
+        const hospitals = [
+            {
+                name: "Connaught Hospital",
+                location: "Freetown, Western Area",
+                specialties: ["General Medicine", "Surgery", "Pediatrics"],
+                contact: "078-000000",
+                id: 1
+            },
+            {
+                name: "Kissy Hospital",
+                location: "Freetown, Eastern Area",
+                specialties: ["Obstetrics", "Gynecology", "Pediatrics"],
+                contact: "078-111111",
+                id: 2
+            },
+            {
+                name: "Choithram Memorial Hospital",
+                location: "Freetown, Western Area",
+                specialties: ["Cardiology", "Surgery", "Intensive Care"],
+                contact: "078-222222",
+                id: 3
+            },
+            {
+                name: "Prince of Wales Hospital",
+                location: "Freetown, Western Area",
+                specialties: ["Neurology", "General Medicine"],
+                contact: "078-333333",
+                id: 4
+            },
+            {
+                name: "Magburaka District Hospital",
+                location: "Magburaka, Northern Province",
+                specialties: ["Emergency Services", "General Medicine"],
+                contact: "078-444444",
+                id: 5
+            },
+            {
+                name: "Bo Government Hospital",
+                location: "Bo, Southern Province",
+                specialties: ["Surgery", "General Medicine", "Pediatrics"],
+                contact: "078-555555",
+                id: 6
+            },
+            {
+                name: "Port Loko District Hospital",
+                location: "Port Loko, Northern Province",
+                specialties: ["General Medicine", "Obstetrics"],
+                contact: "078-666666",
+                id: 7
+            },
+            {
+                name: "Kailahun District Hospital",
+                location: "Kailahun, Eastern Province",
+                specialties: ["Emergency Services", "General Medicine"],
+                contact: "078-777777",
+                id: 8
+            }
+        ];
+
+        // Function to filter hospitals by specialization and search term
+        function filterHospitals() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const selectedSpecialization = document.getElementById('specializationFilter').value;
+            const filteredHospitals = hospitals.filter(hospital => {
+                const matchesSearchTerm = hospital.name.toLowerCase().includes(searchTerm);
+                const matchesSpecialization = selectedSpecialization ? hospital.specialties.includes(selectedSpecialization) : true;
+                return matchesSearchTerm && matchesSpecialization;
+            });
+            displayHospitals(filteredHospitals);
+        }
+
+        // Function to display hospitals
+        function displayHospitals(hospitalsToDisplay) {
+            const hospitalList = document.getElementById('hospitalList');
+            hospitalList.innerHTML = ''; 
+
+            hospitalsToDisplay.forEach(hospital => {
+                const hospitalCard = `
+                    <div class="hospital-card">
+                        <h3>${hospital.name}</h3>
+                        <p>Location: ${hospital.location}</p>
+                        <p><strong>Specialties:</strong> ${hospital.specialties.join(', ')}</p>
+                        <p><strong>Contact:</strong> ${hospital.contact}</p>
+                        <a href="hospital_details.html?id=${hospital.id}" class="btn-primary">View Details</a>
+                    </div>
+                `;
+                hospitalList.innerHTML += hospitalCard;
+            });
+        }
+
+        displayHospitals(hospitals);
+
+        document.getElementById('specializationFilter').addEventListener('change', filterHospitals);
+    </script>
+</body>
+</html>

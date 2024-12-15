@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmacies in Sierra Leone - Welbodi Rekod</title>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        // JavaScript for Search and Filter
+        function searchPharmacies() {
+            const searchInput = document.getElementById("searchInput").value.toLowerCase();
+            const pharmacyCards = document.querySelectorAll(".pharmacy-card");
+
+            pharmacyCards.forEach(card => {
+                const cardText = card.textContent.toLowerCase();
+                card.style.display = cardText.includes(searchInput) ? "block" : "none";
+            });
+        }
+
+        function filterPharmacies() {
+            const filterSelect = document.getElementById("filterSelect").value.toLowerCase();
+            const pharmacyCards = document.querySelectorAll(".pharmacy-card");
+
+            pharmacyCards.forEach(card => {
+                const location = card.querySelector(".pharmacy-location").textContent.toLowerCase();
+                card.style.display = location.includes(filterSelect) || filterSelect === "all" ? "block" : "none";
+            });
+        }
+    </script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+
+        .pharmacies {
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Search and Filter */
+        .search-filter {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 48%;
+        }
+
+        /* Pharmacy Grid */
+        .pharmacy-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .pharmacy-card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .pharmacy-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pharmacy-card h2 {
+            margin-top: 0;
+            color: #007bff;
+        }
+
+        .pharmacy-card p {
+            margin: 5px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">WƐLBƆDI KƆNA</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="chat.html">Live Chat</a></li>
+                <li><a href="pharmacy.html">Pharmacies</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="pharmacies">
+        <h1>Pharmacies in Sierra Leone</h1>
+        <p>Find reliable pharmacies across Sierra Leone for your medical needs.</p>
+
+        <!-- Search and Filter -->
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Search by name or services..." onkeyup="searchPharmacies()">
+            <select id="filterSelect" onchange="filterPharmacies()">
+                <option value="all">All Locations</option>
+                <option value="freetown">Freetown</option>
+                <option value="bo">Bo</option>
+                <option value="makeni">Makeni</option>
+                <option value="kenema">Kenema</option>
+                <option value="port loko">Port Loko</option>
+                <option value="magburaka">Magburaka</option>
+            </select>
+        </div>
+
+        <!-- Pharmacy Grid -->
+        <div class="pharmacy-list">
+            <div class="pharmacy-card">
+                <h2>Alpha Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Freetown</span>, 12 Siaka Stevens Street</p>
+                <p><strong>Contact:</strong> +232 76 123 456</p>
+                <p><strong>Services:</strong> Prescription medicines, health consultations.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>Blue Cross Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Freetown</span>, 34 Wilkinson Road</p>
+                <p><strong>Contact:</strong> +232 77 234 567</p>
+                <p><strong>Services:</strong> Vaccines, diagnostic tests.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>Hope Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Bo</span>, 8 Bo Highway</p>
+                <p><strong>Contact:</strong> +232 78 345 678</p>
+                <p><strong>Services:</strong> Chronic disease management.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>CareWell Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Freetown</span>, 22 Kissy Road</p>
+                <p><strong>Contact:</strong> +232 79 456 789</p>
+                <p><strong>Services:</strong> Childcare medicines, first aid kits.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>WellCare Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Makeni</span>, 15 Makeni Road</p>
+                <p><strong>Contact:</strong> +232 76 567 890</p>
+                <p><strong>Services:</strong> Nutritional supplements, home delivery.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>Global Health Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Kenema</span>, 10 Kenema Avenue</p>
+                <p><strong>Contact:</strong> +232 76 678 901</p>
+                <p><strong>Services:</strong> Diagnostic kits, over-the-counter medicines.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>LifeLine Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Bo</span>, 5 Hospital Road</p>
+                <p><strong>Contact:</strong> +232 78 789 012</p>
+                <p><strong>Services:</strong> Emergency medicines, prescription refills.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>Community Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Port Loko</span>, 18 Main Street</p>
+                <p><strong>Contact:</strong> +232 77 890 123</p>
+                <p><strong>Services:</strong> General healthcare products.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>Healthy Living Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Magburaka</span>, 25 Teko Road</p>
+                <p><strong>Contact:</strong> +232 76 901 234</p>
+                <p><strong>Services:</strong> Herbal medicines, wellness products.</p>
+            </div>
+            <div class="pharmacy-card">
+                <h2>PrimeCare Pharmacy</h2>
+                <p><strong>Address:</strong> <span class="pharmacy-location">Freetown</span>, 40 Congo Cross</p>
+                <p><strong>Contact:</strong> +232 79 012 345</p>
+                <p><strong>Services:</strong> Pain relief, skincare products.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Welbodi Rekod. All rights reserved.</p>
+    </footer>
+</body>
+</html>

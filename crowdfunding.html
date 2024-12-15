@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crowdfunding - Welbodi Coner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">WƐLBƆDI KƆNA</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="chat.html">Live Chat</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="crowdfunding">
+        <h1>Crowdfunding for Medical Needs</h1>
+        <p>Help raise funds for medical expenses by starting a crowdfunding campaign. Share your story and connect with a community that cares.</p>
+
+        <!-- Create Campaign Form -->
+        <div class="campaign-form">
+            <h2>Create a New Campaign</h2>
+            <form id="campaignForm" action="#" method="POST">
+                <label for="campaignTitle">Campaign Title:</label>
+                <input type="text" id="campaignTitle" name="campaignTitle" required>
+
+                <label for="campaignDescription">Description:</label>
+                <textarea id="campaignDescription" name="campaignDescription" rows="4" required></textarea>
+
+                <label for="goalAmount">Funding Goal:</label>
+                <input type="number" id="goalAmount" name="goalAmount" required>
+
+                <label for="medicalCondition">Medical Condition:</label>
+                <input type="text" id="medicalCondition" name="medicalCondition" required>
+
+                <label for="patientName">Patient Name:</label>
+                <input type="text" id="patientName" name="patientName" required>
+
+                <label for="hospitalName">Hospital Name:</label>
+                <input type="text" id="hospitalName" name="hospitalName" required>
+
+                <button type="submit" class="btn-primary">Create Campaign</button>
+            </form>
+        </div>
+
+        <!-- Ongoing Campaigns -->
+        <div class="ongoing-campaigns">
+            <h2>Ongoing Campaigns</h2>
+            <div class="campaign-card">
+                <img src="Images/John.jpeg" alt="Campaign Image">
+                <h3>Help John Recover from Heart Surgery</h3>
+                <p><strong>Hospital:</strong> St. John's Hospital</p>
+                <p>John is a 45-year-old father who needs heart surgery. He needs financial support for the procedure.</p>
+                <p><strong>Goal:</strong> SLE 15,000</p>
+                <p><strong>Raised:</strong> SLE 4,000</p>
+                <a href="donate.html" class="btn-secondary">Donate here</a>
+            </div>
+            <div class="campaign-card">
+                <img src="Images/Mary.jpeg" alt="Campaign Image">
+                <h3>Support Mary in Her Cancer Treatment</h3>
+                <p><strong>Hospital:</strong> Queen Elizabeth Hospital</p>
+                <p>Mary is battling cancer and needs funds for her chemotherapy treatments.</p>
+                <p><strong>Goal:</strong> SLE 21,000</p>
+                <p><strong>Raised:</strong> SLE 8,500</p>
+                <a href="donate.html" class="btn-secondary">Donate here</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Welbodi Rekod. All rights reserved.</p>
+    </footer>
+</body>
+</html>

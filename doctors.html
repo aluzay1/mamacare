@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctors Directory - Welbodi Coner</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">WƐLBƆDI KƆNA</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="chat.html">Live Chat</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="directory">
+        <h1>Find a Doctor</h1>
+        <div class="filter">
+            <select id="specializationFilter">
+                <option value="">All Specializations</option>
+                <option value="Cardiologist">Cardiologist</option>
+                <option value="Dermatologist">Dermatologist</option>
+                <option value="Pediatrician">Pediatrician</option>
+                <option value="Orthopedic Surgeon">Orthopedic Surgeon</option>
+                <option value="Neurologist">Neurologist</option>
+                <option value="Ophthalmologist">Ophthalmologist</option>
+                <option value="Gynecologist">Gynecologist</option>
+                <option value="Psychiatrist">Psychiatrist</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="Search by name" onkeyup="filterDoctors()">
+        </div>
+        <div class="doctor-list" id="doctorList">
+            <!-- Doctor Cards (as before) -->
+            <div class="doctor-card" data-specialization="Cardiologist">
+                <img src="Images/ishaka.jpg" alt="Dr. Ishaka Kargbo">
+                <h3>Dr. Ishaka Kargbo</h3>
+                <p>Dermatologist</p>
+                <p><strong>Qualifications:</strong> MD, Dermatology, Stanford University</p>
+                <p><strong>Experience:</strong> Specialized in skin treatments and dermatological surgery.</p>
+                <p><strong>Contact:</strong> ishakakargbo14@gmail.com</p>
+                <a href="chat.html" class="btn-primary">Chat with Dr. Ishaka Kargbo</a>
+            </div>
+            <div class="doctor-card" data-specialization="Dermatologist">
+                <img src="Images/foday.jpeg" alt="Dr. Saio Bobson Kuyateh">
+                <h3>Dr. Foday Jalloh</h3>
+                <p>Dermatologist</p>
+                <p><strong>Qualifications:</strong> MD, Dermatology, Stanford University</p>
+                <p><strong>Experience:</strong> Specialized in skin treatments and dermatological surgery.</p>
+                <p><strong>Contact:</strong> fjalloh@gmail.com</p>
+                <a href="chat.html" class="btn-primary">Chat with Dr. Foday Jalloh</a>
+            </div>
+            <div class="doctor-card" data-specialization="Cardiologist">
+                <img src="Images/Ahmed.jpeg" alt="Dr. Alpha Kamara">
+                <h3>Dr. Alpha Kamara</h3>
+                <p>Cardiologist</p>
+                <p><strong>Qualifications:</strong> MD, Cardiology, Harvard University</p>
+                <p><strong>Experience:</strong> 10+ years of experience treating heart diseases, specializing in hypertension and cardiovascular surgeries.</p>
+                <p><strong>Contact:</strong> alpha@gmail.com</p>
+                <a href="chat.html?doctor_id=1" class="btn-primary">Chat with Dr. Alpha Kamara</a>
+            </div>
+            <div class="doctor-card" data-specialization="Dermatologist">
+                <img src="Images/Sylvia.jpeg" alt="Dr. Sylvia Harding">
+                <h3>Dr. Sylvia Harding</h3>
+                <p>Dermatologist</p>
+                <p><strong>Qualifications:</strong> MD, Dermatology, Stanford University</p>
+                <p><strong>Experience:</strong> Specialized in skin treatments and dermatological surgery, with a focus on acne and eczema.</p>
+                <p><strong>Contact:</strong> sylharding@gmail.com</p>
+                <a href="chat.html?doctor_id=2" class="btn-primary">Chat with Dr. Sylvia Harding</a>
+            </div>
+            <div class="doctor-card" data-specialization="Pediatrician">
+                <img src="Images/aluzay.jpeg" alt="Dr. Alusine Kuyateh">
+                <h3>Dr. Alusine Kuyateh</h3>
+                <p>Pediatrician</p>
+                <p><strong>Qualifications:</strong> MD, Pediatrics, University of Oxford</p>
+                <p><strong>Experience:</strong> 8 years of experience working with children, specializing in immunization and childhood diseases.</p>
+                <p><strong>Contact:</strong> alusinek@gmail.com</p>
+                <a href="chat.html?doctor_id=3" class="btn-primary">Chat with Dr. Alusine Kuyateh</a>
+            </div>
+            <div class="doctor-card" data-specialization="Orthopedic Surgeon">
+                <img src="Images/Kamara.jpeg" alt="Dr. Alhaji Amadu Bah">
+                <h3>Dr. Alhaji Amadu Bah</h3>
+                <p>Orthopedic Surgeon</p>
+                <p><strong>Qualifications:</strong> MD, Orthopedic Surgery, Mayo Clinic</p>
+                <p><strong>Experience:</strong> Expertise in joint replacement and sports injuries, with 12+ years of experience.</p>
+                <p><strong>Contact:</strong> alhajiamadu@gmail.com</p>
+                <a href="chat.html?doctor_id=4" class="btn-primary">Chat with Dr. Alhaji Amadu Bah</a>
+            </div>
+            <div class="doctor-card" data-specialization="Neurologist">
+                <img src="Images/Hassan.jpeg" alt="Dr. Hassan Mansaray">
+                <h3>Dr. Hassan Mansaray</h3>
+                <p>Neurologist</p>
+                <p><strong>Qualifications:</strong> MD, Neurology, Johns Hopkins University</p>
+                <p><strong>Experience:</strong> Specializes in the treatment of neurological disorders like Alzheimer's and Parkinson's disease.</p>
+                <p><strong>Contact:</strong> hassanmansaray@gmail.com</p>
+                <a href="chat.html?doctor_id=5" class="btn-primary">Chat with Dr. Hassan Mansaray</a>
+            </div>
+            <div class="doctor-card" data-specialization="Ophthalmologist">
+                <img src="Images/Daniel.jpeg" alt="Dr. David Wilson">
+                <h3>Dr. David Wilson</h3>
+                <p>Ophthalmologist</p>
+                <p><strong>Qualifications:</strong> MD, Ophthalmology, University of Sydney</p>
+                <p><strong>Experience:</strong> Specializes in cataract surgery and laser eye treatments, with 15+ years in the field.</p>
+                <p><strong>Contact:</strong> david.wilson@hospital.com</p>
+                <a href="chat.html?doctor_id=6" class="btn-primary">Chat with Dr. David Wilson</a>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function filterDoctors() {
+            var searchInput = document.getElementById('searchInput').value.toLowerCase();
+            var specializationFilter = document.getElementById('specializationFilter').value.toLowerCase();
+            var doctorCards = document.querySelectorAll('.doctor-card');
+
+            doctorCards.forEach(function(card) {
+                var name = card.querySelector('h3').textContent.toLowerCase();
+                var specialization = card.getAttribute('data-specialization').toLowerCase();
+
+                if ((name.includes(searchInput) || searchInput === '') && 
+                    (specialization.includes(specializationFilter) || specializationFilter === '')) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
