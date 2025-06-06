@@ -3,13 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crowdfunding - Welbodi Coner</title>
+    <title>MamaCare - Crowdfunding</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .crowdfunding-container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .campaign-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .campaign-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .campaign-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .campaign-content {
+            padding: 20px;
+        }
+
+        .campaign-title {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .campaign-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .campaign-progress {
+            background: #f0f2f5;
+            height: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #3498db;
+            transition: width 0.3s ease;
+        }
+
+        .campaign-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            color: #666;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .payment-method.selected {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .payment-method img {
+            height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .donation-form {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .donation-form.active {
+            display: block;
+        }
+
+        .donation-amount {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .amount-button {
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .amount-button.selected {
+            border-color: #3498db;
+            background: #f8f9fa;
+        }
+
+        .custom-amount {
+            grid-column: 1 / -1;
+        }
+
+        .payment-details {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .payment-details h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .payment-details p {
+            margin: 10px 0;
+            color: #666;
+        }
+
+        .success-message {
+            display: none;
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .success-message.active {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo">WƐLBƆDI KƆNA</div>
+            <div class="logo">MamaCare</div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="dashboard.html">Dashboard</a></li>
@@ -18,66 +176,204 @@
                 <li><a href="chat.html">Live Chat</a></li>
                 <li><a href="medical_records.html">Medical Records</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="crowdfunding.html" class="active">Crowdfunding</a></li>
             </ul>
         </nav>
     </header>
 
-    <section class="crowdfunding">
-        <h1>Crowdfunding for Medical Needs</h1>
-        <p>Help raise funds for medical expenses by starting a crowdfunding campaign. Share your story and connect with a community that cares.</p>
+    <div class="crowdfunding-container">
+        <h1>Support Healthcare Initiatives</h1>
+        <p>Help us make healthcare accessible to everyone through your generous donations.</p>
 
-        <!-- Create Campaign Form -->
-        <div class="campaign-form">
-            <h2>Create a New Campaign</h2>
-            <form id="campaignForm" action="#" method="POST">
-                <label for="campaignTitle">Campaign Title:</label>
-                <input type="text" id="campaignTitle" name="campaignTitle" required>
+        <div class="campaigns-grid">
+            <!-- Campaign 1 -->
+            <div class="campaign-card">
+                <img src="Images/john.jpeg" alt="Maternal Care" class="campaign-image">
+                <div class="campaign-content">
+                    <h2 class="campaign-title">Maternal Care Support</h2>
+                    <p class="campaign-description">Support expectant mothers with essential healthcare services and supplies.</p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar" style="width: 75%"></div>
+                    </div>
+                    <div class="campaign-stats">
+                        <span>Raised: SLL 7,500</span>
+                        <span>Goal: SLL 10,000</span>
+                    </div>
+                    <button class="btn-primary" onclick="showDonationForm(1)">Donate Now</button>
+                    </div>
+                </div>
 
-                <label for="campaignDescription">Description:</label>
-                <textarea id="campaignDescription" name="campaignDescription" rows="4" required></textarea>
-
-                <label for="goalAmount">Funding Goal:</label>
-                <input type="number" id="goalAmount" name="goalAmount" required>
-
-                <label for="medicalCondition">Medical Condition:</label>
-                <input type="text" id="medicalCondition" name="medicalCondition" required>
-
-                <label for="patientName">Patient Name:</label>
-                <input type="text" id="patientName" name="patientName" required>
-
-                <label for="hospitalName">Hospital Name:</label>
-                <input type="text" id="hospitalName" name="hospitalName" required>
-
-                <button type="submit" class="btn-primary">Create Campaign</button>
-            </form>
+            <!-- Campaign 2 -->
+            <div class="campaign-card">
+                <img src="Images/john.jpeg" alt="Medical Supplies" class="campaign-image">
+                <div class="campaign-content">
+                    <h2 class="campaign-title">Medical Supplies Fund</h2>
+                    <p class="campaign-description">Help us provide essential medical supplies to rural healthcare facilities.</p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar" style="width: 45%"></div>
+                    </div>
+                    <div class="campaign-stats">
+                        <span>Raised: SLL 4,500</span>
+                        <span>Goal: SLL 10,000</span>
+                    </div>
+                    <button class="btn-primary" onclick="showDonationForm(2)">Donate Now</button>
+                </div>
         </div>
 
-        <!-- Ongoing Campaigns -->
-        <div class="ongoing-campaigns">
-            <h2>Ongoing Campaigns</h2>
+            <!-- Campaign 3 -->
             <div class="campaign-card">
-                <img src="Images/John.jpeg" alt="Campaign Image">
-                <h3>Help John Recover from Heart Surgery</h3>
-                <p><strong>Hospital:</strong> St. John's Hospital</p>
-                <p>John is a 45-year-old father who needs heart surgery. He needs financial support for the procedure.</p>
-                <p><strong>Goal:</strong> SLE 15,000</p>
-                <p><strong>Raised:</strong> SLE 4,000</p>
-                <a href="donate.html" class="btn-secondary">Donate here</a>
-            </div>
-            <div class="campaign-card">
-                <img src="Images/Mary.jpeg" alt="Campaign Image">
-                <h3>Support Mary in Her Cancer Treatment</h3>
-                <p><strong>Hospital:</strong> Queen Elizabeth Hospital</p>
-                <p>Mary is battling cancer and needs funds for her chemotherapy treatments.</p>
-                <p><strong>Goal:</strong> SLE 21,000</p>
-                <p><strong>Raised:</strong> SLE 8,500</p>
-                <a href="donate.html" class="btn-secondary">Donate here</a>
+                <img src="Images/john.jpeg" alt="Healthcare Training" class="campaign-image">
+                <div class="campaign-content">
+                    <h2 class="campaign-title">Healthcare Worker Training</h2>
+                    <p class="campaign-description">Support training programs for healthcare workers in underserved areas.</p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar" style="width: 30%"></div>
+                    </div>
+                    <div class="campaign-stats">
+                        <span>Raised: SLL 3,000</span>
+                        <span>Goal: SLL 10,000</span>
+                    </div>
+                    <button class="btn-primary" onclick="showDonationForm(3)">Donate Now</button>
+                </div>
             </div>
         </div>
-    </section>
 
-    <footer>
-        <p>&copy; 2024 Welbodi Rekod. All rights reserved.</p>
-    </footer>
+    <!-- Donation Modal -->
+    <div id="donationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Make a Donation</h2>
+                <div class="payment-methods">
+                    <div class="payment-method" onclick="selectPaymentMethod('orange')">
+                        <img src="Images/orange-money.png" alt="Orange Money">
+                        <p>Orange Money</p>
+                </div>
+                    <div class="payment-method" onclick="selectPaymentMethod('afri')">
+                        <img src="Images/afrimoney.png" alt="AfriMoney">
+                        <p>AfriMoney</p>
+                </div>
+                </div>
+
+                <div class="donation-form" id="donationForm">
+                    <div class="donation-amount">
+                        <button class="amount-button" onclick="selectAmount(10000)">SLL 10,000</button>
+                        <button class="amount-button" onclick="selectAmount(25000)">SLL 25,000</button>
+                        <button class="amount-button" onclick="selectAmount(50000)">SLL 50,000</button>
+                        <button class="amount-button" onclick="selectAmount(100000)">SLL 100,000</button>
+                        <button class="amount-button" onclick="selectAmount(250000)">SLL 250,000</button>
+                        <button class="amount-button" onclick="selectAmount(500000)">SLL 500,000</button>
+                        <input type="number" class="amount-button custom-amount" placeholder="Custom Amount (SLL)" onchange="selectAmount(this.value)">
+                        </div>
+
+                    <div class="payment-details">
+                        <h3>Payment Details</h3>
+                        <p>Selected Amount: <span id="selectedAmount">SLL 0</span></p>
+                        <p>Payment Method: <span id="selectedMethod">Not selected</span></p>
+                        <p>Campaign: <span id="selectedCampaign">Not selected</span></p>
+                    </div>
+
+                    <button class="btn-primary" onclick="processPayment()">Confirm Payment</button>
+                </div>
+
+                <div class="success-message" id="successMessage">
+                    Thank you for your donation! Your payment has been processed successfully.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedAmount = 0;
+        let selectedMethod = '';
+        let selectedCampaign = '';
+
+        function showDonationForm(campaignId) {
+            document.getElementById('donationModal').style.display = 'block';
+            selectedCampaign = campaignId;
+            document.getElementById('selectedCampaign').textContent = 
+                document.querySelector(`.campaign-card:nth-child(${campaignId}) .campaign-title`).textContent;
+        }
+
+        function selectPaymentMethod(method) {
+            selectedMethod = method;
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById('selectedMethod').textContent = 
+                method === 'orange' ? 'Orange Money' : 'AfriMoney';
+            document.getElementById('donationForm').classList.add('active');
+        }
+
+        function selectAmount(amount) {
+            selectedAmount = amount;
+            document.querySelectorAll('.amount-button').forEach(el => el.classList.remove('selected'));
+            event.currentTarget.classList.add('selected');
+            document.getElementById('selectedAmount').textContent = `SLL ${amount.toLocaleString()}`;
+        }
+
+        async function processPayment() {
+            if (!selectedAmount || !selectedMethod || !selectedCampaign) {
+                alert('Please select an amount and payment method');
+                return;
+            }
+                
+                try {
+                    const response = await fetch('http://localhost:5000/api/donations', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                    body: JSON.stringify({
+                        amount: selectedAmount,
+                        payment_method: selectedMethod,
+                        campaign_id: selectedCampaign
+                    })
+                    });
+                    
+                    if (response.ok) {
+                        const result = await response.json();
+                    document.getElementById('donationForm').style.display = 'none';
+                    document.getElementById('successMessage').classList.add('active');
+                    
+                    // Update campaign progress
+                    updateCampaignProgress(selectedCampaign, selectedAmount);
+                    
+                    // Reset form after 3 seconds
+                    setTimeout(() => {
+                        document.getElementById('donationModal').style.display = 'none';
+                        document.getElementById('successMessage').classList.remove('active');
+                        document.getElementById('donationForm').style.display = 'block';
+                        selectedAmount = 0;
+                        selectedMethod = '';
+                        document.querySelectorAll('.amount-button').forEach(el => el.classList.remove('selected'));
+                        document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('selected'));
+                    }, 3000);
+                    } else {
+                    throw new Error('Payment processing failed');
+                    }
+                } catch (error) {
+                console.error('Error processing payment:', error);
+                alert('Error processing payment. Please try again.');
+            }
+        }
+
+        function updateCampaignProgress(campaignId, amount) {
+            const campaign = document.querySelector(`.campaign-card:nth-child(${campaignId})`);
+            const stats = campaign.querySelector('.campaign-stats');
+            const currentAmount = parseInt(stats.children[0].textContent.replace('Raised: SLL ', '').replace(',', ''));
+            const goalAmount = parseInt(stats.children[1].textContent.replace('Goal: SLL ', '').replace(',', ''));
+            const newAmount = currentAmount + amount;
+            const progress = (newAmount / goalAmount) * 100;
+
+            stats.children[0].textContent = `Raised: SLL ${newAmount.toLocaleString()}`;
+            campaign.querySelector('.progress-bar').style.width = `${Math.min(progress, 100)}%`;
+        }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('donationModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 </html>

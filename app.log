@@ -1,0 +1,89 @@
+2025-05-15 09:42:29,701 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-15 09:42:29,703 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-15 09:43:43,422 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:43,426 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:43] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:47,433 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:47,441 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:47] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:47,900 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:47,902 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:47] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:48,052 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:48,055 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:48] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:48,528 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:48,533 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:48] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:48,785 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:48,788 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:48] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:48,988 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:48,990 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:48] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:49,483 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:49,485 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:49] "[35m[1mGET /api/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:43:56,246 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:43:56,255 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:43:56] "[35m[1mGET /api/hospitals HTTP/1.1[0m" 500 -
+2025-05-15 09:44:01,849 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:44:01,851 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:44:01] "[35m[1mGET /api/doctors HTTP/1.1[0m" 500 -
+2025-05-15 09:46:03,657 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:46:03,663 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:46:03] "[35m[1mOPTIONS /api/admin/hospitals HTTP/1.1[0m" 500 -
+2025-05-15 09:46:03,665 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:46:03,667 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:46:03] "[35m[1mOPTIONS /api/admin/pharmacies HTTP/1.1[0m" 500 -
+2025-05-15 09:46:03,693 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:46:03,695 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:46:03] "[35m[1mOPTIONS /api/admin/doctors HTTP/1.1[0m" 500 -
+2025-05-15 09:46:10,722 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:46:10,724 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:46:10] "[35m[1mOPTIONS /api/admin/login HTTP/1.1[0m" 500 -
+2025-05-15 09:46:16,246 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:46:16,248 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:46:16] "[35m[1mOPTIONS /api/admin/login HTTP/1.1[0m" 500 -
+2025-05-15 09:47:43,241 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:47:43,252 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:47:43] "[35m[1mOPTIONS /api/admin/login HTTP/1.1[0m" 500 -
+2025-05-15 09:49:54,866 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-15 09:49:54,867 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-15 09:50:09,302 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:50:09,319 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:50:09] "[35m[1mOPTIONS /api/admin/login HTTP/1.1[0m" 500 -
+2025-05-15 09:50:15,136 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 09:50:15,200 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 09:50:15] "[35m[1mOPTIONS /api/admin/login HTTP/1.1[0m" 500 -
+2025-05-15 09:50:48,892 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-05-15 09:50:48,893 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-15 10:02:36,118 - app - ERROR - Database connection error: Textual SQL expression 'SELECT 1' should be explicitly declared as text('SELECT 1')
+2025-05-15 10:02:36,176 - werkzeug - INFO - 127.0.0.1 - - [15/May/2025 10:02:36] "[35m[1mGET /health HTTP/1.1[0m" 500 -
+2025-05-16 14:53:09,264 - flask_migrate - ERROR - Error: Path doesn't exist: 'C:\\Users\\alusi\\OneDrive\\Desktop\\mamacare\\migrations'.  Please use the 'init' command to create a new scripts folder.
+2025-05-19 12:13:50,276 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:13:50,279 - __main__ - INFO - Database URI: postgresql://postgres:postgres@db:5432/mamacare
+2025-05-19 12:13:53,222 - __main__ - ERROR - Application startup error: (psycopg2.OperationalError) could not translate host name "db" to address: Name or service not known
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-19 12:13:53,245 - __main__ - ERROR - Error type: OperationalError
+2025-05-19 12:13:53,254 - __main__ - ERROR - Error stack: <traceback object at 0x000002A2F24D7740>
+2025-05-19 12:36:35,683 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:36:35,686 - __main__ - INFO - Database URI: postgresql://postgres:postgres@db:5432/mamacare
+2025-05-19 12:36:38,742 - __main__ - ERROR - Application startup error: (psycopg2.OperationalError) could not translate host name "db" to address: Name or service not known
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-19 12:36:38,744 - __main__ - ERROR - Error type: OperationalError
+2025-05-19 12:36:38,745 - __main__ - ERROR - Error stack: <traceback object at 0x0000023E0A268200>
+2025-05-19 12:37:46,577 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:37:46,582 - __main__ - INFO - Database URI: postgresql://postgres:postgres@db:5432/mamacare
+2025-05-19 12:37:49,390 - __main__ - ERROR - Application startup error: (psycopg2.OperationalError) could not translate host name "db" to address: Name or service not known
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2025-05-19 12:37:49,391 - __main__ - ERROR - Error type: OperationalError
+2025-05-19 12:37:49,392 - __main__ - ERROR - Error stack: <traceback object at 0x0000029E47F09880>
+2025-05-19 12:43:11,283 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:43:11,285 - __main__ - INFO - Database URI: postgresql://postgres:postgres@localhost:5432/mamacare
+2025-05-19 12:43:11,885 - __main__ - INFO - Database tables created successfully
+2025-05-19 12:46:55,973 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:46:55,975 - __main__ - INFO - Database URI: postgresql://postgres:postgres@localhost:5432/mamacare
+2025-05-19 12:46:56,290 - __main__ - INFO - Database tables created successfully
+2025-05-19 12:48:22,710 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:48:22,762 - __main__ - INFO - Database URI: postgresql://postgres:postgres@localhost:5432/mamacare
+2025-05-19 12:48:26,024 - __main__ - INFO - Database tables created successfully
+2025-05-19 12:48:26,346 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5001
+ * Running on http://192.168.90.173:5001
+2025-05-19 12:48:26,354 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-05-19 12:48:26,363 - werkzeug - INFO -  * Restarting with stat
+2025-05-19 12:48:55,590 - __main__ - INFO - Starting Flask application...
+2025-05-19 12:48:55,638 - __main__ - INFO - Database URI: postgresql://postgres:postgres@localhost:5432/mamacare
+2025-05-19 12:48:56,828 - __main__ - INFO - Database tables created successfully
+2025-05-19 12:48:57,028 - werkzeug - WARNING -  * Debugger is active!
+2025-05-19 12:48:57,062 - werkzeug - INFO -  * Debugger PIN: 140-594-077

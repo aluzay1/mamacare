@@ -3,141 +3,458 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospitals Directory - Welbodi Coner</title>
+    <title>Find Hospitals - MamaCare</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .hospitals-container {
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)),
+                        url('images/hospitals-bg.jpg') no-repeat center center/cover;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .search-box {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-button {
+            padding: 12px 24px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .search-button:hover {
+            background: #2980b9;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .filter-select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .hospitals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .hospital-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .hospital-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .hospital-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .hospital-info {
+            padding: 20px;
+        }
+
+        .hospital-name {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .hospital-details {
+            margin-bottom: 15px;
+        }
+
+        .hospital-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            color: #6c757d;
+        }
+
+        .hospital-detail i {
+            color: #3498db;
+        }
+
+        .hospital-services {
+            margin-top: 15px;
+        }
+
+        .service-tag {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e9ecef;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin: 2px;
+            color: #495057;
+        }
+
+        .hospital-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #2c3e50;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .get-directions {
+            background: #2ecc71;
+        }
+
+        .call-now {
+            background: #3498db;
+        }
+
+        .action-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .action-button i {
+            font-size: 1.1em;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo">WƐLBƆDI KƆNA</div>
-            <ul class="nav-links">
+            <div class="logo">MamaCare</div>
+            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="doctors.html">Doctors</a></li>
-                <li><a href="hospitals.html">Hospitals</a></li>
-                <li><a href="chat.html">Live Chat</a></li>
-                <li><a href="medical_records.html">Medical Records</a></li>
+                <li><a href="hospitals.html" class="active">Hospitals</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+                
             </ul>
         </nav>
     </header>
 
-    <section class="directory">
-        <h1>Find a Hospital in Sierra Leone</h1>
-        <div class="filter">
-            <select id="specializationFilter">
-                <option value="">All Specializations</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="Orthopedics">Orthopedics</option>
-                <option value="Pediatrics">Pediatrics</option>
-                <option value="Obstetrics">Obstetrics</option>
-                <option value="Gynecology">Gynecology</option>
-                <option value="Surgery">Surgery</option>
-                <option value="General Medicine">General Medicine</option>
-                <option value="Neurology">Neurology</option>
-                <option value="Intensive Care">Intensive Care</option>
-                <option value="Emergency Services">Emergency Services</option>
-            </select>
-            <input type="text" id="searchInput" placeholder="Search by name" onkeyup="filterHospitals()">
+    <div class="hospitals-container">
+        <div class="page-header">
+            <h1>Find and Connect with Hospitals</h1>
+            <p>Discover healthcare facilities across Sierra Leone and connect with the medical services you need</p>
         </div>
-        <div class="hospital-list" id="hospitalList">
+
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search hospitals by name or location...">
+                <button class="search-button" onclick="searchHospitals()">Search</button>
+            </div>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="specialtyFilter">Specialty</label>
+                    <select class="filter-select" id="specialtyFilter" onchange="searchHospitals()">
+                        <option value="">All Specialties</option>
+                        <option value="General">General Hospital</option>
+                        <option value="Specialized">Specialized Hospital</option>
+                        <option value="Teaching">Teaching Hospital</option>
+                        <option value="District">District Hospital</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="locationFilter">Location</label>
+                    <select class="filter-select" id="locationFilter" onchange="searchHospitals()">
+                        <option value="">All Locations</option>
+                        <option value="Freetown">Freetown</option>
+                        <option value="Bo">Bo</option>
+                        <option value="Makeni">Makeni</option>
+                        <option value="Kenema">Kenema</option>
+                        <option value="Port Loko">Port Loko</option>
+                        <option value="Kambia">Kambia</option>
+                        <option value="Kono">Kono</option>
+                        <option value="Kailahun">Kailahun</option>
+                        <option value="Kabala">Kabala</option>
+                    </select>
+                </div>
+            </div>
         </div>
-    </section>
+
+        <div class="hospitals-grid" id="hospitalsGrid">
+            <!-- Hospitals will be dynamically added here -->
+        </div>
+    </div>
 
     <script>
-        const hospitals = [
-            {
-                name: "Connaught Hospital",
-                location: "Freetown, Western Area",
-                specialties: ["General Medicine", "Surgery", "Pediatrics"],
-                contact: "078-000000",
-                id: 1
-            },
-            {
-                name: "Kissy Hospital",
-                location: "Freetown, Eastern Area",
-                specialties: ["Obstetrics", "Gynecology", "Pediatrics"],
-                contact: "078-111111",
-                id: 2
-            },
-            {
-                name: "Choithram Memorial Hospital",
-                location: "Freetown, Western Area",
-                specialties: ["Cardiology", "Surgery", "Intensive Care"],
-                contact: "078-222222",
-                id: 3
-            },
-            {
-                name: "Prince of Wales Hospital",
-                location: "Freetown, Western Area",
-                specialties: ["Neurology", "General Medicine"],
-                contact: "078-333333",
-                id: 4
-            },
-            {
-                name: "Magburaka District Hospital",
-                location: "Magburaka, Northern Province",
-                specialties: ["Emergency Services", "General Medicine"],
-                contact: "078-444444",
-                id: 5
-            },
-            {
-                name: "Bo Government Hospital",
-                location: "Bo, Southern Province",
-                specialties: ["Surgery", "General Medicine", "Pediatrics"],
-                contact: "078-555555",
-                id: 6
-            },
-            {
-                name: "Port Loko District Hospital",
-                location: "Port Loko, Northern Province",
-                specialties: ["General Medicine", "Obstetrics"],
-                contact: "078-666666",
-                id: 7
-            },
-            {
-                name: "Kailahun District Hospital",
-                location: "Kailahun, Eastern Province",
-                specialties: ["Emergency Services", "General Medicine"],
-                contact: "078-777777",
-                id: 8
-            }
-        ];
+        // Store hospitals data globally
+        let allHospitals = [];
+        let isInitialLoad = true;
 
-        // Function to filter hospitals by specialization and search term
-        function filterHospitals() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const selectedSpecialization = document.getElementById('specializationFilter').value;
-            const filteredHospitals = hospitals.filter(hospital => {
-                const matchesSearchTerm = hospital.name.toLowerCase().includes(searchTerm);
-                const matchesSpecialization = selectedSpecialization ? hospital.specialties.includes(selectedSpecialization) : true;
-                return matchesSearchTerm && matchesSpecialization;
-            });
-            displayHospitals(filteredHospitals);
+        // Function to fetch hospitals from the API
+        async function fetchHospitals() {
+            if (!isInitialLoad) {
+                return allHospitals;
+            }
+
+            try {
+                const response = await fetch('/api/hospitals');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch hospitals');
+                }
+                allHospitals = await response.json();
+                isInitialLoad = false;
+                return allHospitals;
+            } catch (error) {
+                console.error('Error fetching hospitals:', error);
+                document.getElementById('hospitalsGrid').innerHTML = 
+                    '<div class="no-results">Failed to load hospitals. Please try again later.</div>';
+                return [];
+            }
+        }
+
+        // Function to get hospital image
+        function getHospitalImageUrl(hospital) {
+            if (hospital.image_url) {
+                // If the image_url is a relative path, prepend the base URL
+                if (hospital.image_url.startsWith('/')) {
+                    return `http://localhost:5000${hospital.image_url}`;
+                }
+                return hospital.image_url;
+            }
+            return 'images/default-hospital.jpg';
         }
 
         // Function to display hospitals
-        function displayHospitals(hospitalsToDisplay) {
-            const hospitalList = document.getElementById('hospitalList');
-            hospitalList.innerHTML = ''; 
-
-            hospitalsToDisplay.forEach(hospital => {
-                const hospitalCard = `
-                    <div class="hospital-card">
-                        <h3>${hospital.name}</h3>
-                        <p>Location: ${hospital.location}</p>
-                        <p><strong>Specialties:</strong> ${hospital.specialties.join(', ')}</p>
-                        <p><strong>Contact:</strong> ${hospital.contact}</p>
-                        <a href="hospital_details.html?id=${hospital.id}" class="btn-primary">View Details</a>
+        function displayHospitals(hospitals) {
+            const hospitalsGrid = document.getElementById('hospitalsGrid');
+            if (hospitals.length === 0) {
+                hospitalsGrid.innerHTML = '<div class="no-results">No hospitals found.</div>';
+                return;
+            }
+            
+            hospitalsGrid.innerHTML = hospitals.map(hospital => `
+                <div class="hospital-card">
+                    <div class="hospital-image-container">
+                        <img src="${getHospitalImageUrl(hospital)}" alt="${hospital.name}" class="hospital-image">
                     </div>
-                `;
-                hospitalList.innerHTML += hospitalCard;
-            });
+                    <div class="hospital-info">
+                        <h3 class="hospital-name">${hospital.name}</h3>
+                        <div class="hospital-details">
+                            <div class="hospital-detail">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>${hospital.city}, ${hospital.country}</span>
+                            </div>
+                            <div class="hospital-detail">
+                                <i class="fas fa-phone"></i>
+                                <span>${hospital.phone}</span>
+                            </div>
+                            ${hospital.email ? `
+                            <div class="hospital-detail">
+                                <i class="fas fa-envelope"></i>
+                                <span>${hospital.email}</span>
+                            </div>
+                            ` : ''}
+                            <div class="hospital-detail">
+                                <i class="fas fa-hospital"></i>
+                                <span>${hospital.type}</span>
+                            </div>
+                        </div>
+                        <div class="services-section">
+                            <h4>Services Offered</h4>
+                            <div class="services-list">
+                                ${hospital.services ? hospital.services.map(service => 
+                                    `<span class="service-tag">${service}</span>`
+                                ).join('') : ''}
+                            </div>
+                        </div>
+                        <div class="hospital-actions">
+                            <a href="tel:${hospital.phone}" class="action-button call-now">
+                                <i class="fas fa-phone"></i> Call
+                            </a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hospital.address}, ${hospital.city}, ${hospital.state} ${hospital.country}`)}" 
+                               class="action-button get-directions" target="_blank">
+                                <i class="fas fa-directions"></i> Get Directions
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
-        displayHospitals(hospitals);
+        // Function to search and filter hospitals
+        async function searchHospitals() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const specialtyFilter = document.getElementById('specialtyFilter').value;
+            const locationFilter = document.getElementById('locationFilter').value;
 
-        document.getElementById('specializationFilter').addEventListener('change', filterHospitals);
+            const hospitals = await fetchHospitals();
+            const filteredHospitals = hospitals.filter(hospital => {
+                const matchesSearch = hospital.name.toLowerCase().includes(searchTerm) ||
+                                    hospital.city.toLowerCase().includes(searchTerm);
+                const matchesSpecialty = !specialtyFilter || hospital.type === specialtyFilter;
+                const matchesLocation = !locationFilter || hospital.city === locationFilter;
+
+                return matchesSearch && matchesSpecialty && matchesLocation;
+            });
+
+            displayHospitals(filteredHospitals);
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', async () => {
+            const hospitals = await fetchHospitals();
+            displayHospitals(hospitals);
+        });
+
+        const toggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+      
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>

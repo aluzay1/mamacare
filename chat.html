@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Chat - Welbodi Coner</title>
+    <title>Live Chat - MamaCare</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo">WƐLBƆDI KƆNA</div>
+            <div class="logo">MamaCare</div>
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="dashboard.html">Dashboard</a></li>
                 <li><a href="doctors.html">Doctors</a></li>
                 <li><a href="hospitals.html">Hospitals</a></li>
-                <li><a href="chat.html">Chat</a></li>
+                <li><a href="chat.html" class="active">Chat</a></li>
                 <li><a href="medical_records.html">Medical Records</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
             </ul>
@@ -23,27 +24,403 @@
     </header>
 
     <section class="chat-section">
-        <h1>Live Chat with a Doctor</h1>
         <div class="chat-container">
-            <div class="chat-box">
-                <div class="chat-message user-message">
-                    <span class="user">Patient:</span> Good morning, Dr. Kamara. I’ve been feeling dizzy and lightheaded lately. Should I be worried?
+            <div class="chat-sidebar">
+                <div class="doctor-profile">
+                    <img src="" alt="Doctor" class="doctor-avatar" id="doctorImage">
+                    <h3 id="doctorName"></h3>
+                    <p class="doctor-status online">Online</p>
+                    <p class="doctor-specialty" id="doctorSpecialty"></p>
+                    <div class="consultation-info">
+                        <p><i class="fas fa-clock"></i> Duration: <span id="duration">00:00</span></p>
+                        <p><i class="fas fa-stethoscope"></i> Consultation #: <span id="consultationId">2024-001</span></p>
+                    </div>
                 </div>
-                <div class="chat-message">
-                    <span class="doctor">Doctor:</span> Good morning. Dizziness can have many causes, such as dehydration, low blood sugar, or an ear issue. Have you noticed any other symptoms?
-                </div>
-                <div class="chat-message user-message">
-                    <span class="user">Patient:</span> I sometimes feel nauseous, especially after standing up quickly.
-                </div>
-                <div class="chat-message">
-                    <span class="doctor">Doctor:</span> That sounds like it could be low blood pressure or vertigo. Try staying hydrated and standing up slowly. If it continues, let’s schedule a check-up.
+                <div class="chat-actions">
+                    <button class="action-btn" id="videoCallBtn"><i class="fas fa-video"></i> Start Video Call</button>
+                    <button class="action-btn" id="audioCallBtn"><i class="fas fa-phone"></i> Start Audio Call</button>
+                    <button class="action-btn" id="shareScreenBtn"><i class="fas fa-desktop"></i> Share Screen</button>
+                    <button class="action-btn" id="attachFileBtn"><i class="fas fa-paperclip"></i> Attach File</button>
                 </div>
             </div>
-            <form class="chat-form">
-                <input type="text" placeholder="Type your message here..." required>
-                <button type="submit" class="btn-primary">Send</button>
-            </form>
+
+            <div class="chat-main">
+                <div class="chat-header">
+                    <h2>Live Consultation</h2>
+                    <div class="chat-controls">
+                        <button class="control-btn" id="endCallBtn"><i class="fas fa-phone-slash"></i> End Call</button>
+                    </div>
+                </div>
+
+                <div class="chat-box" id="chatBox">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+
+                <div class="chat-input">
+                    <form class="chat-form" id="messageForm">
+                        <div class="input-actions">
+                            <button type="button" class="action-btn" id="emojiBtn"><i class="far fa-smile"></i></button>
+                            <button type="button" class="action-btn" id="attachBtn"><i class="fas fa-paperclip"></i></button>
+                        </div>
+                        <input type="text" id="messageInput" placeholder="Type your message here..." required>
+                        <button type="submit" class="send-btn"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="chat-info">
+                <div class="info-section">
+                    <h3>Patient Information</h3>
+                    <div class="patient-details">
+                        <p><strong>Name:</strong> Moses Kamara</p>
+                        <p><strong>Age:</strong> 35</p>
+                        <p><strong>Blood Type:</strong> O+</p>
+                        <p><strong>Allergies:</strong> None</p>
+                    </div>
+                </div>
+                <div class="info-section">
+                    <h3>Recent Vitals</h3>
+                    <div class="vitals-list">
+                        <div class="vital-item">
+                            <i class="fas fa-heartbeat"></i>
+                            <span>Heart Rate: 75 BPM</span>
+                        </div>
+                        <div class="vital-item">
+                            <i class="fas fa-lungs"></i>
+                            <span>Blood Oxygen: 98%</span>
+                        </div>
+                        <div class="vital-item">
+                            <i class="fas fa-thermometer-half"></i>
+                            <span>Temperature: 36.8°C</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
+    <script>
+        // Doctor data
+        const doctors = [
+            {
+                id: "dr-ishaka-kargbo",
+                name: "Dr. Ishaka Kargbo",
+                title: "MD, Dermatology",
+                specialty: "Dermatology",
+                location: "Freetown",
+                hospital: "Connaught Hospital",
+                experience: "10 years",
+                image: "Images/ishaka.jpg",
+                qualifications: "MD, Dermatology, Stanford University",
+                contact: "ishakakargbo14@gmail.com"
+            },
+            {
+                id: "dr-foday-jalloh",
+                name: "Dr. Foday Jalloh",
+                title: "MD, Dermatology",
+                specialty: "Dermatology",
+                location: "Freetown",
+                hospital: "Lifecare Hospital",
+                experience: "8 years",
+                image: "Images/foday.jpeg",
+                qualifications: "MD, Dermatology, Stanford University",
+                contact: "fjalloh@gmail.com"
+            },
+            {
+                id: "dr-alpha-kamara",
+                name: "Dr. Alpha Kamara",
+                title: "MD, Cardiology",
+                specialty: "Cardiology",
+                location: "Freetown",
+                hospital: "Freetown International Hospital",
+                experience: "10 years",
+                image: "Images/Ahmed.jpeg",
+                qualifications: "MD, Cardiology, Harvard University",
+                contact: "alpha@gmail.com"
+            },
+            {
+                id: "dr-sylvia-harding",
+                name: "Dr. Sylvia Harding",
+                title: "MD, Dermatology",
+                specialty: "Dermatology",
+                location: "Freetown",
+                hospital: "Choithram Hospital",
+                experience: "12 years",
+                image: "Images/Sylvia.jpeg",
+                qualifications: "MD, Dermatology, Stanford University",
+                contact: "sylharding@gmail.com"
+            },
+            {
+                id: "dr-alusine-kuyateh",
+                name: "Dr. Alusine Kuyateh",
+                title: "MD, Pediatrics",
+                specialty: "Pediatrics",
+                location: "Freetown",
+                hospital: "Connaught Hospital",
+                experience: "8 years",
+                image: "Images/aluzay.jpeg",
+                qualifications: "MD, Pediatrics, University of Oxford",
+                contact: "alusinek@gmail.com"
+            },
+            {
+                id: "dr-alhaji-amadu-bah",
+                name: "Dr. Alhaji Amadu Bah",
+                title: "MD, Orthopedic Surgery",
+                specialty: "Orthopedic Surgery",
+                location: "Freetown",
+                hospital: "Lifecare Hospital",
+                experience: "12 years",
+                image: "Images/Kamara.jpeg",
+                qualifications: "MD, Orthopedic Surgery, Mayo Clinic",
+                contact: "alhajiamadu@gmail.com"
+            },
+            {
+                id: "dr-hassan-mansaray",
+                name: "Dr. Hassan Mansaray",
+                title: "MD, Neurology",
+                specialty: "Neurology",
+                location: "Freetown",
+                hospital: "Freetown International Hospital",
+                experience: "15 years",
+                image: "Images/Hassan.jpeg",
+                qualifications: "MD, Neurology, Johns Hopkins University",
+                contact: "hassanmansaray@gmail.com"
+            },
+            {
+                id: "dr-david-wilson",
+                name: "Dr. David Wilson",
+                title: "MD, Ophthalmology",
+                specialty: "Ophthalmology",
+                location: "Freetown",
+                hospital: "Choithram Hospital",
+                experience: "15 years",
+                image: "Images/Daniel.jpeg",
+                qualifications: "MD, Ophthalmology, University of Sydney",
+                contact: "david.wilson@hospital.com"
+            }
+        ];
+
+        // Initialize chat functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get doctor information from URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const doctorId = urlParams.get('doctorId');
+            
+            // Find the selected doctor
+            const selectedDoctor = doctors.find(d => d.id === doctorId);
+            
+            // If no doctor is found, redirect to doctors page
+            if (!selectedDoctor) {
+                alert('Doctor not found. Redirecting to doctors page...');
+                window.location.href = 'doctors.html';
+                return;
+            }
+
+            // Update doctor profile
+            document.getElementById('doctorImage').src = selectedDoctor.image;
+            document.getElementById('doctorName').textContent = selectedDoctor.name;
+            document.getElementById('doctorSpecialty').textContent = `${selectedDoctor.specialty} at ${selectedDoctor.hospital}`;
+
+            // Add initial system message
+            const chatBox = document.getElementById('chatBox');
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            
+            chatBox.innerHTML = `
+                <div class="chat-message system-message">
+                    <p>Consultation started with ${selectedDoctor.name} at ${timeString}</p>
+                    <p>Specialty: ${selectedDoctor.specialty}</p>
+                    <p>Hospital: ${selectedDoctor.hospital}</p>
+                </div>
+                <div class="chat-message doctor-message">
+                    <div class="message-header">
+                        <span>${selectedDoctor.name}</span>
+                        <span class="timestamp">${timeString}</span>
+                    </div>
+                    <p>Hello! I'm Dr. ${selectedDoctor.name.split(' ')[2]}. How can I help you today?</p>
+                </div>
+            `;
+
+            // Start consultation timer
+            let seconds = 0;
+            setInterval(() => {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const remainingSeconds = seconds % 60;
+                document.getElementById('duration').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            }, 1000);
+
+            // Handle message submission
+            const messageForm = document.getElementById('messageForm');
+            const messageInput = document.getElementById('messageInput');
+
+            // Common medical consultation responses
+            const consultationResponses = {
+                greeting: [
+                    "Hi! I'm Dr. " + selectedDoctor.name.split(' ')[2] + ". How can I help you today?",
+                    "Hello! I'm Dr. " + selectedDoctor.name.split(' ')[2] + ". What brings you in today?",
+                    "Hi there! I'm Dr. " + selectedDoctor.name.split(' ')[2] + ". How are you feeling?",
+                    "Hello! I'm Dr. " + selectedDoctor.name.split(' ')[2] + ". Please tell me what's bothering you.",
+                    "Hi! I'm Dr. " + selectedDoctor.name.split(' ')[2] + ". What symptoms are you experiencing?"
+                ],
+                fever: [
+                    "I'm sorry to hear that. How long have you had these symptoms?",
+                    "Do you also have headaches, chills, or nausea?",
+                    "Have you taken any medication so far?",
+                    "That's good for now, but I'd like to check for infections. Try to rest, drink plenty of fluids, and monitor your temperature.",
+                    "If it gets worse, let me know immediately.",
+                    "What's your temperature reading?",
+                    "Are you experiencing any other symptoms along with the fever?",
+                    "Have you been in contact with anyone who's been sick recently?",
+                    "Do you have any allergies to medications?",
+                    "Let me know if you need any clarification or if your symptoms change."
+                ],
+                pain: [
+                    "Could you tell me where exactly you're feeling the pain?",
+                    "How would you describe the pain - sharp, dull, throbbing, or something else?",
+                    "When did the pain start?",
+                    "Does anything make the pain better or worse?",
+                    "Have you taken any pain medication?",
+                    "Is this a new pain or have you experienced it before?",
+                    "Does the pain move to other areas?",
+                    "How severe is the pain on a scale of 1-10?",
+                    "Are you able to sleep with this pain?",
+                    "Let me know if the pain changes or becomes more severe."
+                ],
+                general: [
+                    "I understand. Could you tell me more about your symptoms?",
+                    "When did you first notice these symptoms?",
+                    "Have you experienced anything like this before?",
+                    "Are there any other symptoms you're concerned about?",
+                    "Have you taken any medications recently?",
+                    "Do you have any chronic conditions I should know about?",
+                    "How is your appetite and sleep?",
+                    "Are you able to carry out your daily activities?",
+                    "Have you made any recent changes to your diet or lifestyle?",
+                    "Is there anything specific you're worried about?"
+                ]
+            };
+
+            // Function to determine response category based on message content
+            function determineResponseCategory(message) {
+                const lowerMessage = message.toLowerCase();
+                if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('good morning') || lowerMessage.includes('good afternoon') || lowerMessage.includes('good evening')) {
+                    return 'greeting';
+                } else if (lowerMessage.includes('fever') || lowerMessage.includes('temperature') || lowerMessage.includes('hot') || lowerMessage.includes('cold') || lowerMessage.includes('chills')) {
+                    return 'fever';
+                } else if (lowerMessage.includes('pain') || lowerMessage.includes('ache') || lowerMessage.includes('hurt') || lowerMessage.includes('sore') || lowerMessage.includes('discomfort')) {
+                    return 'pain';
+                } else {
+                    return 'general';
+                }
+            }
+
+            // Track conversation context
+            let conversationContext = {
+                symptoms: [],
+                duration: '',
+                medications: [],
+                severity: ''
+            };
+
+            messageForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                if (messageInput.value.trim()) {
+                    const now = new Date();
+                    const timeString = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+                    
+                    // Add user message
+                    const userMessage = document.createElement('div');
+                    userMessage.className = 'chat-message user-message';
+                    userMessage.innerHTML = `
+                            <div class="message-header">
+                            <span>You</span>
+                                <span class="timestamp">${timeString}</span>
+                            </div>
+                            <p>${messageInput.value}</p>
+                    `;
+                    chatBox.appendChild(userMessage);
+
+                    // Update conversation context
+                    const lowerMessage = messageInput.value.toLowerCase();
+                    if (lowerMessage.includes('day') || lowerMessage.includes('week') || lowerMessage.includes('month')) {
+                        conversationContext.duration = messageInput.value;
+                    }
+                    if (lowerMessage.includes('paracetamol') || lowerMessage.includes('aspirin') || lowerMessage.includes('ibuprofen')) {
+                        conversationContext.medications.push(messageInput.value);
+                    }
+                    if (lowerMessage.includes('fever') || lowerMessage.includes('pain') || lowerMessage.includes('headache')) {
+                        conversationContext.symptoms.push(messageInput.value);
+                    }
+
+                    // Clear input
+                    messageInput.value = '';
+
+                    // Scroll to bottom
+                    chatBox.scrollTop = chatBox.scrollHeight;
+
+                    // Get appropriate doctor response
+                    const responseCategory = determineResponseCategory(messageInput.value);
+                    let doctorResponse = consultationResponses[responseCategory][Math.floor(Math.random() * consultationResponses[responseCategory].length)];
+
+                    // Add context-aware follow-up
+                    if (responseCategory === 'fever' && conversationContext.duration) {
+                        doctorResponse += " Since you mentioned it started " + conversationContext.duration + ", we should monitor it closely.";
+                    }
+                    if (responseCategory === 'fever' && conversationContext.medications.length > 0) {
+                        doctorResponse += " Continue taking " + conversationContext.medications.join(", ") + " as needed.";
+                    }
+
+                    // Simulate doctor's response after 1-2 seconds
+                    setTimeout(() => {
+                        const doctorMessage = document.createElement('div');
+                        doctorMessage.className = 'chat-message doctor-message';
+                        doctorMessage.innerHTML = `
+                            <div class="message-header">
+                                <span>${selectedDoctor.name}</span>
+                                <span class="timestamp">${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}</span>
+                            </div>
+                            <p>${doctorResponse}</p>
+                        `;
+                        chatBox.appendChild(doctorMessage);
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    }, Math.random() * 1000 + 1000);
+                }
+            });
+
+            // Handle action buttons
+            document.getElementById('videoCallBtn').addEventListener('click', function() {
+                alert('Video call feature coming soon!');
+            });
+
+            document.getElementById('audioCallBtn').addEventListener('click', function() {
+                alert('Audio call feature coming soon!');
+            });
+
+            document.getElementById('shareScreenBtn').addEventListener('click', function() {
+                alert('Screen sharing feature coming soon!');
+            });
+
+            document.getElementById('attachFileBtn').addEventListener('click', function() {
+                alert('File attachment feature coming soon!');
+            });
+
+            document.getElementById('endCallBtn').addEventListener('click', function() {
+                if (confirm('Are you sure you want to end this consultation?')) {
+                    window.location.href = 'doctors.html';
+                }
+            });
+
+            // Handle emoji and attachment buttons in input area
+            document.getElementById('emojiBtn').addEventListener('click', function() {
+                alert('Emoji picker coming soon!');
+            });
+
+            document.getElementById('attachBtn').addEventListener('click', function() {
+                alert('File attachment feature coming soon!');
+            });
+        });
+    </script>
 </body>
 </html>
