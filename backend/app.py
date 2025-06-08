@@ -1319,6 +1319,7 @@ def get_patient_profile():
 
         response_data = {
             'id': user.id,
+            'fhir_id': user.fhir_id,
             'name': user.name,
             'gender': user.gender,
             'date_of_birth': user.date_of_birth.strftime('%Y-%m-%d') if user.date_of_birth else None,

@@ -15,24 +15,23 @@
 12. [Maintenance](#maintenance)
 
 ## System Overview
-MamaCare is a comprehensive healthcare management system designed to connect patients with healthcare providers, with a specific focus on maternal and child healthcare services. The system provides a centralized platform for managing hospitals, pharmacies, doctors, and patient records.
+MamaCare is a comprehensive healthcare management system designed to connect patients with healthcare providers, with a specific focus on maternal and child healthcare services. The system provides a centralized platform for managing hospitals, pharmacies, doctors, and patient records, with FHIR integration for healthcare interoperability.
 
 ### Key Features
 - Hospital Management
 - Pharmacy Management
 - Doctor Management
-- Patient Records
-- Pregnancy Tracking
+- Patient Records with FHIR Integration
 - Live Monitoring
 - Chat System
-- Campaign Management
+- FHIR-compliant Medical Records
+- Secure PIN-based Patient Access
 
 ## Project Structure
 ```
 mamacare/
 ├── backend/                 # Backend Flask application
 │   ├── app.py              # Main application file
-│   ├── app_new.py          # New application features
 │   ├── requirements.txt    # Python dependencies
 │   ├── migrations/         # Database migrations
 │   ├── static/            # Static files
@@ -40,24 +39,17 @@ mamacare/
 │   ├── instance/          # Instance-specific files
 │   ├── test_api.py        # API tests
 │   ├── init_db.py         # Database initialization
-│   ├── update_db.py       # Database updates
-│   ├── add_test_data.py   # Test data generation
 │   └── Dockerfile         # Docker configuration
 ├── frontend/              # Frontend files
 │   ├── index.html         # Main landing page
 │   ├── admin_dashboard.html  # Admin interface
 │   ├── medical_records.html  # Patient records
+│   ├── medical_records_view.html  # Patient records view
 │   ├── doctors.html       # Doctor listings
 │   ├── hospitals.html     # Hospital listings
 │   ├── pharmacy.html      # Pharmacy listings
-│   ├── hospital_details.html # Hospital details page
-│   ├── pregnancy_tracker.html # Pregnancy tracking
-│   ├── live_monitor.html  # Live monitoring
-│   ├── chat.html          # Chat system
-│   ├── campaign_management.html # Campaign management
 │   ├── styles.css         # Global styles
-│   ├── scripts.js         # JavaScript functions
-│   └── chart.js           # Data visualization
+│   └── scripts.js         # JavaScript functions
 ├── migrations/            # Database migrations
 ├── Images/               # Image assets
 ├── docker-compose.yml    # Docker configuration
@@ -80,9 +72,9 @@ mamacare/
 - SQLAlchemy (ORM)
 - JWT Authentication
 - Flask-Migrate (Database Migrations)
+- FHIR Client (Healthcare Interoperability)
 
 ### Database
-- SQLite (Development)
 - PostgreSQL (Production)
 
 ### DevOps
@@ -97,6 +89,7 @@ mamacare/
 - pip (Python package manager)
 - Docker and Docker Compose (for containerization)
 - Git
+- PostgreSQL
 
 ### Local Development Setup
 
@@ -118,13 +111,24 @@ cd backend
 pip install -r requirements.txt
 ```
 
-4. Initialize the database:
+4. Set up environment variables:
 ```bash
-python init_db.py
-python add_test_data.py  # Optional: Add test data
+# Create .env file with the following variables
+FLASK_APP=app.py
+FLASK_ENV=development
+DATABASE_URL=postgresql://postgres:postgres@db:5432/mamacare
+SECRET_KEY=your-secret-key
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-email-password
 ```
 
-5. Run the development server:
+5. Initialize the database:
+```bash
+flask db upgrade
+python init_db.py
+```
+
+6. Run the development server:
 ```bash
 flask run
 ```
@@ -146,10 +150,11 @@ docker-compose up --build
 - System statistics
 
 ### 2. Medical Records
-- Patient profiles
+- Patient profiles with FHIR integration
 - Medical history
-- Pregnancy tracking
 - Prescription management
+- FHIR-compliant data storage
+- Secure PIN-based access
 
 ### 3. Hospital Management
 - Hospital listings
@@ -170,29 +175,12 @@ docker-compose up --build
 - Hospital affiliations
 - Patient assignments
 
-### 6. Pregnancy Tracker
-- Due date calculator
-- Appointment scheduling
-- Health monitoring
-- Progress tracking
-
-### 7. Live Monitor
-- Real-time health monitoring
-- Emergency alerts
-- Vital signs tracking
-- Medical history access
-
-### 8. Chat System
-- Patient-doctor communication
-- Appointment scheduling
-- Medical advice
-- Emergency support
-
-### 9. Campaign Management
-- Health awareness campaigns
-- Event scheduling
-- Participant management
-- Resource allocation
+### 6. FHIR Integration
+- FHIR Patient Resources
+- FHIR Observation Resources
+- FHIR MedicationRequest Resources
+- Healthcare Interoperability
+- Standardized Data Exchange
 
 ## API Documentation
 
@@ -204,13 +192,38 @@ POST /api/admin/login
 - Response: { token }
 ```
 
+### Patient Management
+```
+POST /api/patient/register
+- Purpose: Register new patient
+- Request Body: { email, name, given_name, family_name, gender, date_of_birth, ... }
+- Response: { pin, patient_id, fhir_id }
+
+POST /api/patient/profile
+- Purpose: Get patient profile
+- Request Body: { pin }
+- Response: { id, fhir_id, name, gender, ... }
+```
+
+### Medical Records
+```
+POST /api/patient/medical-records
+- Purpose: Add medical record
+- Request Body: { pin, date, diagnosis, treatment, ... }
+- Response: { id, date, diagnosis, ... }
+
+GET /api/patient/medical-records
+- Purpose: Get medical records
+- Query Params: { pin }
+- Response: [{ id, date, diagnosis, ... }]
+```
+
 ### Hospital Management
 ```
 GET /api/admin/hospitals
 POST /api/admin/hospitals
 PUT /api/admin/hospitals/<id>
 DELETE /api/admin/hospitals/<id>
-GET /api/hospitals/<id>  # Get detailed hospital information
 ```
 
 ### Pharmacy Management
@@ -230,6 +243,38 @@ DELETE /api/admin/doctors/<id>
 ```
 
 ## Database Schema
+
+### User
+```sql
+CREATE TABLE user (
+    id INTEGER PRIMARY KEY,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password_hash VARCHAR(256) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    given_name VARCHAR(100),
+    family_name VARCHAR(100),
+    gender VARCHAR(20),
+    date_of_birth DATE,
+    phone VARCHAR(20),
+    address_line VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    blood_type VARCHAR(10),
+    allergies TEXT,
+    medications TEXT,
+    emergency_contact_name VARCHAR(100),
+    emergency_contact_phone VARCHAR(20),
+    emergency_contact_relationship VARCHAR(50),
+    marital_status VARCHAR(20),
+    language VARCHAR(50),
+    nationality VARCHAR(100),
+    fhir_id VARCHAR(100) UNIQUE,
+    pin VARCHAR(6),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
 
 ### Hospital
 ```sql
@@ -292,92 +337,78 @@ CREATE TABLE doctor (
 );
 ```
 
+### Medical Record
+```sql
+CREATE TABLE medical_record (
+    id INTEGER PRIMARY KEY,
+    patient_id INTEGER NOT NULL,
+    date DATE NOT NULL,
+    diagnosis TEXT NOT NULL,
+    treatment TEXT,
+    medications TEXT,
+    notes TEXT,
+    doctor_id INTEGER,
+    hospital_id INTEGER,
+    fhir_resource_id VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (patient_id) REFERENCES user(id),
+    FOREIGN KEY (doctor_id) REFERENCES doctor(id),
+    FOREIGN KEY (hospital_id) REFERENCES hospital(id)
+);
+```
+
+### Admin
+```sql
+CREATE TABLE admin (
+    id INTEGER PRIMARY KEY,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password_hash VARCHAR(256) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
 ## Security Features
-
-### Authentication
-- JWT-based authentication
-- Secure token storage
-- Password hashing
-- Session management
-
-### Data Protection
+- PIN-based patient authentication
+- JWT token authentication for admin
+- FHIR-compliant data security
+- Secure password hashing
+- CORS protection
 - Input validation
 - SQL injection prevention
 - XSS protection
-- CSRF protection
-
-### File Security
-- Secure file uploads
-- File type validation
-- Size restrictions
-- Secure storage
 
 ## Deployment Guide
-
-### Production Requirements
-- Python 3.x
-- PostgreSQL
-- Nginx
-- SSL certificate
-- Domain name
-
-### Deployment Steps
-1. Set up production server
-2. Configure Nginx
-3. Set up SSL
-4. Configure environment variables
-5. Initialize database
-6. Deploy application
-7. Set up monitoring
-
-### Environment Variables
-```
-FLASK_APP=app.py
-FLASK_ENV=production
-SECRET_KEY=your-secret-key
-DATABASE_URL=postgresql://user:password@localhost/mamacare
-UPLOAD_FOLDER=/path/to/uploads
-```
+1. Set up production environment variables
+2. Configure PostgreSQL database
+3. Set up SSL certificates
+4. Configure Nginx
+5. Deploy using Docker Compose
+6. Run database migrations
+7. Initialize the system
 
 ## Development Guide
+1. Follow PEP 8 style guide
+2. Write unit tests for new features
+3. Document API changes
+4. Update database migrations
+5. Test FHIR integration
+6. Verify security measures
 
-### Code Style
-- Follow PEP 8 for Python
-- Use ESLint for JavaScript
-- Follow Bootstrap guidelines for CSS
-
-### Git Workflow
-1. Create feature branch
-2. Make changes
-3. Write tests
-4. Create pull request
-5. Code review
-6. Merge to main
-
-### Testing
-- Unit tests (test_api.py)
-- Integration tests
-- API tests
-- Frontend tests
+## Testing
+- Unit tests for API endpoints
+- Integration tests for FHIR resources
+- Security testing
+- Performance testing
+- User acceptance testing
 
 ## Maintenance
-
-### Regular Tasks
-- Database backups
-- Log rotation
+- Regular database backups
+- Log monitoring
 - Security updates
-- Performance monitoring
-
-### Monitoring
-- Error logging (app.log)
-- User activity
-- System health
-- Resource usage
-
-### Backup Procedures
-- Daily database backups
-- Weekly file backups
-- Monthly full backups
+- Performance optimization
+- FHIR compliance checks
 
 ## Support
 For support and issues:

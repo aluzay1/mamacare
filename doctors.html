@@ -442,16 +442,16 @@
             const locationFilter = document.getElementById('locationFilter').value;
 
             const doctors = await fetchDoctors();
-            const filteredDoctors = doctors.filter(doctor => {
-                const matchesSearch = doctor.name.toLowerCase().includes(searchTerm) ||
-                                    doctor.specialization.toLowerCase().includes(searchTerm);
-                const matchesSpecialty = !specialtyFilter || doctor.specialization === specialtyFilter;
-                const matchesLocation = !locationFilter || doctor.city === locationFilter;
+                const filteredDoctors = doctors.filter(doctor => {
+                    const matchesSearch = doctor.name.toLowerCase().includes(searchTerm) ||
+                                        doctor.specialization.toLowerCase().includes(searchTerm);
+                    const matchesSpecialty = !specialtyFilter || doctor.specialization === specialtyFilter;
+                    const matchesLocation = !locationFilter || doctor.city === locationFilter;
 
-                return matchesSearch && matchesSpecialty && matchesLocation;
-            });
+                    return matchesSearch && matchesSpecialty && matchesLocation;
+                });
 
-            displayDoctors(filteredDoctors);
+                displayDoctors(filteredDoctors);
         }
 
         // Initialize the page

@@ -363,41 +363,41 @@
                 return;
             }
             
-            pharmaciesGrid.innerHTML = pharmacies.map(pharmacy => `
-                <div class="pharmacy-card">
-                    <div class="pharmacy-info">
-                        <div class="pharmacy-name">
-                            ${pharmacy.name}
-                            ${pharmacy.is_24_hours ? '<span class="status"><i class="fas fa-clock"></i> 24h</span>' : ''}
-                        </div>
-                        <div class="pharmacy-details">
-                            <div class="pharmacy-detail">
-                                <i class="fas fa-map-marker-alt"></i>
+                pharmaciesGrid.innerHTML = pharmacies.map(pharmacy => `
+                    <div class="pharmacy-card">
+                        <div class="pharmacy-info">
+                            <div class="pharmacy-name">
+                                ${pharmacy.name}
+                                ${pharmacy.is_24_hours ? '<span class="status"><i class="fas fa-clock"></i> 24h</span>' : ''}
+                            </div>
+                            <div class="pharmacy-details">
+                                <div class="pharmacy-detail">
+                                    <i class="fas fa-map-marker-alt"></i>
                                 <span>${pharmacy.city}, ${pharmacy.country}</span>
+                                </div>
+                                <div class="pharmacy-detail">
+                                    <i class="fas fa-phone"></i>
+                                    <span>${pharmacy.phone}</span>
+                                </div>
+                                ${pharmacy.email ? `
+                                <div class="pharmacy-detail">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>${pharmacy.email}</span>
+                                </div>
+                                ` : ''}
                             </div>
-                            <div class="pharmacy-detail">
-                                <i class="fas fa-phone"></i>
-                                <span>${pharmacy.phone}</span>
-                            </div>
-                            ${pharmacy.email ? `
-                            <div class="pharmacy-detail">
-                                <i class="fas fa-envelope"></i>
-                                <span>${pharmacy.email}</span>
-                            </div>
-                            ` : ''}
-                        </div>
-                        <div class="pharmacy-actions">
-                            <a href="tel:${pharmacy.phone}" class="action-button call-button">
-                                <i class="fas fa-phone"></i> Call
-                            </a>
+                            <div class="pharmacy-actions">
+                                <a href="tel:${pharmacy.phone}" class="action-button call-button">
+                                    <i class="fas fa-phone"></i> Call
+                                </a>
                             <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${pharmacy.address}, ${pharmacy.city}, ${pharmacy.state} ${pharmacy.country}`)}" 
                                class="action-button directions-button" target="_blank">
-                                <i class="fas fa-directions"></i> Get Directions
+                                    <i class="fas fa-directions"></i> Get Directions
                             </a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
         }
 
         // Function to search and filter pharmacies
@@ -407,16 +407,16 @@
             const locationFilter = document.getElementById('locationFilter').value;
 
             const pharmacies = await fetchPharmacies();
-            const filteredPharmacies = pharmacies.filter(pharmacy => {
-                const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
-                                    pharmacy.city.toLowerCase().includes(searchTerm);
+                const filteredPharmacies = pharmacies.filter(pharmacy => {
+                    const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
+                                        pharmacy.city.toLowerCase().includes(searchTerm);
                 const matchesType = !typeFilter || pharmacy.type === typeFilter;
-                const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
+                    const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
 
-                return matchesSearch && matchesType && matchesLocation;
-            });
+                    return matchesSearch && matchesType && matchesLocation;
+                });
 
-            displayPharmacies(filteredPharmacies);
+                displayPharmacies(filteredPharmacies);
         }
 
         // Initialize the page

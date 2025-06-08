@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: mamacare-backend
+    env: python
+    region: frankfurt
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && gunicorn app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mamacare-db
+          property: connectionString
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASSWORD
+        sync: false
+      - key: TIMEZONE
+        value: "Africa/Freetown"
+
+databases:
+  - name: mamacare-db
+    databaseName: mamacare
+    user: mamacare
+    plan: free
+    region: frankfurt 
