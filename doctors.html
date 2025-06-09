@@ -299,12 +299,12 @@
             .doctor-image-container {
                 height: 220px;
                 padding: 15px 15px 0 15px;
-            }
+        }
 
             .doctor-image {
                 width: 160px;
                 height: 160px;
-            }
+        }
 
             .doctor-info {
                 padding: 3px 15px 15px 15px;
@@ -321,7 +321,7 @@
             .doctor-image-container {
                 height: 200px;
                 padding: 10px 10px 0 10px;
-            }
+        }
 
             .doctor-image {
                 width: 140px;
@@ -471,7 +471,7 @@
             doctorsGrid.innerHTML = doctors.map(doctor => `
                 <div class="doctor-card">
                     <div class="doctor-image-container">
-                        <img src="${getDoctorImageUrl(doctor)}" alt="${doctor.name}" class="doctor-image" onerror="this.onerror=null;this.src='images/default-doctor.jpg';">
+                    <img src="${getDoctorImageUrl(doctor)}" alt="${doctor.name}" class="doctor-image" onerror="this.onerror=null;this.src='images/default-doctor.jpg';">
                     </div>
                     <div class="doctor-info">
                         <h3 class="doctor-name">${doctor.name}</h3>
