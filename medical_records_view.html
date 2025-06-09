@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records View</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* Auth section styles */
+        .auth-section {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f5f6fa 0%, #e3e6f0 100%);
+        }
+
+        .auth-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            width: 80px;
+            height: 80px;
+            background: transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+        }
+
+        .logo-container i {
+            font-size: 2rem;
+            color: #3498db;
+        }
+
+        .auth-header h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.8rem;
+        }
+
+        .auth-subtitle {
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* Form styles */
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .pin-input-container {
+            position: relative;
+        }
+
+        .pin-input-container input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .pin-input-container input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .toggle-pin-visibility {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-block {
+            width: 100%;
+        }
+
+        /* Medical records section styles */
+        .medical-records {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .medical-records h1 {
+            color: #2c3e50;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        /* Modern Profile Card Styles */
+        .patient-profile {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            margin: 2rem auto;
+            max-width: 1400px;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 3.5rem 3rem;
+            position: relative;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+
+        .profile-content {
+            display: grid;
+            gap: 2.5rem;
+            padding: 2.5rem;
+            width: 100%;
+            box-sizing: border-box;
+            background: #fafbfc;
+        }
+
+        .profile-section {
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .section-header i {
+            font-size: 1.5rem;
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 0.8rem;
+            border-radius: 12px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .info-item {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.03);
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            background: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .info-item label {
+            font-size: 0.85rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+            display: block;
+            font-weight: 500;
+        }
+
+        .info-item span {
+            color: #1e293b;
+            padding: 0.5rem 0;
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: block;
+            line-height: 1.5;
+        }
+
+        /* Records section styles */
+        .records-section {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .records-header h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .records-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 300px;
+        }
+
+        .filter-select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .download-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-download {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-download:hover {
+            background-color: #218838;
+        }
+
+        .btn-download-single {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-download-single:hover {
+            background-color: #138496;
+        }
+
+        .records-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .records-table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .records-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Mobile menu styles */
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: #2c3e50;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                margin: 0.5rem 0;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .records-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box,
+            .filter-select {
+                width: 100%;
+            }
+
+            .download-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-download {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .medical-records {
+                padding: 1.5rem;
+            }
+
+            .profile-header {
+                padding: 3rem 2.5rem;
+            }
+
+            .profile-content {
+                padding: 2rem;
+                gap: 2rem;
+            }
+
+            .profile-section {
+                padding: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .medical-records {
+                padding: 1.25rem;
+            }
+
+            .profile-header {
+                padding: 2.5rem 2rem;
+            }
+
+            .profile-content {
+                padding: 1.75rem;
+                gap: 1.75rem;
+            }
+
+            .profile-section {
+                padding: 1.75rem;
+            }
+
+            .section-header {
+                margin-bottom: 1.5rem;
+            }
+
+            .section-header i {
+                font-size: 1.3rem;
+                padding: 0.7rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .medical-records {
+                padding: 1rem;
+            }
+
+            .profile-header {
+                padding: 2rem 1.75rem;
+            }
+
+            .profile-content {
+                padding: 1.5rem;
+                gap: 1.5rem;
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .medical-records {
+                padding: 0.75rem;
+            }
+
+            .profile-header {
+                padding: 1.75rem 1.5rem;
+            }
+
+            .profile-content {
+                padding: 1.25rem;
+                gap: 1.25rem;
+            }
+
+            .profile-section {
+                padding: 1.25rem;
+            }
+
+            .section-header {
+                margin-bottom: 1.25rem;
+            }
+
+            .section-header i {
+                font-size: 1.2rem;
+                padding: 0.6rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.2rem;
+            }
+
+            .info-item {
+                padding: 1rem;
+            }
+
+            .info-item label {
+                font-size: 0.8rem;
+            }
+
+            .info-item span {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .medical-records {
+                padding: 0.5rem;
+            }
+
+            .profile-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .profile-section {
+                padding: 0.5rem;
+            }
+
+            .info-item {
+                padding: 0.5rem;
+            }
+        }
+
+        /* Error message styles */
+        .error-message {
+            color: #dc3545;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">MamaCare</div>
+            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo-container">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1>Welcome to MamaCare</h1>
+                <p class="auth-subtitle">View your medical records securely</p>
+            </div>
+            <form id="pinForm" class="auth-form">
+                <div class="form-group">
+                    <label for="patientPin">Enter your 6-digit PIN</label>
+                    <div class="pin-input-container">
+                        <input type="password" id="patientPin" name="patientPin" maxlength="6" pattern="\d{6}" placeholder="Enter PIN" required>
+                        <button type="button" class="toggle-pin-visibility" onclick="togglePinVisibility()">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> View Records
+                </button>
+            </form>
+            <p id="pinError" class="error-message" style="display: none;">Invalid PIN. Please try again.</p>
+        </div>
+    </section>
+
+    <section class="medical-records" id="medicalRecords" style="display: none;">
+        <h1>Patient Medical Records</h1>
+
+        <!-- Patient Overview -->
+        <div class="patient-profile">
+            <div class="profile-header">
+                <div class="patient-basic-info">
+                    <h2 id="patientNameDisplay"></h2>
+                    <div class="patient-ids">
+                        <span><strong>Patient ID:</strong> <span id="patientIdDisplay"></span></span>
+                        <span><strong>FHIR ID:</strong> <span id="patientFhirIdDisplay"></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <!-- Basic Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i> 
+                        <h3>Basic Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Full Name</label>
+                            <span id="patientNameDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                            <span id="patientDobDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Gender</label>
+                            <span id="patientGenderDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Blood Type</label>
+                            <span id="patientBloodTypeDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Marital Status</label>
+                            <span id="patientMaritalStatusDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Language</label>
+                            <span id="patientLanguageDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Nationality</label>
+                            <span id="patientNationalityDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-address-card"></i>
+                        <h3>Contact Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Email</label>
+                            <span id="patientEmailDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phone</label>
+                            <span id="patientPhoneDisplay"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Address</label>
+                            <span id="patientAddressDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Medical Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item full-width">
+                            <label>Allergies</label>
+                            <span id="patientAllergiesDisplay"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Current Medications</label>
+                            <span id="patientMedicationsDisplay"></span>
+                        </div>
+                        <div class="info-item full-width" id="pregnancyInfo" style="display: none;">
+                            <label>Pregnancy Status</label>
+                            <span id="patientPregnancyStatusDisplay"></span>
+                        </div>
+                        <div class="info-item full-width" id="dueDateInfo" style="display: none;">
+                            <label>Estimated Due Date</label>
+                            <span id="patientDueDateDisplay"></span>
+                        </div>
+                        <div class="info-item full-width" id="gestationalAgeInfo" style="display: none;">
+                            <label>Gestational Age (weeks)</label>
+                            <span id="patientGestationalAgeDisplay"></span>
+                        </div>
+                        <div class="info-item full-width" id="pregnancyComplicationsInfo" style="display: none;">
+                            <label>Pregnancy Complications</label>
+                            <span id="patientPregnancyComplicationsDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-phone"></i>
+                        <h3>Emergency Contact</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Contact Name</label>
+                            <span id="emergencyContactNameDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Contact Phone</label>
+                            <span id="emergencyContactPhoneDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Relationship</label>
+                            <span id="emergencyContactRelationshipDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Information Section -->
+                <div class="profile-section" id="pregnancyProfileSection" style="display: none;">
+                    <div class="section-header">
+                        <i class="fas fa-baby"></i>
+                        <h3>Pregnancy Information</h3>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <!-- Basic Pregnancy Status -->
+                        <div class="info-item">
+                            <label>Pregnancy Status</label>
+                            <span id="pregnancyStatusDisplay"></span>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Previous Pregnancies</label>
+                            <span id="previousPregnanciesDisplay"></span>
+                        </div>
+
+                        <!-- Dates and Basic Info -->
+                        <div class="info-item">
+                            <label>Last Menstrual Period</label>
+                            <span id="lmpDateDisplay"></span>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Estimated Due Date</label>
+                            <span id="dueDateDisplay"></span>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Gestational Age (weeks)</label>
+                            <span id="gestationalAgeDisplay"></span>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Multiple Pregnancy</label>
+                            <span id="multiplePregnancyDisplay"></span>
+                        </div>
+
+                        <!-- Risk Assessment -->
+                        <div class="info-item">
+                            <label>Risk Level</label>
+                            <span id="riskLevelDisplay"></span>
+                        </div>
+
+                        <div class="info-item full-width">
+                            <label>Risk Factors</label>
+                            <span id="riskFactorsDisplay"></span>
+                        </div>
+
+                        <!-- Vital Signs -->
+                        <div class="info-item">
+                            <label>Blood Pressure</label>
+                            <span id="bloodPressureDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Records Section -->
+        <div class="records-section">
+            <div class="records-header">
+                <h2>Medical History</h2>
+                <div class="records-actions">
+                    <div class="search-filters">
+                        <input type="text" id="searchRecords" class="search-box" placeholder="Search records...">
+                        <select id="filterField" class="filter-select">
+                            <option value="all">All Fields</option>
+                            <option value="date">Date</option>
+                            <option value="diagnosis">Diagnosis</option>
+                            <option value="treatment">Treatment</option>
+                            <option value="medication">Medication</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="hospital">Hospital</option>
+                        </select>
+                    </div>
+                    <div class="download-actions">
+                        <button onclick="downloadAllRecords()" class="btn-download">
+                            <i class="fas fa-download"></i> Download All
+                        </button>
+                        <button onclick="downloadSelectedRecords()" class="btn-download" id="downloadSelectedBtn" style="display: none;">
+                            <i class="fas fa-download"></i> Download Selected
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="records-table-container">
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
+                            <th>Date</th>
+                            <th>Diagnosis</th>
+                            <th>Treatment</th>
+                            <th>Medication</th>
+                            <th>Doctor</th>
+                            <th>Hospital</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Initialize jsPDF
+        window.jsPDF = window.jspdf.jsPDF;
+
+        // Toggle PIN visibility
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('patientPin');
+            const toggleButton = document.querySelector('.toggle-pin-visibility i');
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                pinInput.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+
+        // Handle PIN form submission
+        document.getElementById('pinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('patientPin').value;
+            
+            try {
+                // Fetch patient profile using POST method
+                const response = await fetch('http://localhost:5000/api/patient/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ pin: pin })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid PIN or profile not found');
+                }
+
+                const profile = await response.json();
+                
+                // Show the medical records section and hide the auth section
+                document.getElementById('medicalRecords').style.display = 'block';
+                document.querySelector('.auth-section').style.display = 'none';
+                
+                // Update the profile display
+                updateProfileDisplay(profile);
+                
+                // Fetch and display medical records
+                try {
+                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    if (recordsResponse.ok) {
+                        const records = await recordsResponse.json();
+                        displayRecords(records);
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch medical records:', error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const pinError = document.getElementById('pinError');
+                pinError.textContent = error.message || 'Failed to fetch profile. Please try again.';
+                pinError.style.display = 'block';
+            }
+        });
+
+        function updateProfileDisplay(profile) {
+            try {
+                // Basic Information
+                document.getElementById('patientNameDisplay').textContent = profile.name || 'Not available';
+                document.getElementById('patientDobDisplay').textContent = profile.date_of_birth ? 
+                    new Date(profile.date_of_birth).toLocaleDateString() : 'Not available';
+                document.getElementById('patientGenderDisplay').textContent = profile.gender || 'Not available';
+                document.getElementById('patientBloodTypeDisplay').textContent = profile.blood_type || 'Not available';
+                document.getElementById('patientMaritalStatusDisplay').textContent = profile.marital_status || 'Not available';
+                document.getElementById('patientLanguageDisplay').textContent = profile.language || 'Not available';
+                document.getElementById('patientNationalityDisplay').textContent = profile.nationality || 'Not available';
+                
+                // Contact Information
+                document.getElementById('patientEmailDisplay').textContent = profile.email || 'Not available';
+                document.getElementById('patientPhoneDisplay').textContent = profile.phone || 'Not available';
+                
+                // Format address without duplication
+                let addressParts = [];
+                
+                // Add address line if it exists
+                if (profile.address_line && profile.address_line.trim()) {
+                    addressParts.push(profile.address_line.trim());
+                }
+                
+                // Add city if it exists and is not already in the address line
+                if (profile.city && profile.city.trim() && !profile.address_line.includes(profile.city)) {
+                    addressParts.push(profile.city.trim());
+                }
+                
+                // Add state if it exists and is not already in the address line
+                if (profile.state && profile.state.trim() && !profile.address_line.includes(profile.state)) {
+                    addressParts.push(profile.state.trim());
+                }
+                
+                // Add postal code if it exists and is not already in the address line
+                if (profile.postal_code && profile.postal_code.trim() && !profile.address_line.includes(profile.postal_code)) {
+                    addressParts.push(profile.postal_code.trim());
+                }
+                
+                // Add country if it exists and is not already in the address line
+                if (profile.country && profile.country.trim() && !profile.address_line.includes(profile.country)) {
+                    addressParts.push(profile.country.trim());
+                }
+                
+                document.getElementById('patientAddressDisplay').textContent = 
+                    addressParts.length > 0 ? addressParts.join(', ') : 'Not available';
+                
+                // Medical Information
+                document.getElementById('patientAllergiesDisplay').textContent = profile.allergies || 'None reported';
+                document.getElementById('patientMedicationsDisplay').textContent = profile.medications || 'None reported';
+                
+                // Emergency Contact
+                document.getElementById('emergencyContactNameDisplay').textContent = profile.emergency_contact_name || 'Not available';
+                document.getElementById('emergencyContactPhoneDisplay').textContent = profile.emergency_contact_phone || 'Not available';
+                document.getElementById('emergencyContactRelationshipDisplay').textContent = profile.emergency_contact_relationship || 'Not available';
+                
+                // Patient IDs
+                document.getElementById('patientIdDisplay').textContent = profile.id || 'Not available';
+                document.getElementById('patientFhirIdDisplay').textContent = profile.fhir_id || 'Not available';
+
+                // Pregnancy information
+                if (profile.gender === 'female') {
+                    document.getElementById('pregnancyInfo').style.display = 'block';
+                    document.getElementById('pregnancyProfileSection').style.display = 'block';
+                    
+                    // Update all pregnancy fields
+                    document.getElementById('pregnancyStatusDisplay').textContent = profile.pregnancy_status || 'Not available';
+                    document.getElementById('previousPregnanciesDisplay').textContent = profile.previous_pregnancies || 'Not available';
+                    
+                    // Handle LMP date and gestational age
+                    const lmpDate = profile.lmp_date;
+                    if (lmpDate) {
+                        document.getElementById('lmpDateDisplay').textContent = new Date(lmpDate).toLocaleDateString();
+                        document.getElementById('gestationalAgeDisplay').textContent = profile.gestational_age || 'Not available';
+                    } else {
+                        document.getElementById('lmpDateDisplay').textContent = 'Not available';
+                        document.getElementById('gestationalAgeDisplay').textContent = 'Not available';
+                    }
+                    
+                    document.getElementById('dueDateDisplay').textContent = profile.due_date ? 
+                        new Date(profile.due_date).toLocaleDateString() : 'Not available';
+                    document.getElementById('multiplePregnancyDisplay').textContent = profile.multiple_pregnancy || 'Not available';
+                    document.getElementById('riskLevelDisplay').textContent = profile.risk_level || 'Not available';
+                    document.getElementById('riskFactorsDisplay').textContent = profile.risk_factors || 'None reported';
+                    document.getElementById('bloodPressureDisplay').textContent = profile.blood_pressure || 'Not available';
+                }
+            } catch (error) {
+                console.error('Error updating profile display:', error);
+            }
+        }
+
+        function displayRecords(records) {
+            const tableBody = document.getElementById('recordsTableBody');
+            if (!tableBody) return;
+
+            // Store records for searching
+            window.allRecords = records;
+
+            // Initial display
+            filterAndDisplayRecords();
+
+            // Add search functionality
+            const searchInput = document.getElementById('searchRecords');
+            const filterField = document.getElementById('filterField');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', filterAndDisplayRecords);
+            }
+            
+            if (filterField) {
+                filterField.addEventListener('change', filterAndDisplayRecords);
+            }
+        }
+
+        function filterAndDisplayRecords() {
+            const searchInput = document.getElementById('searchRecords');
+            const filterField = document.getElementById('filterField');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            const selectedField = filterField ? filterField.value : 'all';
+            const tableBody = document.getElementById('recordsTableBody');
+            
+            if (!tableBody || !window.allRecords) return;
+
+            const filteredRecords = window.allRecords.filter(record => {
+                if (!searchTerm) return true;
+
+                if (selectedField === 'all') {
+                    return (
+                        (record.date && new Date(record.date).toLocaleDateString().toLowerCase().includes(searchTerm)) ||
+                        (record.diagnosis && record.diagnosis.toLowerCase().includes(searchTerm)) ||
+                        (record.treatment && record.treatment.toLowerCase().includes(searchTerm)) ||
+                        (record.medication && record.medication.toLowerCase().includes(searchTerm)) ||
+                        (record.doctor && record.doctor.toLowerCase().includes(searchTerm)) ||
+                        (record.hospital && record.hospital.toLowerCase().includes(searchTerm))
+                    );
+                } else {
+                    const fieldValue = record[selectedField];
+                    return fieldValue && fieldValue.toString().toLowerCase().includes(searchTerm);
+                }
+            });
+
+            tableBody.innerHTML = filteredRecords.map(record => `
+                <tr>
+                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}"></td>
+                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                    <td>${record.diagnosis || 'N/A'}</td>
+                    <td>${record.treatment || 'N/A'}</td>
+                    <td>${record.medication || 'N/A'}</td>
+                    <td>${record.doctor || 'N/A'}</td>
+                    <td>${record.hospital || 'N/A'}</td>
+                    <td>
+                        <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update select all checkbox
+            updateSelectAllCheckbox();
+        }
+
+        function toggleAllRecords() {
+            const selectAll = document.getElementById('selectAllRecords');
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            const downloadSelectedBtn = document.getElementById('downloadSelectedBtn');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+
+            downloadSelectedBtn.style.display = selectAll.checked ? 'flex' : 'none';
+        }
+
+        function updateSelectAllCheckbox() {
+            const selectAll = document.getElementById('selectAllRecords');
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            const downloadSelectedBtn = document.getElementById('downloadSelectedBtn');
+            
+            const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(checkbox => checkbox.checked);
+            selectAll.checked = allChecked;
+            
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            downloadSelectedBtn.style.display = anyChecked ? 'flex' : 'none';
+        }
+
+        function downloadSingleRecord(recordId) {
+            const record = window.allRecords.find(r => r.id === recordId);
+            if (!record) return;
+
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(16);
+            doc.text('Medical Record', 14, 15);
+            
+            // Add patient info
+            doc.setFontSize(12);
+            doc.text(`Patient: ${document.getElementById('patientNameDisplay').textContent}`, 14, 25);
+            doc.text(`Date: ${new Date(record.date).toLocaleDateString()}`, 14, 35);
+            
+            // Add record details
+            doc.setFontSize(11);
+            const details = [
+                ['Field', 'Details'],
+                ['Diagnosis', record.diagnosis || 'N/A'],
+                ['Treatment', record.treatment || 'N/A'],
+                ['Medication', record.medication || 'N/A'],
+                ['Doctor', record.doctor || 'N/A'],
+                ['Hospital', record.hospital || 'N/A']
+            ];
+            
+            doc.autoTable({
+                startY: 45,
+                head: [details[0]],
+                body: details.slice(1),
+                theme: 'grid',
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [41, 128, 185] }
+            });
+            
+            // Save the PDF
+            doc.save(`medical_record_${recordId}.pdf`);
+        }
+
+        function downloadSelectedRecords() {
+            const selectedCheckboxes = document.querySelectorAll('.record-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Please select at least one record to download');
+                return;
+            }
+
+            const selectedRecords = Array.from(selectedCheckboxes).map(checkbox => {
+                const recordId = parseInt(checkbox.dataset.recordId);
+                return window.allRecords.find(r => r.id === recordId);
+            }).filter(Boolean);
+
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(16);
+            doc.text('Selected Medical Records', 14, 15);
+            
+            // Add patient info
+            doc.setFontSize(12);
+            doc.text(`Patient: ${document.getElementById('patientNameDisplay').textContent}`, 14, 25);
+            doc.text(`Total Records: ${selectedRecords.length}`, 14, 35);
+            
+            // Create table data
+            const tableData = selectedRecords.map(record => [
+                new Date(record.date).toLocaleDateString(),
+                record.diagnosis || 'N/A',
+                record.treatment || 'N/A',
+                record.medication || 'N/A',
+                record.doctor || 'N/A',
+                record.hospital || 'N/A'
+            ]);
+            
+            // Add table
+            doc.autoTable({
+                startY: 45,
+                head: [['Date', 'Diagnosis', 'Treatment', 'Medication', 'Doctor', 'Hospital']],
+                body: tableData,
+                theme: 'grid',
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [41, 128, 185] }
+            });
+            
+            // Add footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.text(
+                    `Page ${i} of ${pageCount}`,
+                    doc.internal.pageSize.width / 2,
+                    doc.internal.pageSize.height - 10,
+                    { align: 'center' }
+                );
+            }
+            
+            // Save the PDF
+            doc.save('selected_medical_records.pdf');
+        }
+
+        // Add event listener for individual checkboxes
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('record-checkbox')) {
+                updateSelectAllCheckbox();
+            }
+        });
+
+        // Mobile menu toggle
+        const toggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+      
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+    </script>
+</body>
+</html> 
