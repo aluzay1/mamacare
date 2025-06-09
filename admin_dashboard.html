@@ -654,22 +654,22 @@
                                     <h4 class="mb-0">Add New Administrator</h4>
                                 </div>
                                 <div class="card-body">
-                                    <form id="add-admin-form">
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
+                            <form id="add-admin-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
                                                 <label class="form-label">Full Name</label>
                                                 <input type="text" class="form-control" name="name" required 
                                                        placeholder="Enter full name">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Email</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
                                                 <input type="email" class="form-control" name="email" required 
                                                        placeholder="Enter email address">
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Password</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Password</label>
                                                 <div class="input-group">
                                                     <input type="password" class="form-control" name="password" required 
                                                            placeholder="Enter password" id="admin-password">
@@ -679,9 +679,9 @@
                                                     </button>
                                                 </div>
                                                 <div class="password-strength mt-2" id="password-strength"></div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">Confirm Password</label>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Confirm Password</label>
                                                 <div class="input-group">
                                                     <input type="password" class="form-control" name="confirm_password" required 
                                                            placeholder="Confirm password" id="admin-confirm-password">
@@ -689,8 +689,8 @@
                                                             onclick="togglePassword('admin-confirm-password')">
                                                         <i class="bi bi-eye"></i>
                                                     </button>
-                                                </div>
-                                            </div>
+                                    </div>
+                                </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
@@ -724,8 +724,8 @@
                                                 <i class="bi bi-person-plus"></i> Add Administrator
                                             </button>
                                         </div>
-                                    </form>
-                                </div>
+                            </form>
+                        </div>
                             </div>
                         </div>
                         <div class="table-section mt-4">
@@ -744,22 +744,22 @@
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <div class="table-responsive">
+                            <div class="table-responsive">
                                         <table class="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Email</th>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
                                                     <th>Role</th>
                                                     <th>Status</th>
-                                                    <th>Created At</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody id="admins-table-body">
-                                                <!-- Admins will be loaded here -->
-                                            </tbody>
-                                        </table>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admins-table-body">
+                                        <!-- Admins will be loaded here -->
+                                    </tbody>
+                                </table>
                                     </div>
                                 </div>
                             </div>
@@ -1356,7 +1356,7 @@
                             <div class="btn-group">
                                 <button class="btn btn-sm btn-outline-primary" onclick="editAdmin(${admin.id})">
                                     <i class="bi bi-pencil"></i>
-                                </button>
+                            </button>
                                 <button class="btn btn-sm btn-outline-danger" onclick="deleteAdmin(${admin.id})">
                                     <i class="bi bi-trash"></i>
                                 </button>
