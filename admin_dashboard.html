@@ -2076,13 +2076,76 @@
                 }
 
                 const admin = await response.json();
-                // TODO: Implement edit modal and form population
-                console.log('Edit admin:', admin);
+                const form = document.getElementById('edit-admin-form');
+                
+                // Populate form fields
+                form.querySelector('[name="id"]').value = admin.id;
+                form.querySelector('[name="name"]').value = admin.name;
+                form.querySelector('[name="email"]').value = admin.email;
+                form.querySelector('[name="role"]').value = admin.role;
+                form.querySelector('[name="status"]').value = admin.status;
+                form.querySelector('[name="password"]').value = ''; // Clear password field
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('editAdminModal'));
+                modal.show();
             } catch (error) {
                 console.error('Error fetching administrator details:', error);
                 alert('Error fetching administrator details: ' + error.message);
             }
         }
+
+        // Add Save Admin Changes Handler
+        document.getElementById('save-admin-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-admin-form');
+            const formData = new FormData(form);
+            const adminId = formData.get('id');
+
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    role: formData.get('role'),
+                    status: formData.get('status')
+                };
+
+                // Only include password if it's not empty
+                const password = formData.get('password');
+                if (password) {
+                    data.password = password;
+                }
+
+                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors',
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update administrator');
+                }
+
+                alert('Administrator updated successfully!');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editAdminModal'));
+                modal.hide();
+                loadAdmins();
+            } catch (error) {
+                console.error('Error updating administrator:', error);
+                alert('Error updating administrator: ' + error.message);
+            }
+        });
     </script>
 </body>
 </html> 
