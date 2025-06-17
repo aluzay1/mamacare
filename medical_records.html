@@ -59,9 +59,9 @@
 
     <section class="add-patient" id="addPatientSection" style="display: none;">
         <div class="form-container">
-            <h1>Add New Patient</h1>
-            <form id="addPatientForm" class="fhir-form">
-                <div class="form-section">
+        <h1>Add New Patient</h1>
+        <form id="addPatientForm" class="fhir-form">
+            <div class="form-section">
                     <h3><i class="fas fa-user"></i> Basic Information</h3>
                     <div class="form-grid">
                         <div class="form-group">
@@ -87,16 +87,16 @@
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" class="form-control" required>
-                                <option value="" disabled selected>Select gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-                                <option value="other">Other</option>
-                            </select>
+                    <option value="" disabled selected>Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                </select>
                         </div>
                     </div>
-                </div>
+            </div>
 
-                <div class="form-section">
+            <div class="form-section">
                     <h3><i class="fas fa-address-card"></i> Contact Information</h3>
                     <div class="form-grid">
                         <div class="form-group">
@@ -145,20 +145,20 @@
                             </select>
                         </div>
                     </div>
-                </div>
+            </div>
 
-                <div class="form-section">
+            <div class="form-section">
                     <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="marital_status">Marital Status</label>
                             <select id="marital_status" name="marital_status" class="form-control">
-                                <option value="" disabled selected>Select status</option>
-                                <option value="single">Single</option>
-                                <option value="married">Married</option>
-                                <option value="divorced">Divorced</option>
-                                <option value="widowed">Widowed</option>
-                            </select>
+                    <option value="" disabled selected>Select status</option>
+                    <option value="single">Single</option>
+                    <option value="married">Married</option>
+                    <option value="divorced">Divorced</option>
+                    <option value="widowed">Widowed</option>
+                </select>
                         </div>
 
                         <div class="form-group">
@@ -188,24 +188,24 @@
                             </select>
                         </div>
                     </div>
-                </div>
+            </div>
 
-                <div class="form-section">
+            <div class="form-section">
                     <h3><i class="fas fa-heartbeat"></i> Medical Information</h3>
                     <div class="form-grid">
                         <div class="form-group">
                             <label for="blood_type">Blood Type</label>
                             <select id="blood_type" name="blood_type" class="form-control">
-                                <option value="" disabled selected>Select blood type</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                            </select>
+                    <option value="" disabled selected>Select blood type</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                </select>
                         </div>
 
                         <div class="form-group full-width">
@@ -227,10 +227,10 @@
                         <div class="form-group">
                             <label for="pregnancy_status">Pregnancy Status</label>
                             <select id="pregnancy_status" name="pregnancy_status" class="form-control">
-                                <option value="not_pregnant">Not Pregnant</option>
-                                <option value="pregnant">Pregnant</option>
+                        <option value="not_pregnant">Not Pregnant</option>
+                        <option value="pregnant">Pregnant</option>
                                 <option value="postpartum">Postpartum</option>
-                            </select>
+                    </select>
                         </div>
 
                         <div class="form-group">
@@ -243,88 +243,88 @@
                         <div class="form-group">
                             <label for="lmp_date">Last Menstrual Period</label>
                             <input type="date" id="lmp_date" name="lmp_date" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="due_date">Estimated Due Date</label>
                             <input type="date" id="due_date" name="due_date" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="multiple_pregnancy">Multiple Pregnancy</label>
                             <select id="multiple_pregnancy" name="multiple_pregnancy" class="form-control">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+                            </div>
 
                         <div class="form-group">
                             <label for="risk_level">Risk Level</label>
                             <select id="risk_level" name="risk_level" class="form-control">
-                                <option value="low">Low</option>
-                                <option value="medium">Medium</option>
-                                <option value="high">High</option>
-                            </select>
-                        </div>
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
 
                         <div class="form-group full-width">
                             <label for="risk_factors">Risk Factors</label>
                             <select id="risk_factors" name="risk_factors" class="form-control" multiple>
-                                <option value="age">Advanced Maternal Age</option>
-                                <option value="diabetes">Diabetes</option>
-                                <option value="hypertension">Hypertension</option>
-                                <option value="obesity">Obesity</option>
-                                <option value="previous_csection">Previous C-Section</option>
-                                <option value="multiple_pregnancy">Multiple Pregnancy</option>
-                            </select>
-                        </div>
+                                    <option value="age">Advanced Maternal Age</option>
+                                    <option value="diabetes">Diabetes</option>
+                                    <option value="hypertension">Hypertension</option>
+                                    <option value="obesity">Obesity</option>
+                                    <option value="previous_csection">Previous C-Section</option>
+                                    <option value="multiple_pregnancy">Multiple Pregnancy</option>
+                                </select>
+                            </div>
 
                         <div class="form-group">
                             <label for="blood_pressure">Blood Pressure</label>
                             <input type="text" id="blood_pressure" name="blood_pressure" class="form-control" placeholder="e.g., 120/80">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="hemoglobin">Hemoglobin (g/dL)</label>
                             <input type="number" step="0.1" id="hemoglobin" name="hemoglobin" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="blood_sugar">Blood Sugar (mg/dL)</label>
                             <input type="number" id="blood_sugar" name="blood_sugar" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="weight">Weight (kg)</label>
                             <input type="number" step="0.1" id="weight" name="weight" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="prenatal_vitamins">Taking Prenatal Vitamins</label>
                             <select id="prenatal_vitamins" name="prenatal_vitamins" class="form-control">
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                            </select>
-                        </div>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                </select>
+                            </div>
 
                         <div class="form-group full-width">
                             <label for="pregnancy_complications">Pregnancy Complications</label>
                             <textarea id="pregnancy_complications" name="pregnancy_complications" class="form-control" rows="3"></textarea>
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="emergency_hospital">Preferred Emergency Hospital</label>
                             <input type="text" id="emergency_hospital" name="emergency_hospital" class="form-control">
-                        </div>
+                            </div>
 
                         <div class="form-group full-width">
                             <label for="birth_plan">Birth Plan</label>
                             <textarea id="birth_plan" name="birth_plan" class="form-control" rows="4"></textarea>
-                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-section">
+            <div class="form-section">
                     <h3><i class="fas fa-phone-alt"></i> Emergency Contact</h3>
                     <div class="form-grid">
                         <div class="form-group">
@@ -350,14 +350,14 @@
                             </select>
                         </div>
                     </div>
-                </div>
+            </div>
 
                 <div class="form-actions">
                     <button type="submit" class="btn-primary">
                         <i class="fas fa-user-plus"></i> Register Patient
                     </button>
                 </div>
-            </form>
+        </form>
         </div>
     </section>
 

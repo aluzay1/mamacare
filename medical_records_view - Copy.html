@@ -225,21 +225,21 @@
                 const data = await response.json();
 
                 if (response.ok) {
-                    // Show success message
-                    successAlert.textContent = 'Access granted! Redirecting to medical records...';
-                    successAlert.style.display = 'block';
+                // Show success message
+                successAlert.textContent = 'Access granted! Redirecting to medical records...';
+                successAlert.style.display = 'block';
                     
                     // Store provider info in session storage
                     sessionStorage.setItem('provider_id', data.id);
                     sessionStorage.setItem('provider_name', data.name);
                     sessionStorage.setItem('provider_type', data.professional_type);
                     sessionStorage.setItem('provider_pin', pin);
-                    
-                    // Redirect to medical records page
-                    setTimeout(() => {
-                        window.location.href = 'medical_records.html';
-                    }, 2000);
-                } else {
+                
+                // Redirect to medical records page
+                setTimeout(() => {
+                    window.location.href = 'medical_records.html';
+                }, 2000);
+            } else {
                     // Show error message
                     errorAlert.textContent = data.error || 'Invalid PIN. Please try again.';
                     errorAlert.style.display = 'block';
@@ -267,8 +267,8 @@
             loading.style.display = 'block';
             
             try {
-                // Get form data
-                const formData = {
+            // Get form data
+            const formData = {
                     name: document.getElementById('name').value.trim(),
                     email: document.getElementById('email').value.trim(),
                     phone: document.getElementById('phone').value.trim(),
@@ -276,8 +276,8 @@
                     professional_type: document.getElementById('professionalType').value.trim(),
                     specialization: document.getElementById('specialization').value.trim(),
                     hospital_affiliation: document.getElementById('hospital').value.trim()
-                };
-
+            };
+            
                 // Validate required fields
                 const requiredFields = ['name', 'email', 'phone', 'license_number', 'professional_type', 'specialization', 'hospital_affiliation'];
                 const missingFields = requiredFields.filter(field => !formData[field]);
@@ -311,15 +311,15 @@
 
                 if (response.ok) {
                     successAlert.textContent = 'Registration successful! Please check your email for your PIN.';
-                    successAlert.style.display = 'block';
-                    
-                    // Reset form
-                    e.target.reset();
-                    
-                    // Switch back to login form after 3 seconds
-                    setTimeout(() => {
-                        toggleForms();
-                    }, 3000);
+            successAlert.style.display = 'block';
+            
+            // Reset form
+            e.target.reset();
+            
+            // Switch back to login form after 3 seconds
+            setTimeout(() => {
+                toggleForms();
+            }, 3000);
                 } else {
                     throw new Error(data.error || 'Registration failed. Please try again.');
                 }
@@ -328,7 +328,7 @@
                 errorAlert.textContent = error.message || 'An error occurred. Please try again.';
                 errorAlert.style.display = 'block';
             } finally {
-                loading.style.display = 'none';
+            loading.style.display = 'none';
             }
         });
 
