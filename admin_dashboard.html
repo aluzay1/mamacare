@@ -1,0 +1,2727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MamaCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --primary-dark: #0b5ed7;
+            --primary-light: #3d8bfd;
+            --secondary-color: #6c757d;
+            --success-color: #198754;
+            --info-color: #0dcaf0;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+        }
+
+        body {
+            background-color: #f8f9fc;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--primary-color) 10%, var(--primary-dark) 100%);
+            padding-top: 20px;
+            color: white;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            margin: 0.2rem 0;
+            border-radius: 0.35rem;
+            transition: all 0.3s;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar .nav-link i {
+            margin-right: 0.5rem;
+        }
+
+        .content {
+            padding: 1.5rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+            padding: 1rem 1.25rem;
+        }
+
+        .stats-card {
+            border-left: 0.25rem solid var(--primary-color);
+            transition: transform 0.2s;
+            min-height: 150px;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .stats-card .card-body {
+            padding: 1.75rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .stats-card .card-title {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .display-4 {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+            margin-bottom: 1.5rem;
+        }
+
+        .table-section {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            border-top: none;
+            background-color: #f8f9fc;
+            color: var(--secondary-color);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.7rem;
+        }
+
+        .btn {
+            border-radius: 0.35rem;
+            padding: 0.375rem 0.75rem;
+            font-weight: 600;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+        }
+
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .modal-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        .badge {
+            padding: 0.5em 0.75em;
+            font-weight: 600;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+
+        .form-control {
+            border-radius: 0.35rem;
+            padding: 0.375rem 0.75rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .badge.bg-success {
+            background-color: var(--success-color) !important;
+        }
+
+        .badge.bg-warning {
+            background-color: var(--warning-color) !important;
+        }
+
+        .badge.bg-secondary {
+            background-color: var(--secondary-color) !important;
+        }
+
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength.weak {
+            background-color: #dc3545;
+            width: 25%;
+        }
+
+        .password-strength.medium {
+            background-color: #ffc107;
+            width: 50%;
+        }
+
+        .password-strength.strong {
+            background-color: #28a745;
+            width: 75%;
+        }
+
+        .password-strength.very-strong {
+            background-color: #20c997;
+            width: 100%;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+        .form-section .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .form-section .card-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .table-section .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .table-section .card-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .table-section .card-body {
+            padding: 1.5rem;
+        }
+
+        #admin-search, #admin-role-filter {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="login-section" class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Admin Login</h2>
+            <form id="login-form">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard-section" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 sidebar">
+                    <h4 class="text-center mb-4">MamaCare Admin</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="hospitals">
+                                <i class="bi bi-hospital"></i> Hospitals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="pharmacies">
+                                <i class="bi bi-capsule"></i> Pharmacies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="doctors">
+                                <i class="bi bi-person-badge"></i> Healthcare Professionals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="admins">
+                                <i class="bi bi-shield-lock"></i> Admins
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link" href="#" id="logout-btn" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); color: white; border: none; border-radius: 8px; padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.background='linear-gradient(45deg, #ff5252, #ff7676)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';" onmouseout="this.style.background='linear-gradient(45deg, #ff6b6b, #ff8e8e)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 content">
+                    <!-- Stats Overview -->
+                    <div class="row mb-4" id="stats-section">
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Hospitals</div>
+                                    <div class="display-4" id="hospital-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Pharmacies</div>
+                                    <div class="display-4" id="pharmacy-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Healthcare Professionals</div>
+                                    <div class="display-4" id="doctor-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Patients</div>
+                                    <div class="display-4" id="patient-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hospitals Section -->
+                    <div id="hospitals-section">
+                        <h2 class="mb-4">Manage Hospitals</h2>
+                        
+                        <!-- Add Hospital Form -->
+                        <div class="form-section">
+                            <h4>Add New Hospital</h4>
+                            <form id="add-hospital-form" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Services</label>
+                                    <textarea class="form-control" name="services" rows="4" placeholder="Enter services (one per line)"></textarea>
+                                    <small class="form-text text-muted">Enter each service on a new line</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">State</label>
+                                        <input type="text" class="form-control" name="state" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" name="postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" name="country" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="url" class="form-control" name="website">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Directions</label>
+                                    <textarea class="form-control" name="directions"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Image</label>
+                                    <input type="file" class="form-control" name="image" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_verified" id="hospital-verified">
+                                        <label class="form-check-label" for="hospital-verified">
+                                            Verified
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Hospital</button>
+                            </form>
+                        </div>
+
+                        <!-- Hospitals Table -->
+                        <div class="table-section">
+                            <h4>Hospitals List</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>License Number</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="hospitals-table-body">
+                                        <!-- Hospitals will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pharmacies Section -->
+                    <div id="pharmacies-section" style="display: none;">
+                        <h2 class="mb-4">Manage Pharmacies</h2>
+                        
+                        <!-- Add Pharmacy Form -->
+                        <div class="form-section">
+                            <h4>Add New Pharmacy</h4>
+                            <form id="add-pharmacy-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">State</label>
+                                        <input type="text" class="form-control" name="state" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" name="postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" name="country" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="url" class="form-control" name="website">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Directions</label>
+                                    <textarea class="form-control" name="directions"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_24_hours" id="24-hours">
+                                        <label class="form-check-label" for="24-hours">
+                                            24 Hours Service
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_verified" id="pharmacy-verified">
+                                        <label class="form-check-label" for="pharmacy-verified">
+                                            Verified
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Pharmacy</button>
+                            </form>
+                        </div>
+
+                        <!-- Pharmacies Table -->
+                        <div class="table-section">
+                            <h4>Pharmacies List</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>License Number</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>24 Hours</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pharmacies-table-body">
+                                        <!-- Pharmacies will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctors Section -->
+                    <div id="doctors-section" style="display: none;">
+                        <h2 class="mb-4">Manage Healthcare Professionals</h2>
+                        <div class="form-section">
+                            <h4>Add New Healthcare Professional</h4>
+                            <form id="add-doctor-form" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Professional Type</label>
+                                        <select class="form-control" name="professional_type" required>
+                                            <option value="">Select Professional Type</option>
+                                            <option value="Medical Doctor">Medical Doctor</option>
+                                            <option value="Nurse">Nurse</option>
+                                            <option value="Midwife">Midwife</option>
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Laboratory Technician">Laboratory Technician</option>
+                                            <option value="Radiology Technician">Radiology Technician</option>
+                                            <option value="Physiotherapist">Physiotherapist</option>
+                                            <option value="Nutritionist">Nutritionist</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Specialization</label>
+                                        <input type="text" class="form-control" name="specialization" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Hospital Affiliation</label>
+                                        <select class="form-control" name="hospital_affiliation" id="hospitalAffiliation" required onchange="handleHospitalAffiliationChange(this)">
+                                            <option value="">Select Hospital</option>
+                                            <optgroup label="Government Hospitals">
+                                                <option value="Connaught Hospital">Connaught Hospital</option>
+                                                <option value="Princess Christian Maternity Hospital">Princess Christian Maternity Hospital</option>
+                                                <option value="Lakka Government Hospital">Lakka Government Hospital</option>
+                                                <option value="Rokupa Government Hospital">Rokupa Government Hospital</option>
+                                                <option value="Kissy Mental Home">Kissy Mental Home</option>
+                                                <option value="Ola During Children's Hospital">Ola During Children's Hospital</option>
+                                                <option value="34 Military Hospital">34 Military Hospital</option>
+                                                <option value="King Harman Road Hospital">King Harman Road Hospital</option>
+                                            </optgroup>
+                                            <optgroup label="Private Hospitals">
+                                                <option value="Choithram Memorial Hospital">Choithram Memorial Hospital</option>
+                                                <option value="Lumley Government Hospital">Lumley Government Hospital</option>
+                                                <option value="Medicins Sans Frontieres">Medicins Sans Frontieres</option>
+                                                <option value="Mercy Hospital">Mercy Hospital</option>
+                                                <option value="Goderich Medical Center">Goderich Medical Center</option>
+                                                <option value="St. John of God Hospital">St. John of God Hospital</option>
+                                                <option value="Sierra Leone-China Friendship Hospital">Sierra Leone-China Friendship Hospital</option>
+                                                <option value="Emergency Surgical Center">Emergency Surgical Center</option>
+                                            </optgroup>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="customHospitalAffiliation" name="custom_hospital_affiliation" style="display: none;" placeholder="Enter hospital name">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Experience</label>
+                                        <select class="form-control" name="experience" id="addDoctorExperience1" required onchange="handleExperienceChange(this)">
+                                            <option value="">Select Experience</option>
+                                            <option value="0-2 years">0-2 years</option>
+                                            <option value="3-5 years">3-5 years</option>
+                                            <option value="6-10 years">6-10 years</option>
+                                            <option value="10+ years">10+ years</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience1" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                    <label class="form-label">Qualifications</label>
+                                        <select class="form-control" name="qualifications" id="qualifications" required onchange="handleQualificationsChange(this)">
+                                            <option value="">Select Qualification</option>
+                                            <option value="MBBS">MBBS (Bachelor of Medicine, Bachelor of Surgery)</option>
+                                            <option value="MD">MD (Doctor of Medicine)</option>
+                                            <option value="MS">MS (Master of Surgery)</option>
+                                            <option value="DM">DM (Doctorate of Medicine)</option>
+                                            <option value="MCh">MCh (Master of Chirurgiae)</option>
+                                            <option value="DNB">DNB (Diplomate of National Board)</option>
+                                            <option value="BDS">BDS (Bachelor of Dental Surgery)</option>
+                                            <option value="MDS">MDS (Master of Dental Surgery)</option>
+                                            <option value="BAMS">BAMS (Bachelor of Ayurvedic Medicine and Surgery)</option>
+                                            <option value="BHMS">BHMS (Bachelor of Homeopathic Medicine and Surgery)</option>
+                                            <option value="BPT">BPT (Bachelor of Physiotherapy)</option>
+                                            <option value="MPT">MPT (Master of Physiotherapy)</option>
+                                            <option value="BSc Nursing">BSc Nursing</option>
+                                            <option value="MSc Nursing">MSc Nursing</option>
+                                            <option value="BPharm">BPharm (Bachelor of Pharmacy)</option>
+                                            <option value="MPharm">MPharm (Master of Pharmacy)</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="customQualifications" name="custom_qualifications" style="display: none;" placeholder="Enter qualification">
+                                </div>
+                                    <div class="col-md-6 mb-3">
+                                    <label class="form-label">Experience</label>
+                                        <select class="form-control" name="experience" id="addDoctorExperience2" required onchange="handleExperienceChange(this)">
+                                            <option value="">Select Experience</option>
+                                            <option value="0-2 years">0-2 years</option>
+                                            <option value="3-5 years">3-5 years</option>
+                                            <option value="6-10 years">6-10 years</option>
+                                            <option value="10+ years">10+ years</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience2" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Healthcare Professional's Image</label>
+                                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="is_verified" id="is_verified">
+                                        <label class="form-check-label" for="is_verified">Verified Doctor</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Healthcare Professional</button>
+                            </form>
+                        </div>
+                        <div class="table-section">
+                            <h4>Healthcare Professionals List</h4>
+                            <div class="mb-3">
+                                <label class="form-label">Filter by Professional Type</label>
+                                <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
+                                    <option value="">All Professionals</option>
+                                    <option value="Medical Doctor">Medical Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Midwife">Midwife</option>
+                                    <option value="Pharmacist">Pharmacist</option>
+                                    <option value="Laboratory Technician">Laboratory Technician</option>
+                                    <option value="Radiology Technician">Radiology Technician</option>
+                                    <option value="Physiotherapist">Physiotherapist</option>
+                                    <option value="Nutritionist">Nutritionist</option>
+                                </select>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Specialization</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Hospital</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="doctors-table-body">
+                                        <!-- Healthcare Professionals will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Admins Section -->
+                    <div id="admins-section" style="display: none;">
+                        <h2 class="mb-4">Manage Administrators</h2>
+                        <div class="form-section">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white">
+                                    <h4 class="mb-0">Add New Administrator</h4>
+                                </div>
+                                <div class="card-body">
+                            <form id="add-admin-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                                <label class="form-label">Full Name</label>
+                                                <input type="text" class="form-control" name="name" required 
+                                                       placeholder="Enter full name">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                                <input type="email" class="form-control" name="email" required 
+                                                       placeholder="Enter email address">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" name="password" required 
+                                                           placeholder="Enter password" id="admin-password">
+                                                    <button class="btn btn-outline-secondary" type="button" 
+                                                            onclick="togglePassword('admin-password')">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="password-strength mt-2" id="password-strength"></div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Confirm Password</label>
+                                                <div class="input-group">
+                                                    <input type="password" class="form-control" name="confirm_password" required 
+                                                           placeholder="Confirm password" id="admin-confirm-password">
+                                                    <button class="btn btn-outline-secondary" type="button" 
+                                                            onclick="togglePassword('admin-confirm-password')">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                    </div>
+                                </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Role</label>
+                                                <select class="form-select" name="role" required>
+                                                    <option value="">Select role</option>
+                                                    <option value="super_admin">Super Administrator</option>
+                                                    <option value="admin">Administrator</option>
+                                                    <option value="moderator">Moderator</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Status</label>
+                                                <select class="form-select" name="status" required>
+                                                    <option value="active">Active</option>
+                                                    <option value="inactive">Inactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="send_credentials" id="send-credentials">
+                                                <label class="form-check-label" for="send-credentials">
+                                                    Send credentials to email
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end gap-2">
+                                            <button type="reset" class="btn btn-secondary">Reset</button>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="bi bi-person-plus"></i> Add Administrator
+                                            </button>
+                                        </div>
+                            </form>
+                        </div>
+                            </div>
+                        </div>
+                        <div class="table-section mt-4">
+                            <div class="card">
+                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                    <h4 class="mb-0">Administrators List</h4>
+                                    <div class="d-flex gap-2">
+                                        <input type="text" class="form-control" id="admin-search" 
+                                               placeholder="Search administrators...">
+                                        <div class="mb-3">
+                                            <label for="admin-role-filter" class="form-label">Filter by Role</label>
+                                        <select class="form-select" id="admin-role-filter">
+                                            <option value="">All Roles</option>
+                                                <option value="admin">Admin</option>
+                                                <option value="super_admin">Super Admin</option>
+                                        </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                            <div class="table-responsive">
+                                        <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                                    <th>Role</th>
+                                                    <th>Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admins-table-body">
+                                        <!-- Admins will be loaded here -->
+                                    </tbody>
+                                </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modals -->
+    <div class="modal fade" id="editHospitalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Hospital</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-hospital-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="\+232[0-9]{8}" 
+                                    placeholder="e.g., +23271000000"
+                                    title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" name="postal_code" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" name="country" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" name="website">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Directions</label>
+                            <textarea class="form-control" name="directions"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_verified" id="edit-hospital-verified">
+                                <label class="form-check-label" for="edit-hospital-verified">
+                                    Verified
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-hospital-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editPharmacyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Pharmacy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-pharmacy-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" name="postal_code" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" name="country" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" name="website">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Directions</label>
+                            <textarea class="form-control" name="directions"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_24_hours" id="edit-24-hours">
+                                <label class="form-check-label" for="edit-24-hours">
+                                    24 Hours Service
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_verified" id="edit-pharmacy-verified">
+                                <label class="form-check-label" for="edit-pharmacy-verified">
+                                    Verified
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-pharmacy-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editDoctorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Doctor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-doctor-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Specialization</label>
+                                <select class="form-control" name="specialization" id="editSpecialization" required onchange="handleSpecializationChange(this)">
+                                    <option value="">Select Specialization</option>
+                                    <option value="General Medicine">General Medicine</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Obstetrics & Gynecology">Obstetrics & Gynecology</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Ophthalmology">Ophthalmology</option>
+                                    <option value="Dentistry">Dentistry</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Urology">Urology</option>
+                                    <option value="ENT">ENT (Ear, Nose & Throat)</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomSpecialization" name="custom_specialization" style="display: none;" placeholder="Enter specialization">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hospital Affiliation</label>
+                                <select class="form-control" name="hospital_affiliation" id="editHospitalAffiliation" required onchange="handleHospitalAffiliationChange(this)">
+                                    <option value="">Select Hospital</option>
+                                    <optgroup label="Government Hospitals">
+                                        <option value="Connaught Hospital">Connaught Hospital</option>
+                                        <option value="Princess Christian Maternity Hospital">Princess Christian Maternity Hospital</option>
+                                        <option value="Lakka Government Hospital">Lakka Government Hospital</option>
+                                        <option value="Rokupa Government Hospital">Rokupa Government Hospital</option>
+                                        <option value="Kissy Mental Home">Kissy Mental Home</option>
+                                        <option value="Ola During Children's Hospital">Ola During Children's Hospital</option>
+                                        <option value="34 Military Hospital">34 Military Hospital</option>
+                                        <option value="King Harman Road Hospital">King Harman Road Hospital</option>
+                                    </optgroup>
+                                    <optgroup label="Private Hospitals">
+                                        <option value="Choithram Memorial Hospital">Choithram Memorial Hospital</option>
+                                        <option value="Lumley Government Hospital">Lumley Government Hospital</option>
+                                        <option value="Medicins Sans Frontieres">Medicins Sans Frontieres</option>
+                                        <option value="Mercy Hospital">Mercy Hospital</option>
+                                        <option value="Goderich Medical Center">Goderich Medical Center</option>
+                                        <option value="St. John of God Hospital">St. John of God Hospital</option>
+                                        <option value="Sierra Leone-China Friendship Hospital">Sierra Leone-China Friendship Hospital</option>
+                                        <option value="Emergency Surgical Center">Emergency Surgical Center</option>
+                                    </optgroup>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomHospitalAffiliation" name="custom_hospital_affiliation" style="display: none;" placeholder="Enter hospital name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Experience</label>
+                                <select class="form-control" name="experience" id="editDoctorExperience1" required onchange="handleExperienceChange(this)">
+                                    <option value="">Select Experience</option>
+                                    <option value="0-2 years">0-2 years</option>
+                                    <option value="3-5 years">3-5 years</option>
+                                    <option value="6-10 years">6-10 years</option>
+                                    <option value="10+ years">10+ years</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editDoctorCustomExperience1" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Professional Type</label>
+                                <select class="form-control" name="professional_type" required>
+                                    <option value="">Select Professional Type</option>
+                                    <option value="Medical Doctor">Medical Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Midwife">Midwife</option>
+                                    <option value="Pharmacist">Pharmacist</option>
+                                    <option value="Laboratory Technician">Laboratory Technician</option>
+                                    <option value="Radiology Technician">Radiology Technician</option>
+                                    <option value="Physiotherapist">Physiotherapist</option>
+                                    <option value="Nutritionist">Nutritionist</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">Qualifications</label>
+                                <select class="form-control" name="qualifications" id="editQualifications" required onchange="handleQualificationsChange(this)">
+                                    <option value="">Select Qualification</option>
+                                    <option value="MBBS">MBBS (Bachelor of Medicine, Bachelor of Surgery)</option>
+                                    <option value="MD">MD (Doctor of Medicine)</option>
+                                    <option value="MS">MS (Master of Surgery)</option>
+                                    <option value="DM">DM (Doctorate of Medicine)</option>
+                                    <option value="MCh">MCh (Master of Chirurgiae)</option>
+                                    <option value="DNB">DNB (Diplomate of National Board)</option>
+                                    <option value="BDS">BDS (Bachelor of Dental Surgery)</option>
+                                    <option value="MDS">MDS (Master of Dental Surgery)</option>
+                                    <option value="BAMS">BAMS (Bachelor of Ayurvedic Medicine and Surgery)</option>
+                                    <option value="BHMS">BHMS (Bachelor of Homeopathic Medicine and Surgery)</option>
+                                    <option value="BPT">BPT (Bachelor of Physiotherapy)</option>
+                                    <option value="MPT">MPT (Master of Physiotherapy)</option>
+                                    <option value="BSc Nursing">BSc Nursing</option>
+                                    <option value="MSc Nursing">MSc Nursing</option>
+                                    <option value="BPharm">BPharm (Bachelor of Pharmacy)</option>
+                                    <option value="MPharm">MPharm (Master of Pharmacy)</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomQualifications" name="custom_qualifications" style="display: none;" placeholder="Enter qualification">
+                        </div>
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">Experience</label>
+                                <select class="form-control" name="experience" id="editDoctorExperience2" required onchange="handleExperienceChange(this)">
+                                    <option value="">Select Experience</option>
+                                    <option value="0-2 years">0-2 years</option>
+                                    <option value="3-5 years">3-5 years</option>
+                                    <option value="6-10 years">6-10 years</option>
+                                    <option value="10+ years">10+ years</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editDoctorCustomExperience2" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Doctor's Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="is_verified" id="edit_is_verified">
+                                <label class="form-check-label" for="edit_is_verified">Verified Doctor</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-doctor-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Check if user is already logged in
+        const adminToken = localStorage.getItem('admin_token');
+        if (adminToken) {
+            document.getElementById('login-section').style.display = 'none';
+            document.getElementById('dashboard-section').style.display = 'block';
+            loadHospitals();
+            loadPharmacies();
+            loadDoctors();
+            updateStats();
+        }
+
+        // Login Form Handler
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            try {
+                console.log('Login attempt with data:', data);
+                const response = await fetch('http://localhost:5000/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                console.log('Response status:', response.status);
+                const responseData = await response.json();
+                console.log('Response data:', responseData);
+                
+                if (response.ok) {
+                    console.log('Login successful, token received');
+                    localStorage.setItem('admin_token', responseData.token);
+                    document.getElementById('login-section').style.display = 'none';
+                    document.getElementById('dashboard-section').style.display = 'block';
+                    loadHospitals();
+                    loadPharmacies();
+                    loadDoctors();
+                    updateStats();
+                } else {
+                    console.error('Login failed:', responseData);
+                    alert(responseData.error || 'Login failed');
+                }
+            } catch (error) {
+                console.error('Error logging in:', error);
+                alert('Login failed. Please check the console for details.');
+            }
+        });
+
+        // Logout Handler
+        document.getElementById('logout-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('admin_token');
+            document.getElementById('login-section').style.display = 'block';
+            document.getElementById('dashboard-section').style.display = 'none';
+        });
+
+        // Section Navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = e.target.closest('.nav-link').dataset.section;
+                if (!section) return; // Skip if no section specified
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                e.target.closest('.nav-link').classList.add('active');
+                
+                // Show selected section
+                const sections = ['hospitals', 'pharmacies', 'doctors', 'admins'];
+                sections.forEach(s => {
+                    const element = document.getElementById(`${s}-section`);
+                    if (element) {
+                        element.style.display = s === section ? 'block' : 'none';
+                    }
+                });
+                if (section === 'admins') {
+                    loadAdmins();
+                }
+            });
+        });
+
+        // Load Hospitals
+        async function loadHospitals() {
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch('http://localhost:5000/api/admin/hospitals', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load hospitals');
+                }
+
+                const hospitals = await response.json();
+                const tbody = document.getElementById('hospitals-table-body');
+                tbody.innerHTML = '';
+                
+                hospitals.forEach(hospital => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${hospital.name}</td>
+                        <td>${hospital.license_number}</td>
+                        <td>${hospital.email}</td>
+                        <td>${hospital.phone}</td>
+                        <td>${hospital.address}</td>
+                        <td>
+                            <span class="badge ${hospital.is_verified ? 'bg-success' : 'bg-warning'}">
+                                ${hospital.is_verified ? 'Verified' : 'Pending'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-hospital" data-id="${hospital.id}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-hospital" data-id="${hospital.id}">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                document.getElementById('hospital-count').textContent = hospitals.length;
+            } catch (error) {
+                console.error('Error loading hospitals:', error);
+                if (error.message === 'No authentication token found') {
+                    document.getElementById('login-section').style.display = 'block';
+                    document.getElementById('dashboard-section').style.display = 'none';
+                } else {
+                    alert('Failed to load hospitals');
+                }
+            }
+        }
+
+        // Load Pharmacies
+        async function loadPharmacies() {
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load pharmacies');
+                }
+
+                const pharmacies = await response.json();
+                const tbody = document.getElementById('pharmacies-table-body');
+                tbody.innerHTML = '';
+                
+                pharmacies.forEach(pharmacy => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${pharmacy.name}</td>
+                        <td>${pharmacy.license_number}</td>
+                        <td>${pharmacy.email}</td>
+                        <td>${pharmacy.phone}</td>
+                        <td>${pharmacy.address}</td>
+                        <td>
+                            <span class="badge ${pharmacy.is_24_hours ? 'bg-success' : 'bg-secondary'}">
+                                ${pharmacy.is_24_hours ? 'Yes' : 'No'}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge ${pharmacy.is_verified ? 'bg-success' : 'bg-warning'}">
+                                ${pharmacy.is_verified ? 'Verified' : 'Pending'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-pharmacy" data-id="${pharmacy.id}">Edit</button>
+                            <button class="btn btn-sm btn-danger delete-pharmacy" data-id="${pharmacy.id}">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                document.getElementById('pharmacy-count').textContent = pharmacies.length;
+            } catch (error) {
+                console.error('Error loading pharmacies:', error);
+                if (error.message === 'No authentication token found') {
+                    document.getElementById('login-section').style.display = 'block';
+                    document.getElementById('dashboard-section').style.display = 'none';
+                } else {
+                    alert('Failed to load pharmacies');
+                }
+            }
+        }
+
+        // Load Healthcare Professionals
+        async function loadDoctors() {
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch('http://localhost:5000/api/admin/doctors', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to load Healthcare Professionals');
+                }
+
+                const doctors = await response.json();
+                window.allDoctors = doctors; // Store all doctors for filtering
+                filterDoctors(); // Apply initial filter
+                document.getElementById('doctor-count').textContent = doctors.length;
+            } catch (error) {
+                console.error('Error loading doctors:', error);
+                if (error.message === 'No authentication token found') {
+                    document.getElementById('login-section').style.display = 'block';
+                    document.getElementById('dashboard-section').style.display = 'none';
+                } else {
+                    alert('Failed to load doctors');
+                }
+            }
+        }
+
+        // Filter doctors by professional type
+        function filterDoctors() {
+            const filterValue = document.getElementById('professionalTypeFilter').value;
+            const tbody = document.getElementById('doctors-table-body');
+            tbody.innerHTML = '';
+            
+            const filteredDoctors = filterValue 
+                ? window.allDoctors.filter(doctor => doctor.professional_type === filterValue)
+                : window.allDoctors;
+            
+            filteredDoctors.forEach(doctor => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${doctor.name}</td>
+                    <td>${doctor.specialization}</td>
+                    <td>${doctor.email}</td>
+                    <td>${doctor.phone}</td>
+                    <td>${doctor.hospital_affiliation}</td>
+                    <td>
+                        <span class="badge ${doctor.is_verified ? 'bg-success' : 'bg-warning'}">
+                            ${doctor.is_verified ? 'Verified' : 'Pending'}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-primary edit-doctor" data-id="${doctor.id}">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-doctor" data-id="${doctor.id}">Delete</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Function to update stats
+        function updateStats() {
+            // Get hospital count
+            fetch('http://localhost:5000/api/admin/hospitals', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('hospital-count').textContent = data.length;
+            })
+            .catch(error => console.error('Error fetching hospital count:', error));
+
+            // Get pharmacy count
+            fetch('http://localhost:5000/api/admin/pharmacies', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('pharmacy-count').textContent = data.length;
+            })
+            .catch(error => console.error('Error fetching pharmacy count:', error));
+
+            // Get Healthcare Professionals count
+            fetch('http://localhost:5000/api/admin/doctors', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('doctor-count').textContent = data.length;
+            })
+            .catch(error => console.error('Error fetching doctor count:', error));
+
+            // Get patient count
+            fetch('http://localhost:5000/api/admin/patients/count', {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('patient-count').textContent = data.count;
+            })
+            .catch(error => console.error('Error fetching patient count:', error));
+        }
+
+        // Load Admins
+        async function loadAdmins() {
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch('http://localhost:5000/api/admin/admins', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to load admins');
+                }
+
+                const admins = await response.json();
+                const tbody = document.getElementById('admins-table-body');
+                tbody.innerHTML = '';
+                
+                admins.forEach(admin => {
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td>${admin.name || 'N/A'}</td>
+                        <td>${admin.email || 'N/A'}</td>
+                        <td><span class="badge bg-${getRoleBadgeColor(admin.role)}">${admin.role || 'N/A'}</span></td>
+                        <td><span class="badge bg-${admin.status === 'active' ? 'success' : 'secondary'}">${admin.status || 'N/A'}</span></td>
+                        <td>${formatDate(admin.created_at) || 'N/A'}</td>
+                        <td>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary" onclick="editAdmin(${admin.id})">
+                                    <i class="bi bi-pencil"></i>
+                            </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="deleteAdmin(${admin.id})">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error('Error loading admins:', error);
+                if (error.message === 'No authentication token found') {
+                    document.getElementById('login-section').style.display = 'block';
+                    document.getElementById('dashboard-section').style.display = 'none';
+                } else {
+                    alert('Failed to load admins: ' + error.message);
+                }
+            }
+        }
+
+        function getRoleBadgeColor(role) {
+            switch(role) {
+                case 'super_admin': return 'danger';
+                case 'admin': return 'primary';
+                case 'moderator': return 'info';
+                default: return 'secondary';
+            }
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'N/A';
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Add event listeners for edit and delete buttons
+        document.addEventListener('click', async (e) => {
+            // Hospital edit
+            if (e.target.classList.contains('edit-hospital')) {
+                const hospitalId = e.target.dataset.id;
+                const token = localStorage.getItem('admin_token');
+                
+                if (!token) {
+                    alert('Please log in again. Your session has expired.');
+                    return;
+                }
+
+                if (!hospitalId) {
+                    alert('Invalid hospital ID');
+                    return;
+                }
+
+                try {
+                    console.log('Fetching hospital with ID:', hospitalId);
+                    
+                    // Using the existing working endpoint structure
+                    const response = await fetch('http://localhost:5000/api/admin/hospitals', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    console.log('Response status:', response.status);
+                    
+                    const responseText = await response.text();
+                    console.log('Raw response:', responseText);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${responseText}`);
+                    }
+                    
+                    let hospitals;
+                    try {
+                        hospitals = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error('Failed to parse response as JSON:', parseError);
+                        throw new Error('Invalid response from server');
+                    }
+                    
+                    // Find the specific hospital
+                    const hospital = hospitals.find(h => h.id === parseInt(hospitalId));
+                    if (!hospital) {
+                        throw new Error('Hospital not found');
+                    }
+                    
+                    console.log('Found hospital data:', hospital);
+                    
+                    const form = document.getElementById('edit-hospital-form');
+                    if (!form) {
+                        throw new Error('Edit form not found');
+                    }
+                    
+                    // Set all form fields
+                    form.querySelector('[name="id"]').value = hospital.id;
+                    form.querySelector('[name="name"]').value = hospital.name || '';
+                    form.querySelector('[name="license_number"]').value = hospital.license_number || '';
+                    form.querySelector('[name="email"]').value = hospital.email || '';
+                    form.querySelector('[name="phone"]').value = hospital.phone || '';
+                    form.querySelector('[name="address"]').value = hospital.address || '';
+                    form.querySelector('[name="city"]').value = hospital.city || '';
+                    form.querySelector('[name="state"]').value = hospital.state || '';
+                    form.querySelector('[name="postal_code"]').value = hospital.postal_code || '';
+                    form.querySelector('[name="country"]').value = hospital.country || '';
+                    form.querySelector('[name="website"]').value = hospital.website || '';
+                    form.querySelector('[name="directions"]').value = hospital.directions || '';
+                    form.querySelector('[name="is_verified"]').checked = hospital.is_verified || false;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editHospitalModal'));
+                    modal.show();
+                } catch (error) {
+                    console.error('Error details:', error);
+                    alert('Failed to load hospital details: ' + error.message);
+                }
+            }
+
+            // Hospital delete
+            if (e.target.classList.contains('delete-hospital')) {
+                if (confirm('Are you sure you want to delete this hospital?')) {
+                    const hospitalId = e.target.dataset.id;
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                            }
+                        });
+                        if (!response.ok) throw new Error('Failed to delete hospital');
+                        
+                        alert('Hospital deleted successfully');
+                        loadHospitals();
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Failed to delete hospital');
+                    }
+                }
+            }
+
+            // Pharmacy edit
+            if (e.target.classList.contains('edit-pharmacy')) {
+                const pharmacyId = e.target.dataset.id;
+                const token = localStorage.getItem('admin_token');
+                
+                if (!token) {
+                    alert('Please log in again. Your session has expired.');
+                    return;
+                }
+
+                if (!pharmacyId) {
+                    alert('Invalid pharmacy ID');
+                    return;
+                }
+
+                try {
+                    console.log('Fetching pharmacy with ID:', pharmacyId);
+                    
+                    // Using the existing working endpoint structure
+                    const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    console.log('Response status:', response.status);
+                    
+                    const responseText = await response.text();
+                    console.log('Raw response:', responseText);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Server returned ${response.status}: ${responseText}`);
+                    }
+                    
+                    let pharmacies;
+                    try {
+                        pharmacies = JSON.parse(responseText);
+                    } catch (parseError) {
+                        console.error('Failed to parse response as JSON:', parseError);
+                        throw new Error('Invalid response from server');
+                    }
+                    
+                    // Find the specific pharmacy
+                    const pharmacy = pharmacies.find(p => p.id === parseInt(pharmacyId));
+                    if (!pharmacy) {
+                        throw new Error('Pharmacy not found');
+                    }
+                    
+                    console.log('Found pharmacy data:', pharmacy);
+                    
+                    const form = document.getElementById('edit-pharmacy-form');
+                    if (!form) {
+                        throw new Error('Edit form not found');
+                    }
+                    
+                    // Set all form fields
+                    form.querySelector('[name="id"]').value = pharmacy.id;
+                    form.querySelector('[name="name"]').value = pharmacy.name || '';
+                    form.querySelector('[name="license_number"]').value = pharmacy.license_number || '';
+                    form.querySelector('[name="email"]').value = pharmacy.email || '';
+                    form.querySelector('[name="phone"]').value = pharmacy.phone || '';
+                    form.querySelector('[name="address"]').value = pharmacy.address || '';
+                    form.querySelector('[name="city"]').value = pharmacy.city || '';
+                    form.querySelector('[name="state"]').value = pharmacy.state || '';
+                    form.querySelector('[name="postal_code"]').value = pharmacy.postal_code || '';
+                    form.querySelector('[name="country"]').value = pharmacy.country || '';
+                    form.querySelector('[name="website"]').value = pharmacy.website || '';
+                    form.querySelector('[name="directions"]').value = pharmacy.directions || '';
+                    form.querySelector('[name="is_24_hours"]').checked = pharmacy.is_24_hours || false;
+                    form.querySelector('[name="is_verified"]').checked = pharmacy.is_verified || false;
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editPharmacyModal'));
+                    modal.show();
+                } catch (error) {
+                    console.error('Error details:', error);
+                    alert('Failed to load pharmacy details: ' + error.message);
+                }
+            }
+
+            // Pharmacy delete
+            if (e.target.classList.contains('delete-pharmacy')) {
+                if (confirm('Are you sure you want to delete this pharmacy?')) {
+                    const pharmacyId = e.target.dataset.id;
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                            }
+                        });
+                        if (!response.ok) throw new Error('Failed to delete pharmacy');
+                        
+                        alert('Pharmacy deleted successfully');
+                        loadPharmacies();
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Failed to delete pharmacy');
+                    }
+                }
+            }
+
+            // Healthcare Professionals edit
+            if (e.target.classList.contains('edit-doctor')) {
+                const doctorId = e.target.dataset.id;
+                try {
+                    const token = localStorage.getItem('admin_token');
+                    if (!token) {
+                        throw new Error('No authentication token found');
+                    }
+
+                    const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to fetch healthcare professional details');
+                    }
+                    
+                    const doctor = await response.json();
+                    const form = document.getElementById('edit-doctor-form');
+                    
+                    if (!form) {
+                        throw new Error('Edit form not found');
+                    }
+
+                    // Populate form fields with null checks
+                    const setFieldValue = (fieldName, value) => {
+                        const field = form.querySelector(`[name="${fieldName}"]`);
+                        if (field) {
+                            if (field.type === 'checkbox') {
+                                field.checked = value;
+                            } else {
+                                field.value = value || '';
+                            }
+                        }
+                    };
+
+                    // Set all form fields
+                    setFieldValue('id', doctor.id);
+                    setFieldValue('name', doctor.name);
+                    setFieldValue('license_number', doctor.license_number);
+                    setFieldValue('email', doctor.email);
+                    setFieldValue('phone', doctor.phone);
+                    setFieldValue('specialization', doctor.specialization);
+                    setFieldValue('hospital_affiliation', doctor.hospital_affiliation);
+                    setFieldValue('city', doctor.city);
+                    setFieldValue('country', doctor.country);
+                    setFieldValue('professional_type', doctor.professional_type);
+                    setFieldValue('qualifications', doctor.qualifications);
+                    setFieldValue('experience', doctor.experience);
+                    setFieldValue('is_verified', doctor.is_verified);
+                    
+                    const modal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
+                    modal.show();
+                } catch (error) {
+                    console.error('Error loading healthcare professional details:', error);
+                    if (error.message === 'No authentication token found') {
+                        document.getElementById('login-section').style.display = 'block';
+                        document.getElementById('dashboard-section').style.display = 'none';
+                    } else {
+                        alert('Failed to load healthcare professional details: ' + error.message);
+                    }
+                }
+            }
+
+            // Doctor delete
+            if (e.target.classList.contains('delete-doctor')) {
+                if (confirm('Are you sure you want to delete this doctor?')) {
+                    const doctorId = e.target.dataset.id;
+                    try {
+                        const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                            }
+                        });
+                        if (!response.ok) throw new Error('Failed to delete Healthcare Professionals');
+                        
+                        alert('Healthcare Professionals deleted successfully');
+                        loadDoctors();
+                    } catch (error) {
+                        console.error('Error:', error);
+                        alert('Failed to delete doctor');
+                    }
+                }
+            }
+        });
+
+        // Add event listeners for save changes buttons
+        document.getElementById('save-hospital-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-hospital-form');
+            const formData = new FormData(form);
+            const hospitalId = formData.get('id');
+            const token = localStorage.getItem('admin_token');
+
+            if (!token) {
+                alert('Please log in again. Your session has expired.');
+                return;
+            }
+
+            if (!hospitalId) {
+                alert('Invalid hospital ID');
+                return;
+            }
+
+            try {
+                const hospitalData = {
+                    id: parseInt(hospitalId),
+                    name: formData.get('name'),
+                    license_number: formData.get('license_number'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    address: formData.get('address'),
+                    city: formData.get('city'),
+                    state: formData.get('state'),
+                    postal_code: formData.get('postal_code'),
+                    country: formData.get('country'),
+                    website: formData.get('website') || '',
+                    directions: formData.get('directions') || '',
+                    is_verified: formData.get('is_verified') === 'on',
+                    services: [] // Add empty services array if not present
+                };
+
+                console.log('Sending hospital data:', hospitalData);
+
+                const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(hospitalData)
+                });
+
+                console.log('Update response status:', response.status);
+
+                const responseText = await response.text();
+                console.log('Raw update response:', responseText);
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${responseText}`);
+                }
+                
+                alert('Hospital updated successfully');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editHospitalModal'));
+                modal.hide();
+                loadHospitals();
+            } catch (error) {
+                console.error('Error details:', error);
+                alert('Failed to update hospital: ' + error.message);
+            }
+        });
+
+        document.getElementById('save-pharmacy-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-pharmacy-form');
+            const formData = new FormData(form);
+            const pharmacyId = formData.get('id');
+            const token = localStorage.getItem('admin_token');
+
+            if (!token) {
+                alert('Please log in again. Your session has expired.');
+                return;
+            }
+
+            if (!pharmacyId) {
+                alert('Invalid pharmacy ID');
+                return;
+            }
+
+            try {
+                const pharmacyData = {
+                    id: parseInt(pharmacyId),
+                    name: formData.get('name'),
+                    license_number: formData.get('license_number'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    address: formData.get('address'),
+                    city: formData.get('city'),
+                    state: formData.get('state'),
+                    postal_code: formData.get('postal_code'),
+                    country: formData.get('country'),
+                    website: formData.get('website') || '',
+                    directions: formData.get('directions') || '',
+                    is_24_hours: formData.get('is_24_hours') === 'on',
+                    is_verified: formData.get('is_verified') === 'on'
+                };
+
+                console.log('Sending pharmacy data:', pharmacyData);
+
+                const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(pharmacyData)
+                });
+
+                console.log('Update response status:', response.status);
+
+                const responseText = await response.text();
+                console.log('Raw update response:', responseText);
+
+                if (!response.ok) {
+                    throw new Error(`Server returned ${response.status}: ${responseText}`);
+                }
+                
+                alert('Pharmacy updated successfully');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editPharmacyModal'));
+                modal.hide();
+                loadPharmacies();
+            } catch (error) {
+                console.error('Error details:', error);
+                alert('Failed to update pharmacy: ' + error.message);
+            }
+        });
+
+        document.getElementById('save-doctor-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-doctor-form');
+            const formData = new FormData(form);
+            const doctorId = formData.get('id');
+
+            // Handle custom specialization
+            const specialization = formData.get('specialization');
+            if (specialization === 'Other') {
+                formData.set('specialization', formData.get('custom_specialization'));
+            }
+
+            // Handle custom experience
+            const experience = formData.get('experience');
+            if (experience === 'Other') {
+                formData.set('experience', formData.get('custom_experience'));
+            }
+
+            // Handle custom qualifications
+            const qualifications = formData.get('qualifications');
+            if (qualifications === 'Other') {
+                formData.set('qualifications', formData.get('custom_qualifications'));
+            }
+
+            // Handle custom hospital affiliation
+            const hospitalAffiliation = formData.get('hospital_affiliation');
+            if (hospitalAffiliation === 'Other') {
+                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Failed to update doctor');
+                
+                alert('Doctor updated successfully');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
+                modal.hide();
+                loadDoctors();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to update doctor');
+            }
+        });
+
+        // Add Hospital Form Handler
+        document.getElementById('add-hospital-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/hospitals', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add hospital');
+                }
+
+                alert('Hospital added successfully!');
+                e.target.reset();
+                loadHospitals();
+            } catch (error) {
+                console.error('Error adding hospital:', error);
+                alert('Failed to add hospital: ' + error.message);
+            }
+        });
+
+        // Add Pharmacy Form Handler
+        document.getElementById('add-pharmacy-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add pharmacy');
+                }
+
+                alert('Pharmacy added successfully!');
+                e.target.reset();
+                loadPharmacies();
+            } catch (error) {
+                console.error('Error adding pharmacy:', error);
+                alert('Failed to add pharmacy: ' + error.message);
+            }
+        });
+
+        // Add Healthcare Professionals Form Handler
+        document.getElementById('add-doctor-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            // Handle custom specialization
+            const specialization = formData.get('specialization');
+            if (specialization === 'Other') {
+                formData.set('specialization', formData.get('custom_specialization'));
+            }
+            
+            // Handle custom experience
+            const experience = formData.get('experience');
+            if (experience === 'Other') {
+                formData.set('experience', formData.get('custom_experience'));
+            }
+
+            // Handle custom qualifications
+            const qualifications = formData.get('qualifications');
+            if (qualifications === 'Other') {
+                formData.set('qualifications', formData.get('custom_qualifications'));
+            }
+
+            // Handle custom hospital affiliation
+            const hospitalAffiliation = formData.get('hospital_affiliation');
+            if (hospitalAffiliation === 'Other') {
+                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
+            }
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/doctors', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add doctor');
+                }
+
+                alert('Healthcare Professionals added successfully!');
+                e.target.reset();
+                loadDoctors();
+            } catch (error) {
+                console.error('Error adding doctor:', error);
+                alert('Failed to add doctor: ' + error.message);
+            }
+        });
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.nextElementSibling.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+
+        function checkPasswordStrength(password) {
+            const strengthBar = document.getElementById('password-strength');
+            let strength = 0;
+            
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]+/)) strength++;
+            if (password.match(/[A-Z]+/)) strength++;
+            if (password.match(/[0-9]+/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]+/)) strength++;
+
+            strengthBar.className = 'password-strength';
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+            } else if (strength === 3) {
+                strengthBar.classList.add('medium');
+            } else if (strength === 4) {
+                strengthBar.classList.add('strong');
+            } else {
+                strengthBar.classList.add('very-strong');
+            }
+        }
+
+        // Add event listener for password strength check
+        document.getElementById('admin-password').addEventListener('input', function(e) {
+            checkPasswordStrength(e.target.value);
+        });
+
+        // Add event listener for admin search
+        document.getElementById('admin-search').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#admins-table-body tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Add event listener for role filter
+        document.getElementById('admin-role-filter').addEventListener('change', function(e) {
+            const role = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('#admins-table-body tr');
+            
+            rows.forEach(row => {
+                const rowRole = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                row.style.display = !role || rowRole === role ? '' : 'none';
+            });
+        });
+
+        // Update the Add Admin Form Handler
+        document.getElementById('add-admin-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            if (formData.get('password') !== formData.get('confirm_password')) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch('http://localhost:5000/api/admin/admins', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors',
+                    body: JSON.stringify({
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        role: formData.get('role'),
+                        status: formData.get('status'),
+                        send_credentials: formData.get('send_credentials') === 'on'
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add administrator');
+                }
+
+                alert('Administrator added successfully!');
+                e.target.reset();
+                loadAdmins();
+            } catch (error) {
+                console.error('Error adding administrator:', error);
+                alert('Error adding administrator: ' + error.message);
+            }
+        });
+
+        // Update the Delete Admin Handler
+        async function deleteAdmin(adminId) {
+            if (!confirm('Are you sure you want to delete this administrator?')) {
+                return;
+            }
+
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to delete administrator');
+                }
+
+                alert('Administrator deleted successfully!');
+                loadAdmins();
+            } catch (error) {
+                console.error('Error deleting administrator:', error);
+                alert('Error deleting administrator: ' + error.message);
+            }
+        }
+
+        // Add Edit Admin Handler
+        async function editAdmin(adminId) {
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors'
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to fetch administrator details');
+                }
+
+                const admin = await response.json();
+                const form = document.getElementById('edit-admin-form');
+                
+                // Populate form fields
+                form.querySelector('[name="id"]').value = admin.id;
+                form.querySelector('[name="name"]').value = admin.name;
+                form.querySelector('[name="email"]').value = admin.email;
+                form.querySelector('[name="role"]').value = admin.role;
+                form.querySelector('[name="status"]').value = admin.status;
+                form.querySelector('[name="password"]').value = ''; // Clear password field
+
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('editAdminModal'));
+                modal.show();
+            } catch (error) {
+                console.error('Error fetching administrator details:', error);
+                alert('Error fetching administrator details: ' + error.message);
+            }
+        }
+
+        // Add Save Admin Changes Handler
+        document.getElementById('save-admin-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-admin-form');
+            const formData = new FormData(form);
+            const adminId = formData.get('id');
+
+            try {
+                const token = localStorage.getItem('admin_token');
+                if (!token) {
+                    throw new Error('No authentication token found');
+                }
+
+                const data = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    role: formData.get('role'),
+                    status: formData.get('status')
+                };
+
+                // Only include password if it's not empty
+                const password = formData.get('password');
+                if (password) {
+                    data.password = password;
+                }
+
+                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    credentials: 'include',
+                    mode: 'cors',
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update administrator');
+                }
+
+                alert('Administrator updated successfully!');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editAdminModal'));
+                modal.hide();
+                loadAdmins();
+            } catch (error) {
+                console.error('Error updating administrator:', error);
+                alert('Error updating administrator: ' + error.message);
+            }
+        });
+
+        function handleSpecializationChange(selectElement) {
+            const customInput = selectElement.id === 'specialization' ? 
+                document.getElementById('customSpecialization') : 
+                document.getElementById('editCustomSpecialization');
+            
+            if (selectElement.value === 'Other') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        }
+
+        function handleExperienceChange(selectElement) {
+            const customInput = selectElement.id.includes('addDoctorExperience') ? 
+                document.getElementById(selectElement.id.replace('Experience', 'CustomExperience')) : 
+                document.getElementById(selectElement.id.replace('Experience', 'CustomExperience'));
+            
+            if (selectElement.value === 'Other') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        }
+
+        function handleQualificationsChange(selectElement) {
+            const customInput = selectElement.id === 'qualifications' ? 
+                document.getElementById('customQualifications') : 
+                document.getElementById('editCustomQualifications');
+            
+            if (selectElement.value === 'Other') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        }
+
+        function handleHospitalAffiliationChange(selectElement) {
+            const customInput = selectElement.id === 'hospitalAffiliation' ? 
+                document.getElementById('customHospitalAffiliation') : 
+                document.getElementById('editCustomHospitalAffiliation');
+            
+            if (selectElement.value === 'Other') {
+                customInput.style.display = 'block';
+                customInput.required = true;
+            } else {
+                customInput.style.display = 'none';
+                customInput.required = false;
+            }
+        }
+
+        // Update the form submission handlers
+        document.getElementById('add-doctor-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            
+            // Handle custom specialization
+            const specialization = formData.get('specialization');
+            if (specialization === 'Other') {
+                formData.set('specialization', formData.get('custom_specialization'));
+            }
+            
+            // Handle custom experience
+            const experience = formData.get('experience');
+            if (experience === 'Other') {
+                formData.set('experience', formData.get('custom_experience'));
+            }
+
+            // Handle custom qualifications
+            const qualifications = formData.get('qualifications');
+            if (qualifications === 'Other') {
+                formData.set('qualifications', formData.get('custom_qualifications'));
+            }
+
+            // Handle custom hospital affiliation
+            const hospitalAffiliation = formData.get('hospital_affiliation');
+            if (hospitalAffiliation === 'Other') {
+                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
+            }
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/admin/doctors', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to add doctor');
+                }
+
+                alert('Doctor added successfully!');
+                e.target.reset();
+                loadDoctors();
+            } catch (error) {
+                console.error('Error adding doctor:', error);
+                alert('Failed to add doctor: ' + error.message);
+            }
+        });
+
+        // Update the edit doctor form handler
+        document.getElementById('save-doctor-changes').addEventListener('click', async () => {
+            const form = document.getElementById('edit-doctor-form');
+            const formData = new FormData(form);
+            const doctorId = formData.get('id');
+
+            // Handle custom specialization
+            const specialization = formData.get('specialization');
+            if (specialization === 'Other') {
+                formData.set('specialization', formData.get('custom_specialization'));
+            }
+
+            // Handle custom experience
+            const experience = formData.get('experience');
+            if (experience === 'Other') {
+                formData.set('experience', formData.get('custom_experience'));
+            }
+
+            // Handle custom qualifications
+            const qualifications = formData.get('qualifications');
+            if (qualifications === 'Other') {
+                formData.set('qualifications', formData.get('custom_qualifications'));
+            }
+
+            // Handle custom hospital affiliation
+            const hospitalAffiliation = formData.get('hospital_affiliation');
+            if (hospitalAffiliation === 'Other') {
+                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Failed to update doctor');
+                
+                alert('Doctor updated successfully');
+                const modal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
+                modal.hide();
+                loadDoctors();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to update doctor');
+            }
+        });
+
+        // Update the load doctor details function
+        async function loadDoctorDetails(doctorId) {
+            try {
+                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    }
+                });
+                if (!response.ok) throw new Error('Failed to fetch healthcare professional details');
+                
+                const doctor = await response.json();
+                const form = document.getElementById('edit-doctor-form');
+                if (!form) return;
+                
+                // Check if the experience is in the predefined list
+                const experienceSelect = form.querySelector('#editDoctorExperience1');
+                const customExperience = form.querySelector('#editDoctorCustomExperience1');
+                
+                if (experienceSelect && customExperience) {
+                    const predefinedExperiences = Array.from(experienceSelect.options).map(opt => opt.value);
+                    if (predefinedExperiences.includes(doctor.experience)) {
+                        experienceSelect.value = doctor.experience;
+                        customExperience.style.display = 'none';
+                    } else {
+                        experienceSelect.value = 'Other';
+                        customExperience.style.display = 'block';
+                        customExperience.value = doctor.experience;
+                    }
+                }
+                
+                // Check if the qualifications is in the predefined list
+                const qualificationsSelect = form.querySelector('#editQualifications');
+                const customQualifications = form.querySelector('#editCustomQualifications');
+                
+                const predefinedQualifications = Array.from(qualificationsSelect.options).map(opt => opt.value);
+                if (predefinedQualifications.includes(doctor.qualifications)) {
+                    qualificationsSelect.value = doctor.qualifications;
+                    customQualifications.style.display = 'none';
+                } else {
+                    qualificationsSelect.value = 'Other';
+                    customQualifications.style.display = 'block';
+                    customQualifications.value = doctor.qualifications;
+                }
+
+                // Check if the hospital affiliation is in the predefined list
+                const hospitalAffiliationSelect = form.querySelector('#editHospitalAffiliation');
+                const customHospitalAffiliation = form.querySelector('#editCustomHospitalAffiliation');
+                
+                const predefinedHospitals = Array.from(hospitalAffiliationSelect.options).map(opt => opt.value);
+                if (predefinedHospitals.includes(doctor.hospital_affiliation)) {
+                    hospitalAffiliationSelect.value = doctor.hospital_affiliation;
+                    customHospitalAffiliation.style.display = 'none';
+                } else {
+                    hospitalAffiliationSelect.value = 'Other';
+                    customHospitalAffiliation.style.display = 'block';
+                    customHospitalAffiliation.value = doctor.hospital_affiliation;
+                }
+                
+                // Set other form fields
+                form.querySelector('[name="id"]').value = doctor.id;
+                form.querySelector('[name="name"]').value = doctor.name;
+                form.querySelector('[name="license_number"]').value = doctor.license_number;
+                form.querySelector('[name="email"]').value = doctor.email;
+                form.querySelector('[name="phone"]').value = doctor.phone;
+                form.querySelector('[name="city"]').value = doctor.city || '';
+                form.querySelector('[name="professional_type"]').value = doctor.professional_type || '';
+                form.querySelector('[name="is_verified"]').checked = doctor.is_verified;
+                
+                const modal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
+                modal.show();
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Failed to load healthcare professional details');
+            }
+        }
+
+        // Update the form submission handlers
+        document.addEventListener('DOMContentLoaded', function() {
+            const addDoctorForm = document.getElementById('add-doctor-form');
+            if (addDoctorForm) {
+                addDoctorForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    const formData = new FormData(e.target);
+                    
+                    // Handle custom experience
+                    const experience = formData.get('experience');
+                    if (experience === 'Other') {
+                        formData.set('experience', formData.get('custom_experience'));
+                    }
+                    
+                    try {
+                        const response = await fetch('http://localhost:5000/api/admin/doctors', {
+                            method: 'POST',
+                            headers: {
+                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                            },
+                            body: formData
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error || 'Failed to add healthcare professional');
+                        }
+
+                        alert('Healthcare Professional added successfully!');
+                        e.target.reset();
+                        loadDoctors();
+                    } catch (error) {
+                        console.error('Error adding healthcare professional:', error);
+                        alert('Failed to add healthcare professional: ' + error.message);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html> 

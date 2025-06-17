@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Details - MamaCare</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .hospital-details-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .hospital-header {
+            background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.9)),
+                        url('images/hospitals-bg.jpg') no-repeat center center/cover;
+            color: white;
+            padding: 40px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .hospital-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .hospital-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .hospital-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        .main-info {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .hospital-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-section h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .info-section p {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        .contact-info {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            color: #6c757d;
+        }
+
+        .contact-item i {
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .services-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .service-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .service-item i {
+            color: #3498db;
+        }
+
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            transition: background 0.3s ease;
+        }
+
+        .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #2c3e50; /* Dark background */
+  color: #fff;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 20px;
+}
+
+.nav-links li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background-color: #2c3e50;
+    width: 100%;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
+}
+
+        .back-button:hover {
+            background: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .hospital-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">MamaCare</div>
+            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="hospitals.html" class="active">Hospitals</a></li>
+                <li><a href="medical_records.html">Medical Records</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hospital-details-container">
+        <a href="hospitals.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Hospitals
+        </a>
+
+        <div class="hospital-header">
+            <h1 id="hospitalName">Hospital Name</h1>
+            <p id="hospitalLocation">Location</p>
+        </div>
+
+        <div class="hospital-content">
+            <div class="main-info">
+                <img id="hospitalImage" src="" alt="Hospital Image" class="hospital-image">
+                
+                <div class="info-section">
+                    <h2>About the Hospital</h2>
+                    <p id="hospitalDescription"></p>
+                </div>
+
+                <div class="info-section">
+                    <h2>Services Offered</h2>
+                    <div class="services-list" id="servicesList"></div>
+                </div>
+
+                <div class="info-section">
+                    <h2>Facilities</h2>
+                    <p id="hospitalFacilities"></p>
+                </div>
+            </div>
+
+            <div class="contact-info">
+                <h2>Contact Information</h2>
+                <div class="contact-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="hospitalAddress"></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-phone"></i>
+                    <span id="hospitalPhone"></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-clock"></i>
+                    <span id="hospitalHours"></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-hospital"></i>
+                    <span id="hospitalSpecialty"></span>
+                </div>
+                <div class="contact-item">
+                    <i class="fas fa-map"></i>
+                    <a href="#" id="mapLink" target="_blank" class="map-link">View on Google Maps</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 MamaCare. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Get hospital ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const hospitalId = urlParams.get('id');
+
+        // Hospital details data
+        const hospitalDetails = {
+            "connaught-hospital": {
+                name: "Connaught Hospital",
+                location: "Freetown",
+                description: "Connaught Hospital is Sierra Leone's largest tertiary referral hospital, providing comprehensive healthcare services to the nation. Established in 1912, it has grown to become a center of excellence in medical care, training, and research.",
+                facilities: "The hospital features modern medical equipment, specialized departments, and a dedicated emergency unit. It includes operating theaters, intensive care units, and advanced diagnostic facilities.",
+                address: "Liverpool Street, Freetown",
+                phone: "+232 76 123456",
+                hours: "24/7 Emergency Services",
+                specialty: "General Hospital",
+                image: "images/connaught.jpeg",
+                coordinates: "8.4847,-13.2347",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" }
+                ]
+            },
+            "bo-government-hospital": {
+                name: "Bo Government Hospital",
+                location: "Bo",
+                description: "Bo Government Hospital serves as the main healthcare facility for the Southern Province of Sierra Leone. It provides essential medical services to a large population and serves as a training center for healthcare professionals.",
+                facilities: "The hospital is equipped with modern medical facilities, including a well-equipped laboratory, surgical units, and specialized wards for different medical conditions.",
+                address: "Main Road, Bo City",
+                phone: "+232 76 234567",
+                hours: "24/7 Emergency Services",
+                specialty: "General Hospital",
+                image: "images/bo.jpeg",
+                coordinates: "7.9557,-11.7403",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" }
+                ]
+            },
+            "makeni-government-hospital": {
+                name: "Makeni Government Hospital",
+                location: "Makeni",
+                description: "Makeni Government Hospital is a key healthcare facility in the Northern Province, providing essential medical services to the local community and surrounding areas.",
+                facilities: "The hospital features a comprehensive range of medical facilities including emergency services, surgical units, and specialized treatment areas.",
+                address: "Hospital Road, Makeni",
+                phone: "+232 76 345678",
+                hours: "24/7 Emergency Services",
+                specialty: "District Hospital",
+                image: "images/choithram.jpeg",
+                coordinates: "8.8867,-12.0447",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" }
+                ]
+            },
+            "kenema-government-hospital": {
+                name: "Kenema Government Hospital",
+                location: "Kenema",
+                description: "Kenema Government Hospital is a major healthcare facility in the Eastern Province, known for its comprehensive medical services and commitment to community health.",
+                facilities: "The hospital is equipped with modern medical equipment and specialized departments to handle various medical conditions.",
+                address: "Dama Road, Kenema",
+                phone: "+232 76 456789",
+                hours: "24/7 Emergency Services",
+                specialty: "General Hospital",
+                image: "images/kenema.jpeg",
+                coordinates: "7.8769,-11.1903",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" }
+                ]
+            },
+            "port-loko-government-hospital": {
+                name: "Port Loko Government Hospital",
+                location: "Port Loko",
+                description: "Port Loko Government Hospital serves as a vital healthcare facility in the Northern Province, providing essential medical services to the local community.",
+                facilities: "The hospital features essential medical facilities and specialized departments to meet the healthcare needs of the community.",
+                address: "25 Main Street, Port Loko",
+                phone: "+232 76 567890",
+                hours: "24/7 Emergency Services",
+                specialty: "District Hospital",
+                image: "images/portloko.jpeg",
+                coordinates: "8.7667,-12.7833",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" }
+                ]
+            },
+            "kambia-district-hospital": {
+                name: "Kambia District Hospital",
+                location: "Kambia",
+                description: "Kambia District Hospital is a key healthcare facility serving the Kambia district, providing essential medical services to the local population.",
+                facilities: "The hospital is equipped with basic medical facilities and specialized departments to handle common medical conditions.",
+                address: "Hospital Road, Kambia",
+                phone: "+232 76 678901",
+                hours: "24/7 Emergency Services",
+                specialty: "District Hospital",
+                image: "images/kambia.jpeg",
+                coordinates: "9.1250,-12.9167",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Pharmacy", icon: "fa-pills" }
+                ]
+            },
+            "kono-government-hospital": {
+                name: "Kono Government Hospital",
+                location: "Kono",
+                description: "Kono Government Hospital is a significant healthcare facility in the Eastern Province, providing comprehensive medical services to the local community.",
+                facilities: "The hospital features modern medical equipment and specialized departments to handle various medical conditions.",
+                address: "18 Hospital Road, Kono",
+                phone: "+232 76 789012",
+                hours: "24/7 Emergency Services",
+                specialty: "General Hospital",
+                image: "images/kono.jpeg",
+                coordinates: "8.6439,-10.9714",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" }
+                ]
+            },
+            "kailahun-district-hospital": {
+                name: "Kailahun District Hospital",
+                location: "Kailahun",
+                description: "Kailahun District Hospital serves as a vital healthcare facility in the Eastern Province, providing essential medical services to the local community.",
+                facilities: "The hospital is equipped with basic medical facilities and specialized departments to meet the healthcare needs of the community.",
+                address: "12 Main Street, Kailahun",
+                phone: "+232 76 890123",
+                hours: "24/7 Emergency Services",
+                specialty: "District Hospital",
+                image: "images/kailahun.jpeg",
+                coordinates: "8.2789,-10.5733",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Pharmacy", icon: "fa-pills" }
+                ]
+            },
+            "kabala-government-hospital": {
+                name: "Kabala Government Hospital",
+                location: "Kabala",
+                description: "Kabala Government Hospital is a key healthcare facility in the Northern Province, providing comprehensive medical services to the local community.",
+                facilities: "The hospital features modern medical equipment and specialized departments to handle various medical conditions.",
+                address: "8 Hospital Road, Kabala",
+                phone: "+232 76 901234",
+                hours: "24/7 Emergency Services",
+                specialty: "General Hospital",
+                image: "images/kabala.jpeg",
+                coordinates: "9.5883,-11.5525",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" }
+                ]
+            },
+            "lifecare-hospital": {
+                name: "Lifecare Hospital",
+                location: "Freetown",
+                description: "Lifecare Hospital is a modern private healthcare facility in Freetown, known for its specialized medical services and state-of-the-art facilities.",
+                facilities: "The hospital features advanced medical equipment, specialized treatment centers, and comfortable patient accommodations.",
+                address: "15 Wilkinson Road, Freetown",
+                phone: "+232 76 012345",
+                hours: "24/7 Emergency Services",
+                specialty: "Specialized Hospital",
+                image: "images/life care.jpeg",
+                coordinates: "8.4847,-13.2347",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" },
+                    { name: "Cardiology", icon: "fa-heartbeat" },
+                    { name: "Orthopedics", icon: "fa-bone" }
+                ]
+            },
+            "freetown-international-hospital": {
+                name: "Freetown International Hospital",
+                location: "Freetown",
+                description: "Freetown International Hospital is a modern private healthcare facility offering comprehensive medical services with international standards of care.",
+                facilities: "The hospital features state-of-the-art medical equipment, specialized treatment centers, and comfortable patient accommodations.",
+                address: "23 Lumley Beach Road, Freetown",
+                phone: "+232 76 123456",
+                hours: "24/7 Emergency Services",
+                specialty: "Specialized Hospital",
+                image: "images/freetown international.jpeg",
+                coordinates: "8.4847,-13.2347",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" },
+                    { name: "Cardiology", icon: "fa-heartbeat" },
+                    { name: "Orthopedics", icon: "fa-bone" },
+                    { name: "Dental Care", icon: "fa-tooth" }
+                ]
+            },
+            "choithram-hospital": {
+                name: "Choithram Hospital",
+                location: "Freetown",
+                description: "Choithram Hospital is a well-established private healthcare facility known for its comprehensive medical services and commitment to quality healthcare.",
+                facilities: "The hospital features modern medical equipment, specialized departments, and comfortable patient accommodations.",
+                address: "12 Hill Station, Freetown",
+                phone: "+232 76 234567",
+                hours: "24/7 Emergency Services",
+                specialty: "Specialized Hospital",
+                image: "images/choithram.jpeg",
+                coordinates: "8.4847,-13.2347",
+                services: [
+                    { name: "Emergency Care", icon: "fa-ambulance" },
+                    { name: "Laboratory Services", icon: "fa-flask" },
+                    { name: "Imaging Services", icon: "fa-x-ray" },
+                    { name: "Pharmacy", icon: "fa-pills" },
+                    { name: "Maternity Care", icon: "fa-baby" },
+                    { name: "Pediatric Care", icon: "fa-child" },
+                    { name: "Cardiology", icon: "fa-heartbeat" },
+                    { name: "Orthopedics", icon: "fa-bone" },
+                    { name: "Dental Care", icon: "fa-tooth" },
+                    { name: "Ophthalmology", icon: "fa-eye" }
+                ]
+            }
+        };
+
+        // Update page content based on hospital ID
+        function updateHospitalDetails() {
+            const hospital = hospitalDetails[hospitalId];
+            if (!hospital) {
+                window.location.href = 'hospitals.html';
+                return;
+            }
+
+            document.getElementById('hospitalName').textContent = hospital.name;
+            document.getElementById('hospitalLocation').textContent = hospital.location;
+            document.getElementById('hospitalImage').src = hospital.image;
+            document.getElementById('hospitalDescription').textContent = hospital.description;
+            document.getElementById('hospitalFacilities').textContent = hospital.facilities;
+            document.getElementById('hospitalAddress').textContent = hospital.address;
+            document.getElementById('hospitalPhone').textContent = hospital.phone;
+            document.getElementById('hospitalHours').textContent = hospital.hours;
+            document.getElementById('hospitalSpecialty').textContent = hospital.specialty;
+
+            // Update map link
+            const mapLink = document.getElementById('mapLink');
+            mapLink.href = `https://www.google.com/maps?q=${hospital.coordinates}`;
+
+            const servicesList = document.getElementById('servicesList');
+            servicesList.innerHTML = hospital.services.map(service => `
+                <div class="service-item">
+                    <i class="fas ${service.icon}"></i>
+                    <span>${service.name}</span>
+                </div>
+            `).join('');
+        }
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', updateHospitalDetails);
+
+        
+  const toggle = document.getElementById('menu-toggle');
+  const navLinks = document.getElementById('nav-links');
+
+  toggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+</script>
+</body>
+</html> 

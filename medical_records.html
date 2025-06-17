@@ -1,0 +1,2721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Coner</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">MamaCare</div>
+            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="doctors.html">Doctors</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="medical_records.html" class="active">Medical Records</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo-container">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1>Welcome to MamaCare</h1>
+                <p class="auth-subtitle">Access your medical records securely</p>
+            </div>
+            <form id="pinForm" class="auth-form">
+                <div class="form-group">
+                    <label for="patientPin">Enter your 6-digit PIN</label>
+                    <div class="pin-input-container">
+                        <input type="password" id="patientPin" name="patientPin" maxlength="6" pattern="\d{6}" placeholder="Enter PIN" required>
+                        <button type="button" class="toggle-pin-visibility" onclick="togglePinVisibility()">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> Access Records
+                </button>
+            </form>
+            <p id="pinError" class="error-message" style="display: none;">Invalid PIN. Please try again.</p>
+            <div class="auth-footer">
+                <p>New to MamaCare?</p>
+                <button onclick="navigateToAddPatient()" class="btn-secondary btn-block">
+                    <i class="fas fa-user-plus"></i> Register as New Patient
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <section class="add-patient" id="addPatientSection" style="display: none;">
+        <div class="form-container">
+            <h1>Add New Patient</h1>
+            <form id="addPatientForm" class="fhir-form">
+                <div class="form-section">
+                    <h3><i class="fas fa-user"></i> Basic Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="given_name">Given Name</label>
+                            <input type="text" id="given_name" name="given_name" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="family_name">Family Name</label>
+                            <input type="text" id="family_name" name="family_name" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date_of_birth">Date of Birth</label>
+                            <input type="date" id="date_of_birth" name="date_of_birth" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" class="form-control" required>
+                                <option value="" disabled selected>Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-address-card"></i> Contact Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone</label>
+                            <input type="tel" id="phone" name="phone" class="form-control" required>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="address_line">Address</label>
+                            <input type="text" id="address_line" name="address_line" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" id="city" name="city" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="state">State/Province</label>
+                            <input type="text" id="state" name="state" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="postal_code">Postal Code</label>
+                            <input type="text" id="postal_code" name="postal_code" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="country">Country</label>
+                            <select id="country" name="country" class="form-control" required>
+                                <option value="Sierra Leone" selected>Sierra Leone</option>
+                                <option value="Kenya">Kenya</option>
+                                <option value="Uganda">Uganda</option>
+                                <option value="Tanzania">Tanzania</option>
+                                <option value="Rwanda">Rwanda</option>
+                                <option value="Burundi">Burundi</option>
+                                <option value="South Sudan">South Sudan</option>
+                                <option value="Ethiopia">Ethiopia</option>
+                                <option value="Somalia">Somalia</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-info-circle"></i> Additional Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="marital_status">Marital Status</label>
+                            <select id="marital_status" name="marital_status" class="form-control">
+                                <option value="" disabled selected>Select status</option>
+                                <option value="single">Single</option>
+                                <option value="married">Married</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="language">Preferred Language</label>
+                            <select id="language" name="language" class="form-control">
+                                <option value="en" selected>English</option>
+                                <option value="sw">Swahili</option>
+                                <option value="fr">French</option>
+                                <option value="ar">Arabic</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nationality">Nationality</label>
+                            <select id="nationality" name="nationality" class="form-control">
+                                <option value="Sierra Leonean" selected>Sierra Leonean</option>
+                                <option value="Kenyan">Kenyan</option>
+                                <option value="Ugandan">Ugandan</option>
+                                <option value="Tanzanian">Tanzanian</option>
+                                <option value="Rwandan">Rwandan</option>
+                                <option value="Burundian">Burundian</option>
+                                <option value="South Sudanese">South Sudanese</option>
+                                <option value="Ethiopian">Ethiopian</option>
+                                <option value="Somali">Somali</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-heartbeat"></i> Medical Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="blood_type">Blood Type</label>
+                            <select id="blood_type" name="blood_type" class="form-control">
+                                <option value="" disabled selected>Select blood type</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="allergies">Allergies</label>
+                            <textarea id="allergies" name="allergies" class="form-control" placeholder="List any allergies..."></textarea>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="medications">Current Medications</label>
+                            <textarea id="medications" name="medications" class="form-control" placeholder="List current medications..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Information -->
+                <div id="pregnancySection" class="form-section" style="display: none;">
+                    <h3><i class="fas fa-baby"></i> Pregnancy Information</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="pregnancy_status">Pregnancy Status</label>
+                            <select id="pregnancy_status" name="pregnancy_status" class="form-control">
+                                <option value="not_pregnant">Not Pregnant</option>
+                                <option value="pregnant">Pregnant</option>
+                                <option value="postpartum">Postpartum</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="previous_pregnancies">Previous Pregnancies</label>
+                            <input type="number" id="previous_pregnancies" name="previous_pregnancies" class="form-control" min="0">
+                        </div>
+                    </div>
+
+                    <div id="pregnancyDetails" class="form-grid" style="display: none;">
+                        <div class="form-group">
+                            <label for="lmp_date">Last Menstrual Period</label>
+                            <input type="date" id="lmp_date" name="lmp_date" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="due_date">Estimated Due Date</label>
+                            <input type="date" id="due_date" name="due_date" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="multiple_pregnancy">Multiple Pregnancy</label>
+                            <select id="multiple_pregnancy" name="multiple_pregnancy" class="form-control">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="risk_level">Risk Level</label>
+                            <select id="risk_level" name="risk_level" class="form-control">
+                                <option value="low">Low</option>
+                                <option value="medium">Medium</option>
+                                <option value="high">High</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="risk_factors">Risk Factors</label>
+                            <select id="risk_factors" name="risk_factors" class="form-control" multiple>
+                                <option value="age">Advanced Maternal Age</option>
+                                <option value="diabetes">Diabetes</option>
+                                <option value="hypertension">Hypertension</option>
+                                <option value="obesity">Obesity</option>
+                                <option value="previous_csection">Previous C-Section</option>
+                                <option value="multiple_pregnancy">Multiple Pregnancy</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="blood_pressure">Blood Pressure</label>
+                            <input type="text" id="blood_pressure" name="blood_pressure" class="form-control" placeholder="e.g., 120/80">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hemoglobin">Hemoglobin (g/dL)</label>
+                            <input type="number" step="0.1" id="hemoglobin" name="hemoglobin" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="blood_sugar">Blood Sugar (mg/dL)</label>
+                            <input type="number" id="blood_sugar" name="blood_sugar" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weight">Weight (kg)</label>
+                            <input type="number" step="0.1" id="weight" name="weight" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prenatal_vitamins">Taking Prenatal Vitamins</label>
+                            <select id="prenatal_vitamins" name="prenatal_vitamins" class="form-control">
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="pregnancy_complications">Pregnancy Complications</label>
+                            <textarea id="pregnancy_complications" name="pregnancy_complications" class="form-control" rows="3"></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency_hospital">Preferred Emergency Hospital</label>
+                            <input type="text" id="emergency_hospital" name="emergency_hospital" class="form-control">
+                        </div>
+
+                        <div class="form-group full-width">
+                            <label for="birth_plan">Birth Plan</label>
+                            <textarea id="birth_plan" name="birth_plan" class="form-control" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3><i class="fas fa-phone-alt"></i> Emergency Contact</h3>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="emergency_contact_name">Contact Name</label>
+                            <input type="text" id="emergency_contact_name" name="emergency_contact_name" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency_contact_phone">Contact Phone</label>
+                            <input type="tel" id="emergency_contact_phone" name="emergency_contact_phone" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="emergency_contact_relationship">Relationship</label>
+                            <select id="emergency_contact_relationship" name="emergency_contact_relationship" class="form-control">
+                                <option value="" disabled selected>Select relationship</option>
+                                <option value="spouse">Spouse</option>
+                                <option value="parent">Parent</option>
+                                <option value="sibling">Sibling</option>
+                                <option value="child">Child</option>
+                                <option value="friend">Friend</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-user-plus"></i> Register Patient
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <style>
+        .form-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-section h3 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section h3 i {
+            color: #3498db;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%232c3e50' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 1rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <section class="medical-records" id="medicalRecords" style="display: none;">
+        <h1>Patient Medical Records</h1>
+
+        <!-- Patient Overview -->
+        <div class="patient-profile">
+            <div class="profile-header">
+                <div class="patient-basic-info">
+                    <h2 id="patientNameDisplay"></h2>
+                    <div class="patient-ids">
+                        <span><strong>Patient ID:</strong> <span id="patientIdDisplay"></span></span>
+                        <span><strong>FHIR ID:</strong> <span id="patientFhirIdDisplay"></span></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-content">
+                <!-- Basic Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i> 
+                        <h3>Basic Information</h3>
+                    </div>
+                    <button onclick="enableProfileEdit()" class="btn-edit">Edit Profile</button>
+                    <button onclick="saveProfileChanges()" id="saveProfileBtn" class="btn-primary" style="display: none;">Save Changes</button>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Full Name</label>
+                            <span id="patientNameDisplay"></span>
+                            <input type="text" id="patientNameInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                            <span id="patientDobDisplay"></span>
+                            <input type="text" id="patientDobInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Gender</label>
+                            <span id="patientGenderDisplay"></span>
+                            <input type="text" id="patientGenderInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Blood Type</label>
+                            <span id="patientBloodTypeDisplay"></span>
+                            <input type="text" id="patientBloodTypeInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Marital Status</label>
+                            <span id="patientMaritalStatusDisplay"></span>
+                            <input type="text" id="patientMaritalStatusInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Language</label>
+                            <span id="patientLanguageDisplay"></span>
+                            <input type="text" id="patientLanguageInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Nationality</label>
+                            <span id="patientNationalityDisplay"></span>
+                            <input type="text" id="patientNationalityInput" style="display: none;"  class="input-field" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-address-card"></i>
+                        <h3>Contact Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Email</label>
+                            <span id="patientEmailDisplay"></span>
+                            <input type="email" id="patientEmailInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Phone</label>
+                            <span id="patientPhoneDisplay"></span>
+                            <input type="tel" id="patientPhoneInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Address</label>
+                            <span id="patientAddressDisplay"></span>
+                            <input type="text" id="patientAddressInput" style="display: none;" class="input-field" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Information Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Medical Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item full-width">
+                            <label>Allergies</label>
+                            <span id="patientAllergiesDisplay"></span>
+                            <textarea id="patientAllergiesInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Current Medications</label>
+                            <span id="patientMedicationsDisplay"></span>
+                            <textarea id="patientMedicationsInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+                        <div class="info-item full-width" id="pregnancyInfo" style="display: none;">
+                            <label>Pregnancy Status</label>
+                            <span id="patientPregnancyStatusDisplay"></span>
+                            <select id="patientPregnancyStatusInput" style="display: none;" class="input-field">
+                                <option value="not_pregnant">Not Pregnant</option>
+                                <option value="pregnant">Pregnant</option>
+                            </select>
+                        </div>
+                        <div class="info-item full-width" id="dueDateInfo" style="display: none;">
+                            <label>Estimated Due Date</label>
+                            <span id="patientDueDateDisplay"></span>
+                            <input type="date" id="patientDueDateInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item full-width" id="gestationalAgeInfo" style="display: none;">
+                            <label>Gestational Age (weeks)</label>
+                            <span id="patientGestationalAgeDisplay"></span>
+                            <input type="number" id="patientGestationalAgeInput" min="0" max="40" step="1" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item full-width" id="pregnancyComplicationsInfo" style="display: none;">
+                            <label>Pregnancy Complications</label>
+                            <span id="patientPregnancyComplicationsDisplay"></span>
+                            <textarea id="patientPregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact Section -->
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-phone"></i>
+                        <h3>Emergency Contact</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Contact Name</label>
+                            <span id="emergencyContactNameDisplay"></span>
+                            <input type="text" id="emergencyContactNameInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Contact Phone</label>
+                            <span id="emergencyContactPhoneDisplay"></span>
+                            <input type="tel" id="emergencyContactPhoneInput" style="display: none;" class="input-field" />
+                        </div>
+                        <div class="info-item">
+                            <label>Relationship</label>
+                            <span id="emergencyContactRelationshipDisplay"></span>
+                            <input type="text" id="emergencyContactRelationshipInput" style="display: none;" class="input-field" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Information Section -->
+                <div class="profile-section" id="pregnancyProfileSection" style="display: none;">
+                    <div class="section-header">
+                        <i class="fas fa-baby"></i>
+                        <h3>Pregnancy Information</h3>
+                    </div>
+                    
+                    <div class="info-grid">
+                        <!-- Basic Pregnancy Status -->
+                        <div class="info-item">
+                            <label>Pregnancy Status</label>
+                            <span id="pregnancyStatusDisplay"></span>
+                            <select id="pregnancyStatusInput" style="display: none;" class="input-field">
+                                <option value="not_pregnant">Not Pregnant</option>
+                                <option value="pregnant">Pregnant</option>
+                                <option value="postpartum">Postpartum</option>
+                            </select>
+                        </div>
+
+                        <div class="info-item">
+                            <label>Previous Pregnancies</label>
+                            <span id="previousPregnanciesDisplay"></span>
+                            <input type="number" id="previousPregnanciesInput" style="display: none;" class="input-field" min="0" />
+                        </div>
+
+                        <!-- Dates and Basic Info -->
+                        <div class="info-item">
+                            <label>Last Menstrual Period</label>
+                            <span id="lmpDateDisplay"></span>
+                            <input type="date" id="lmpDateInput" style="display: none;" class="input-field" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Estimated Due Date</label>
+                            <span id="dueDateDisplay"></span>
+                            <input type="date" id="dueDateInput" style="display: none;" class="input-field" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Gestational Age (weeks)</label>
+                            <span id="gestationalAgeDisplay"></span>
+                            <input type="number" id="gestationalAgeInput" style="display: none;" class="input-field" min="0" max="45" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Multiple Pregnancy</label>
+                            <span id="multiplePregnancyDisplay"></span>
+                            <select id="multiplePregnancyInput" style="display: none;" class="input-field">
+                                <option value="no">No</option>
+                                <option value="twins">Twins</option>
+                                <option value="triplets">Triplets or more</option>
+                            </select>
+                        </div>
+
+                        <!-- Risk Assessment -->
+                        <div class="info-item">
+                            <label>Risk Level</label>
+                            <span id="riskLevelDisplay"></span>
+                            <select id="riskLevelInput" style="display: none;" class="input-field">
+                                <option value="low">Low Risk</option>
+                                <option value="medium">Medium Risk</option>
+                                <option value="high">High Risk</option>
+                            </select>
+                        </div>
+
+                        <div class="info-item full-width">
+                            <label>Risk Factors</label>
+                            <span id="riskFactorsDisplay"></span>
+                            <select id="riskFactorsInput" style="display: none;" class="input-field" multiple>
+                                <option value="hypertension">Hypertension</option>
+                                <option value="diabetes">Diabetes</option>
+                                <option value="anemia">Anemia</option>
+                                <option value="previous_csection">Previous C-Section</option>
+                                <option value="heart_disease">Heart Disease</option>
+                                <option value="obesity">Obesity</option>
+                                <option value="advanced_age">Advanced Maternal Age (≥35)</option>
+                                <option value="substance_use">Substance Use</option>
+                                <option value="multiple_pregnancy">Multiple Pregnancy</option>
+                            </select>
+                        </div>
+
+                        <!-- Vital Signs -->
+                        <div class="info-item">
+                            <label>Blood Pressure</label>
+                            <span id="bloodPressureDisplay"></span>
+                            <input type="text" id="bloodPressureInput" style="display: none;" class="input-field" placeholder="e.g., 120/80" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Hemoglobin Level (g/dL)</label>
+                            <span id="hemoglobinDisplay"></span>
+                            <input type="number" id="hemoglobinInput" style="display: none;" class="input-field" step="0.1" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Blood Sugar (mg/dL)</label>
+                            <span id="bloodSugarDisplay"></span>
+                            <input type="number" id="bloodSugarInput" style="display: none;" class="input-field" step="0.1" />
+                        </div>
+
+                        <div class="info-item">
+                            <label>Weight (kg)</label>
+                            <span id="weightDisplay"></span>
+                            <input type="number" id="weightInput" style="display: none;" class="input-field" step="0.1" />
+                        </div>
+
+                        <!-- Prenatal Care -->
+                        <div class="info-item full-width">
+                            <label>Prenatal Vitamins/Supplements</label>
+                            <span id="prenatalVitaminsDisplay"></span>
+                            <textarea id="prenatalVitaminsInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+
+                        <!-- Complications and Emergency Plan -->
+                        <div class="info-item full-width">
+                            <label>Current Complications</label>
+                            <span id="pregnancyComplicationsDisplay"></span>
+                            <textarea id="pregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+
+                        <div class="info-item full-width">
+                            <label>Emergency Hospital</label>
+                            <span id="emergencyHospitalDisplay"></span>
+                            <input type="text" id="emergencyHospitalInput" style="display: none;" class="input-field" />
+                        </div>
+
+                        <div class="info-item full-width">
+                            <label>Birth Plan</label>
+                            <span id="birthPlanDisplay"></span>
+                            <textarea id="birthPlanInput" style="display: none;" class="input-field"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Record Section -->
+        <div class="record-container">
+            <div class="add-record">
+                <h2>Add New Record</h2>
+                <form id="addRecordForm">
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+                    
+                    <label for="diagnosis">Diagnosis:</label>
+                    <textarea id="diagnosis" name="diagnosis" placeholder="Enter diagnosis details..." required></textarea>
+                    
+                    <label for="treatment">Treatment:</label>
+                    <textarea id="treatment" name="treatment" placeholder="Enter treatment details..." required></textarea>
+                    
+                    <label for="medication">Medication:</label>
+                    <textarea id="medication" name="medication" placeholder="Enter prescribed medication..." required></textarea>
+                    
+                    <label for="doctor">Doctor's Name:</label>
+                    <input type="text" id="doctor" name="doctor" placeholder="Enter doctor's name" required>
+
+                    <label for="hospital">Hospital:</label>
+                    <input type="text" id="hospital" name="hospital" placeholder="Enter hospital name" required>
+                    
+                    <button type="submit" class="btn-primary">Add Record</button>
+                </form>
+            </div>
+
+            <!-- Existing Records -->
+            <div class="records-list">
+                <h2>Existing Records</h2>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search records..." class="search-input">
+                    <select id="searchField" class="search-field">
+                        <option value="all">All Fields</option>
+                        <option value="date">Date</option>
+                        <option value="diagnosis">Diagnosis</option>
+                        <option value="treatment">Treatment</option>
+                        <option value="medication">Medication</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="hospital">Hospital</option>
+                    </select>
+                    <button onclick="downloadSelectedRecords()" class="btn-download" id="bulkDownloadBtn" style="display: none;">
+                        Download Selected
+                    </button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
+                                <th>Date</th>
+                                <th>Diagnosis</th>
+                                <th>Treatment</th>
+                                <th>Medication</th>
+                                <th>Doctor</th>
+                                <th>Hospital</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        .fhir-form {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        .form-section h3 {
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .patient-profile {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            margin: 2rem auto;
+            max-width: 1400px;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            color: white;
+            padding: 3rem;
+            position: relative;
+            border-bottom: 4px solid rgba(255,255,255,0.2);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-content {
+            display: grid;
+            gap: 2rem;
+            padding: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .profile-section {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 16px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .info-item {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .records-list {
+            margin-top: 2rem;
+            width: 100%;
+            box-sizing: border-box;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+            box-sizing: border-box;
+            margin-top: 3.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            white-space: normal;
+            word-wrap: break-word;
+            max-width: 200px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            line-height: 1.4;
+        }
+
+        /* Specific column widths */
+        th:nth-child(1), td:nth-child(1) { /* Date */
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        th:nth-child(2), td:nth-child(2) { /* Doctor */
+            min-width: 150px;
+            max-width: 150px;
+        }
+
+        th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        th:nth-child(4), td:nth-child(4) { /* Treatment */
+            min-width: 200px;
+            max-width: 200px;
+        }
+
+        th:nth-child(5), td:nth-child(5) { /* Notes */
+            min-width: 250px;
+            max-width: 250px;
+        }
+
+        th:nth-child(6), td:nth-child(6) { /* Actions */
+            min-width: 100px;
+            max-width: 100px;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 2.5rem;
+        }
+
+        .profile-content {
+                padding: 1.75rem;
+                gap: 1.75rem;
+        }
+
+        .profile-section {
+                padding: 1.75rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.25rem;
+            }
+
+            .info-item {
+                padding: 1rem;
+            }
+
+            .records-list {
+                margin-top: 1.5rem;
+            }
+
+            .table-container {
+                margin: 0 -1.25rem;
+                border-radius: 0;
+        }
+
+            th, td {
+                padding: 0.75rem;
+                font-size: 0.9rem;
+            }
+
+            /* Adjust column widths for mobile */
+            th:nth-child(1), td:nth-child(1) { /* Date */
+                min-width: 100px;
+                max-width: 100px;
+        }
+
+            th:nth-child(2), td:nth-child(2) { /* Doctor */
+                min-width: 120px;
+                max-width: 120px;
+            }
+
+            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+                min-width: 150px;
+                max-width: 150px;
+            }
+
+            th:nth-child(4), td:nth-child(4) { /* Treatment */
+                min-width: 150px;
+                max-width: 150px;
+            }
+
+            th:nth-child(5), td:nth-child(5) { /* Notes */
+                min-width: 200px;
+                max-width: 200px;
+        }
+
+            th:nth-child(6), td:nth-child(6) { /* Actions */
+                min-width: 80px;
+                max-width: 80px;
+        }
+        }
+
+        @media (max-width: 576px) {
+            .profile-header {
+                padding: 1.5rem;
+            }
+
+            .profile-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .profile-section {
+                padding: 1rem;
+        }
+
+        .info-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+        }
+
+        .info-item {
+                padding: 0.75rem;
+            }
+
+            .records-list {
+                margin-top: 1rem;
+        }
+
+            .table-container {
+                margin: 0 -1rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            /* Further adjust column widths for small mobile */
+            th:nth-child(1), td:nth-child(1) { /* Date */
+                min-width: 80px;
+                max-width: 80px;
+            }
+
+            th:nth-child(2), td:nth-child(2) { /* Doctor */
+                min-width: 100px;
+                max-width: 100px;
+            }
+
+            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+                min-width: 120px;
+                max-width: 120px;
+            }
+
+            th:nth-child(4), td:nth-child(4) { /* Treatment */
+                min-width: 120px;
+                max-width: 120px;
+            }
+
+            th:nth-child(5), td:nth-child(5) { /* Notes */
+                min-width: 150px;
+                max-width: 150px;
+        }
+
+            th:nth-child(6), td:nth-child(6) { /* Actions */
+                min-width: 60px;
+                max-width: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 1.25rem;
+            }
+
+            .profile-content {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+
+            .profile-section {
+                padding: 0.75rem;
+            }
+
+            .info-item {
+                padding: 0.5rem;
+            }
+
+            .records-list {
+                margin-top: 0.75rem;
+            }
+
+            .table-container {
+                margin: 0 -0.75rem;
+            }
+
+            th, td {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background-color: #2c3e50;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .patient-ids {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                padding: 15px;
+            }
+        }
+
+        .btn-download {
+            position: absolute;
+            top: 0;
+            right: 1rem;
+            background: #3498db;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.2);
+            z-index: 1;
+        }
+
+        .btn-download:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-download i {
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .records-list {
+                padding: 0 0.75rem;
+        }
+
+            .table-container {
+                margin-top: 3rem;
+            }
+
+            .btn-download {
+                right: 0.75rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .records-list {
+                padding: 0 0.5rem;
+            }
+
+            .table-container {
+                margin-top: 2.5rem;
+        }
+
+        .btn-download {
+                right: 0.5rem;
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .records-list {
+                padding: 0 0.25rem;
+            }
+
+            .table-container {
+                margin-top: 2.25rem;
+        }
+
+            .btn-download {
+                right: 0.25rem;
+                padding: 0.35rem 0.7rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        .btn-download-single {
+            background-color: #17a2b8;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-right: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-download-single:hover {
+            background-color: #138496;
+        }
+
+        .record-checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Modern Profile Card Styles */
+        .patient-profile {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            margin: 2rem auto;
+            max-width: 1200px;
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            color: white;
+            padding: 3rem;
+            position: relative;
+            border-bottom: 4px solid rgba(255,255,255,0.2);
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(65, 88, 208, 0.3) 0%, rgba(200, 80, 192, 0.3) 46%, rgba(255, 204, 112, 0.3) 100%);
+            z-index: 1;
+        }
+
+        .profile-header::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .patient-basic-info {
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .patient-basic-info h2 {
+            font-size: 2.6rem;
+            margin: 0 0 1.5rem 0;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+
+        .patient-ids {
+            display: flex;
+            gap: 2rem;
+            font-size: 1.1rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 1.2rem 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .patient-ids span {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .patient-ids strong {
+            color: #FFCC70;
+            font-weight: 600;
+        }
+
+        .profile-content {
+            padding: 2.5rem;
+            display: grid;
+            gap: 2.5rem;
+            background: #f8f9fa;
+        }
+
+        .profile-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .profile-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-header i {
+            font-size: 1.5rem;
+            color: #4158D0;
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .info-item {
+            background: #f8f9fa;
+            padding: 1.2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .info-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .info-item label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .info-item span {
+            color: #2c3e50;
+            font-size: 1rem;
+            line-height: 1.5;
+            display: block;
+        }
+
+        .info-item.full-width {
+            grid-column: 1 / -1;
+            background: white;
+        }
+
+        /* Pregnancy Section Specific Styles */
+        #pregnancyProfileSection {
+            background: linear-gradient(to right, #f8f9fa, #fff);
+            border: 1px solid rgba(65, 88, 208, 0.1);
+        }
+
+        #pregnancyProfileSection .info-item {
+            background: white;
+            border: 1px solid rgba(65, 88, 208, 0.1);
+        }
+
+        #pregnancyProfileSection .section-header {
+            border-bottom-color: rgba(65, 88, 208, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 2rem;
+            }
+
+            .patient-basic-info h2 {
+                font-size: 2rem;
+            }
+
+            .patient-ids {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .profile-content {
+                padding: 1.5rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Animation for Profile Sections */
+        .profile-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Scrollbar */
+        .profile-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .profile-content::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .profile-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            border-radius: 4px;
+        }
+
+        .profile-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            margin-top: 1rem;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+            transform: translateY(-1px);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        /* Pregnancy Section Specific Styles */
+        #pregnancyProfileSection {
+            background: linear-gradient(to right, #f8f9fa, #fff);
+        }
+
+        #pregnancyProfileSection .info-item {
+            background: white;
+            border: 1px solid rgba(52, 152, 219, 0.1);
+        }
+
+        #pregnancyProfileSection .section-header {
+            border-bottom-color: rgba(52, 152, 219, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-header {
+                padding: 1.5rem;
+            }
+
+            .patient-basic-info h2 {
+                font-size: 1.8rem;
+            }
+
+            .patient-ids {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .profile-content {
+                padding: 1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-section {
+                padding: 1rem;
+            }
+        }
+
+        /* Animation for Profile Sections */
+        .profile-section {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Layout Styles */
+        .form-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+            outline: none;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .section-header i {
+            font-size: 1.25rem;
+            color: #3498db;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.25rem;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-section {
+                padding: 1.5rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 0.6rem;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .form-section {
+                padding: 1rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <script>
+        // Initialize jsPDF
+        window.jsPDF = window.jspdf.jsPDF;
+
+        const patientPIN = "1234";
+        const medicalRecordsSection = document.getElementById("medicalRecords");
+        const pinError = document.getElementById("pinError");
+        const addPatientSection = document.getElementById("addPatientSection");
+        const records = [];
+
+        // Show/hide pregnancy section based on gender
+        document.getElementById("gender").addEventListener("change", (e) => {
+            const pregnancySection = document.getElementById("pregnancySection");
+            if (e.target.value === "female") {
+                pregnancySection.style.display = "block";
+            } else {
+                pregnancySection.style.display = "none";
+                document.getElementById("pregnancy_status").value = "";
+                document.getElementById("due_date").value = "";
+                document.getElementById("gestational_age").value = "";
+                document.getElementById("pregnancy_complications").value = "";
+                document.getElementById("pregnancyDetails").style.display = "none";
+            }
+        });
+
+        // Show/hide pregnancy details based on pregnancy status
+        document.getElementById("pregnancy_status").addEventListener("change", (e) => {
+            const pregnancyDetails = document.getElementById("pregnancyDetails");
+            if (e.target.value === "pregnant") {
+                pregnancyDetails.style.display = "block";
+            } else {
+                pregnancyDetails.style.display = "none";
+                document.getElementById("due_date").value = "";
+                document.getElementById("gestational_age").value = "";
+                document.getElementById("pregnancy_complications").value = "";
+            }
+        });
+
+        // Add this event listener for the PIN form
+        document.getElementById('pinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await fetchProfile();
+        });
+
+        // Add this function to handle profile fetching
+        async function fetchProfile() {
+            const pin = document.getElementById('patientPin').value;
+            if (!pin) {
+                alert('Please enter your PIN');
+                return;
+            }
+
+            // Validate PIN format
+            if (!/^\d{6}$/.test(pin)) {
+                const pinError = document.getElementById('pinError');
+                pinError.textContent = 'PIN must be exactly 6 digits';
+                pinError.style.display = 'block';
+                return;
+            }
+
+            try {
+                // First check if the backend is available
+                const healthResponse = await fetch('http://localhost:5000/health');
+                if (!healthResponse.ok) {
+                    throw new Error('Backend service is not available. Please try again later.');
+                }
+
+                // Then fetch the profile
+                const response = await fetch(`http://localhost:5000/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                let responseData;
+                try {
+                    responseData = await response.json();
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    throw new Error('Invalid response from server');
+                }
+
+                if (!response.ok) {
+                    throw new Error(responseData.error || 'Failed to fetch profile');
+                }
+
+                // Store the PIN for future use
+                window.currentPatientPIN = pin;
+                
+                // Show the medical records section and hide the auth section
+                document.getElementById('medicalRecords').style.display = 'block';
+                document.querySelector('.auth-section').style.display = 'none';
+                
+                // Update the profile display
+                updateProfileDisplay(responseData);
+                
+                // Fetch and display medical records
+                try {
+                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    if (recordsResponse.ok) {
+                        const records = await recordsResponse.json();
+                        displayRecords(records);
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch medical records:', error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const pinError = document.getElementById('pinError');
+                pinError.textContent = error.message || 'Failed to fetch profile. Please try again.';
+                pinError.style.display = 'block';
+            }
+        }
+
+        // Add this function to calculate gestational age
+        function calculateGestationalAge(lmpDate) {
+            try {
+                if (!lmpDate) return null;
+                
+                const lmp = new Date(lmpDate);
+                const today = new Date();
+                
+                // Reset time part to avoid timezone issues
+                lmp.setHours(0, 0, 0, 0);
+                today.setHours(0, 0, 0, 0);
+                
+                const diffTime = today - lmp;
+                const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                
+                if (diffDays < 0) return null;
+                
+                const weeks = Math.floor(diffDays / 7);
+                const days = diffDays % 7;
+                
+                return `${weeks} weeks, ${days} days`;
+            } catch (error) {
+                console.error('Error calculating gestational age:', error);
+                return null;
+            }
+        }
+
+        // Update the profile display function
+        function updateProfileDisplay(profile) {
+            try {
+                // Helper function to safely update element text
+                function updateElement(id, value, defaultValue = 'Not available') {
+                    const element = document.getElementById(id);
+                    if (element) {
+                        element.textContent = value || defaultValue;
+                    }
+                }
+
+                // Basic Information
+                updateElement('patientNameDisplay', profile.name);
+                updateElement('patientDobDisplay', profile.date_of_birth ? new Date(profile.date_of_birth).toLocaleDateString() : null);
+                updateElement('patientGenderDisplay', profile.gender);
+                updateElement('patientBloodTypeDisplay', profile.blood_type);
+                updateElement('patientMaritalStatusDisplay', profile.marital_status);
+                updateElement('patientLanguageDisplay', profile.language);
+                updateElement('patientNationalityDisplay', profile.nationality);
+                
+                // Contact Information
+                updateElement('patientEmailDisplay', profile.email);
+                updateElement('patientPhoneDisplay', profile.phone);
+                
+                // Format address without duplication
+                let addressParts = [];
+                if (profile.address_line && profile.address_line.trim()) {
+                    addressParts.push(profile.address_line.trim());
+                }
+                if (profile.city && profile.city.trim() && !profile.address_line.includes(profile.city)) {
+                    addressParts.push(profile.city.trim());
+                }
+                if (profile.state && profile.state.trim() && !profile.address_line.includes(profile.state)) {
+                    addressParts.push(profile.state.trim());
+                }
+                if (profile.postal_code && profile.postal_code.trim() && !profile.address_line.includes(profile.postal_code)) {
+                    addressParts.push(profile.postal_code.trim());
+                }
+                if (profile.country && profile.country.trim() && !profile.address_line.includes(profile.country)) {
+                    addressParts.push(profile.country.trim());
+                }
+                updateElement('patientAddressDisplay', addressParts.length > 0 ? addressParts.join(', ') : null);
+                
+                // Medical Information
+                updateElement('patientAllergiesDisplay', profile.allergies, 'None reported');
+                updateElement('patientMedicationsDisplay', profile.medications, 'None reported');
+                
+                // Emergency Contact
+                updateElement('emergencyContactNameDisplay', profile.emergency_contact_name);
+                updateElement('emergencyContactPhoneDisplay', profile.emergency_contact_phone);
+                updateElement('emergencyContactRelationshipDisplay', profile.emergency_contact_relationship);
+                
+                // Patient IDs
+                updateElement('patientIdDisplay', profile.id);
+                updateElement('patientFhirIdDisplay', profile.fhir_id);
+
+                // Pregnancy Information
+                const pregnancyInfo = document.getElementById('pregnancyInfo');
+                const pregnancyProfileSection = document.getElementById('pregnancyProfileSection');
+                
+                if (profile.gender === 'female') {
+                    if (pregnancyInfo) pregnancyInfo.style.display = 'block';
+                    if (pregnancyProfileSection) pregnancyProfileSection.style.display = 'block';
+                    
+                    // Update pregnancy fields
+                    updateElement('pregnancyStatusDisplay', profile.pregnancy_status);
+                    updateElement('previousPregnanciesDisplay', profile.previous_pregnancies);
+                    
+                    // Handle LMP date and gestational age
+                    if (profile.lmp_date) {
+                        updateElement('lmpDateDisplay', new Date(profile.lmp_date).toLocaleDateString());
+                        const gestationalAge = calculateGestationalAge(profile.lmp_date);
+                        updateElement('gestationalAgeDisplay', gestationalAge);
+                    } else {
+                        updateElement('lmpDateDisplay', null);
+                        updateElement('gestationalAgeDisplay', null);
+                    }
+                    
+                    updateElement('dueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
+                    updateElement('multiplePregnancyDisplay', profile.multiple_pregnancy);
+                    updateElement('riskLevelDisplay', profile.risk_level);
+                    
+                    // Handle risk factors
+                    if (profile.risk_factors) {
+                        try {
+                            const riskFactors = typeof profile.risk_factors === 'string' ? 
+                                JSON.parse(profile.risk_factors) : profile.risk_factors;
+                            updateElement('riskFactorsDisplay', Array.isArray(riskFactors) ? 
+                                riskFactors.join(', ') : 'None');
+                        } catch (e) {
+                            updateElement('riskFactorsDisplay', profile.risk_factors);
+                        }
+                    } else {
+                        updateElement('riskFactorsDisplay', 'None');
+                    }
+
+                    // Update medical measurements
+                    updateElement('bloodPressureDisplay', profile.blood_pressure);
+                    updateElement('hemoglobinDisplay', profile.hemoglobin ? `${profile.hemoglobin} g/dL` : null);
+                    updateElement('bloodSugarDisplay', profile.blood_sugar ? `${profile.blood_sugar} mg/dL` : null);
+                    updateElement('weightDisplay', profile.weight ? `${profile.weight} kg` : null);
+                    
+                    // Update other pregnancy details
+                    updateElement('prenatalVitaminsDisplay', profile.prenatal_vitamins);
+                    updateElement('pregnancyComplicationsDisplay', profile.pregnancy_complications, 'None reported');
+                    updateElement('emergencyHospitalDisplay', profile.emergency_hospital);
+                    updateElement('birthPlanDisplay', profile.birth_plan);
+                } else {
+                    if (pregnancyInfo) pregnancyInfo.style.display = 'none';
+                    if (pregnancyProfileSection) pregnancyProfileSection.style.display = 'none';
+                }
+
+                // Update the display name in the header
+                updateElement('patientNameHeader', profile.name, 'Patient Profile');
+                
+            } catch (error) {
+                console.error('Error updating profile display:', error);
+                alert('Error updating profile display. Please try again.');
+            }
+        }
+
+        document.getElementById("addPatientForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData.entries());
+            
+            const submitButton = e.target.querySelector('button[type="submit"]');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Registering...';
+            
+            try {
+                const response = await fetch('/api/patient/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert(`Registration successful! A 6-digit PIN has been sent to ${data.email}\n\nPlease check your email (including spam folder) for your PIN. You will need this PIN to access your medical records.`);
+                    e.target.reset();
+                    document.getElementById("addPatientSection").style.display = "none";
+                    document.querySelector(".auth-section").style.display = "block";
+                } else if (response.status === 409) {
+                    alert(`${result.error}\n\nIf you've forgotten your PIN, please contact support for assistance.`);
+                    document.getElementById("email").value = "";
+                } else {
+                    throw new Error(result.error || 'Failed to register patient');
+                }
+            } catch (error) {
+                console.error('Error registering patient:', error);
+                alert(`Registration failed: ${error.message || 'Unknown error'}\n\nPlease try again or contact support if the problem persists.`);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Register Patient';
+            }
+        });
+
+        document.getElementById("addRecordForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            if (!window.currentPatientPIN) {
+                alert('Please access your profile first before adding records.');
+                return;
+            }
+            
+            const recordData = {
+                pin: window.currentPatientPIN,
+                date: document.getElementById("date").value,
+                diagnosis: document.getElementById("diagnosis").value,
+                treatment: document.getElementById("treatment").value,
+                medication: document.getElementById("medication").value,
+                doctor: document.getElementById("doctor").value,
+                hospital: document.getElementById("hospital").value
+            };
+            
+            try {
+                const response = await fetch('http://localhost:5000/api/patient/medical-records', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(recordData)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    alert('Medical record added successfully!');
+                    e.target.reset();
+                    
+                    // Fetch updated records using query parameter
+                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (recordsResponse.ok) {
+                        const records = await recordsResponse.json();
+                        displayRecords(records);
+                    } else {
+                        throw new Error('Failed to fetch updated records');
+                    }
+                } else {
+                    throw new Error(result.error || 'Failed to add medical record');
+                }
+            } catch (error) {
+                console.error('Error adding record:', error);
+                alert(error.message || 'Error adding medical record. Please try again.');
+            }
+        });
+
+        // Add search functionality
+        let allRecords = []; // Store all records for searching
+
+        function displayRecords(records) {
+            allRecords = records; // Store all records
+            filterAndDisplayRecords();
+        }
+
+        function filterAndDisplayRecords() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const searchField = document.getElementById('searchField').value;
+            
+            const filteredRecords = allRecords.filter(record => {
+                if (!searchTerm) return true; // Show all records if no search term
+                
+                if (searchField === 'all') {
+                    // Search in all fields
+                    return Object.values(record).some(value => 
+                        String(value).toLowerCase().includes(searchTerm)
+                    );
+                } else {
+                    // Search in specific field
+                    const fieldValue = String(record[searchField] || '').toLowerCase();
+                    return fieldValue.includes(searchTerm);
+                }
+            });
+
+            const tableBody = document.getElementById("recordsTableBody");
+            tableBody.innerHTML = "";
+            
+            if (!filteredRecords || filteredRecords.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No records found</td></tr>';
+                document.getElementById('bulkDownloadBtn').style.display = 'none';
+                return;
+            }
+            
+            // Sort records by date in descending order (newest first)
+            filteredRecords.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            filteredRecords.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                    <td>${record.diagnosis || 'N/A'}</td>
+                    <td>${record.treatment || 'N/A'}</td>
+                    <td>${record.medication || 'N/A'}</td>
+                    <td>${record.doctor || 'N/A'}</td>
+                    <td>${record.hospital || 'N/A'}</td>
+                    <td>
+                        <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">Download</button>
+                        <button onclick="deleteRecord(${record.id})" class="btn-delete">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Update bulk download button visibility
+            updateBulkDownloadButton();
+        }
+
+        function toggleAllRecords() {
+            const selectAll = document.getElementById('selectAllRecords');
+            const checkboxes = document.getElementsByClassName('record-checkbox');
+            Array.from(checkboxes).forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+            updateBulkDownloadButton();
+        }
+
+        function updateBulkDownloadButton() {
+            const checkboxes = document.getElementsByClassName('record-checkbox');
+            const bulkDownloadBtn = document.getElementById('bulkDownloadBtn');
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            bulkDownloadBtn.style.display = anyChecked ? 'inline-block' : 'none';
+        }
+
+        function downloadSelectedRecords() {
+            try {
+                const selectedCheckboxes = document.querySelectorAll('.record-checkbox:checked');
+                if (selectedCheckboxes.length === 0) {
+                    alert('Please select at least one record to download');
+                    return;
+                }
+
+                const selectedRecords = Array.from(selectedCheckboxes).map(checkbox => {
+                    const recordId = parseInt(checkbox.dataset.recordId);
+                    return allRecords.find(r => r.id === recordId);
+                }).filter(Boolean);
+
+                const doc = new jsPDF();
+                
+                // Add title
+                doc.setFontSize(16);
+                doc.text('Medical Records Report', 14, 15);
+                
+                // Add patient info
+                doc.setFontSize(12);
+                doc.text(`Patient: ${document.getElementById('patientNameDisplay').textContent}`, 14, 25);
+                doc.text(`Total Records: ${selectedRecords.length}`, 14, 35);
+                
+                // Create table data
+                const tableData = selectedRecords.map(record => [
+                    new Date(record.date).toLocaleDateString(),
+                    record.diagnosis || 'N/A',
+                    record.treatment || 'N/A',
+                    record.medication || 'N/A',
+                    record.doctor || 'N/A',
+                    record.hospital || 'N/A'
+                ]);
+                
+                // Add table
+                doc.autoTable({
+                    startY: 45,
+                    head: [['Date', 'Diagnosis', 'Treatment', 'Medication', 'Doctor', 'Hospital']],
+                    body: tableData,
+                    theme: 'grid',
+                    styles: { fontSize: 8 },
+                    headStyles: { fillColor: [41, 128, 185] },
+                    columnStyles: {
+                        0: { cellWidth: 25 },
+                        1: { cellWidth: 35 },
+                        2: { cellWidth: 35 },
+                        3: { cellWidth: 35 },
+                        4: { cellWidth: 25 },
+                        5: { cellWidth: 25 }
+                    }
+                });
+                
+                // Add footer
+                const pageCount = doc.internal.getNumberOfPages();
+                for (let i = 1; i <= pageCount; i++) {
+                    doc.setPage(i);
+                    doc.setFontSize(8);
+                    doc.text(
+                        `Generated on ${new Date().toLocaleString()}`,
+                        doc.internal.pageSize.width / 2,
+                        doc.internal.pageSize.height - 10,
+                        { align: 'center' }
+                    );
+                }
+                
+                // Save the PDF
+                doc.save(`medical_records_${new Date().toISOString().split('T')[0]}.pdf`);
+            } catch (error) {
+                console.error('Error generating PDF:', error);
+                alert('Error generating PDF. Please try again.');
+            }
+        }
+
+        async function deleteRecord(recordId) {
+            if (!window.currentPatientPIN) {
+                alert('Please access your profile first before deleting records.');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this record?')) {
+                try {
+                    const response = await fetch(`http://localhost:5000/api/patient/medical-records/${recordId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify({ pin: window.currentPatientPIN })
+                    });
+                    
+                    if (response.ok) {
+                        // Fetch updated records using query parameter
+                        const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                            method: 'GET',
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (recordsResponse.ok) {
+                            const records = await recordsResponse.json();
+                            displayRecords(records);
+                            alert('Record deleted successfully!');
+                        } else {
+                            throw new Error('Failed to fetch updated records');
+                        }
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to delete record');
+                    }
+                } catch (error) {
+                    console.error('Error deleting record:', error);
+                    alert(error.message || 'Error deleting record. Please try again.');
+                }
+            }
+        }
+
+        function navigateToAddPatient() {
+            document.querySelector(".auth-section").style.display = "none";
+            addPatientSection.style.display = "block";
+        }
+
+        const toggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+
+        toggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        function enableProfileEdit() {
+            // Basic Information
+            const basicFields = [
+                'patientName', 'patientDob', 'patientGender',
+                'patientBloodType', 'patientMaritalStatus', 'patientLanguage', 'patientNationality'
+            ];
+
+            // Contact Information
+            const contactFields = [
+                'patientEmail', 'patientPhone', 'patientAddress'
+            ];
+
+            // Medical Information
+            const medicalFields = [
+                'patientAllergies', 'patientMedications'
+            ];
+
+            // Emergency Contact
+            const emergencyFields = [
+                'emergencyContactName', 'emergencyContactPhone', 'emergencyContactRelationship'
+            ];
+
+            // Pregnancy Information
+            const pregnancyFields = [
+                'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
+                'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
+                'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
+                'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
+            ];
+
+            // Enable editing for all fields
+            [...basicFields, ...contactFields, ...medicalFields, ...emergencyFields, ...pregnancyFields].forEach(field => {
+                const display = document.getElementById(field + "Display");
+                const input = document.getElementById(field + "Input");
+                if (display && input) {
+                    // For select elements, set the value
+                    if (input.tagName === 'SELECT') {
+                    input.value = display.textContent.trim();
+                    } else {
+                        input.value = display.textContent.trim();
+                    }
+                    display.style.display = "none";
+                    input.style.display = "block";
+                }
+            });
+
+            document.getElementById("saveProfileBtn").style.display = "inline-block";
+        }
+
+        async function saveProfileChanges() {
+            try {
+                // Helper function to format date
+                function formatDate(dateStr) {
+                    if (!dateStr) return null;
+                    // Handle DD/MM/YYYY format
+                    if (dateStr.includes('/')) {
+                        const [day, month, year] = dateStr.split('/');
+                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                    }
+                    return dateStr;
+                }
+
+                const data = {
+                    pin: window.currentPatientPIN,
+                    // Basic Information
+                    name: document.getElementById('patientNameInput').value,
+                    date_of_birth: formatDate(document.getElementById('patientDobInput').value),
+                    gender: document.getElementById('patientGenderInput').value,
+                    blood_type: document.getElementById('patientBloodTypeInput').value,
+                    marital_status: document.getElementById('patientMaritalStatusInput').value,
+                    language: document.getElementById('patientLanguageInput').value,
+                    nationality: document.getElementById('patientNationalityInput').value,
+                    
+                    // Contact Information
+                    email: document.getElementById('patientEmailInput').value,
+                    phone: document.getElementById('patientPhoneInput').value,
+                    address_line: document.getElementById('patientAddressInput').value,
+                    
+                    // Medical Information
+                    allergies: document.getElementById('patientAllergiesInput').value,
+                    medications: document.getElementById('patientMedicationsInput').value,
+                    
+                    // Emergency Contact
+                    emergency_contact_name: document.getElementById('emergencyContactNameInput').value,
+                    emergency_contact_phone: document.getElementById('emergencyContactPhoneInput').value,
+                    emergency_contact_relationship: document.getElementById('emergencyContactRelationshipInput').value
+                };
+
+                // Only include pregnancy information if gender is female
+                if (data.gender === 'female') {
+                    data.pregnancy_status = document.getElementById('pregnancyStatusInput').value;
+                    data.previous_pregnancies = parseInt(document.getElementById('previousPregnanciesInput').value) || 0;
+                    
+                    // Preserve existing LMP date and gestational age
+                    const currentProfile = await fetch(`http://localhost:5000/api/patient/profile?pin=${window.currentPatientPIN}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    }).then(res => res.json());
+
+                    data.lmp_date = currentProfile.lmp_date;
+                    data.gestational_age = currentProfile.gestational_age;
+                    
+                    // Only update other pregnancy-related fields
+                    data.multiple_pregnancy = document.getElementById('multiplePregnancyInput').value;
+                    data.risk_level = document.getElementById('riskLevelInput').value;
+                    data.risk_factors = Array.from(document.getElementById('riskFactorsInput').selectedOptions).map(option => option.value);
+                    data.blood_pressure = document.getElementById('bloodPressureInput').value;
+                    data.hemoglobin = parseFloat(document.getElementById('hemoglobinInput').value) || null;
+                    data.blood_sugar = parseFloat(document.getElementById('bloodSugarInput').value) || null;
+                    data.weight = parseFloat(document.getElementById('weightInput').value) || null;
+                    data.prenatal_vitamins = document.getElementById('prenatalVitaminsInput').value;
+                    data.pregnancy_complications = document.getElementById('pregnancyComplicationsInput').value;
+                    data.emergency_hospital = document.getElementById('emergencyHospitalInput').value;
+                    data.birth_plan = document.getElementById('birthPlanInput').value;
+                }
+
+                console.log('Sending profile update data:', data);
+
+                const response = await fetch('http://localhost:5000/api/patient/profile', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Failed to update profile');
+                }
+
+                const updatedProfile = await response.json();
+                console.log('Profile update successful:', updatedProfile);
+
+                // Update the display with the new data
+                updateProfileDisplay(updatedProfile);
+
+                // Hide all input fields and show display fields
+                const allFields = [
+                    'patientName', 'patientDob', 'patientGender', 'patientBloodType',
+                    'patientMaritalStatus', 'patientLanguage', 'patientNationality',
+                    'patientEmail', 'patientPhone', 'patientAddress',
+                    'patientAllergies', 'patientMedications',
+                    'emergencyContactName', 'emergencyContactPhone', 'emergencyContactRelationship',
+                    'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
+                    'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
+                    'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
+                    'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
+                ];
+
+                allFields.forEach(field => {
+                    const display = document.getElementById(field + "Display");
+                    const input = document.getElementById(field + "Input");
+                    if (display && input) {
+                        input.style.display = "none";
+                        display.style.display = "block";
+                    }
+                });
+
+                document.getElementById("saveProfileBtn").style.display = "none";
+                alert('Profile updated successfully!');
+
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                alert(`Error updating profile: ${error.message}`);
+            }
+        }
+
+        function formatDateForBackend(dateString) {
+            if (!dateString) return null;
+            
+            // Handle different date formats
+            if (dateString.includes('/')) {
+                const [day, month, year] = dateString.split('/');
+                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+            }
+            
+            return dateString;
+        }
+
+        function isValidDate(dateString) {
+            const regex = /^\d{4}-\d{2}-\d{2}$/;
+            if (!regex.test(dateString)) return false;
+            
+            const date = new Date(dateString);
+            return date instanceof Date && !isNaN(date);
+        }
+
+        // Add automatic gestational age calculation for registration form
+        document.getElementById('lmp_date').addEventListener('change', function() {
+            const lmpDate = this.value;
+            if (lmpDate) {
+                const lmp = new Date(lmpDate);
+                const today = new Date();
+                const diffTime = Math.abs(today - lmp);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(diffDays / 7);
+                const days = diffDays % 7;
+                
+                // Update the gestational age display if it exists
+                const gestationalAgeDisplay = document.getElementById('gestationalAgeDisplay');
+                if (gestationalAgeDisplay) {
+                    gestationalAgeDisplay.textContent = `${weeks} weeks, ${days} days`;
+                }
+            }
+        });
+
+        // Update the existing loadProfile function
+        async function loadProfile(profile) {
+            try {
+                // Basic Information
+                document.getElementById('patientNameDisplay').textContent = profile.name || 'Not available';
+                document.getElementById('patientDobDisplay').textContent = profile.date_of_birth ? 
+                    new Date(profile.date_of_birth).toLocaleDateString() : 'Not available';
+                document.getElementById('patientGenderDisplay').textContent = profile.gender || 'Not available';
+                document.getElementById('patientBloodTypeDisplay').textContent = profile.blood_type || 'Not available';
+                document.getElementById('patientMaritalStatusDisplay').textContent = profile.marital_status || 'Not available';
+                document.getElementById('patientLanguageDisplay').textContent = profile.language || 'Not available';
+                document.getElementById('patientNationalityDisplay').textContent = profile.nationality || 'Not available';
+                
+                // Contact Information
+                document.getElementById('patientEmailDisplay').textContent = profile.email || 'Not available';
+                document.getElementById('patientPhoneDisplay').textContent = profile.phone || 'Not available';
+                
+                // Format address without duplication
+                let addressParts = [];
+                
+                // Add address line if it exists
+                if (profile.address_line && profile.address_line.trim()) {
+                    addressParts.push(profile.address_line.trim());
+                }
+                
+                // Add city if it exists and is not already in the address line
+                if (profile.city && profile.city.trim() && !profile.address_line.includes(profile.city)) {
+                    addressParts.push(profile.city.trim());
+                }
+                
+                // Add state if it exists and is not already in the address line
+                if (profile.state && profile.state.trim() && !profile.address_line.includes(profile.state)) {
+                    addressParts.push(profile.state.trim());
+                }
+                
+                // Add postal code if it exists and is not already in the address line
+                if (profile.postal_code && profile.postal_code.trim() && !profile.address_line.includes(profile.postal_code)) {
+                    addressParts.push(profile.postal_code.trim());
+                }
+                
+                // Add country if it exists and is not already in the address line
+                if (profile.country && profile.country.trim() && !profile.address_line.includes(profile.country)) {
+                    addressParts.push(profile.country.trim());
+                }
+                
+                document.getElementById('patientAddressDisplay').textContent = 
+                    addressParts.length > 0 ? addressParts.join(', ') : 'Not available';
+                
+                // Medical Information
+                document.getElementById('patientAllergiesDisplay').textContent = profile.allergies || 'None reported';
+                document.getElementById('patientMedicationsDisplay').textContent = profile.medications || 'None reported';
+                
+                // Emergency Contact
+                document.getElementById('emergencyContactNameDisplay').textContent = profile.emergency_contact_name || 'Not available';
+                document.getElementById('emergencyContactPhoneDisplay').textContent = profile.emergency_contact_phone || 'Not available';
+                document.getElementById('emergencyContactRelationshipDisplay').textContent = profile.emergency_contact_relationship || 'Not available';
+                
+                // Patient IDs
+                document.getElementById('patientIdDisplay').textContent = profile.id || 'Not available';
+                document.getElementById('patientFhirIdDisplay').textContent = profile.fhir_id || 'Not available';
+
+                // Pregnancy information
+                if (profile.gender === 'female') {
+                    document.getElementById('pregnancyInfo').style.display = 'block';
+                    document.getElementById('pregnancyProfileSection').style.display = 'block';
+                    
+                    // Update all pregnancy fields
+                    document.getElementById('pregnancyStatusDisplay').textContent = profile.pregnancy_status || 'Not available';
+                    document.getElementById('previousPregnanciesDisplay').textContent = profile.previous_pregnancies || 'Not available';
+                    
+                    // Update LMP date and trigger gestational age calculation
+                    const lmpDateInput = document.getElementById('lmpDateInput');
+                    if (profile.lmp_date) {
+                        lmpDateInput.value = profile.lmp_date;
+                        updateGestationalAge();
+                    }
+                    
+                    document.getElementById('dueDateDisplay').textContent = profile.due_date ? 
+                        new Date(profile.due_date).toLocaleDateString() : 'Not available';
+                    document.getElementById('multiplePregnancyDisplay').textContent = profile.multiple_pregnancy || 'Not available';
+                    document.getElementById('riskLevelDisplay').textContent = profile.risk_level || 'Not available';
+                    
+                    // Update risk factors
+                    const riskFactorsDisplay = document.getElementById('riskFactorsDisplay');
+                    if (profile.risk_factors && Array.isArray(profile.risk_factors)) {
+                        riskFactorsDisplay.textContent = profile.risk_factors.join(', ') || 'None';
+                    } else {
+                        riskFactorsDisplay.textContent = 'None';
+                    }
+
+                    // Update other pregnancy-related fields
+                    document.getElementById('bloodPressureDisplay').textContent = profile.blood_pressure || 'Not available';
+                    document.getElementById('hemoglobinDisplay').textContent = profile.hemoglobin ? `${profile.hemoglobin} g/dL` : 'Not available';
+                    document.getElementById('bloodSugarDisplay').textContent = profile.blood_sugar ? `${profile.blood_sugar} mg/dL` : 'Not available';
+                    document.getElementById('weightDisplay').textContent = profile.weight ? `${profile.weight} kg` : 'Not available';
+                    document.getElementById('prenatalVitaminsDisplay').textContent = profile.prenatal_vitamins || 'Not available';
+                    document.getElementById('pregnancyComplicationsDisplay').textContent = profile.pregnancy_complications || 'None';
+                    document.getElementById('emergencyHospitalDisplay').textContent = profile.emergency_hospital || 'Not available';
+                    document.getElementById('birthPlanDisplay').textContent = profile.birth_plan || 'Not available';
+                } else {
+                    document.getElementById('pregnancyInfo').style.display = 'none';
+                    document.getElementById('pregnancyProfileSection').style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error updating profile display:', error);
+                alert('Error updating profile display. Please try again.');
+            }
+        }
+
+        // Update the savePregnancyChanges function
+        async function savePregnancyChanges() {
+            try {
+                const data = {
+                    pin: document.getElementById('patientPin').value,
+                    pregnancy_status: document.getElementById('pregnancyStatusInput').value,
+                    previous_pregnancies: document.getElementById('previousPregnanciesInput').value,
+                    lmp_date: document.getElementById('lmpDateInput').value,
+                    due_date: document.getElementById('dueDateInput').value,
+                    multiple_pregnancy: document.getElementById('multiplePregnancyInput').value,
+                    risk_level: document.getElementById('riskLevelInput').value
+                };
+
+                // Calculate gestational age before saving
+                updateGestationalAge();
+
+                const response = await fetch('/api/patient/profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    const updatedProfile = await response.json();
+                    loadProfile(updatedProfile);
+                    alert('Pregnancy information updated successfully!');
+                } else {
+                    throw new Error('Failed to update pregnancy information');
+                }
+            } catch (error) {
+                console.error('Error saving pregnancy changes:', error);
+                alert('Failed to update pregnancy information');
+            }
+        }
+
+        // Add this function to automatically update gestational age
+        function updateGestationalAge() {
+            const lmpDate = document.getElementById('lmpDateInput').value;
+            if (lmpDate) {
+                const lmp = new Date(lmpDate);
+                const today = new Date();
+                const diffTime = Math.abs(today - lmp);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const weeks = Math.floor(diffDays / 7);
+                const days = diffDays % 7;
+                
+                document.getElementById('gestationalAgeDisplay').textContent = `${weeks} weeks, ${days} days`;
+            }
+        }
+
+        // Add event listener for LMP date changes
+        document.getElementById('lmpDateInput').addEventListener('change', updateGestationalAge);
+    </script>
+</body>
+</html>
