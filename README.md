@@ -1,117 +1,217 @@
-# MamaCare Healthcare Management System
+# 🏥 MamaCare Healthcare Management System
 
-## Table of Contents
-1. [System Overview](#system-overview)
-2. [Project Structure](#project-structure)
-3. [Technology Stack](#technology-stack)
-4. [Installation Guide](#installation-guide)
-5. [System Components](#system-components)
-6. [API Documentation](#api-documentation)
-7. [Database Schema](#database-schema)
-8. [Security Features](#security-features)
-9. [Deployment Guide](#deployment-guide)
-10. [Development Guide](#development-guide)
-11. [Testing](#testing)
-12. [Maintenance](#maintenance)
+[![GitHub stars](https://img.shields.io/github/stars/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/network)
+[![GitHub issues](https://img.shields.io/github/issues/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/issues)
+[![GitHub license](https://img.shields.io/github/license/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/blob/main/LICENSE)
 
-## System Overview
-MamaCare is a comprehensive healthcare management system designed to connect patients with healthcare providers, with a specific focus on maternal and child healthcare services. The system provides a centralized platform for managing hospitals, pharmacies, doctors, and patient records, with FHIR integration for healthcare interoperability.
+> **A comprehensive healthcare management system designed to connect patients with healthcare providers, with a specific focus on maternal and child healthcare services in Sierra Leone.**
 
-### Key Features
-- Hospital Management
-- Pharmacy Management
-- Doctor Management
-- Patient Records with FHIR Integration
-- Live Monitoring
-- Chat System
-- FHIR-compliant Medical Records
-- Secure PIN-based Patient Access
+## 📋 Table of Contents
+- [Project Overview](#project-overview)
+- [Team Members](#team-members)
+- [Recent Updates](#recent-updates)
+- [Key Features](#key-features)
+- [Technology Stack](#technology-stack)
+- [Installation Guide](#installation-guide)
+- [System Architecture](#system-architecture)
+- [API Documentation](#api-documentation)
+- [Database Schema](#database-schema)
+- [Security Features](#security-features)
+- [Deployment Guide](#deployment-guide)
+- [Development Guide](#development-guide)
+- [Contributing](#contributing)
+- [Support](#support)
+- [License](#license)
 
-## Project Structure
-```
-mamacare/
-├── backend/                 # Backend Flask application
-│   ├── app.py              # Main application file
-│   ├── requirements.txt    # Python dependencies
-│   ├── migrations/         # Database migrations
-│   ├── static/            # Static files
-│   ├── uploads/           # File uploads directory
-│   ├── instance/          # Instance-specific files
-│   ├── test_api.py        # API tests
-│   ├── init_db.py         # Database initialization
-│   └── Dockerfile         # Docker configuration
-├── frontend/              # Frontend files
-│   ├── index.html         # Main landing page
-│   ├── admin_dashboard.html  # Admin interface
-│   ├── medical_records.html  # Patient records
-│   ├── medical_records_view.html  # Patient records view
-│   ├── doctors.html       # Doctor listings
-│   ├── hospitals.html     # Hospital listings
-│   ├── pharmacy.html      # Pharmacy listings
-│   ├── styles.css         # Global styles
-│   └── scripts.js         # JavaScript functions
-├── migrations/            # Database migrations
-├── Images/               # Image assets
-├── docker-compose.yml    # Docker configuration
-└── nginx.conf           # Nginx configuration
-```
+## 🎯 Project Overview
 
-## Technology Stack
+MamaCare is a revolutionary healthcare management system specifically designed for Sierra Leone's healthcare infrastructure. The system provides a centralized platform for managing hospitals, pharmacies, healthcare professionals, and patient records, with a strong emphasis on maternal and child healthcare services.
 
-### Frontend
-- HTML5
-- CSS3
-- JavaScript (ES6+)
-- Bootstrap 5.3.0
-- Bootstrap Icons 1.7.2
-- Chart.js for data visualization
+### 🌟 Mission
+To improve healthcare accessibility and quality in Sierra Leone by providing a comprehensive digital platform that connects patients with healthcare providers, streamlines medical record management, and enhances healthcare service delivery.
 
-### Backend
-- Python 3.x
-- Flask (Web Framework)
-- SQLAlchemy (ORM)
-- JWT Authentication
-- Flask-Migrate (Database Migrations)
-- FHIR Client (Healthcare Interoperability)
+### 🎯 Vision
+To become the leading healthcare management platform in Sierra Leone, ensuring every citizen has access to quality healthcare services through innovative technology solutions.
 
-### Database
-- PostgreSQL (Production)
+## 👥 Team Members
 
-### DevOps
-- Docker
-- Nginx
-- Git
+### **Project Lead & Full-Stack Developer**
+**Alusine Kamara** - [@aluzay1](https://github.com/aluzay1)
+- **Role**: Lead Developer & System Architect
+- **Expertise**: Full-Stack Development, System Design, Healthcare Technology
+- **Contributions**: 
+  - System architecture design
+  - Backend API development
+  - Frontend interface design
+  - Database schema design
+  - FHIR integration
+  - Security implementation
 
-## Installation Guide
+### **Backend Development Team**
+**Team Members** (To be added)
+- **Role**: Backend API Development
+- **Expertise**: Python, Flask, PostgreSQL, FHIR
+- **Contributions**: 
+  - API endpoint development
+  - Database optimization
+  - Authentication systems
+  - Data validation
 
-### Prerequisites
-- Python 3.x
+### **Frontend Development Team**
+**Team Members** (To be added)
+- **Role**: Frontend Development
+- **Expertise**: HTML5, CSS3, JavaScript, Responsive Design
+- **Contributions**: 
+  - User interface design
+  - Responsive layouts
+  - User experience optimization
+  - Cross-browser compatibility
+
+### **Healthcare Domain Experts**
+**Team Members** (To be added)
+- **Role**: Healthcare Domain Specialists
+- **Expertise**: Medical Records, Healthcare Standards, FHIR
+- **Contributions**: 
+  - Medical record standards
+  - Healthcare workflow optimization
+  - FHIR compliance
+  - Clinical requirements
+
+### **DevOps & Infrastructure**
+**Team Members** (To be added)
+- **Role**: DevOps & Infrastructure
+- **Expertise**: Docker, Nginx, AWS, CI/CD
+- **Contributions**: 
+  - Deployment automation
+  - Infrastructure management
+  - Performance optimization
+  - Security hardening
+
+## 🚀 Recent Updates
+
+### **Latest Release - v2.1.0** (December 2024)
+- ✨ **Enhanced Hospital Cards**: Modern design with status badges, better information organization, and responsive layout
+- 🎨 **Improved Pharmacy Cards**: Redesigned with gradients, better typography, and enhanced visual appeal
+- 📱 **Better Mobile Responsiveness**: Optimized layouts for all screen sizes
+- 🔧 **Admin Dashboard Fixes**: Resolved edit and verification functionality issues
+- 🏥 **Healthcare Professional Integration**: Updated system to use healthcare professional table instead of doctor table
+- 📊 **Profile Management**: Enhanced patient profile with tabbed layout and better organization
+- 🤰 **Pregnancy Section**: Added comprehensive pregnancy tracking with automatic calculations
+- 📋 **Medical Records Enhancement**: Improved record management with better data organization
+
+### **Previous Updates**
+- **v2.0.0**: FHIR integration, PIN-based authentication, comprehensive admin dashboard
+- **v1.5.0**: Hospital and pharmacy management systems
+- **v1.0.0**: Initial release with basic patient management
+
+## ✨ Key Features
+
+### 🏥 **Hospital Management**
+- Comprehensive hospital listings with detailed information
+- Service categorization and filtering
+- Real-time availability status
+- Interactive maps and directions
+- Hospital verification system
+
+### 💊 **Pharmacy Management**
+- 24/7 pharmacy locator
+- Medication inventory tracking
+- Prescription processing
+- Service status indicators
+- Contact information management
+
+### 👨‍⚕️ **Healthcare Professional Management**
+- Professional profiles with specializations
+- Hospital affiliations
+- Qualification verification
+- Patient assignment tracking
+- Professional type categorization
+
+### 📋 **Medical Records System**
+- FHIR-compliant patient records
+- Secure PIN-based access
+- Comprehensive medical history
+- Pregnancy tracking and calculations
+- Prescription management
+- Medical measurements tracking
+
+### 🔐 **Security & Authentication**
+- PIN-based patient authentication
+- JWT token authentication for healthcare providers
+- Role-based access control
+- Secure data encryption
+- FHIR-compliant data security
+
+### 📊 **Admin Dashboard**
+- Comprehensive system management
+- Real-time statistics and analytics
+- User management interface
+- Content verification system
+- System monitoring tools
+
+## 🛠 Technology Stack
+
+### **Frontend**
+- **HTML5** - Semantic markup and structure
+- **CSS3** - Modern styling with gradients and animations
+- **JavaScript (ES6+)** - Interactive functionality
+- **Bootstrap 5.3.0** - Responsive framework
+- **Bootstrap Icons 1.7.2** - Icon library
+- **Chart.js** - Data visualization
+- **ApexCharts** - Advanced charting
+- **Moment.js** - Date handling
+
+### **Backend**
+- **Python 3.x** - Core programming language
+- **Flask** - Web framework
+- **SQLAlchemy** - Object-relational mapping
+- **JWT** - Authentication tokens
+- **Flask-Migrate** - Database migrations
+- **FHIR Client** - Healthcare interoperability
+- **Email Integration** - SMTP for notifications
+
+### **Database**
+- **PostgreSQL** - Primary database
+- **SQLite** - Development database
+
+### **DevOps & Infrastructure**
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+- **Nginx** - Web server and reverse proxy
+- **Git** - Version control
+- **GitHub** - Code repository and collaboration
+
+## 📦 Installation Guide
+
+### **Prerequisites**
+- Python 3.8+
 - pip (Python package manager)
-- Docker and Docker Compose (for containerization)
+- Docker and Docker Compose
 - Git
-- PostgreSQL
+- PostgreSQL (for production)
 
-### Local Development Setup
+### **Local Development Setup**
 
-1. Clone the repository:
+1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/mamacare.git
+git clone https://github.com/aluzay1/mamacare.git
 cd mamacare
 ```
 
-2. Set up Python virtual environment:
+2. **Set up Python virtual environment:**
 ```bash
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 ```
 
-3. Install backend dependencies:
+3. **Install backend dependencies:**
 ```bash
 cd backend
 pip install -r requirements.txt
 ```
 
-4. Set up environment variables:
+4. **Set up environment variables:**
 ```bash
 # Create .env file with the following variables
 FLASK_APP=app.py
@@ -122,298 +222,557 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASSWORD=your-email-password
 ```
 
-5. Initialize the database:
+5. **Initialize the database:**
 ```bash
 flask db upgrade
 python init_db.py
 ```
 
-6. Run the development server:
+6. **Run the development server:**
 ```bash
 flask run
 ```
 
-### Docker Setup
+### **Docker Setup**
 
-1. Build and run with Docker Compose:
+1. **Build and run with Docker Compose:**
 ```bash
 docker-compose up --build
 ```
 
-## System Components
+2. **Access the application:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:5000
+- Admin Dashboard: http://localhost:3000/admin_dashboard.html
 
-### 1. Admin Dashboard
-- Hospital management
-- Pharmacy management
-- Doctor management
-- User management
-- System statistics
+## 🚀 Running and Testing the Application
 
-### 2. Medical Records
-- Patient profiles with FHIR integration
-- Medical history
-- Prescription management
-- FHIR-compliant data storage
-- Secure PIN-based access
+### **Starting the Application**
 
-### 3. Hospital Management
-- Hospital listings
-- Service details
-- Doctor affiliations
-- Patient records
-- Detailed hospital information
+#### **Option 1: Local Development (Recommended for Development)**
+```bash
+# 1. Navigate to the project directory
+cd mamacare
 
-### 4. Pharmacy Management
-- Pharmacy listings
-- Medication inventory
-- Prescription processing
-- 24/7 service status
+# 2. Activate virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
 
-### 5. Doctor Management
-- Doctor profiles
-- Specializations
-- Hospital affiliations
-- Patient assignments
+# 3. Navigate to backend directory
+cd backend
 
-### 6. FHIR Integration
-- FHIR Patient Resources
-- FHIR Observation Resources
-- FHIR MedicationRequest Resources
-- Healthcare Interoperability
-- Standardized Data Exchange
+# 4. Set environment variables (create .env file)
+echo "FLASK_APP=app.py" > .env
+echo "FLASK_ENV=development" >> .env
+echo "DATABASE_URL=sqlite:///mamacare.db" >> .env
+echo "SECRET_KEY=your-secret-key-here" >> .env
 
-## API Documentation
+# 5. Install dependencies
+pip install -r requirements.txt
 
-### Authentication
+# 6. Initialize database
+flask db upgrade
+python init_db.py
+
+# 7. Run the Flask application
+flask run --host=0.0.0.0 --port=5000
 ```
+
+#### **Option 2: Docker (Recommended for Production)**
+```bash
+# 1. Navigate to the project directory
+cd mamacare
+
+# 2. Build and start containers
+docker-compose up --build -d
+
+# 3. Check container status
+docker-compose ps
+
+# 4. View logs
+docker-compose logs -f
+```
+
+### **Accessing the Application**
+
+Once the application is running, you can access:
+
+- **Main Application**: http://localhost:5000 or http://localhost:3000
+- **Backend API**: http://localhost:5000/api/
+- **Admin Dashboard**: http://localhost:5000/admin_dashboard.html
+- **Medical Records**: http://localhost:5000/medical_records.html
+- **Hospital Listings**: http://localhost:5000/hospitals.html
+- **Pharmacy Listings**: http://localhost:5000/pharmacy.html
+- **Healthcare Professionals**: http://localhost:5000/doctors.html
+
+### **Testing the Application**
+
+#### **1. Backend API Testing**
+
+**Test the API endpoints using curl or Postman:**
+
+```bash
+# Test server health
+curl http://localhost:5000/api/health
+
+# Test hospitals endpoint
+curl http://localhost:5000/api/hospitals
+
+# Test pharmacies endpoint
+curl http://localhost:5000/api/pharmacies
+
+# Test healthcare professionals endpoint
+curl http://localhost:5000/api/healthcare-providers
+```
+
+**Using the provided test script:**
+```bash
+cd backend
+python test_api.py
+```
+
+#### **2. Frontend Testing**
+
+**Manual Testing Checklist:**
+
+1. **Homepage (index.html)**
+   - [ ] Emergency button functionality
+   - [ ] Navigation menu
+   - [ ] Responsive design on different screen sizes
+
+2. **Hospital Management (hospitals.html)**
+   - [ ] Hospital cards display correctly
+   - [ ] Search functionality works
+   - [ ] Filter options work
+   - [ ] Call and directions buttons work
+   - [ ] Responsive layout (4 cards per row on large screens)
+
+3. **Pharmacy Management (pharmacy.html)**
+   - [ ] Pharmacy cards display correctly
+   - [ ] 24/7 status indicators
+   - [ ] Contact information
+   - [ ] Call and directions functionality
+
+4. **Healthcare Professionals (doctors.html)**
+   - [ ] Professional cards display
+   - [ ] Professional type categorization
+   - [ ] Contact information
+   - [ ] Image display
+
+5. **Medical Records (medical_records.html)**
+   - [ ] Patient registration
+   - [ ] PIN generation and email
+   - [ ] Profile editing
+   - [ ] Pregnancy section (for female patients)
+   - [ ] Medical measurements
+   - [ ] Tabbed interface
+
+6. **Admin Dashboard (admin_dashboard.html)**
+   - [ ] Admin login
+   - [ ] Hospital management (add, edit, verify)
+   - [ ] Pharmacy management (add, edit, verify)
+   - [ ] Healthcare professional management
+   - [ ] Statistics display
+
+#### **3. Database Testing**
+
+**Test database operations:**
+```bash
+cd backend
+
+# Test database connection
+python -c "
+from app import db
+print('Database connection successful')
+"
+
+# Test data insertion
+python add_test_data.py
+```
+
+#### **4. Authentication Testing**
+
+**Test PIN-based authentication:**
+```bash
+# Register a new patient
+curl -X POST http://localhost:5000/api/patient/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "name": "Test Patient",
+    "gender": "female",
+    "date_of_birth": "1990-01-01"
+  }'
+
+# Login with PIN (use the PIN from the response above)
+curl -X POST http://localhost:5000/api/patient/profile \
+  -H "Content-Type: application/json" \
+  -d '{"pin": "123456"}'
+```
+
+#### **5. File Upload Testing**
+
+**Test image uploads:**
+```bash
+# Test hospital image upload (via admin dashboard)
+# Navigate to admin dashboard and try uploading hospital images
+
+# Test healthcare professional image upload
+# Navigate to admin dashboard and try uploading professional images
+```
+
+### **Troubleshooting Common Issues**
+
+#### **1. Database Connection Issues**
+```bash
+# Check if database is running
+docker-compose ps
+
+# Restart database container
+docker-compose restart db
+
+# Reset database
+docker-compose down -v
+docker-compose up --build
+```
+
+#### **2. Port Conflicts**
+```bash
+# Check if ports are in use
+netstat -tulpn | grep :5000
+netstat -tulpn | grep :3000
+
+# Kill processes using the ports
+sudo kill -9 <PID>
+```
+
+#### **3. Permission Issues**
+```bash
+# Fix file permissions
+chmod -R 755 backend/uploads/
+chmod -R 755 backend/static/uploads/
+```
+
+#### **4. Email Configuration Issues**
+```bash
+# Test email configuration
+python -c "
+import smtplib
+smtp = smtplib.SMTP('smtp.gmail.com', 587)
+smtp.starttls()
+smtp.login('your-email@gmail.com', 'your-app-password')
+print('Email configuration successful')
+"
+```
+
+### **Performance Testing**
+
+#### **Load Testing with Apache Bench**
+```bash
+# Test homepage performance
+ab -n 100 -c 10 http://localhost:5000/
+
+# Test API performance
+ab -n 100 -c 10 http://localhost:5000/api/hospitals
+```
+
+#### **Database Performance**
+```bash
+# Test database query performance
+python -c "
+import time
+from app import db
+from models import Hospital
+
+start_time = time.time()
+hospitals = Hospital.query.all()
+end_time = time.time()
+print(f'Query took {end_time - start_time:.4f} seconds')
+"
+```
+
+### **Security Testing**
+
+#### **1. Authentication Security**
+- Test PIN validation
+- Test JWT token expiration
+- Test role-based access control
+
+#### **2. Input Validation**
+- Test SQL injection prevention
+- Test XSS prevention
+- Test file upload security
+
+#### **3. CORS Testing**
+```bash
+# Test CORS headers
+curl -H "Origin: http://localhost:3000" \
+  -H "Access-Control-Request-Method: POST" \
+  -H "Access-Control-Request-Headers: Content-Type" \
+  -X OPTIONS http://localhost:5000/api/patient/register
+```
+
+### **Browser Testing**
+
+**Test in different browsers:**
+- [ ] Chrome (latest)
+- [ ] Firefox (latest)
+- [ ] Safari (latest)
+- [ ] Edge (latest)
+- [ ] Mobile browsers (iOS Safari, Chrome Mobile)
+
+**Test responsive design:**
+- [ ] Desktop (1920x1080)
+- [ ] Laptop (1366x768)
+- [ ] Tablet (768x1024)
+- [ ] Mobile (375x667)
+
+### **Continuous Integration Testing**
+
+**Run automated tests:**
+```bash
+# Run all tests
+python -m pytest backend/tests/
+
+# Run specific test categories
+python -m pytest backend/tests/test_api.py
+python -m pytest backend/tests/test_models.py
+python -m pytest backend/tests/test_auth.py
+```
+
+### **Monitoring and Logs**
+
+**Check application logs:**
+```bash
+# View Flask application logs
+tail -f backend/app.log
+
+# View Docker container logs
+docker-compose logs -f app
+
+# View database logs
+docker-compose logs -f db
+```
+
+**Monitor system resources:**
+```bash
+# Check container resource usage
+docker stats
+
+# Check disk usage
+df -h
+
+# Check memory usage
+free -h
+```
+
+### **Cleanup and Reset**
+
+**Reset the entire system:**
+```bash
+# Stop all containers
+docker-compose down
+
+# Remove all data
+docker-compose down -v
+
+# Remove images
+docker-compose down --rmi all
+
+# Rebuild from scratch
+docker-compose up --build
+```
+
+This comprehensive testing guide ensures that all aspects of the MamaCare system are thoroughly tested and functioning correctly before deployment.
+
+## 🏗 System Architecture
+
+```
+mamacare/
+├── backend/                 # Backend Flask application
+│   ├── app.py              # Main application file
+│   ├── requirements.txt    # Python dependencies
+│   ├── migrations/         # Database migrations
+│   ├── static/            # Static files and uploads
+│   ├── uploads/           # File uploads directory
+│   ├── instance/          # Instance-specific files
+│   ├── test_api.py        # API tests
+│   ├── init_db.py         # Database initialization
+│   └── Dockerfile         # Docker configuration
+├── frontend/              # Frontend files
+│   ├── index.html         # Main landing page
+│   ├── admin_dashboard.html  # Admin interface
+│   ├── medical_records.html  # Patient records
+│   ├── medical_records_view.html  # Patient records view
+│   ├── doctors.html       # Healthcare professional listings
+│   ├── hospitals.html     # Hospital listings
+│   ├── pharmacy.html      # Pharmacy listings
+│   ├── styles.css         # Global styles
+│   └── scripts.js         # JavaScript functions
+├── migrations/            # Database migrations
+├── Images/               # Image assets
+├── docker-compose.yml    # Docker configuration
+├── nginx.conf           # Nginx configuration
+└── README.md           # Project documentation
+```
+
+## 📚 API Documentation
+
+### **Authentication Endpoints**
+```http
 POST /api/admin/login
-- Purpose: Admin login
-- Request Body: { email, password }
-- Response: { token }
+POST /api/healthcare-provider/login
+POST /api/patient/login
 ```
 
-### Patient Management
-```
+### **Patient Management**
+```http
 POST /api/patient/register
-- Purpose: Register new patient
-- Request Body: { email, name, given_name, family_name, gender, date_of_birth, ... }
-- Response: { pin, patient_id, fhir_id }
-
 POST /api/patient/profile
-- Purpose: Get patient profile
-- Request Body: { pin }
-- Response: { id, fhir_id, name, gender, ... }
-```
-
-### Medical Records
-```
-POST /api/patient/medical-records
-- Purpose: Add medical record
-- Request Body: { pin, date, diagnosis, treatment, ... }
-- Response: { id, date, diagnosis, ... }
-
+PUT /api/patient/profile
 GET /api/patient/medical-records
-- Purpose: Get medical records
-- Query Params: { pin }
-- Response: [{ id, date, diagnosis, ... }]
+POST /api/patient/medical-records
 ```
 
-### Hospital Management
+### **Healthcare Provider Management**
+```http
+POST /api/healthcare-provider/register
+GET /api/healthcare-providers
+POST /api/healthcare-providers
+PUT /api/healthcare-providers/<id>
+DELETE /api/healthcare-providers/<id>
 ```
+
+### **Hospital Management**
+```http
+GET /api/hospitals
 GET /api/admin/hospitals
 POST /api/admin/hospitals
 PUT /api/admin/hospitals/<id>
 DELETE /api/admin/hospitals/<id>
 ```
 
-### Pharmacy Management
-```
+### **Pharmacy Management**
+```http
+GET /api/pharmacies
 GET /api/admin/pharmacies
 POST /api/admin/pharmacies
 PUT /api/admin/pharmacies/<id>
 DELETE /api/admin/pharmacies/<id>
 ```
 
-### Doctor Management
-```
-GET /api/admin/doctors
-POST /api/admin/doctors
-PUT /api/admin/doctors/<id>
-DELETE /api/admin/doctors/<id>
-```
+## 🗄 Database Schema
 
-## Database Schema
+### **Core Tables**
+- **user** - Patient information and profiles
+- **healthcare_professional** - Healthcare provider details
+- **hospital** - Hospital information and services
+- **pharmacy** - Pharmacy details and services
+- **medical_record** - Patient medical records
+- **admin** - System administrators
 
-### User
-```sql
-CREATE TABLE user (
-    id INTEGER PRIMARY KEY,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    password_hash VARCHAR(256) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    given_name VARCHAR(100),
-    family_name VARCHAR(100),
-    gender VARCHAR(20),
-    date_of_birth DATE,
-    phone VARCHAR(20),
-    address_line VARCHAR(200),
-    city VARCHAR(100),
-    state VARCHAR(100),
-    postal_code VARCHAR(20),
-    country VARCHAR(100),
-    blood_type VARCHAR(10),
-    allergies TEXT,
-    medications TEXT,
-    emergency_contact_name VARCHAR(100),
-    emergency_contact_phone VARCHAR(20),
-    emergency_contact_relationship VARCHAR(50),
-    marital_status VARCHAR(20),
-    language VARCHAR(50),
-    nationality VARCHAR(100),
-    fhir_id VARCHAR(100) UNIQUE,
-    pin VARCHAR(6),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+### **Key Features**
+- FHIR-compliant data structure
+- Secure PIN-based authentication
+- Comprehensive medical tracking
+- Pregnancy-specific data fields
+- Professional verification system
 
-### Hospital
-```sql
-CREATE TABLE hospital (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    license_number VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    address VARCHAR(200) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
-    postal_code VARCHAR(20) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    website VARCHAR(200),
-    directions TEXT,
-    services TEXT,
-    image VARCHAR(200),
-    is_verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+## 🔒 Security Features
 
-### Pharmacy
-```sql
-CREATE TABLE pharmacy (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    license_number VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    address VARCHAR(200) NOT NULL,
-    city VARCHAR(100) NOT NULL,
-    state VARCHAR(100) NOT NULL,
-    postal_code VARCHAR(20) NOT NULL,
-    country VARCHAR(100) NOT NULL,
-    website VARCHAR(200),
-    directions TEXT,
-    is_24_hours BOOLEAN DEFAULT FALSE,
-    is_verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+- **PIN-based Authentication** - Secure patient access
+- **JWT Token Authentication** - Provider and admin access
+- **Role-based Access Control** - Different permission levels
+- **FHIR Compliance** - Healthcare data standards
+- **Data Encryption** - Secure data transmission
+- **Input Validation** - XSS and SQL injection prevention
+- **CORS Protection** - Cross-origin request security
 
-### Doctor
-```sql
-CREATE TABLE doctor (
-    id INTEGER PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    license_number VARCHAR(50) UNIQUE NOT NULL,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    specialization VARCHAR(100) NOT NULL,
-    hospital_affiliation VARCHAR(100) NOT NULL,
-    qualifications TEXT,
-    experience VARCHAR(50),
-    image VARCHAR(200),
-    is_verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
+## 🚀 Deployment Guide
 
-### Medical Record
-```sql
-CREATE TABLE medical_record (
-    id INTEGER PRIMARY KEY,
-    patient_id INTEGER NOT NULL,
-    date DATE NOT NULL,
-    diagnosis TEXT NOT NULL,
-    treatment TEXT,
-    medications TEXT,
-    notes TEXT,
-    doctor_id INTEGER,
-    hospital_id INTEGER,
-    fhir_resource_id VARCHAR(100),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (patient_id) REFERENCES user(id),
-    FOREIGN KEY (doctor_id) REFERENCES doctor(id),
-    FOREIGN KEY (hospital_id) REFERENCES hospital(id)
-);
-```
-
-### Admin
-```sql
-CREATE TABLE admin (
-    id INTEGER PRIMARY KEY,
-    email VARCHAR(120) UNIQUE NOT NULL,
-    password_hash VARCHAR(256) NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    role VARCHAR(50) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## Security Features
-- PIN-based patient authentication
-- JWT token authentication for admin
-- FHIR-compliant data security
-- Secure password hashing
-- CORS protection
-- Input validation
-- SQL injection prevention
-- XSS protection
-
-## Deployment Guide
+### **Production Deployment**
 1. Set up production environment variables
 2. Configure PostgreSQL database
 3. Set up SSL certificates
-4. Configure Nginx
+4. Configure Nginx reverse proxy
 5. Deploy using Docker Compose
 6. Run database migrations
-7. Initialize the system
+7. Initialize the system with admin user
 
-## Development Guide
-1. Follow PEP 8 style guide
-2. Write unit tests for new features
-3. Document API changes
-4. Update database migrations
-5. Test FHIR integration
-6. Verify security measures
+### **Environment Variables**
+```bash
+FLASK_ENV=production
+DATABASE_URL=postgresql://user:password@host:port/database
+SECRET_KEY=your-production-secret-key
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASSWORD=your-email-password
+```
 
-## Testing
+## 👨‍💻 Development Guide
+
+### **Code Standards**
+- Follow PEP 8 style guide for Python
+- Use semantic HTML5 markup
+- Implement responsive CSS design
+- Write clean, documented JavaScript
+- Follow Git commit conventions
+
+### **Testing**
 - Unit tests for API endpoints
 - Integration tests for FHIR resources
-- Security testing
+- Security testing and validation
 - Performance testing
 - User acceptance testing
 
-## Maintenance
-- Regular database backups
-- Log monitoring
-- Security updates
-- Performance optimization
-- FHIR compliance checks
+### **Contributing**
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Write tests for new features
+5. Submit a pull request
 
-## Support
-For support and issues:
-- Email: support@mamacare.com
-- GitHub Issues: [Create an issue](https://github.com/yourusername/mamacare/issues)
+## 🤝 Contributing
 
-## License
-This project is licensed under the MIT License - see the LICENSE file for details. 
+We welcome contributions from the community! Please read our contributing guidelines and code of conduct before submitting pull requests.
+
+### **How to Contribute**
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### **Development Setup**
+See the [Installation Guide](#installation-guide) for detailed setup instructions.
+
+## 📞 Support
+
+### **Getting Help**
+- **Email**: support@mamacare.com
+- **GitHub Issues**: [Create an issue](https://github.com/aluzay1/mamacare/issues)
+- **Documentation**: [Wiki](https://github.com/aluzay1/mamacare/wiki)
+
+### **Bug Reports**
+Please use the GitHub issue tracker to report bugs and request features.
+
+### **Feature Requests**
+We welcome feature requests! Please create an issue with the "enhancement" label.
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- **Sierra Leone Ministry of Health** - For healthcare domain expertise
+- **FHIR Community** - For healthcare interoperability standards
+- **Open Source Community** - For the amazing tools and libraries
+- **Healthcare Providers** - For valuable feedback and requirements
+
+---
+
+**Made with ❤️ for Sierra Leone's Healthcare System**
+
+*Last updated: December 2024* 
