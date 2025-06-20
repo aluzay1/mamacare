@@ -542,7 +542,7 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button onclick="console.log('Edit button clicked'); enableProfileEdit()" class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                    <button onclick="enableProfileEdit()" class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
                     <button onclick="saveProfileChanges()" id="saveProfileBtn" class="btn-primary" style="display: none;"><i class="fas fa-save"></i> Save</button>
                 </div>
             </div>
@@ -609,65 +609,65 @@
                 <div class="tab-pane active" id="personal-tab">
                     <div class="tab-section">
                         <h3><i class="fas fa-user"></i> Basic Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <label>Full Name</label>
-                            <span id="patientNameDisplay"></span>
-                            <input type="text" id="patientNameInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Date of Birth</label>
-                            <span id="patientDobDisplay"></span>
-                            <input type="text" id="patientDobInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Gender</label>
-                            <span id="patientGenderDisplay"></span>
-                            <input type="text" id="patientGenderInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Blood Type</label>
-                            <span id="patientBloodTypeDisplay"></span>
-                            <input type="text" id="patientBloodTypeInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Marital Status</label>
-                            <span id="patientMaritalStatusDisplay"></span>
-                            <input type="text" id="patientMaritalStatusInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Language</label>
-                            <span id="patientLanguageDisplay"></span>
-                            <input type="text" id="patientLanguageInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Nationality</label>
-                            <span id="patientNationalityDisplay"></span>
-                            <input type="text" id="patientNationalityInput" style="display: none;"  class="input-field" />
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Full Name</label>
+                                <span id="patientNameDisplay"></span>
+                                <input type="text" id="patientNameInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Date of Birth</label>
+                                <span id="patientDobDisplay"></span>
+                                <input type="text" id="patientDobInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Gender</label>
+                                <span id="patientGenderDisplay"></span>
+                                <input type="text" id="patientGenderInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Blood Type</label>
+                                <span id="patientBloodTypeDisplay"></span>
+                                <input type="text" id="patientBloodTypeInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Marital Status</label>
+                                <span id="patientMaritalStatusDisplay"></span>
+                                <input type="text" id="patientMaritalStatusInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Language</label>
+                                <span id="patientLanguageDisplay"></span>
+                                <input type="text" id="patientLanguageInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Nationality</label>
+                                <span id="patientNationalityDisplay"></span>
+                                <input type="text" id="patientNationalityInput" style="display: none;"  class="input-field" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="tab-section">
                         <h3><i class="fas fa-address-card"></i> Contact Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <label>Email</label>
-                            <span id="patientEmailDisplay"></span>
-                            <input type="email" id="patientEmailInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item">
-                            <label>Phone</label>
-                            <span id="patientPhoneDisplay"></span>
-                            <input type="tel" id="patientPhoneInput" style="display: none;" class="input-field" />
-                        </div>
-                        <div class="info-item full-width">
-                            <label>Address</label>
-                            <span id="patientAddressDisplay"></span>
-                            <input type="text" id="patientAddressInput" style="display: none;" class="input-field" />
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Email</label>
+                                <span id="patientEmailDisplay"></span>
+                                <input type="email" id="patientEmailInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item">
+                                <label>Phone</label>
+                                <span id="patientPhoneDisplay"></span>
+                                <input type="tel" id="patientPhoneInput" style="display: none;" class="input-field" />
+                            </div>
+                            <div class="info-item full-width">
+                                <label>Address</label>
+                                <span id="patientAddressDisplay"></span>
+                                <input type="text" id="patientAddressInput" style="display: none;" class="input-field" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="tab-section">
                         <h3><i class="fas fa-phone"></i> Emergency Contact</h3>
@@ -676,7 +676,7 @@
                                 <label>Contact Name</label>
                                 <span id="emergencyContactNameDisplay"></span>
                                 <input type="text" id="emergencyContactNameInput" style="display: none;" class="input-field" />
-                    </div>
+                            </div>
                             <div class="info-item">
                                 <label>Contact Phone</label>
                                 <span id="emergencyContactPhoneDisplay"></span>
@@ -695,17 +695,17 @@
                 <div class="tab-pane" id="medical-tab">
                     <div class="tab-section">
                         <h3><i class="fas fa-heartbeat"></i> Medical Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item full-width">
-                            <label>Allergies</label>
-                            <span id="patientAllergiesDisplay"></span>
-                            <textarea id="patientAllergiesInput" style="display: none;" class="input-field"></textarea>
-                        </div>
-                        <div class="info-item full-width">
-                            <label>Current Medications</label>
-                            <span id="patientMedicationsDisplay"></span>
-                            <textarea id="patientMedicationsInput" style="display: none;" class="input-field"></textarea>
-                        </div>
+                        <div class="info-grid">
+                            <div class="info-item full-width">
+                                <label>Allergies</label>
+                                <span id="patientAllergiesDisplay"></span>
+                                <textarea id="patientAllergiesInput" style="display: none;" class="input-field"></textarea>
+                            </div>
+                            <div class="info-item full-width">
+                                <label>Current Medications</label>
+                                <span id="patientMedicationsDisplay"></span>
+                                <textarea id="patientMedicationsInput" style="display: none;" class="input-field"></textarea>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -716,197 +716,197 @@
                         <h3><i class="fas fa-baby"></i> Pregnancy Information</h3>
                         <div class="info-grid">
                             <div class="info-item">
-                            <label>Pregnancy Status</label>
-                            <span id="patientPregnancyStatusDisplay"></span>
-                            <select id="patientPregnancyStatusInput" style="display: none;" class="input-field">
-                                <option value="not_pregnant">Not Pregnant</option>
-                                <option value="pregnant">Pregnant</option>
-                            </select>
-                        </div>
+                                <label>Pregnancy Status</label>
+                                <span id="patientPregnancyStatusDisplay"></span>
+                                <select id="patientPregnancyStatusInput" style="display: none;" class="input-field">
+                                    <option value="not_pregnant">Not Pregnant</option>
+                                    <option value="pregnant">Pregnant</option>
+                                </select>
+                            </div>
                             <div class="info-item">
-                            <label>Estimated Due Date</label>
-                            <span id="patientDueDateDisplay"></span>
-                            <input type="date" id="patientDueDateInput" style="display: none;" class="input-field" />
-                        </div>
+                                <label>Estimated Due Date</label>
+                                <span id="patientDueDateDisplay"></span>
+                                <input type="date" id="patientDueDateInput" style="display: none;" class="input-field" />
+                            </div>
                             <div class="info-item">
-                            <label>Gestational Age (weeks)</label>
-                            <span id="patientGestationalAgeDisplay"></span>
-                            <input type="number" id="patientGestationalAgeInput" min="0" max="40" step="1" style="display: none;" class="input-field" />
-                        </div>
+                                <label>Gestational Age (weeks)</label>
+                                <span id="patientGestationalAgeDisplay"></span>
+                                <input type="number" id="patientGestationalAgeInput" min="0" max="40" step="1" style="display: none;" class="input-field" />
+                            </div>
                             <div class="info-item full-width">
-                            <label>Pregnancy Complications</label>
-                            <span id="patientPregnancyComplicationsDisplay"></span>
-                            <textarea id="patientPregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
+                                <label>Pregnancy Complications</label>
+                                <span id="patientPregnancyComplicationsDisplay"></span>
+                                <textarea id="patientPregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
+                            </div>
                         </div>
                     </div>
-                </div>
 
                     <div class="tab-section" id="pregnancyProfileSection" style="display: none;">
                         <h3><i class="fas fa-baby"></i> Detailed Pregnancy Information</h3>
-                    <div class="info-grid">
-                        <div class="info-item">
-                            <label>Pregnancy Status</label>
-                            <span id="pregnancyStatusDisplay"></span>
-                            <select id="pregnancyStatusInput" style="display: none;" class="input-field">
-                                <option value="not_pregnant">Not Pregnant</option>
-                                <option value="pregnant">Pregnant</option>
-                                <option value="postpartum">Postpartum</option>
-                            </select>
-                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Pregnancy Status</label>
+                                <span id="pregnancyStatusDisplay"></span>
+                                <select id="pregnancyStatusInput" style="display: none;" class="input-field">
+                                    <option value="not_pregnant">Not Pregnant</option>
+                                    <option value="pregnant">Pregnant</option>
+                                    <option value="postpartum">Postpartum</option>
+                                </select>
+                            </div>
 
-                        <div class="info-item">
-                            <label>Previous Pregnancies</label>
-                            <span id="previousPregnanciesDisplay"></span>
-                            <input type="number" id="previousPregnanciesInput" style="display: none;" class="input-field" min="0" />
-                        </div>
+                            <div class="info-item">
+                                <label>Previous Pregnancies</label>
+                                <span id="previousPregnanciesDisplay"></span>
+                                <input type="number" id="previousPregnanciesInput" style="display: none;" class="input-field" min="0" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Last Menstrual Period</label>
-                            <span id="lmpDateDisplay"></span>
-                            <input type="date" id="lmpDateInput" style="display: none;" class="input-field" />
-                        </div>
+                            <div class="info-item">
+                                <label>Last Menstrual Period</label>
+                                <span id="lmpDateDisplay"></span>
+                                <input type="date" id="lmpDateInput" style="display: none;" class="input-field" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Estimated Due Date</label>
-                            <span id="dueDateDisplay"></span>
-                            <input type="date" id="dueDateInput" style="display: none;" class="input-field" />
-                        </div>
+                            <div class="info-item">
+                                <label>Estimated Due Date</label>
+                                <span id="dueDateDisplay"></span>
+                                <input type="date" id="dueDateInput" style="display: none;" class="input-field" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Gestational Age (weeks)</label>
-                            <span id="gestationalAgeDisplay"></span>
-                            <input type="number" id="gestationalAgeInput" style="display: none;" class="input-field" min="0" max="45" />
-                        </div>
+                            <div class="info-item">
+                                <label>Gestational Age (weeks)</label>
+                                <span id="gestationalAgeDisplay"></span>
+                                <input type="number" id="gestationalAgeInput" style="display: none;" class="input-field" min="0" max="45" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Multiple Pregnancy</label>
-                            <span id="multiplePregnancyDisplay"></span>
-                            <select id="multiplePregnancyInput" style="display: none;" class="input-field">
-                                <option value="no">No</option>
-                                <option value="twins">Twins</option>
-                                <option value="triplets">Triplets or more</option>
-                            </select>
-                        </div>
+                            <div class="info-item">
+                                <label>Multiple Pregnancy</label>
+                                <span id="multiplePregnancyDisplay"></span>
+                                <select id="multiplePregnancyInput" style="display: none;" class="input-field">
+                                    <option value="no">No</option>
+                                    <option value="twins">Twins</option>
+                                    <option value="triplets">Triplets or more</option>
+                                </select>
+                            </div>
 
-                        <!-- Risk Assessment -->
-                        <div class="info-item">
-                            <label>Risk Level</label>
-                            <span id="riskLevelDisplay"></span>
-                            <select id="riskLevelInput" style="display: none;" class="input-field">
-                                <option value="low">Low Risk</option>
-                                <option value="medium">Medium Risk</option>
-                                <option value="high">High Risk</option>
-                            </select>
-                        </div>
+                            <!-- Risk Assessment -->
+                            <div class="info-item">
+                                <label>Risk Level</label>
+                                <span id="riskLevelDisplay"></span>
+                                <select id="riskLevelInput" style="display: none;" class="input-field">
+                                    <option value="low">Low Risk</option>
+                                    <option value="medium">Medium Risk</option>
+                                    <option value="high">High Risk</option>
+                                </select>
+                            </div>
 
-                        <div class="info-item full-width">
-                            <label>Risk Factors</label>
-                            <span id="riskFactorsDisplay"></span>
-                            <select id="riskFactorsInput" style="display: none;" class="input-field" multiple>
-                                <option value="hypertension">Hypertension</option>
-                                <option value="diabetes">Diabetes</option>
-                                <option value="anemia">Anemia</option>
-                                <option value="previous_csection">Previous C-Section</option>
-                                <option value="heart_disease">Heart Disease</option>
-                                <option value="obesity">Obesity</option>
-                                <option value="advanced_age">Advanced Maternal Age (≥35)</option>
-                                <option value="substance_use">Substance Use</option>
-                                <option value="multiple_pregnancy">Multiple Pregnancy</option>
-                            </select>
-                        </div>
+                            <div class="info-item full-width">
+                                <label>Risk Factors</label>
+                                <span id="riskFactorsDisplay"></span>
+                                <select id="riskFactorsInput" style="display: none;" class="input-field" multiple>
+                                    <option value="hypertension">Hypertension</option>
+                                    <option value="diabetes">Diabetes</option>
+                                    <option value="anemia">Anemia</option>
+                                    <option value="previous_csection">Previous C-Section</option>
+                                    <option value="heart_disease">Heart Disease</option>
+                                    <option value="obesity">Obesity</option>
+                                    <option value="advanced_age">Advanced Maternal Age (≥35)</option>
+                                    <option value="substance_use">Substance Use</option>
+                                    <option value="multiple_pregnancy">Multiple Pregnancy</option>
+                                </select>
+                            </div>
 
-                        <!-- Vital Signs -->
-                        <div class="info-item">
-                            <label>Blood Pressure</label>
-                            <span id="bloodPressureDisplay"></span>
-                            <input type="text" id="bloodPressureInput" style="display: none;" class="input-field" placeholder="e.g., 120/80" />
-                        </div>
+                            <!-- Vital Signs -->
+                            <div class="info-item">
+                                <label>Blood Pressure</label>
+                                <span id="bloodPressureDisplay"></span>
+                                <input type="text" id="bloodPressureInput" style="display: none;" class="input-field" placeholder="e.g., 120/80" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Hemoglobin Level (g/dL)</label>
-                            <span id="hemoglobinDisplay"></span>
-                            <input type="number" id="hemoglobinInput" style="display: none;" class="input-field" step="0.1" />
-                        </div>
+                            <div class="info-item">
+                                <label>Hemoglobin Level (g/dL)</label>
+                                <span id="hemoglobinDisplay"></span>
+                                <input type="number" id="hemoglobinInput" style="display: none;" class="input-field" step="0.1" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Blood Sugar (mg/dL)</label>
-                            <span id="bloodSugarDisplay"></span>
-                            <input type="number" id="bloodSugarInput" style="display: none;" class="input-field" step="0.1" />
-                        </div>
+                            <div class="info-item">
+                                <label>Blood Sugar (mg/dL)</label>
+                                <span id="bloodSugarDisplay"></span>
+                                <input type="number" id="bloodSugarInput" style="display: none;" class="input-field" step="0.1" />
+                            </div>
 
-                        <div class="info-item">
-                            <label>Weight (kg)</label>
-                            <span id="weightDisplay"></span>
-                            <input type="number" id="weightInput" style="display: none;" class="input-field" step="0.1" />
-                        </div>
+                            <div class="info-item">
+                                <label>Weight (kg)</label>
+                                <span id="weightDisplay"></span>
+                                <input type="number" id="weightInput" style="display: none;" class="input-field" step="0.1" />
+                            </div>
 
-                        <!-- Prenatal Care -->
-                        <div class="info-item full-width">
-                            <label>Prenatal Vitamins/Supplements</label>
-                            <span id="prenatalVitaminsDisplay"></span>
-                            <textarea id="prenatalVitaminsInput" style="display: none;" class="input-field"></textarea>
-                        </div>
+                            <!-- Prenatal Care -->
+                            <div class="info-item full-width">
+                                <label>Prenatal Vitamins/Supplements</label>
+                                <span id="prenatalVitaminsDisplay"></span>
+                                <textarea id="prenatalVitaminsInput" style="display: none;" class="input-field"></textarea>
+                            </div>
 
-                        <!-- Complications and Emergency Plan -->
-                        <div class="info-item full-width">
-                            <label>Current Complications</label>
-                            <span id="pregnancyComplicationsDisplay"></span>
-                            <textarea id="pregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
-                        </div>
+                            <!-- Complications and Emergency Plan -->
+                            <div class="info-item full-width">
+                                <label>Current Complications</label>
+                                <span id="pregnancyComplicationsDisplay"></span>
+                                <textarea id="pregnancyComplicationsInput" style="display: none;" class="input-field"></textarea>
+                            </div>
 
-                        <div class="info-item full-width">
-                            <label>Emergency Hospital</label>
-                            <span id="emergencyHospitalDisplay"></span>
-                            <input type="text" id="emergencyHospitalInput" style="display: none;" class="input-field" />
-                        </div>
+                            <div class="info-item full-width">
+                                <label>Emergency Hospital</label>
+                                <span id="emergencyHospitalDisplay"></span>
+                                <input type="text" id="emergencyHospitalInput" style="display: none;" class="input-field" />
+                            </div>
 
-                        <div class="info-item full-width">
-                            <label>Birth Plan</label>
-                            <span id="birthPlanDisplay"></span>
-                            <textarea id="birthPlanInput" style="display: none;" class="input-field"></textarea>
+                            <div class="info-item full-width">
+                                <label>Birth Plan</label>
+                                <span id="birthPlanDisplay"></span>
+                                <textarea id="birthPlanInput" style="display: none;" class="input-field"></textarea>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
                 <!-- Records Tab -->
                 <div class="tab-pane" id="records-tab">
                     <div class="tab-section">
                         <h3><i class="fas fa-file-medical"></i> Medical Records</h3>
-            <div class="records-list">
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search records..." class="search-input">
-                    <select id="searchField" class="search-field">
-                        <option value="all">All Fields</option>
-                        <option value="date">Date</option>
-                        <option value="diagnosis">Diagnosis</option>
-                        <option value="treatment">Treatment</option>
-                        <option value="medication">Medication</option>
-                        <option value="doctor">Doctor</option>
-                        <option value="hospital">Hospital</option>
-                    </select>
-                    <button onclick="downloadSelectedRecords()" class="btn-download" id="bulkDownloadBtn" style="display: none;">
-                        Download Selected
-                    </button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
-                                <th>Date</th>
-                                <th>Diagnosis</th>
-                                <th>Treatment</th>
-                                <th>Medication</th>
-                                <th>Doctor</th>
-                                <th>Hospital</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recordsTableBody">
-                        </tbody>
-                    </table>
-                </div>
+                        <div class="records-list">
+                            <div class="search-container">
+                                <input type="text" id="searchInput" placeholder="Search records..." class="search-input">
+                                <select id="searchField" class="search-field">
+                                    <option value="all">All Fields</option>
+                                    <option value="date">Date</option>
+                                    <option value="diagnosis">Diagnosis</option>
+                                    <option value="treatment">Treatment</option>
+                                    <option value="medication">Medication</option>
+                                    <option value="doctor">Doctor</option>
+                                    <option value="hospital">Hospital</option>
+                                </select>
+                                <button onclick="downloadSelectedRecords()" class="btn-download" id="bulkDownloadBtn" style="display: none;">
+                                    Download Selected
+                                </button>
+                            </div>
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
+                                            <th>Date</th>
+                                            <th>Diagnosis</th>
+                                            <th>Treatment</th>
+                                            <th>Medication</th>
+                                            <th>Doctor</th>
+                                            <th>Hospital</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recordsTableBody">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1072,9 +1072,6 @@
             display: flex;
             gap: 1rem;
             flex-shrink: 0;
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
         }
 
         .btn-edit, .btn-primary {
@@ -1094,18 +1091,11 @@
             color: white;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
         }
 
         .btn-edit:hover {
             background: rgba(255,255,255,0.3);
             transform: translateY(-2px);
-        }
-
-        .btn-edit:active {
-            transform: translateY(0);
         }
 
         .btn-primary {
@@ -1160,7 +1150,7 @@
 
         .stat-content h3 {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: #2c3e50;
         }
@@ -1168,7 +1158,7 @@
         .stat-content p {
             margin: 0.25rem 0 0 0;
             color: #6c757d;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
         }
 
         /* Profile Tabs */
@@ -3165,8 +3155,8 @@
 
         // Add this function to calculate gestational age
         function calculateGestationalAge(lmpDate) {
-                if (!lmpDate) return null;
-                
+            if (!lmpDate) return null;
+            
             try {
                 const lmp = new Date(lmpDate);
                 const today = new Date();
@@ -3252,30 +3242,8 @@
                     
                     // Update basic pregnancy fields
                     updateElement('patientPregnancyStatusDisplay', profile.pregnancy_status);
-                    
-                    // Calculate due date and gestational age from LMP if available
-                    if (profile.lmp_date) {
-                        const lmp = new Date(profile.lmp_date);
-                        const today = new Date();
-                        
-                        // Calculate gestational age
-                        const diffTime = Math.abs(today - lmp);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        const weeks = Math.floor(diffDays / 7);
-                        const days = diffDays % 7;
-                        const gestationalAgeText = `${weeks} weeks, ${days} days`;
-                        
-                        // Calculate estimated due date (LMP + 280 days = 40 weeks)
-                        const dueDate = new Date(lmp);
-                        dueDate.setDate(dueDate.getDate() + 280);
-                        
-                        updateElement('patientDueDateDisplay', dueDate.toLocaleDateString());
-                        updateElement('patientGestationalAgeDisplay', gestationalAgeText);
-                    } else {
-                        updateElement('patientDueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
-                        updateElement('patientGestationalAgeDisplay', profile.gestational_age ? `${profile.gestational_age} weeks` : null);
-                    }
-                    
+                    updateElement('patientDueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
+                    updateElement('patientGestationalAgeDisplay', profile.gestational_age ? `${profile.gestational_age} weeks` : null);
                     updateElement('patientPregnancyComplicationsDisplay', profile.pregnancy_complications, 'None reported');
                     
                     // Update detailed pregnancy fields
@@ -3285,27 +3253,14 @@
                     // Handle LMP date and gestational age
                     if (profile.lmp_date) {
                         updateElement('lmpDateDisplay', new Date(profile.lmp_date).toLocaleDateString());
-                        
-                        // Calculate gestational age from LMP
-                        const lmp = new Date(profile.lmp_date);
-                        const today = new Date();
-                        const diffTime = Math.abs(today - lmp);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        const weeks = Math.floor(diffDays / 7);
-                        const days = diffDays % 7;
-                        const gestationalAgeText = `${weeks} weeks, ${days} days`;
-                        updateElement('gestationalAgeDisplay', gestationalAgeText);
-                        
-                        // Calculate and update due date from LMP
-                        const dueDate = new Date(lmp);
-                        dueDate.setDate(dueDate.getDate() + 280);
-                        updateElement('dueDateDisplay', dueDate.toLocaleDateString());
+                        const gestationalAge = calculateGestationalAge(profile.lmp_date);
+                        updateElement('gestationalAgeDisplay', gestationalAge);
                     } else {
                         updateElement('lmpDateDisplay', null);
                         updateElement('gestationalAgeDisplay', null);
-                        updateElement('dueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
                     }
                     
+                    updateElement('dueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
                     updateElement('multiplePregnancyDisplay', profile.multiple_pregnancy);
                     updateElement('riskLevelDisplay', profile.risk_level);
                     
@@ -3688,37 +3643,7 @@
             });
         });
 
-        // Helper function to calculate gestational age and due date from LMP
-        function calculatePregnancyDates(lmpDate) {
-            if (!lmpDate) return { gestationalAge: null, dueDate: null };
-            
-            const lmp = new Date(lmpDate);
-            const today = new Date();
-            
-            // Calculate gestational age
-            const diffTime = Math.abs(today - lmp);
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            const weeks = Math.floor(diffDays / 7);
-            const days = diffDays % 7;
-            const gestationalAgeText = `${weeks} weeks, ${days} days`;
-            const gestationalAgeWeeks = weeks;
-            
-            // Calculate estimated due date (LMP + 280 days = 40 weeks)
-            const dueDate = new Date(lmp);
-            dueDate.setDate(dueDate.getDate() + 280);
-            const dueDateFormatted = dueDate.toISOString().split('T')[0];
-            
-            return {
-                gestationalAge: gestationalAgeText,
-                gestationalAgeWeeks: gestationalAgeWeeks,
-                dueDate: dueDateFormatted,
-                dueDateDisplay: dueDate.toLocaleDateString()
-            };
-        }
-
         function enableProfileEdit() {
-            console.log('enableProfileEdit function called');
-            
             // Basic Information
             const basicFields = [
                 'patientName', 'patientDob', 'patientGender',
@@ -3758,7 +3683,6 @@
                 const display = document.getElementById(field + "Display");
                 const input = document.getElementById(field + "Input");
                 if (display && input) {
-                    console.log(`Processing field: ${field}`);
                     // For select elements, set the value
                     if (input.tagName === 'SELECT') {
                         // Try to match the display text with option text
@@ -3776,55 +3700,14 @@
                             input.value = displayText;
                         }
                     } else {
-                        let displayValue = display.textContent.trim();
-                        
-                        // Special handling for medical measurement fields
-                        if (field === 'hemoglobin' && displayValue.includes('g/dL')) {
-                            // Extract just the number from "12.5 g/dL"
-                            displayValue = displayValue.replace(' g/dL', '');
-                        } else if (field === 'bloodSugar' && displayValue.includes('mg/dL')) {
-                            // Extract just the number from "120 mg/dL"
-                            displayValue = displayValue.replace(' mg/dL', '');
-                        } else if (field === 'weight' && displayValue.includes('kg')) {
-                            // Extract just the number from "65 kg"
-                            displayValue = displayValue.replace(' kg', '');
-                        }
-                        // Blood pressure can stay as is (e.g., "120/80")
-                        
-                        input.value = displayValue;
+                        input.value = display.textContent.trim();
                     }
                     display.style.display = "none";
                     input.style.display = "block";
-                } else {
-                    console.log(`Field not found: ${field} - display: ${!!display}, input: ${!!input}`);
                 }
             });
 
-            // Special handling for pregnancy date calculations
-            const lmpInput = document.getElementById('lmpDateInput');
-            if (lmpInput && lmpInput.value) {
-                const pregnancyDates = calculatePregnancyDates(lmpInput.value);
-                
-                // Update gestational age inputs
-                const gestationalAgeInput = document.getElementById('gestationalAgeInput');
-                const patientGestationalAgeInput = document.getElementById('patientGestationalAgeInput');
-                if (gestationalAgeInput) gestationalAgeInput.value = pregnancyDates.gestationalAgeWeeks || '';
-                if (patientGestationalAgeInput) patientGestationalAgeInput.value = pregnancyDates.gestationalAgeWeeks || '';
-                
-                // Update due date inputs
-                const dueDateInput = document.getElementById('dueDateInput');
-                const patientDueDateInput = document.getElementById('patientDueDateInput');
-                if (dueDateInput) dueDateInput.value = pregnancyDates.dueDate || '';
-                if (patientDueDateInput) patientDueDateInput.value = pregnancyDates.dueDate || '';
-            }
-
-            const saveBtn = document.getElementById("saveProfileBtn");
-            if (saveBtn) {
-                saveBtn.style.display = "inline-block";
-                console.log('Save button displayed');
-            } else {
-                console.log('Save button not found');
-            }
+            document.getElementById("saveProfileBtn").style.display = "inline-block";
         }
 
         async function saveProfileChanges() {
@@ -3852,101 +3735,52 @@
                     }
                 }
 
-                // Helper function to handle empty values for integer fields
-                function formatIntegerField(value) {
-                    if (value === '' || value === null || value === undefined) {
-                        return null;
-                    }
-                    const num = parseInt(value);
-                    return isNaN(num) ? null : num;
-                }
-
-                // Helper function to handle empty values for text fields
-                function formatTextField(value) {
-                    if (value === '' || value === null || value === undefined) {
-                        return null;
-                    }
-                    return value.trim();
-                }
-
-                // Helper function to get current display value if input is not visible
-                function getCurrentValue(fieldName) {
-                    const input = document.getElementById(fieldName + "Input");
-                    const display = document.getElementById(fieldName + "Display");
-                    
-                    // If input is visible, use its value
-                    if (input && input.style.display !== 'none') {
-                        console.log(`Field ${fieldName}: Using input value - ${input.value}`);
-                        return input.value;
-                    }
-                    // If display is visible, use its text content
-                    else if (display && display.style.display !== 'none') {
-                        const displayValue = display.textContent.trim();
-                        console.log(`Field ${fieldName}: Using display value - ${displayValue}`);
-                        return displayValue;
-                    }
-                    console.log(`Field ${fieldName}: No value found`);
-                    return null;
-                }
-
-                // Helper function to get value only if input is visible
-                function getEditedValue(fieldName) {
-                    const input = document.getElementById(fieldName + "Input");
-                    if (input && input.style.display !== 'none') {
-                        return input.value;
-                    }
-                    return undefined; // Not being edited
-                }
-
                 // Collect all the updated data
                 const data = {
                     pin: window.currentPatientPIN,
                     // Basic Information
-                    name: formatTextField(getCurrentValue('patientName')),
-                    date_of_birth: formatDateForBackend(getCurrentValue('patientDob')),
-                    gender: formatTextField(getCurrentValue('patientGender')),
-                    blood_type: formatTextField(getCurrentValue('patientBloodType')),
-                    marital_status: formatTextField(getCurrentValue('patientMaritalStatus')),
-                    language: formatTextField(getCurrentValue('patientLanguage')),
-                    nationality: formatTextField(getCurrentValue('patientNationality')),
+                    name: document.getElementById('patientNameInput').value,
+                    date_of_birth: formatDateForBackend(document.getElementById('patientDobInput').value),
+                    gender: document.getElementById('patientGenderInput').value,
+                    blood_type: document.getElementById('patientBloodTypeInput').value,
+                    marital_status: document.getElementById('patientMaritalStatusInput').value,
+                    language: document.getElementById('patientLanguageInput').value,
+                    nationality: document.getElementById('patientNationalityInput').value,
+                    
                     // Contact Information
-                    email: formatTextField(getCurrentValue('patientEmail')),
-                    phone: formatTextField(getCurrentValue('patientPhone')),
-                    address_line: formatTextField(getCurrentValue('patientAddress')),
+                    email: document.getElementById('patientEmailInput').value,
+                    phone: document.getElementById('patientPhoneInput').value,
+                    address_line: document.getElementById('patientAddressInput').value,
+                    
                     // Medical Information
-                    allergies: formatTextField(getCurrentValue('patientAllergies')),
-                    medications: formatTextField(getCurrentValue('patientMedications')),
+                    allergies: document.getElementById('patientAllergiesInput').value,
+                    medications: document.getElementById('patientMedicationsInput').value,
+                    
                     // Emergency Contact
-                    emergency_contact_name: formatTextField(getCurrentValue('emergencyContactName')),
-                    emergency_contact_phone: formatTextField(getCurrentValue('emergencyContactPhone')),
-                    emergency_contact_relationship: formatTextField(getCurrentValue('emergencyContactRelationship')),
+                    emergency_contact_name: document.getElementById('emergencyContactNameInput').value,
+                    emergency_contact_phone: document.getElementById('emergencyContactPhoneInput').value,
+                    emergency_contact_relationship: document.getElementById('emergencyContactRelationshipInput').value,
+                    
+                    // Pregnancy Information (basic)
+                    pregnancy_status: document.getElementById('patientPregnancyStatusInput')?.value,
+                    due_date: formatDateForBackend(document.getElementById('patientDueDateInput')?.value),
+                    gestational_age: document.getElementById('patientGestationalAgeInput')?.value,
+                    pregnancy_complications: document.getElementById('patientPregnancyComplicationsInput')?.value,
+                    
+                    // Pregnancy Information (detailed)
+                    lmp_date: formatDateForBackend(document.getElementById('lmpDateInput')?.value),
+                    previous_pregnancies: document.getElementById('previousPregnanciesInput')?.value,
+                    multiple_pregnancy: document.getElementById('multiplePregnancyInput')?.value,
+                    risk_level: document.getElementById('riskLevelInput')?.value,
+                    risk_factors: document.getElementById('riskFactorsInput')?.value,
+                    blood_pressure: document.getElementById('bloodPressureInput')?.value,
+                    hemoglobin: document.getElementById('hemoglobinInput')?.value,
+                    blood_sugar: document.getElementById('bloodSugarInput')?.value,
+                    weight: document.getElementById('weightInput')?.value,
+                    prenatal_vitamins: document.getElementById('prenatalVitaminsInput')?.value,
+                    emergency_hospital: document.getElementById('emergencyHospitalInput')?.value,
+                    birth_plan: document.getElementById('birthPlanInput')?.value
                 };
-
-                // Pregnancy fields: only include if being edited
-                const pregnancyFields = [
-                    ['pregnancy_status', 'patientPregnancyStatus', formatTextField],
-                    ['due_date', 'patientDueDate', formatDateForBackend],
-                    ['gestational_age', 'patientGestationalAge', formatIntegerField],
-                    ['pregnancy_complications', 'patientPregnancyComplications', formatTextField],
-                    ['lmp_date', 'lmpDate', formatDateForBackend],
-                    ['previous_pregnancies', 'previousPregnancies', formatIntegerField],
-                    ['multiple_pregnancy', 'multiplePregnancy', formatTextField],
-                    ['risk_level', 'riskLevel', formatTextField],
-                    ['risk_factors', 'riskFactors', formatTextField],
-                    ['blood_pressure', 'bloodPressure', formatTextField],
-                    ['hemoglobin', 'hemoglobin', formatTextField],
-                    ['blood_sugar', 'bloodSugar', formatTextField],
-                    ['weight', 'weight', formatTextField],
-                    ['prenatal_vitamins', 'prenatalVitamins', formatTextField],
-                    ['emergency_hospital', 'emergencyHospital', formatTextField],
-                    ['birth_plan', 'birthPlan', formatTextField],
-                ];
-                pregnancyFields.forEach(([apiField, domField, formatter]) => {
-                    const editedValue = getEditedValue(domField);
-                    if (editedValue !== undefined) {
-                        data[apiField] = formatter(editedValue);
-                    }
-                });
 
                 console.log('Sending profile update data:', data);
 
@@ -3990,27 +3824,24 @@
                     ];
 
                     const detailedPregnancyFields = [
-                    'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
-                    'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
-                    'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
-                    'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
-                ];
+                        'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
+                        'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
+                        'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
+                        'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
+                    ];
 
                     // Update display and hide inputs
                     [...basicFields, ...contactFields, ...medicalFields, ...emergencyFields, ...pregnancyFields, ...detailedPregnancyFields].forEach(field => {
-                    const display = document.getElementById(field + "Display");
-                    const input = document.getElementById(field + "Input");
-                    if (display && input) {
-                            // Only update if the input was visible (being edited)
-                            if (input.style.display !== 'none') {
-                                display.textContent = input.value || 'Not available';
-                            }
-                        display.style.display = "block";
+                        const display = document.getElementById(field + "Display");
+                        const input = document.getElementById(field + "Input");
+                        if (display && input) {
+                            display.textContent = input.value;
+                            display.style.display = "block";
                             input.style.display = "none";
-                    }
-                });
+                        }
+                    });
 
-                document.getElementById("saveProfileBtn").style.display = "none";
+                    document.getElementById("saveProfileBtn").style.display = "none";
                     alert('Profile changes saved successfully!');
                 } else {
                     const errorData = await response.json();
@@ -4084,55 +3915,9 @@
             if (lmpDateInput) {
                 lmpDateInput.addEventListener('change', function() {
                     const gestationalAgeDisplay = document.getElementById('gestationalAgeDisplay');
-                    const gestationalAgeInput = document.getElementById('gestationalAgeInput');
-                    const dueDateDisplay = document.getElementById('dueDateDisplay');
-                    const dueDateInput = document.getElementById('dueDateInput');
-                    const patientDueDateDisplay = document.getElementById('patientDueDateDisplay');
-                    const patientDueDateInput = document.getElementById('patientDueDateInput');
-                    const patientGestationalAgeDisplay = document.getElementById('patientGestationalAgeDisplay');
-                    const patientGestationalAgeInput = document.getElementById('patientGestationalAgeInput');
-                    
-                    if (this.value) {
-                        const lmp = new Date(this.value);
-                        const today = new Date();
-                        
-                        // Calculate gestational age
-                        const diffTime = Math.abs(today - lmp);
-                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                        const weeks = Math.floor(diffDays / 7);
-                        const days = diffDays % 7;
-                        const gestationalAgeText = `${weeks} weeks, ${days} days`;
-                        const gestationalAgeWeeks = weeks;
-                        
-                        // Calculate estimated due date (LMP + 280 days = 40 weeks)
-                        const dueDate = new Date(lmp);
-                        dueDate.setDate(dueDate.getDate() + 280);
-                        const dueDateFormatted = dueDate.toISOString().split('T')[0];
-                        
-                        // Update all gestational age displays
-                        if (gestationalAgeDisplay) gestationalAgeDisplay.textContent = gestationalAgeText;
-                        if (gestationalAgeInput) gestationalAgeInput.value = gestationalAgeWeeks;
-                        if (patientGestationalAgeDisplay) patientGestationalAgeDisplay.textContent = gestationalAgeText;
-                        if (patientGestationalAgeInput) patientGestationalAgeInput.value = gestationalAgeWeeks;
-                        
-                        // Update all due date displays
-                        if (dueDateDisplay) dueDateDisplay.textContent = dueDate.toLocaleDateString();
-                        if (dueDateInput) dueDateInput.value = dueDateFormatted;
-                        if (patientDueDateDisplay) patientDueDateDisplay.textContent = dueDate.toLocaleDateString();
-                        if (patientDueDateInput) patientDueDateInput.value = dueDateFormatted;
-                        
-                        console.log(`LMP: ${this.value}, Gestational Age: ${gestationalAgeText}, Due Date: ${dueDateFormatted}`);
-                    } else {
-                        // Clear all fields if LMP is empty
-                        if (gestationalAgeDisplay) gestationalAgeDisplay.textContent = 'N/A';
-                        if (gestationalAgeInput) gestationalAgeInput.value = '';
-                        if (patientGestationalAgeDisplay) patientGestationalAgeDisplay.textContent = 'N/A';
-                        if (patientGestationalAgeInput) patientGestationalAgeInput.value = '';
-                        
-                        if (dueDateDisplay) dueDateDisplay.textContent = 'N/A';
-                        if (dueDateInput) dueDateInput.value = '';
-                        if (patientDueDateDisplay) patientDueDateDisplay.textContent = 'N/A';
-                        if (patientDueDateInput) patientDueDateInput.value = '';
+                    if (gestationalAgeDisplay) {
+                        const gestationalAge = calculateGestationalAge(this.value);
+                        gestationalAgeDisplay.textContent = gestationalAge || 'N/A';
                     }
                 });
             }
@@ -4156,20 +3941,6 @@
                 lastVisitDate.textContent = 'N/A';
             }
         }
-
-        // Test function to verify medical measurement field handling
-        function testMedicalFieldHandling() {
-            console.log('Testing medical field handling...');
-            
-            const testFields = ['bloodPressure', 'hemoglobin', 'bloodSugar', 'weight'];
-            testFields.forEach(field => {
-                const display = document.getElementById(field + "Display");
-                const input = document.getElementById(field + "Input");
-                console.log(`${field}: Display="${display?.textContent}", Input="${input?.value}", Input visible=${input?.style.display !== 'none'}`);
-            });
-        }
-
-        // Helper function to calculate gestational age and due date from LMP
     </script>
 </body>
 </html>

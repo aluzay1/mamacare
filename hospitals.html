@@ -97,36 +97,165 @@
 
         .hospitals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
+            padding: 20px;
         }
 
         .hospital-card {
-            background: white;
-            border-radius: 10px;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: transform 0.3s ease;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .hospital-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #3498db);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 2;
         }
 
         .hospital-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .hospital-card:hover::before {
+            opacity: 1;
+        }
+
+        .hospital-image-container {
+            position: relative;
+            height: 160px;
+            overflow: hidden;
         }
 
         .hospital-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.4s ease;
         }
 
-        .hospital-info {
-            padding: 20px;
+        .hospital-card:hover .hospital-image {
+            transform: scale(1.1);
+        }
+
+        .hospital-image-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.8) 0%, rgba(231, 76, 60, 0.8) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .hospital-card:hover .hospital-image-overlay {
+            opacity: 0.9;
+        }
+
+        .hospital-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hospital-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .hospital-name {
-            font-size: 1.2rem;
-            color: #2c3e50;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .hospital-name .name-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .status-badges {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .status {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+            border-radius: 15px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .status.verified {
+            background: rgba(46, 204, 113, 0.9);
+            color: white;
+        }
+
+        .status.emergency {
+            background: rgba(231, 76, 60, 0.9);
+            color: white;
+        }
+
+        .hospital-location {
+            font-size: 0.85rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hospital-info {
+            padding: 18px;
         }
 
         .hospital-details {
@@ -135,34 +264,182 @@
 
         .hospital-detail {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-            color: #6c757d;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 0.85rem;
+            line-height: 1.3;
         }
 
         .hospital-detail i {
             color: #3498db;
+            width: 16px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 2px;
+            flex-shrink: 0;
         }
 
-        .hospital-services {
-            margin-top: 15px;
+        .hospital-detail .detail-content {
+            flex: 1;
+            word-wrap: break-word;
+        }
+
+        .hospital-detail .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 2px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .hospital-detail .detail-value {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .services-section {
+            margin-bottom: 15px;
+        }
+
+        .services-section h4 {
+            color: #2c3e50;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .services-section h4 i {
+            color: #3498db;
+        }
+
+        .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
         .service-tag {
             display: inline-block;
             padding: 4px 8px;
-            background: #e9ecef;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
             border-radius: 15px;
-            font-size: 0.8rem;
-            margin: 2px;
-            color: #495057;
+            font-size: 0.7rem;
+            color: #2c3e50;
+            font-weight: 500;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .service-tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 8px rgba(52, 152, 219, 0.2);
         }
 
         .hospital-actions {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-top: 15px;
+        }
+
+        .action-button {
+            padding: 10px 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .action-button:hover::before {
+            left: 100%;
+        }
+
+        .call-now {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .get-directions {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .action-button i {
+            font-size: 0.8rem;
+        }
+
+        .hospital-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 18px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.7rem;
+            color: #6c757d;
+        }
+
+        .hospital-meta .type {
+            font-weight: 600;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .hospital-meta .distance {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px 20px;
+            color: #6c757d;
+            font-size: 1.1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            margin: 20px;
+        }
+
+        .no-results i {
+            font-size: 2.5rem;
+            color: #dee2e6;
+            margin-bottom: 15px;
+            display: block;
         }
 
         .navbar {
@@ -314,59 +591,33 @@
                 opacity: 1;
                 visibility: visible;
             }
-        }
 
-        .action-button {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 5px;
-        }
-
-        .get-directions {
-            background: #2ecc71;
-        }
-
-        .call-now {
-            background: #3498db;
-        }
-
-        .action-button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .action-button i {
-            font-size: 1.1em;
-        }
-
-        .no-results {
-            text-align: center;
-            padding: 40px;
-            color: #6c757d;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 768px) {
-            .search-box {
-                flex-direction: column;
+            .hospitals-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 15px;
+                padding: 15px;
             }
 
-            .search-button {
-                width: 100%;
+            .hospital-card {
+                max-width: none;
             }
 
-            .filters {
+            .hospital-actions {
                 grid-template-columns: 1fr;
+            }
+
+            .hospital-name {
+                font-size: 1rem;
+            }
+
+            .status-badges {
+                justify-content: flex-start;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .hospitals-grid {
+                grid-template-columns: repeat(4, 1fr);
             }
         }
     </style>
@@ -459,7 +710,7 @@
             } catch (error) {
                 console.error('Error fetching hospitals:', error);
                 document.getElementById('hospitalsGrid').innerHTML = 
-                    '<div class="no-results">Failed to load hospitals. Please try again later.</div>';
+                    '<div class="no-results"><i class="fas fa-exclamation-circle"></i> Failed to load hospitals. Please try again later.</div>';
                 return [];
             }
         }
@@ -480,7 +731,7 @@
         function displayHospitals(hospitals) {
             const hospitalsGrid = document.getElementById('hospitalsGrid');
             if (hospitals.length === 0) {
-                hospitalsGrid.innerHTML = '<div class="no-results">No hospitals found.</div>';
+                hospitalsGrid.innerHTML = '<div class="no-results"><i class="fas fa-exclamation-circle"></i> No hospitals found.</div>';
                 return;
             }
             
@@ -488,45 +739,86 @@
                 <div class="hospital-card">
                     <div class="hospital-image-container">
                         <img src="${getHospitalImageUrl(hospital)}" alt="${hospital.name}" class="hospital-image">
+                        <div class="hospital-image-overlay">${hospital.name}</div>
                     </div>
                     <div class="hospital-info">
-                        <h3 class="hospital-name">${hospital.name}</h3>
-                        <div class="hospital-details">
-                            <div class="hospital-detail">
+                        <div class="hospital-header">
+                            <div class="hospital-name">
+                                <span class="name-text">${hospital.name}</span>
+                                <div class="status-badges">
+                                    ${hospital.type === 'General' ? '<span class="status verified"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
+                                    ${hospital.type === 'Specialized' ? '<span class="status emergency"><i class="fas fa-star"></i> Specialized</span>' : ''}
+                                    ${hospital.type === 'Teaching' ? '<span class="status"><i class="fas fa-graduation-cap"></i> Teaching</span>' : ''}
+                                    ${hospital.type === 'District' ? '<span class="status"><i class="fas fa-hospital"></i> District</span>' : ''}
+                                </div>
+                            </div>
+                            <div class="hospital-location">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>${hospital.city}, ${hospital.country}</span>
                             </div>
+                        </div>
+                        <div class="hospital-details">
                             <div class="hospital-detail">
                                 <i class="fas fa-phone"></i>
-                                <span>${hospital.phone}</span>
+                                <div class="detail-content">
+                                    <div class="detail-label">Phone</div>
+                                    <div class="detail-value">${hospital.phone}</div>
+                                </div>
                             </div>
                             ${hospital.email ? `
                             <div class="hospital-detail">
                                 <i class="fas fa-envelope"></i>
-                                <span>${hospital.email}</span>
+                                <div class="detail-content">
+                                    <div class="detail-label">Email</div>
+                                    <div class="detail-value">${hospital.email}</div>
+                                </div>
+                            </div>
+                            ` : ''}
+                            ${hospital.address ? `
+                            <div class="hospital-detail">
+                                <i class="fas fa-map"></i>
+                                <div class="detail-content">
+                                    <div class="detail-label">Address</div>
+                                    <div class="detail-value">${hospital.address}</div>
+                                </div>
                             </div>
                             ` : ''}
                             <div class="hospital-detail">
                                 <i class="fas fa-hospital"></i>
-                                <span>${hospital.type}</span>
+                                <div class="detail-content">
+                                    <div class="detail-label">Type</div>
+                                    <div class="detail-value">${hospital.type}</div>
+                                </div>
                             </div>
                         </div>
+                        ${hospital.services && hospital.services.length > 0 ? `
                         <div class="services-section">
-                            <h4>Services Offered</h4>
+                            <h4><i class="fas fa-stethoscope"></i> Services Offered</h4>
                             <div class="services-list">
-                                ${hospital.services ? hospital.services.map(service => 
+                                ${hospital.services.map(service => 
                                     `<span class="service-tag">${service}</span>`
-                                ).join('') : ''}
+                                ).join('')}
                             </div>
                         </div>
+                        ` : ''}
                         <div class="hospital-actions">
                             <a href="tel:${hospital.phone}" class="action-button call-now">
-                                <i class="fas fa-phone"></i> Call
+                                <i class="fas fa-phone"></i> Call Now
                             </a>
-                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hospital.address}, ${hospital.city}, ${hospital.state} ${hospital.country}`)}" 
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hospital.address || ''}, ${hospital.city}, ${hospital.state || ''} ${hospital.country}`)}" 
                                class="action-button get-directions" target="_blank">
                                 <i class="fas fa-directions"></i> Get Directions
                             </a>
+                        </div>
+                    </div>
+                    <div class="hospital-meta">
+                        <div class="type">
+                            <i class="fas fa-hospital"></i>
+                            ${hospital.type} Hospital
+                        </div>
+                        <div class="distance">
+                            <i class="fas fa-location-arrow"></i>
+                            Available 24/7
                         </div>
                     </div>
                 </div>
