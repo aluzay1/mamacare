@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -12,16 +14,22 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo">MamaCare</div>
-            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <div class="logo"><a href="index.html" style="color: #ffffff; text-decoration: none; font-family: 'Poppins', sans-serif;">MamaCare</a></div>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="hospitals.html">Hospitals</a></li>
-                <li><a href="doctors.html">Doctors</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
-                <li><a href="medical_records.html" class="active">Medical Records</a></li>
+                <li><a href="doctors.html">Healthcare Professionals</a></li>
+                <li><a href="medical_records_view.html">Medical Records</a></li>
+                <li><a href="medical_records_view - Copy.html" class="active">Healthcare Provider Access</a></li>
             </ul>
         </nav>
+        <div class="nav-overlay" id="nav-overlay"></div>
     </header>
 
     <section class="auth-section">
@@ -65,18 +73,18 @@
                     <h3><i class="fas fa-user"></i> Basic Information</h3>
                     <div class="form-grid">
                         <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" class="form-control" required>
+                            <label for="first_name">First Name</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="given_name">Given Name</label>
-                            <input type="text" id="given_name" name="given_name" class="form-control" required>
+                            <label for="middle_name">Middle Name</label>
+                            <input type="text" id="middle_name" name="middle_name" class="form-control">
                         </div>
 
                         <div class="form-group">
-                            <label for="family_name">Family Name</label>
-                            <input type="text" id="family_name" name="family_name" class="form-control" required>
+                            <label for="last_name">Last Name</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" required>
                         </div>
 
                         <div class="form-group">
@@ -88,9 +96,7 @@
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" class="form-control" required>
                     <option value="" disabled selected>Select gender</option>
-                    <option value="male">Male</option>
                     <option value="female">Female</option>
-                    <option value="other">Other</option>
                 </select>
                         </div>
                     </div>
@@ -116,12 +122,59 @@
 
                         <div class="form-group">
                             <label for="city">City</label>
-                            <input type="text" id="city" name="city" class="form-control" required>
+                            <select id="city" name="city" class="form-control" required>
+                                <option value="" disabled selected>Select city</option>
+                                <option value="Freetown">Freetown</option>
+                                <option value="Bo">Bo</option>
+                                <option value="Kenema">Kenema</option>
+                                <option value="Makeni">Makeni</option>
+                                <option value="Koidu">Koidu</option>
+                                <option value="Port Loko">Port Loko</option>
+                                <option value="Kabala">Kabala</option>
+                                <option value="Kailahun">Kailahun</option>
+                                <option value="Kambia">Kambia</option>
+                                <option value="Kono">Kono</option>
+                                <option value="Pujehun">Pujehun</option>
+                                <option value="Tonkolili">Tonkolili</option>
+                                <option value="Bonthe">Bonthe</option>
+                                <option value="Moyamba">Moyamba</option>
+                                <option value="Karene">Karene</option>
+                                <option value="Falaba">Falaba</option>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
                             <label for="state">State/Province</label>
-                            <input type="text" id="state" name="state" class="form-control" required>
+                            <select id="state" name="state" class="form-control" required>
+                                <option value="" disabled selected>Select state/province</option>
+                                <!-- Provinces -->
+                                <optgroup label="Provinces">
+                                    <option value="Eastern Province">Eastern Province</option>
+                                    <option value="Northern Province">Northern Province</option>
+                                    <option value="Southern Province">Southern Province</option>
+                                    <option value="Western Area">Western Area</option>
+                                </optgroup>
+                                <!-- Districts -->
+                                <optgroup label="Districts">
+                                    <option value="Bo District">Bo District</option>
+                                    <option value="Bombali District">Bombali District</option>
+                                    <option value="Bonthe District">Bonthe District</option>
+                                    <option value="Falaba District">Falaba District</option>
+                                    <option value="Kailahun District">Kailahun District</option>
+                                    <option value="Kambia District">Kambia District</option>
+                                    <option value="Kenema District">Kenema District</option>
+                                    <option value="Koinadugu District">Koinadugu District</option>
+                                    <option value="Kono District">Kono District</option>
+                                    <option value="Moyamba District">Moyamba District</option>
+                                    <option value="Port Loko District">Port Loko District</option>
+                                    <option value="Pujehun District">Pujehun District</option>
+                                    <option value="Tonkolili District">Tonkolili District</option>
+                                    <option value="Western Area Rural District">Western Area Rural District</option>
+                                    <option value="Western Area Urban District">Western Area Urban District</option>
+                                </optgroup>
+                                <option value="Other">Other</option>
+                            </select>
                         </div>
 
                         <div class="form-group">
@@ -766,27 +819,67 @@
         <!-- Add New Record Section -->
         <div class="record-container">
             <div class="add-record">
+                <div class="section-header">
+                    <i class="fas fa-plus-circle"></i>
                 <h2>Add New Record</h2>
-                <form id="addRecordForm">
-                    <label for="date">Date:</label>
-                    <input type="date" id="date" name="date" required>
-                    
-                    <label for="diagnosis">Diagnosis:</label>
-                    <textarea id="diagnosis" name="diagnosis" placeholder="Enter diagnosis details..." required></textarea>
-                    
-                    <label for="treatment">Treatment:</label>
-                    <textarea id="treatment" name="treatment" placeholder="Enter treatment details..." required></textarea>
-                    
-                    <label for="medication">Medication:</label>
-                    <textarea id="medication" name="medication" placeholder="Enter prescribed medication..." required></textarea>
-                    
-                    <label for="doctor">Doctor's Name:</label>
-                    <input type="text" id="doctor" name="doctor" placeholder="Enter doctor's name" required>
+                </div>
+                <form id="addRecordForm" class="modern-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="date">
+                                <i class="fas fa-calendar-alt"></i>
+                                Date
+                            </label>
+                            <input type="date" id="date" name="date" class="form-control" required>
+                        </div>
 
-                    <label for="hospital">Hospital:</label>
-                    <input type="text" id="hospital" name="hospital" placeholder="Enter hospital name" required>
-                    
-                    <button type="submit" class="btn-primary">Add Record</button>
+                        <div class="form-group">
+                            <label for="doctor">
+                                <i class="fas fa-user-md"></i>
+                                Doctor's Name
+                            </label>
+                            <input type="text" id="doctor" name="doctor" class="form-control" placeholder="Enter doctor's name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="hospital">
+                                <i class="fas fa-hospital"></i>
+                                Hospital
+                            </label>
+                            <input type="text" id="hospital" name="hospital" class="form-control" placeholder="Enter hospital name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="diagnosis">
+                                <i class="fas fa-stethoscope"></i>
+                                Diagnosis
+                            </label>
+                            <textarea id="diagnosis" name="diagnosis" class="form-control compact" placeholder="Enter diagnosis..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="treatment">
+                                <i class="fas fa-notes-medical"></i>
+                                Treatment
+                            </label>
+                            <textarea id="treatment" name="treatment" class="form-control compact" placeholder="Enter treatment..." required></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="medication">
+                                <i class="fas fa-pills"></i>
+                                Medication
+                            </label>
+                            <textarea id="medication" name="medication" class="form-control compact" placeholder="Enter medication..." required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-plus"></i>
+                            Add Record
+                        </button>
+                    </div>
                 </form>
             </div>
 
@@ -1169,33 +1262,127 @@
         .nav-links li a {
             color: #fff;
             text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li a.active {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
         }
 
         .menu-toggle {
             display: none;
-            font-size: 28px;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
             cursor: pointer;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
         }
 
         @media (max-width: 768px) {
             .menu-toggle {
-                display: block;
+                display: flex;
             }
 
             .nav-links {
-                display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
                 flex-direction: column;
-                background-color: #2c3e50;
-                width: 100%;
-                position: absolute;
-                top: 60px;
-                left: 0;
-                text-align: center;
-                padding: 10px 0;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 80px 20px 20px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                z-index: 999;
             }
 
             .nav-links.active {
-                display: flex;
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid transparent;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateX(5px);
+            }
+
+            .nav-links a.active {
+                background: #3498db;
+                border-color: #3498db;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            }
+
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 998;
+            }
+
+            .nav-overlay.active {
+                opacity: 1;
+                visibility: visible;
             }
         }
 
@@ -1442,6 +1629,7 @@
             color: #4158D0;
             background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -1452,6 +1640,7 @@
             font-weight: 600;
             background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
@@ -1774,6 +1963,747 @@
                 font-size: 0.85rem;
             }
         }
+
+        /* Modern Form Styles */
+        .modern-form {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .modern-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .modern-form label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .modern-form label i {
+            color: #3498db;
+        }
+
+        .modern-form .form-control {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .modern-form .form-control:focus {
+            border-color: #3498db;
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            outline: none;
+        }
+
+        .modern-form textarea.form-control {
+            min-height: 80px;
+            max-height: 150px;
+            resize: vertical;
+        }
+
+        .modern-form .form-actions {
+            margin-top: 2rem;
+            text-align: right;
+        }
+
+        .modern-form .btn-primary {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+        }
+
+        .modern-form .btn-primary:hover {
+            background-color: #2980b9;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(52, 152, 219, 0.3);
+        }
+
+        .modern-form .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(52, 152, 219, 0.2);
+        }
+
+        .modern-form .form-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .modern-form .form-group {
+            margin-bottom: 0;
+            min-width: 0; /* Prevents overflow */
+        }
+
+        .modern-form label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .modern-form .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background-color: #f8fafc;
+        }
+
+        .modern-form textarea.form-control.compact {
+            min-height: 40px;
+            max-height: 60px;
+            resize: vertical;
+            overflow-y: auto;
+            padding: 0.5rem;
+        }
+
+        @media (max-width: 1200px) {
+            .modern-form .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .modern-form {
+                padding: 1.5rem;
+            }
+
+            .modern-form .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .modern-form .btn-primary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Enhanced Responsive Design */
+        @media (max-width: 1200px) {
+            .patient-profile {
+                max-width: 95%;
+                margin: 1.5rem auto;
+            }
+            
+            .profile-content {
+                padding: 2rem;
+                gap: 2rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .patient-profile {
+                max-width: 98%;
+                margin: 1rem auto;
+            }
+            
+            .profile-header {
+                padding: 2.5rem;
+            }
+            
+            .patient-basic-info h2 {
+                font-size: 2.2rem;
+            }
+            
+            .patient-ids {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 1.5rem;
+            }
+            
+            .profile-content {
+                padding: 1.5rem;
+                gap: 1.5rem;
+            }
+            
+            .profile-section {
+                padding: 1.5rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .patient-profile {
+                max-width: 100%;
+                margin: 0.5rem;
+                border-radius: 12px;
+            }
+            
+            .profile-header {
+                padding: 2rem;
+            }
+            
+            .profile-header::after {
+                width: 200px;
+                height: 200px;
+                bottom: -30px;
+                right: -30px;
+            }
+            
+            .patient-basic-info h2 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+            
+            .patient-ids {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .profile-content {
+                padding: 1rem;
+                gap: 1rem;
+            }
+            
+            .profile-section {
+                padding: 1rem;
+                border-radius: 12px;
+            }
+            
+            .section-header {
+                margin-bottom: 1.5rem;
+                padding-bottom: 0.75rem;
+            }
+            
+            .section-header h3 {
+                font-size: 1.2rem;
+            }
+            
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .info-item {
+                padding: 1rem;
+            }
+            
+            .info-item label {
+                font-size: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .info-item span {
+                font-size: 0.9rem;
+            }
+            
+            /* Enhanced table responsiveness */
+            .table-container {
+                margin: 0 -0.5rem;
+                border-radius: 8px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            table {
+                min-width: 600px;
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+                white-space: nowrap;
+            }
+            
+            /* Stack table on very small screens */
+            @media (max-width: 480px) {
+                .table-container {
+                    overflow-x: auto;
+                }
+                
+                table {
+                    min-width: 500px;
+                }
+                
+                th, td {
+                    padding: 0.5rem 0.25rem;
+                    font-size: 0.8rem;
+                }
+            }
+        }
+
+        @media (max-width: 576px) {
+            .patient-profile {
+                margin: 0.25rem;
+                border-radius: 8px;
+            }
+            
+            .profile-header {
+                padding: 1.5rem;
+            }
+            
+            .profile-header::after {
+                display: none;
+            }
+            
+            .patient-basic-info h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+            
+            .patient-ids {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                gap: 0.5rem;
+            }
+            
+            .profile-content {
+                padding: 0.75rem;
+                gap: 0.75rem;
+            }
+            
+            .profile-section {
+                padding: 0.75rem;
+                border-radius: 8px;
+            }
+            
+            .section-header {
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+                gap: 0.5rem;
+            }
+            
+            .section-header i {
+                font-size: 1.2rem;
+            }
+            
+            .section-header h3 {
+                font-size: 1.1rem;
+            }
+            
+            .info-grid {
+                gap: 0.5rem;
+            }
+            
+            .info-item {
+                padding: 0.75rem;
+                border-radius: 8px;
+            }
+            
+            .info-item label {
+                font-size: 0.7rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .info-item span {
+                font-size: 0.85rem;
+            }
+            
+            /* Button adjustments */
+            .btn-edit, .btn-primary {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+                border-radius: 6px;
+            }
+            
+            .btn-delete {
+                padding: 0.25rem 0.5rem;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .patient-profile {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .profile-header {
+                padding: 1rem;
+                border-radius: 0;
+            }
+            
+            .patient-basic-info h2 {
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .patient-ids {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+                border-radius: 6px;
+            }
+            
+            .profile-content {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+            
+            .profile-section {
+                padding: 0.5rem;
+                border-radius: 6px;
+                margin-bottom: 0.5rem;
+            }
+            
+            .section-header {
+                margin-bottom: 0.75rem;
+                padding-bottom: 0.5rem;
+            }
+            
+            .section-header i {
+                font-size: 1rem;
+            }
+            
+            .section-header h3 {
+                font-size: 1rem;
+            }
+            
+            .info-grid {
+                gap: 0.25rem;
+            }
+            
+            .info-item {
+                padding: 0.5rem;
+                border-radius: 6px;
+            }
+            
+            .info-item label {
+                font-size: 0.65rem;
+                margin-bottom: 0.25rem;
+            }
+            
+            .info-item span {
+                font-size: 0.8rem;
+            }
+            
+            /* Form inputs */
+            .input-field {
+                padding: 0.5rem;
+                font-size: 0.85rem;
+                border-radius: 4px;
+            }
+            
+            /* Table improvements for very small screens */
+            .table-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            table {
+                min-width: 400px;
+                font-size: 0.75rem;
+            }
+            
+            th, td {
+                padding: 0.25rem;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .patient-basic-info h2 {
+                font-size: 1.1rem;
+            }
+            
+            .patient-ids {
+                font-size: 0.7rem;
+                padding: 0.25rem 0.5rem;
+            }
+            
+            .profile-content {
+                padding: 0.25rem;
+            }
+            
+            .profile-section {
+                padding: 0.25rem;
+            }
+            
+            .info-item {
+                padding: 0.25rem;
+            }
+            
+            .info-item label {
+                font-size: 0.6rem;
+            }
+            
+            .info-item span {
+                font-size: 0.75rem;
+            }
+            
+            table {
+                min-width: 350px;
+                font-size: 0.7rem;
+            }
+            
+            th, td {
+                padding: 0.2rem;
+                font-size: 0.65rem;
+            }
+        }
+
+        /* Landscape orientation adjustments */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .profile-header {
+                padding: 1rem;
+            }
+            
+            .patient-basic-info h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .patient-ids {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+            
+            .profile-content {
+                padding: 0.5rem;
+                gap: 0.5rem;
+            }
+            
+            .profile-section {
+                padding: 0.5rem;
+            }
+        }
+
+        /* High DPI displays */
+        @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+            .info-item {
+                border-width: 0.5px;
+            }
+            
+            .section-header {
+                border-bottom-width: 1px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .patient-profile {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+            
+            .profile-header {
+                background: #f8f9fa !important;
+                color: #333 !important;
+            }
+            
+            .btn-edit, .btn-primary, .btn-delete {
+                display: none;
+            }
+            
+            .table-container {
+                box-shadow: none;
+                border: 1px solid #ccc;
+            }
+        }
+
+        /* Mobile-friendly improvements */
+        @media (max-width: 768px) {
+            /* Touch-friendly buttons */
+            .btn-edit, .btn-primary, .btn-delete, .btn-download {
+                min-height: 44px;
+                min-width: 44px;
+                touch-action: manipulation;
+            }
+            
+            /* Better form inputs for mobile */
+            .input-field {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px;
+                border-radius: 8px;
+                border: 2px solid #e1e5e9;
+                transition: border-color 0.3s ease;
+            }
+            
+            .input-field:focus {
+                border-color: #4158D0;
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(65, 88, 208, 0.1);
+            }
+            
+            /* Improved table scrolling */
+            .table-container {
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+                scrollbar-color: #4158D0 #f1f1f1;
+            }
+            
+            .table-container::-webkit-scrollbar {
+                height: 6px;
+            }
+            
+            .table-container::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 3px;
+            }
+            
+            .table-container::-webkit-scrollbar-thumb {
+                background: #4158D0;
+                border-radius: 3px;
+            }
+            
+            .table-container::-webkit-scrollbar-thumb:hover {
+                background: #2c3e50;
+            }
+            
+            /* Better spacing for touch targets */
+            .info-item {
+                margin-bottom: 8px;
+            }
+            
+            /* Improved section headers */
+            .section-header {
+                position: sticky;
+                top: 0;
+                background: white;
+                z-index: 10;
+                margin: -1rem -1rem 1rem -1rem;
+                padding: 1rem;
+                border-radius: 12px 12px 0 0;
+            }
+        }
+
+        /* Accessibility improvements */
+        @media (prefers-reduced-motion: reduce) {
+            .profile-section,
+            .info-item,
+            .btn-edit,
+            .btn-primary,
+            .btn-delete {
+                transition: none;
+            }
+            
+            .profile-section:hover,
+            .info-item:hover {
+                transform: none;
+            }
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .info-item {
+                border: 2px solid #000;
+            }
+            
+            .section-header {
+                border-bottom: 3px solid #000;
+            }
+            
+            .btn-edit, .btn-primary {
+                border: 2px solid #000;
+            }
+        }
+
+        /* Dark mode support */
+        @media (prefers-color-scheme: dark) {
+            .patient-profile {
+                background: #1a1a1a;
+                color: #ffffff;
+            }
+            
+            .profile-section {
+                background: #2d2d2d;
+                border-color: #404040;
+            }
+            
+            .info-item {
+                background: #333333;
+                border-color: #404040;
+            }
+            
+            .info-item label {
+                color: #cccccc;
+            }
+            
+            .info-item span {
+                color: #ffffff;
+            }
+            
+            .section-header {
+                border-bottom-color: #404040;
+            }
+            
+            .table-container {
+                background: #2d2d2d;
+            }
+            
+            th {
+                background-color: #333333;
+                color: #ffffff;
+            }
+            
+            td {
+                color: #ffffff;
+                border-bottom-color: #404040;
+            }
+        }
+
+        /* Focus styles for better accessibility */
+        .btn-edit:focus,
+        .btn-primary:focus,
+        .btn-delete:focus,
+        .input-field:focus {
+            outline: 2px solid #4158D0;
+            outline-offset: 2px;
+        }
+
+        /* Loading states */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #4158D0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
     </style>
 
     <script>
@@ -2044,6 +2974,19 @@
             
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
+            
+            // Construct the full name from first, middle, and last name
+            const firstName = data.first_name || '';
+            const middleName = data.middle_name || '';
+            const lastName = data.last_name || '';
+            
+            // Create full name by combining the parts
+            const fullName = [firstName, middleName, lastName].filter(part => part.trim()).join(' ');
+            
+            // Add the constructed name fields to the data object
+            data.name = fullName;
+            data.given_name = firstName;
+            data.family_name = lastName;
             
             const submitButton = e.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
@@ -2338,9 +3281,31 @@
 
         const toggle = document.getElementById('menu-toggle');
         const navLinks = document.getElementById('nav-links');
+        const navOverlay = document.getElementById('nav-overlay');
 
         toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
             navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        navOverlay.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close menu when clicking on a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
         });
 
         function enableProfileEdit() {
@@ -2394,22 +3359,35 @@
 
         async function saveProfileChanges() {
             try {
-                // Helper function to format date
-                function formatDate(dateStr) {
-                    if (!dateStr) return null;
-                    // Handle DD/MM/YYYY format
-                    if (dateStr.includes('/')) {
-                        const [day, month, year] = dateStr.split('/');
-                        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+                // Helper function to format date for backend
+                function formatDateForBackend(dateString) {
+                    if (!dateString) return null;
+                    
+                    // If it's already in YYYY-MM-DD format, return as is
+                    if (/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+                        return dateString;
                     }
-                    return dateStr;
+                    
+                    // Try to parse and format the date
+                    try {
+                        const date = new Date(dateString);
+                        if (isNaN(date.getTime())) {
+                            console.warn('Invalid date format:', dateString);
+                            return null;
+                        }
+                        return date.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+                    } catch (error) {
+                        console.warn('Error formatting date:', error);
+                        return null;
+                    }
                 }
 
+                // Collect all the updated data
                 const data = {
                     pin: window.currentPatientPIN,
                     // Basic Information
                     name: document.getElementById('patientNameInput').value,
-                    date_of_birth: formatDate(document.getElementById('patientDobInput').value),
+                    date_of_birth: formatDateForBackend(document.getElementById('patientDobInput').value),
                     gender: document.getElementById('patientGenderInput').value,
                     blood_type: document.getElementById('patientBloodTypeInput').value,
                     marital_status: document.getElementById('patientMaritalStatusInput').value,
@@ -2431,38 +3409,9 @@
                     emergency_contact_relationship: document.getElementById('emergencyContactRelationshipInput').value
                 };
 
-                // Only include pregnancy information if gender is female
-                if (data.gender === 'female') {
-                    data.pregnancy_status = document.getElementById('pregnancyStatusInput').value;
-                    data.previous_pregnancies = parseInt(document.getElementById('previousPregnanciesInput').value) || 0;
-                    
-                    // Preserve existing LMP date and gestational age
-                    const currentProfile = await fetch(`http://localhost:5000/api/patient/profile?pin=${window.currentPatientPIN}`, {
-                        method: 'GET',
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    }).then(res => res.json());
-
-                    data.lmp_date = currentProfile.lmp_date;
-                    data.gestational_age = currentProfile.gestational_age;
-                    
-                    // Only update other pregnancy-related fields
-                    data.multiple_pregnancy = document.getElementById('multiplePregnancyInput').value;
-                    data.risk_level = document.getElementById('riskLevelInput').value;
-                    data.risk_factors = Array.from(document.getElementById('riskFactorsInput').selectedOptions).map(option => option.value);
-                    data.blood_pressure = document.getElementById('bloodPressureInput').value;
-                    data.hemoglobin = parseFloat(document.getElementById('hemoglobinInput').value) || null;
-                    data.blood_sugar = parseFloat(document.getElementById('bloodSugarInput').value) || null;
-                    data.weight = parseFloat(document.getElementById('weightInput').value) || null;
-                    data.prenatal_vitamins = document.getElementById('prenatalVitaminsInput').value;
-                    data.pregnancy_complications = document.getElementById('pregnancyComplicationsInput').value;
-                    data.emergency_hospital = document.getElementById('emergencyHospitalInput').value;
-                    data.birth_plan = document.getElementById('birthPlanInput').value;
-                }
-
                 console.log('Sending profile update data:', data);
 
+                // Send the updated data to the backend
                 const response = await fetch('http://localhost:5000/api/patient/profile', {
                     method: 'PUT',
                     headers: {
@@ -2472,71 +3421,58 @@
                     body: JSON.stringify(data)
                 });
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to update profile');
-                }
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
 
-                const updatedProfile = await response.json();
-                console.log('Profile update successful:', updatedProfile);
+                if (response.ok) {
+                    const responseData = await response.json();
+                    console.log('Response data:', responseData);
+                    
+                    // Update the display elements with the new values
+                    const basicFields = [
+                        'patientName', 'patientDob', 'patientGender',
+                        'patientBloodType', 'patientMaritalStatus', 'patientLanguage', 'patientNationality'
+                    ];
 
-                // Update the display with the new data
-                updateProfileDisplay(updatedProfile);
+                    const contactFields = [
+                        'patientEmail', 'patientPhone', 'patientAddress'
+                    ];
 
-                // Hide all input fields and show display fields
-                const allFields = [
-                    'patientName', 'patientDob', 'patientGender', 'patientBloodType',
-                    'patientMaritalStatus', 'patientLanguage', 'patientNationality',
-                    'patientEmail', 'patientPhone', 'patientAddress',
-                    'patientAllergies', 'patientMedications',
-                    'emergencyContactName', 'emergencyContactPhone', 'emergencyContactRelationship',
-                    'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
-                    'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
-                    'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
-                    'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
-                ];
+                    const medicalFields = [
+                        'patientAllergies', 'patientMedications'
+                    ];
 
-                allFields.forEach(field => {
+                    const emergencyFields = [
+                        'emergencyContactName', 'emergencyContactPhone', 'emergencyContactRelationship'
+                    ];
+
+                    // Update display and hide inputs
+                    [...basicFields, ...contactFields, ...medicalFields, ...emergencyFields].forEach(field => {
                     const display = document.getElementById(field + "Display");
                     const input = document.getElementById(field + "Input");
                     if (display && input) {
-                        input.style.display = "none";
+                            display.textContent = input.value;
                         display.style.display = "block";
+                            input.style.display = "none";
                     }
                 });
 
                 document.getElementById("saveProfileBtn").style.display = "none";
-                alert('Profile updated successfully!');
-
+                    alert('Profile changes saved successfully!');
+                } else {
+                    const errorData = await response.json();
+                    console.error('Error response:', errorData);
+                    throw new Error(errorData.error || 'Failed to save profile changes');
+                }
             } catch (error) {
-                console.error('Error updating profile:', error);
-                alert(`Error updating profile: ${error.message}`);
+                console.error('Error saving profile changes:', error);
+                alert('Failed to save profile changes: ' + error.message);
             }
         }
 
-        function formatDateForBackend(dateString) {
-            if (!dateString) return null;
-            
-            // Handle different date formats
-            if (dateString.includes('/')) {
-                const [day, month, year] = dateString.split('/');
-                return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-            }
-            
-            return dateString;
-        }
-
-        function isValidDate(dateString) {
-            const regex = /^\d{4}-\d{2}-\d{2}$/;
-            if (!regex.test(dateString)) return false;
-            
-            const date = new Date(dateString);
-            return date instanceof Date && !isNaN(date);
-        }
-
-        // Add automatic gestational age calculation for registration form
-        document.getElementById('lmp_date').addEventListener('change', function() {
-            const lmpDate = this.value;
+        // Add this function to automatically update gestational age
+        function updateGestationalAge() {
+            const lmpDate = document.getElementById('lmpDateInput').value;
             if (lmpDate) {
                 const lmp = new Date(lmpDate);
                 const today = new Date();
@@ -2545,122 +3481,31 @@
                 const weeks = Math.floor(diffDays / 7);
                 const days = diffDays % 7;
                 
-                // Update the gestational age display if it exists
-                const gestationalAgeDisplay = document.getElementById('gestationalAgeDisplay');
-                if (gestationalAgeDisplay) {
-                    gestationalAgeDisplay.textContent = `${weeks} weeks, ${days} days`;
-                }
-            }
-        });
-
-        // Update the existing loadProfile function
-        async function loadProfile(profile) {
-            try {
-                // Basic Information
-                document.getElementById('patientNameDisplay').textContent = profile.name || 'Not available';
-                document.getElementById('patientDobDisplay').textContent = profile.date_of_birth ? 
-                    new Date(profile.date_of_birth).toLocaleDateString() : 'Not available';
-                document.getElementById('patientGenderDisplay').textContent = profile.gender || 'Not available';
-                document.getElementById('patientBloodTypeDisplay').textContent = profile.blood_type || 'Not available';
-                document.getElementById('patientMaritalStatusDisplay').textContent = profile.marital_status || 'Not available';
-                document.getElementById('patientLanguageDisplay').textContent = profile.language || 'Not available';
-                document.getElementById('patientNationalityDisplay').textContent = profile.nationality || 'Not available';
-                
-                // Contact Information
-                document.getElementById('patientEmailDisplay').textContent = profile.email || 'Not available';
-                document.getElementById('patientPhoneDisplay').textContent = profile.phone || 'Not available';
-                
-                // Format address without duplication
-                let addressParts = [];
-                
-                // Add address line if it exists
-                if (profile.address_line && profile.address_line.trim()) {
-                    addressParts.push(profile.address_line.trim());
-                }
-                
-                // Add city if it exists and is not already in the address line
-                if (profile.city && profile.city.trim() && !profile.address_line.includes(profile.city)) {
-                    addressParts.push(profile.city.trim());
-                }
-                
-                // Add state if it exists and is not already in the address line
-                if (profile.state && profile.state.trim() && !profile.address_line.includes(profile.state)) {
-                    addressParts.push(profile.state.trim());
-                }
-                
-                // Add postal code if it exists and is not already in the address line
-                if (profile.postal_code && profile.postal_code.trim() && !profile.address_line.includes(profile.postal_code)) {
-                    addressParts.push(profile.postal_code.trim());
-                }
-                
-                // Add country if it exists and is not already in the address line
-                if (profile.country && profile.country.trim() && !profile.address_line.includes(profile.country)) {
-                    addressParts.push(profile.country.trim());
-                }
-                
-                document.getElementById('patientAddressDisplay').textContent = 
-                    addressParts.length > 0 ? addressParts.join(', ') : 'Not available';
-                
-                // Medical Information
-                document.getElementById('patientAllergiesDisplay').textContent = profile.allergies || 'None reported';
-                document.getElementById('patientMedicationsDisplay').textContent = profile.medications || 'None reported';
-                
-                // Emergency Contact
-                document.getElementById('emergencyContactNameDisplay').textContent = profile.emergency_contact_name || 'Not available';
-                document.getElementById('emergencyContactPhoneDisplay').textContent = profile.emergency_contact_phone || 'Not available';
-                document.getElementById('emergencyContactRelationshipDisplay').textContent = profile.emergency_contact_relationship || 'Not available';
-                
-                // Patient IDs
-                document.getElementById('patientIdDisplay').textContent = profile.id || 'Not available';
-                document.getElementById('patientFhirIdDisplay').textContent = profile.fhir_id || 'Not available';
-
-                // Pregnancy information
-                if (profile.gender === 'female') {
-                    document.getElementById('pregnancyInfo').style.display = 'block';
-                    document.getElementById('pregnancyProfileSection').style.display = 'block';
-                    
-                    // Update all pregnancy fields
-                    document.getElementById('pregnancyStatusDisplay').textContent = profile.pregnancy_status || 'Not available';
-                    document.getElementById('previousPregnanciesDisplay').textContent = profile.previous_pregnancies || 'Not available';
-                    
-                    // Update LMP date and trigger gestational age calculation
-                    const lmpDateInput = document.getElementById('lmpDateInput');
-                    if (profile.lmp_date) {
-                        lmpDateInput.value = profile.lmp_date;
-                        updateGestationalAge();
-                    }
-                    
-                    document.getElementById('dueDateDisplay').textContent = profile.due_date ? 
-                        new Date(profile.due_date).toLocaleDateString() : 'Not available';
-                    document.getElementById('multiplePregnancyDisplay').textContent = profile.multiple_pregnancy || 'Not available';
-                    document.getElementById('riskLevelDisplay').textContent = profile.risk_level || 'Not available';
-                    
-                    // Update risk factors
-                    const riskFactorsDisplay = document.getElementById('riskFactorsDisplay');
-                    if (profile.risk_factors && Array.isArray(profile.risk_factors)) {
-                        riskFactorsDisplay.textContent = profile.risk_factors.join(', ') || 'None';
-                    } else {
-                        riskFactorsDisplay.textContent = 'None';
-                    }
-
-                    // Update other pregnancy-related fields
-                    document.getElementById('bloodPressureDisplay').textContent = profile.blood_pressure || 'Not available';
-                    document.getElementById('hemoglobinDisplay').textContent = profile.hemoglobin ? `${profile.hemoglobin} g/dL` : 'Not available';
-                    document.getElementById('bloodSugarDisplay').textContent = profile.blood_sugar ? `${profile.blood_sugar} mg/dL` : 'Not available';
-                    document.getElementById('weightDisplay').textContent = profile.weight ? `${profile.weight} kg` : 'Not available';
-                    document.getElementById('prenatalVitaminsDisplay').textContent = profile.prenatal_vitamins || 'Not available';
-                    document.getElementById('pregnancyComplicationsDisplay').textContent = profile.pregnancy_complications || 'None';
-                    document.getElementById('emergencyHospitalDisplay').textContent = profile.emergency_hospital || 'Not available';
-                    document.getElementById('birthPlanDisplay').textContent = profile.birth_plan || 'Not available';
-                } else {
-                    document.getElementById('pregnancyInfo').style.display = 'none';
-                    document.getElementById('pregnancyProfileSection').style.display = 'none';
-                }
-            } catch (error) {
-                console.error('Error updating profile display:', error);
-                alert('Error updating profile display. Please try again.');
+                document.getElementById('gestationalAgeDisplay').textContent = `${weeks} weeks, ${days} days`;
             }
         }
+
+        // Add event listener for LMP date changes
+        document.getElementById('lmpDateInput').addEventListener('change', updateGestationalAge);
+
+        // Function to set active navigation link based on current page
+        function setActiveNavLink() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveNavLink();
+        });
 
         // Update the savePregnancyChanges function
         async function savePregnancyChanges() {
@@ -2698,24 +3543,6 @@
                 alert('Failed to update pregnancy information');
             }
         }
-
-        // Add this function to automatically update gestational age
-        function updateGestationalAge() {
-            const lmpDate = document.getElementById('lmpDateInput').value;
-            if (lmpDate) {
-                const lmp = new Date(lmpDate);
-                const today = new Date();
-                const diffTime = Math.abs(today - lmp);
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                const weeks = Math.floor(diffDays / 7);
-                const days = diffDays % 7;
-                
-                document.getElementById('gestationalAgeDisplay').textContent = `${weeks} weeks, ${days} days`;
-            }
-        }
-
-        // Add event listener for LMP date changes
-        document.getElementById('lmpDateInput').addEventListener('change', updateGestationalAge);
     </script>
 </body>
 </html>

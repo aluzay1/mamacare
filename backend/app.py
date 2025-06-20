@@ -1077,85 +1077,177 @@ def get_pharmacies():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/admin/hospitals/<int:hospital_id>', methods=['PUT'])
+@app.route('/api/admin/hospitals/<int:hospital_id>', methods=['GET', 'PUT', 'DELETE'])
 @admin_required
 def update_hospital(hospital_id):
-    try:
-        hospital = Hospital.query.get_or_404(hospital_id)
-        data = request.form.to_dict()
-        image = request.files.get('image')
+    hospital = Hospital.query.get_or_404(hospital_id)
+    
+    if request.method == 'GET':
+        return jsonify({
+            'id': hospital.id,
+            'name': hospital.name,
+            'license_number': hospital.license_number,
+            'address': hospital.address,
+            'city': hospital.city,
+            'state': hospital.state,
+            'postal_code': hospital.postal_code,
+            'country': hospital.country,
+            'phone': hospital.phone,
+            'email': hospital.email,
+            'website': hospital.website,
+            'services': json.loads(hospital.services) if hospital.services else [],
+            'image_url': hospital.image_url,
+            'is_verified': hospital.is_verified,
+            'created_at': hospital.created_at.isoformat(),
+            'updated_at': hospital.updated_at.isoformat()
+        })
+    
+    elif request.method == 'PUT':
+        try:
+            # Handle both form data and JSON data
+            if request.is_json:
+                data = request.get_json()
+            else:
+                data = request.form.to_dict()
+                
+            image = request.files.get('image')
 
-        # Handle image upload
-        if image:
-            # Create uploads directory if it doesn't exist
-            upload_dir = os.path.join('static', 'uploads', 'hospitals')
-            os.makedirs(upload_dir, exist_ok=True)
+            # Handle image upload
+            if image:
+                # Create uploads directory if it doesn't exist
+                upload_dir = os.path.join('static', 'uploads', 'hospitals')
+                os.makedirs(upload_dir, exist_ok=True)
+                
+                # Generate unique filename
+                filename = secure_filename(f"{hospital.license_number}_{image.filename}")
+                image_path = os.path.join(upload_dir, filename)
+                
+                # Save the image
+                image.save(image_path)
+                hospital.image_url = f"/static/uploads/hospitals/{filename}"
+
+            # Update fields
+            hospital.name = data.get('name', hospital.name)
+            hospital.license_number = data.get('license_number', hospital.license_number)
+            hospital.email = data.get('email', hospital.email)
+            hospital.phone = data.get('phone', hospital.phone)
+            hospital.address = data.get('address', hospital.address)
+            hospital.city = data.get('city', hospital.city)
+            hospital.state = data.get('state', hospital.state)
+            hospital.postal_code = data.get('postal_code', hospital.postal_code)
+            hospital.country = data.get('country', hospital.country)
+            hospital.website = data.get('website', hospital.website)
             
-            # Generate unique filename
-            filename = secure_filename(f"{hospital.license_number}_{image.filename}")
-            image_path = os.path.join(upload_dir, filename)
-            
-            # Save the image
-            image.save(image_path)
-            hospital.image_url = f"/static/uploads/hospitals/{filename}"
+            # Handle is_verified field properly for both form and JSON data
+            if 'is_verified' in data:
+                if isinstance(data['is_verified'], bool):
+                    hospital.is_verified = data['is_verified']
+                else:
+                    hospital.is_verified = data['is_verified'] == 'on'
 
-        # Update fields
-        hospital.name = data.get('name', hospital.name)
-        hospital.license_number = data.get('license_number', hospital.license_number)
-        hospital.email = data.get('email', hospital.email)
-        hospital.phone = data.get('phone', hospital.phone)
-        hospital.address = data.get('address', hospital.address)
-        hospital.city = data.get('city', hospital.city)
-        hospital.state = data.get('state', hospital.state)
-        hospital.postal_code = data.get('postal_code', hospital.postal_code)
-        hospital.country = data.get('country', hospital.country)
-        hospital.website = data.get('website', hospital.website)
-        hospital.is_verified = data.get('is_verified') == 'on'
+            # Update services if provided
+            if 'services' in data:
+                if isinstance(data['services'], list):
+                    # If services is already a list, convert it to JSON string
+                    hospital.services = json.dumps(data['services'])
+                else:
+                    try:
+                        services = json.loads(data['services'])
+                    except json.JSONDecodeError:
+                        services = [s.strip() for s in data['services'].split('\n') if s.strip()]
+                    hospital.services = json.dumps(services)
 
-        # Update services if provided
-        if 'services' in data:
-            try:
-                services = json.loads(data['services'])
-            except json.JSONDecodeError:
-                services = [s.strip() for s in data['services'].split('\n') if s.strip()]
-            hospital.services = json.dumps(services)
+            db.session.commit()
+            return jsonify({'message': 'Hospital updated successfully'}), 200
 
-        db.session.commit()
-        return jsonify({'message': 'Hospital updated successfully'}), 200
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f'Error updating hospital: {str(e)}')
+            return jsonify({'error': str(e)}), 500
+    
+    elif request.method == 'DELETE':
+        try:
+            db.session.delete(hospital)
+            db.session.commit()
+            return jsonify({'message': 'Hospital deleted successfully'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500
 
-    except Exception as e:
-        db.session.rollback()
-        logger.error(f'Error updating hospital: {str(e)}')
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/admin/pharmacies/<int:pharmacy_id>', methods=['PUT'])
+@app.route('/api/admin/pharmacies/<int:pharmacy_id>', methods=['GET', 'PUT', 'DELETE'])
 @admin_required
 def update_pharmacy(pharmacy_id):
-    try:
-        pharmacy = Pharmacy.query.get_or_404(pharmacy_id)
-        data = request.form.to_dict()
-        
-        # Update fields
-        pharmacy.name = data.get('name', pharmacy.name)
-        pharmacy.license_number = data.get('license_number', pharmacy.license_number)
-        pharmacy.email = data.get('email', pharmacy.email)
-        pharmacy.phone = data.get('phone', pharmacy.phone)
-        pharmacy.address = data.get('address', pharmacy.address)
-        pharmacy.city = data.get('city', pharmacy.city)
-        pharmacy.state = data.get('state', pharmacy.state)
-        pharmacy.postal_code = data.get('postal_code', pharmacy.postal_code)
-        pharmacy.country = data.get('country', pharmacy.country)
-        pharmacy.website = data.get('website', pharmacy.website)
-        pharmacy.is_24_hours = data.get('is_24_hours') == 'on'
-        pharmacy.is_verified = data.get('is_verified') == 'on'
-        
-        db.session.commit()
-        return jsonify({'message': 'Pharmacy updated successfully'}), 200
-        
-    except Exception as e:
-        db.session.rollback()
-        logger.error(f'Error updating pharmacy: {str(e)}')
-        return jsonify({'error': str(e)}), 500
+    pharmacy = Pharmacy.query.get_or_404(pharmacy_id)
+    
+    if request.method == 'GET':
+        return jsonify({
+            'id': pharmacy.id,
+            'name': pharmacy.name,
+            'license_number': pharmacy.license_number,
+            'address': pharmacy.address,
+            'city': pharmacy.city,
+            'state': pharmacy.state,
+            'postal_code': pharmacy.postal_code,
+            'country': pharmacy.country,
+            'phone': pharmacy.phone,
+            'email': pharmacy.email,
+            'website': pharmacy.website,
+            'is_24_hours': pharmacy.is_24_hours,
+            'is_verified': pharmacy.is_verified,
+            'created_at': pharmacy.created_at.isoformat(),
+            'updated_at': pharmacy.updated_at.isoformat()
+        })
+    
+    elif request.method == 'PUT':
+        try:
+            # Handle both form data and JSON data
+            if request.is_json:
+                data = request.get_json()
+            else:
+                data = request.form.to_dict()
+            
+            # Update fields
+            pharmacy.name = data.get('name', pharmacy.name)
+            pharmacy.license_number = data.get('license_number', pharmacy.license_number)
+            pharmacy.email = data.get('email', pharmacy.email)
+            pharmacy.phone = data.get('phone', pharmacy.phone)
+            pharmacy.address = data.get('address', pharmacy.address)
+            pharmacy.city = data.get('city', pharmacy.city)
+            pharmacy.state = data.get('state', pharmacy.state)
+            pharmacy.postal_code = data.get('postal_code', pharmacy.postal_code)
+            pharmacy.country = data.get('country', pharmacy.country)
+            pharmacy.website = data.get('website', pharmacy.website)
+            
+            # Handle is_24_hours field properly for both form and JSON data
+            if 'is_24_hours' in data:
+                if isinstance(data['is_24_hours'], bool):
+                    pharmacy.is_24_hours = data['is_24_hours']
+                else:
+                    pharmacy.is_24_hours = data['is_24_hours'] == 'on'
+            
+            # Handle is_verified field properly for both form and JSON data
+            if 'is_verified' in data:
+                if isinstance(data['is_verified'], bool):
+                    pharmacy.is_verified = data['is_verified']
+                else:
+                    pharmacy.is_verified = data['is_verified'] == 'on'
+            
+            db.session.commit()
+            return jsonify({'message': 'Pharmacy updated successfully'}), 200
+            
+        except Exception as e:
+            db.session.rollback()
+            logger.error(f'Error updating pharmacy: {str(e)}')
+            return jsonify({'error': str(e)}), 500
+    
+    elif request.method == 'DELETE':
+        try:
+            db.session.delete(pharmacy)
+            db.session.commit()
+            return jsonify({'message': 'Pharmacy deleted successfully'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({'error': str(e)}), 500
 
 @app.route('/api/admin/hospitals/<int:hospital_id>', methods=['DELETE'])
 @admin_required
@@ -1400,8 +1492,9 @@ def get_patient_profile():
         # Handle profile update for PUT requests
         if request.method == 'PUT':
             data = request.get_json()
+            logger.info(f"Received profile update data: {data}")
             
-            # Update user fields
+            # Update user fields - only update fields that are provided
             updateable_fields = [
                 'name', 'email', 'phone', 'gender', 'date_of_birth', 'address_line',
                 'city', 'state', 'postal_code', 'country', 'blood_type', 'allergies',
@@ -1411,12 +1504,22 @@ def get_patient_profile():
             ]
             
             for field in updateable_fields:
-                if field in data:
-                    setattr(user, field, data[field])
+                if field in data and data[field] is not None:
+                    try:
+                        setattr(user, field, data[field])
+                        logger.debug(f"Updated field {field} to {data[field]}")
+                    except Exception as e:
+                        logger.error(f"Error updating field {field}: {str(e)}")
+                        return jsonify({'error': f'Error updating field {field}: {str(e)}'}), 500
 
             # Handle date fields
             if 'date_of_birth' in data and data['date_of_birth']:
-                user.date_of_birth = datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date()
+                try:
+                    user.date_of_birth = datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date()
+                    logger.debug(f"Updated date_of_birth to {user.date_of_birth}")
+                except ValueError:
+                    logger.error(f"Invalid date format for date_of_birth: {data['date_of_birth']}")
+                    return jsonify({'error': 'Invalid date format for date_of_birth. Use YYYY-MM-DD format.'}), 400
             
             # Handle pregnancy-related fields if gender is female
             if user.gender and user.gender.lower() == 'female':
@@ -1448,8 +1551,11 @@ def get_patient_profile():
                             setattr(user, field, data[field])
 
             try:
+                logger.info("Attempting to commit profile changes to database")
                 db.session.commit()
+                logger.info("Successfully committed profile changes to database")
             except Exception as e:
+                logger.error(f"Database error during profile update: {str(e)}")
                 db.session.rollback()
                 return jsonify({'error': f'Database error: {str(e)}'}), 500
 
@@ -1971,29 +2077,115 @@ def import_csv():
 def admin_login():
     try:
         data = request.get_json()
-        if not data or 'email' not in data or 'password' not in data:
+        email = data.get('email')
+        password = data.get('password')
+        
+        if not email or not password:
             return jsonify({'error': 'Email and password are required'}), 400
-
-        user = User.query.filter_by(email=data['email'], role='admin').first()
-        if not user or not check_password_hash(user.password, data['password']):
-            return jsonify({'error': 'Invalid email or password'}), 401
-
-        # Generate a temporary token (you might want to use JWT in production)
+        
+        # Find admin user
+        admin = User.query.filter_by(email=email, role='admin').first()
+        
+        if not admin or not check_password_hash(admin.password, password):
+            return jsonify({'error': 'Invalid credentials'}), 401
+        
+        if not admin.is_verified:
+            return jsonify({'error': 'Account not verified. Please contact administrator.'}), 401
+        
+        # Generate token
         token = secrets.token_urlsafe(32)
-        user.auth_token = token
-        user.token_expiry = datetime.utcnow() + timedelta(hours=24)  # Token expires in 24 hours
+        admin.auth_token = token
+        admin.token_expiry = datetime.utcnow() + timedelta(hours=24)
         db.session.commit()
-
+        
         return jsonify({
             'token': token,
-            'user_id': user.id,
-            'name': user.name,
-            'email': user.email
-        })
-
+            'user': {
+                'id': admin.id,
+                'name': admin.name,
+                'email': admin.email,
+                'role': admin.role
+            }
+        }), 200
+        
     except Exception as e:
-        logger.error(f"Admin login error: {str(e)}")
+        logger.error(f'Admin login error: {str(e)}')
         return jsonify({'error': 'Login failed'}), 500
+
+@app.route('/api/admin/signup', methods=['POST'])
+def admin_signup():
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['name', 'email', 'phone', 'password']
+        for field in required_fields:
+            if not data.get(field):
+                return jsonify({'error': f'{field} is required'}), 400
+        
+        # Check if email already exists
+        existing_user = User.query.filter_by(email=data['email']).first()
+        if existing_user:
+            return jsonify({'error': 'Email already registered'}), 409
+        
+        # Validate phone number format (Sierra Leone format)
+        phone = data['phone']
+        if not phone.startswith('+232') or len(phone) != 12:
+            return jsonify({'error': 'Phone number must be in Sierra Leone format (+232XXXXXXXX)'}), 400
+        
+        # Hash password
+        hashed_password = generate_password_hash(data['password'])
+        
+        # Create new admin user
+        new_admin = User(
+            name=data['name'],
+            email=data['email'],
+            phone=data['phone'],
+            password=hashed_password,
+            role='admin',
+            is_verified=False,  # New admins need verification
+            created_at=datetime.utcnow()
+        )
+        
+        db.session.add(new_admin)
+        db.session.commit()
+        
+        # Send notification email to existing admins (optional)
+        try:
+            existing_admins = User.query.filter_by(role='admin', is_verified=True).all()
+            for admin in existing_admins:
+                send_admin_notification_email(admin.email, data['name'], data['email'])
+        except Exception as e:
+            logger.error(f'Failed to send admin notification email: {str(e)}')
+        
+        return jsonify({
+            'message': 'Admin account created successfully. Please wait for verification.',
+            'admin_id': new_admin.id
+        }), 201
+        
+    except Exception as e:
+        logger.error(f'Admin signup error: {str(e)}')
+        db.session.rollback()
+        return jsonify({'error': 'Failed to create admin account'}), 500
+
+def send_admin_notification_email(admin_email, new_admin_name, new_admin_email):
+    """Send notification email to existing admins about new admin signup"""
+    try:
+        msg = Message(
+            'New Admin Registration',
+            recipients=[admin_email]
+        )
+        msg.body = f"""
+        A new admin has registered for MamaCare:
+        
+        Name: {new_admin_name}
+        Email: {new_admin_email}
+        
+        Please review and verify this account in the admin dashboard.
+        """
+        mail.send(msg)
+    except Exception as e:
+        logger.error(f'Failed to send admin notification email: {str(e)}')
 
 @app.route('/api/admin/doctors', methods=['POST'])
 @admin_required

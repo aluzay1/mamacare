@@ -6,196 +6,591 @@
     <title>Healthcare Provider Access - MamaCare</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .logo a {
-            color: #2c3e50;
-            text-decoration: none;
-            font-size: 1.8rem;
-            font-weight: bold;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
-            display: block;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .auth-sidebar {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .sidebar-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-section {
+            margin-bottom: 40px;
+        }
+
+        .logo-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-section p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-top: 40px;
+        }
+
+        .features-list li {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1rem;
+        }
+
+        .features-list i {
+            font-size: 1.5rem;
+            color: #3498db;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-main {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h2 {
+            color: #2c3e50;
+            font-size: 2rem;
+            font-weight: 600;
             margin-bottom: 10px;
         }
-        .logo h2 {
+
+        .form-header p {
             color: #6c757d;
-            font-size: 1.2rem;
+            font-size: 1rem;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            color: #2c3e50;
             font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.95rem;
         }
+
         .form-control {
-            border-radius: 5px;
-            padding: 10px;
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
         }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: #adb5bd;
+        }
+
+        .pin-input-container {
+            position: relative;
+        }
+
+        .pin-input-container .form-control {
+            padding-right: 50px;
+            letter-spacing: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .toggle-pin-visibility {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-pin-visibility:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+
         .btn-primary {
             width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            background-color: #0d6efd;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
+
         .btn-primary:hover {
-            background-color: #0b5ed7;
+            background: linear-gradient(135deg, #2980b9 0%, #1f5f8b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
         }
-        .alert {
-            display: none;
-            margin-top: 20px;
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
-        .loading {
-            display: none;
-            text-align: center;
-            margin-top: 20px;
-        }
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-        }
+
         .toggle-form {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
         }
+
+        .toggle-form p {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
         .toggle-form a {
-            color: #0d6efd;
+            color: #3498db;
             text-decoration: none;
+            font-weight: 600;
             cursor: pointer;
+            transition: color 0.3s ease;
         }
+
         .toggle-form a:hover {
+            color: #2980b9;
             text-decoration: underline;
         }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .alert-danger {
+            background: #fee;
+            color: #c53030;
+            border-left: 4px solid #c53030;
+        }
+
+        .alert-success {
+            background: #f0fff4;
+            color: #2f855a;
+            border-left: 4px solid #2f855a;
+        }
+
+        .loading {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .spinner-border {
+            width: 2rem;
+            height: 2rem;
+            color: #3498db;
+        }
+
         .form-section {
             display: none;
+            animation: fadeIn 0.5s ease-in-out;
         }
+
         .form-section.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        .back-to-home {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .back-to-home:hover {
+            color: #3498db;
+            transform: translateX(-5px);
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 100%;
+                margin: 20px;
+            }
+
+            .auth-sidebar {
+                padding: 30px 20px;
+                order: 2;
+            }
+
+            .auth-main {
+                padding: 30px 20px;
+                order: 1;
+            }
+
+            .logo-section h1 {
+                font-size: 2rem;
+            }
+
+            .form-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .back-to-home {
+                position: relative;
+                top: auto;
+                left: auto;
+                margin-bottom: 20px;
+                color: #2c3e50;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .auth-container {
+                margin: 10px;
+                border-radius: 16px;
+            }
+
+            .auth-sidebar,
+            .auth-main {
+                padding: 20px 15px;
+            }
+
+            .logo-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .form-control {
+                padding: 12px 15px;
+            }
+
+            .btn-primary {
+                padding: 12px 15px;
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="login-container">
-            <div class="logo">
-                <a href="index.html">MamaCare</a>
-                <h2>Healthcare Provider Access</h2>
+    <div class="auth-container">
+        <div class="auth-sidebar">
+            <a href="index.html" class="back-to-home">
+                <i class="bi bi-arrow-left"></i>
+                Back to Home
+            </a>
+            
+            <div class="sidebar-content">
+                <div class="logo-section">
+                    <h1>MamaCare</h1>
+                    <p>Healthcare Provider Portal</p>
+                </div>
+                
+                <ul class="features-list">
+                    <li>
+                        <i class="bi bi-shield-check"></i>
+                        <span>Secure Access to Patient Records</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-heart-pulse"></i>
+                        <span>Real-time Medical Information</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-people"></i>
+                        <span>Collaborative Healthcare</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-clock-history"></i>
+                        <span>24/7 Availability</span>
+                    </li>
+                </ul>
+            </div>
             </div>
             
+        <div class="auth-main">
             <!-- Login Form -->
             <div id="loginForm" class="form-section active">
+                <div class="form-header">
+                    <h2>Welcome Back</h2>
+                    <p>Access patient records securely with your PIN</p>
+                </div>
+                
+                <div class="form-container">
                 <form id="healthcareProviderAccessForm">
-                    <div class="mb-3">
-                        <label for="pin" class="form-label">Enter PIN</label>
+                        <div class="form-group">
+                            <label for="pin" class="form-label">Enter Your PIN</label>
+                            <div class="pin-input-container">
                         <input type="password" class="form-control" id="pin" name="pin" required 
-                               pattern="[0-9]{6}" maxlength="6" placeholder="Enter 6-digit PIN"
+                                       pattern="[0-9]{6}" maxlength="6" placeholder="••••••"
                                autocomplete="off">
-                        <div class="form-text text-center">Please enter the 6-digit PIN sent to your email</div>
+                                <button type="button" class="toggle-pin-visibility" onclick="togglePinVisibility()">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                            <div class="form-text">Enter the 6-digit PIN sent to your registered email</div>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-unlock"></i> Access Patient Records
+                            <i class="bi bi-unlock"></i>
+                            Access Patient Records
                     </button>
                 </form>
                 
                 <div class="toggle-form">
                     <p>Don't have an account? <a onclick="toggleForms()">Sign up here</a></p>
+                    </div>
                 </div>
             </div>
 
             <!-- Sign Up Form -->
             <div id="signupForm" class="form-section">
+                <div class="form-header">
+                    <h2>Join MamaCare</h2>
+                    <p>Register as a healthcare provider to access patient records</p>
+                </div>
+                
+                <div class="form-container">
                 <form id="healthcareProviderSignupForm">
-                    <div class="mb-3">
+                        <div class="form-group">
                         <label for="name" class="form-label">Full Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                            <input type="text" class="form-control" id="name" name="name" required 
+                                   placeholder="Enter your full name">
                     </div>
 
-                    <div class="mb-3">
+                        <div class="form-group">
                         <label for="email" class="form-label">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control" id="email" name="email" required 
+                                   placeholder="Enter your email address">
                     </div>
 
-                    <div class="mb-3">
+                        <div class="form-group">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="tel" class="form-control" id="phone" name="phone" required>
+                            <input type="tel" class="form-control" id="phone" name="phone" required 
+                                   placeholder="Enter your phone number">
                     </div>
 
-                    <div class="mb-3">
+                        <div class="form-group">
                         <label for="license" class="form-label">License Number</label>
-                        <input type="text" class="form-control" id="license" name="license_number" required>
+                            <input type="text" class="form-control" id="license" name="license_number" required 
+                                   placeholder="Enter your license number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="professionalType" class="form-label">Professional Type</label>
+                            <select class="form-control" id="professionalType" name="professional_type" required>
+                                <option value="">Select your professional type</option>
+                                <option value="Medical Doctor">Medical Doctor</option>
+                                <option value="Nurse">Nurse</option>
+                                <option value="Midwife">Midwife</option>
+                                <option value="Pharmacist">Pharmacist</option>
+                                <option value="Laboratory Technician">Laboratory Technician</option>
+                                <option value="Radiology Technician">Radiology Technician</option>
+                                <option value="Physiotherapist">Physiotherapist</option>
+                                <option value="Nutritionist">Nutritionist</option>
+                                <option value="Other">Other</option>
+                            </select>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="professionalType" class="form-label">Professional Type</label>
-                        <select class="form-control" id="professionalType" name="professional_type" required>
-                            <option value="">Select Professional Type</option>
-                            <option value="Medical Doctor">Medical Doctor</option>
-                            <option value="Nurse">Nurse</option>
-                            <option value="Midwife">Midwife</option>
-                            <option value="Pharmacist">Pharmacist</option>
-                            <option value="Laboratory Technician">Laboratory Technician</option>
-                            <option value="Radiology Technician">Radiology Technician</option>
-                            <option value="Physiotherapist">Physiotherapist</option>
-                            <option value="Nutritionist">Nutritionist</option>
-                            <option value="Other">Other</option>
-                        </select>
+                        <div class="form-group">
+                            <label for="specialization" class="form-label">Specialization</label>
+                            <input type="text" class="form-control" id="specialization" name="specialization" required 
+                                   placeholder="Enter your specialization">
                     </div>
 
-                    <div class="mb-3">
-                        <label for="specialization" class="form-label">Specialization</label>
-                        <input type="text" class="form-control" id="specialization" name="specialization" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="hospital" class="form-label">Hospital Affiliation</label>
-                        <input type="text" class="form-control" id="hospital" name="hospital_affiliation" required>
+                        <div class="form-group">
+                            <label for="hospital" class="form-label">Hospital Affiliation</label>
+                            <input type="text" class="form-control" id="hospital" name="hospital_affiliation" required 
+                                   placeholder="Enter your hospital affiliation">
                     </div>
                     
                     <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-person-plus"></i> Sign Up
+                            <i class="bi bi-person-plus"></i>
+                            Create Account
                     </button>
                 </form>
 
                 <div class="toggle-form">
                     <p>Already have an account? <a onclick="toggleForms()">Login here</a></p>
+                    </div>
                 </div>
             </div>
             
-            <div class="alert alert-danger" id="errorAlert" role="alert"></div>
-            <div class="alert alert-success" id="successAlert" role="alert"></div>
+            <div class="alert alert-danger" id="errorAlert" role="alert" style="display: none;"></div>
+            <div class="alert alert-success" id="successAlert" role="alert" style="display: none;"></div>
             
-            <div class="loading" id="loading">
-                <div class="spinner-border text-primary" role="status">
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="mt-2">Processing...</p>
+                <p class="mt-2">Processing your request...</p>
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle between login and signup forms
+        // Toggle PIN visibility
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('pin');
+            const toggleBtn = document.querySelector('.toggle-pin-visibility i');
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleBtn.className = 'bi bi-eye-slash';
+            } else {
+                pinInput.type = 'password';
+                toggleBtn.className = 'bi bi-eye';
+            }
+        }
+
+        // Toggle between login and signup forms with animation
         function toggleForms() {
             const loginForm = document.getElementById('loginForm');
             const signupForm = document.getElementById('signupForm');
             
-            loginForm.classList.toggle('active');
-            signupForm.classList.toggle('active');
-            
             // Clear any existing alerts
             document.getElementById('errorAlert').style.display = 'none';
             document.getElementById('successAlert').style.display = 'none';
+            
+            if (loginForm.classList.contains('active')) {
+                loginForm.classList.remove('active');
+                setTimeout(() => {
+                    signupForm.classList.add('active');
+                }, 250);
+            } else {
+                signupForm.classList.remove('active');
+                setTimeout(() => {
+                    loginForm.classList.add('active');
+                }, 250);
+            }
         }
 
         // Login form handler
@@ -335,6 +730,34 @@
         // Format PIN input
         document.getElementById('pin').addEventListener('input', function(e) {
             this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Add smooth transitions and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add loading animation to buttons
+            const buttons = document.querySelectorAll('.btn-primary');
+            buttons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (!this.disabled) {
+                        this.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+
+            // Add focus effects to form controls
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                control.addEventListener('blur', function() {
+                    this.parentElement.style.transform = '';
+                });
+            });
         });
     </script>
 </body>

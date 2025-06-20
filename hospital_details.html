@@ -6,6 +6,7 @@
     <title>Hospital Details - MamaCare</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -144,34 +145,127 @@
 .nav-links li a {
   color: #fff;
   text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li a.active {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
 }
 
 .menu-toggle {
   display: none;
-  font-size: 28px;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
   cursor: pointer;
-}
+            padding: 0;
+            z-index: 1000;
+        }
 
-/* Mobile view */
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
 @media (max-width: 768px) {
   .menu-toggle {
-    display: block;
+                display: flex;
   }
 
   .nav-links {
-    display: none;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
     flex-direction: column;
-    background-color: #2c3e50;
-    width: 100%;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    text-align: center;
-    padding: 10px 0;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 80px 20px 20px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                z-index: 999;
   }
 
   .nav-links.active {
-    display: flex;
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid transparent;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateX(5px);
+            }
+
+            .nav-links a.active {
+                background: #3498db;
+                border-color: #3498db;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            }
+
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 998;
+            }
+
+            .nav-overlay.active {
+                opacity: 1;
+                visibility: visible;
   }
 }
 
@@ -209,17 +303,22 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="logo">MamaCare</div>
-            <div class="menu menu-toggle" id="menu-toggle">&#9776;</div>
+            <div class="logo"><a href="index.html" style="color: #ffffff; text-decoration: none; font-family: 'Poppins', sans-serif;">MamaCare</a></div>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
             <ul class="nav-links" id="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="doctors.html">Doctors</a></li>
                 <li><a href="hospitals.html" class="active">Hospitals</a></li>
-                <li><a href="medical_records.html">Medical Records</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="doctors.html">Healthcare Professionals</a></li>
+                <li><a href="medical_records_view.html">Medical Records</a></li>
+                <li><a href="medical_records_view - Copy.html">Healthcare Provider Access</a></li>
             </ul>
         </nav>
+        <div class="nav-overlay" id="nav-overlay"></div>
     </header>
 
     <div class="hospital-details-container">
@@ -562,12 +661,52 @@
         // Initialize page
         document.addEventListener('DOMContentLoaded', updateHospitalDetails);
 
+        // Function to set active navigation link based on current page
+        function setActiveNavLink() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveNavLink();
+        });
         
   const toggle = document.getElementById('menu-toggle');
   const navLinks = document.getElementById('nav-links');
+        const navOverlay = document.getElementById('nav-overlay');
 
   toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
     navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        navOverlay.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close menu when clicking on a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
   });
 </script>
 </body>
