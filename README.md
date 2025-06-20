@@ -4,6 +4,10 @@
 [![GitHub forks](https://img.shields.io/github/forks/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/network)
 [![GitHub issues](https://img.shields.io/github/issues/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/issues)
 [![GitHub license](https://img.shields.io/github/license/aluzay1/mamacare)](https://github.com/aluzay1/mamacare/blob/main/LICENSE)
+ 
+
+## For Quick Testing of the front-end, use this link https://verdant-gumdrop-61281b.netlify.app/
+
 
 > **A comprehensive healthcare management system designed to connect patients with healthcare providers, with a specific focus on maternal and child healthcare services in Sierra Leone.**
 
@@ -35,70 +39,13 @@ To improve healthcare accessibility and quality in Sierra Leone by providing a c
 To become the leading healthcare management platform in Sierra Leone, ensuring every citizen has access to quality healthcare services through innovative technology solutions.
 
 ## 👥 Team Members
-
-### **Project Lead & Full-Stack Developer**
-**Alusine Kamara** - [@aluzay1](https://github.com/aluzay1)
-- **Role**: Lead Developer & System Architect
-- **Expertise**: Full-Stack Development, System Design, Healthcare Technology
-- **Contributions**: 
-  - System architecture design
-  - Backend API development
-  - Frontend interface design
-  - Database schema design
-  - FHIR integration
-  - Security implementation
-
-### **Backend Development Team**
-**Team Members** (To be added)
-- **Role**: Backend API Development
-- **Expertise**: Python, Flask, PostgreSQL, FHIR
-- **Contributions**: 
-  - API endpoint development
-  - Database optimization
-  - Authentication systems
-  - Data validation
-
-### **Frontend Development Team**
-**Team Members** (To be added)
-- **Role**: Frontend Development
-- **Expertise**: HTML5, CSS3, JavaScript, Responsive Design
-- **Contributions**: 
-  - User interface design
-  - Responsive layouts
-  - User experience optimization
-  - Cross-browser compatibility
-
-### **Healthcare Domain Experts**
-**Team Members** (To be added)
-- **Role**: Healthcare Domain Specialists
-- **Expertise**: Medical Records, Healthcare Standards, FHIR
-- **Contributions**: 
-  - Medical record standards
-  - Healthcare workflow optimization
-  - FHIR compliance
-  - Clinical requirements
-
-### **DevOps & Infrastructure**
-**Team Members** (To be added)
-- **Role**: DevOps & Infrastructure
-- **Expertise**: Docker, Nginx, AWS, CI/CD
-- **Contributions**: 
-  - Deployment automation
-  - Infrastructure management
-  - Performance optimization
-  - Security hardening
-
+1. Alusine Kuyateh
+2. Ishaka Kargbo
+3. Sylvia Harding
+4. Sonia Goba
+5. Abdul Salim Gani
 ## 🚀 Recent Updates
 
-### **Latest Release - v2.1.0** (December 2024)
-- ✨ **Enhanced Hospital Cards**: Modern design with status badges, better information organization, and responsive layout
-- 🎨 **Improved Pharmacy Cards**: Redesigned with gradients, better typography, and enhanced visual appeal
-- 📱 **Better Mobile Responsiveness**: Optimized layouts for all screen sizes
-- 🔧 **Admin Dashboard Fixes**: Resolved edit and verification functionality issues
-- 🏥 **Healthcare Professional Integration**: Updated system to use healthcare professional table instead of doctor table
-- 📊 **Profile Management**: Enhanced patient profile with tabbed layout and better organization
-- 🤰 **Pregnancy Section**: Added comprehensive pregnancy tracking with automatic calculations
-- 📋 **Medical Records Enhancement**: Improved record management with better data organization
 
 ### **Previous Updates**
 - **v2.0.0**: FHIR integration, PIN-based authentication, comprehensive admin dashboard
@@ -125,7 +72,6 @@ To become the leading healthcare management platform in Sierra Leone, ensuring e
 - Professional profiles with specializations
 - Hospital affiliations
 - Qualification verification
-- Patient assignment tracking
 - Professional type categorization
 
 ### 📋 **Medical Records System**
@@ -134,7 +80,6 @@ To become the leading healthcare management platform in Sierra Leone, ensuring e
 - Comprehensive medical history
 - Pregnancy tracking and calculations
 - Prescription management
-- Medical measurements tracking
 
 ### 🔐 **Security & Authentication**
 - PIN-based patient authentication
@@ -173,7 +118,7 @@ To become the leading healthcare management platform in Sierra Leone, ensuring e
 
 ### **Database**
 - **PostgreSQL** - Primary database
-- **SQLite** - Development database
+- **PostgreSQL** - Primary database
 
 ### **DevOps & Infrastructure**
 - **Docker** - Containerization
@@ -726,43 +671,11 @@ EMAIL_PASSWORD=your-email-password
 - Performance testing
 - User acceptance testing
 
-### **Contributing**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Write tests for new features
-5. Submit a pull request
-
-## 🤝 Contributing
-
-We welcome contributions from the community! Please read our contributing guidelines and code of conduct before submitting pull requests.
-
-### **How to Contribute**
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ### **Development Setup**
 See the [Installation Guide](#installation-guide) for detailed setup instructions.
 
-## 📞 Support
 
-### **Getting Help**
-- **Email**: support@mamacare.com
-- **GitHub Issues**: [Create an issue](https://github.com/aluzay1/mamacare/issues)
-- **Documentation**: [Wiki](https://github.com/aluzay1/mamacare/wiki)
-
-### **Bug Reports**
-Please use the GitHub issue tracker to report bugs and request features.
-
-### **Feature Requests**
-We welcome feature requests! Please create an issue with the "enhancement" label.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🙏 Acknowledgments
 
