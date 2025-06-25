@@ -24,9 +24,15 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="hospitals.html">Hospitals</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
+<<<<<<< HEAD
                 <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
                 <li><a href="medical_records_view.html">Medical Records</a></li>
                 <li><a href="providers_access.html" class="active">Healthcare Provider Access</a></li>
+=======
+                <li><a href="doctors.html">Healthcare Professionals</a></li>
+                <li><a href="medical_records_view.html">Medical Records</a></li>
+                <li><a href="medical_records_view - Copy.html" class="active">Healthcare Provider Access</a></li>
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             </ul>
         </nav>
         <div class="nav-overlay" id="nav-overlay"></div>
@@ -3112,7 +3118,11 @@
                 // First check if the backend is available
                 const healthResponse = await fetch('http://localhost:5000/health');
                 if (!healthResponse.ok) {
+<<<<<<< HEAD
                     throw new Error('Backend service is not available');
+=======
+                    throw new Error('Backend service is not available. Please try again later.');
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 }
 
                 // Then fetch the profile
@@ -3372,7 +3382,11 @@
             submitButton.textContent = 'Registering...';
             
             try {
+<<<<<<< HEAD
                 const response = await fetch('http://localhost:5000/api/patient/register', {
+=======
+                const response = await fetch('/api/patient/register', {
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -4172,4 +4186,8 @@
         // Helper function to calculate gestational age and due date from LMP
     </script>
 </body>
+<<<<<<< HEAD
 </html>
+=======
+</html>
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe

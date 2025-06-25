@@ -1362,9 +1362,15 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="hospitals.html">Hospitals</a></li>
                 <li><a href="pharmacy.html">Pharmacy</a></li>
+<<<<<<< HEAD
                 <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
                 <li><a href="medical_records_view.html" class="active">Medical Records</a></li>
                 <li><a href="provider_access.html">Healthcare Provider Access</a></li>
+=======
+                <li><a href="doctors.html">Healthcare Professionals</a></li>
+                <li><a href="medical_records_view.html" class="active">Medical Records</a></li>
+                <li><a href="medical_records_view - Copy.html">Healthcare Provider Access</a></li>
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             </ul>
         </nav>
         <div class="nav-overlay" id="nav-overlay"></div>
@@ -1465,7 +1471,11 @@
                         </div>
                         <div class="stat-card">
                             <div class="stat-value" id="healthScore">-</div>
+<<<<<<< HEAD
                             <div class="stat-label">Blood Group</div>
+=======
+                            <div class="stat-label">Health Score</div>
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                         </div>
                         <div class="stat-card">
                             <div class="stat-value" id="activeMedications">0</div>
@@ -1873,7 +1883,11 @@
                 document.getElementById('patientMaritalStatusDisplay').textContent = profile.marital_status || 'Not available';
                 document.getElementById('patientLanguageDisplay').textContent = profile.language || 'Not available';
                 document.getElementById('patientNationalityDisplay').textContent = profile.nationality || 'Not available';
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 // Pregnancy information
                 console.log('Checking if gender is female:', profile.gender === 'female');
                 console.log('Gender comparison result:', profile.gender && profile.gender.toLowerCase() === 'female');
@@ -2250,9 +2264,15 @@
             const year = lastVisit.getFullYear();
             document.getElementById('lastVisit').textContent = `${month} ${day}, ${year}`;
 
+<<<<<<< HEAD
             // Get patient's blood group from the profile display
             const patientBloodType = document.getElementById('patientBloodTypeDisplay').textContent;
             document.getElementById('healthScore').textContent = patientBloodType !== 'Not available' ? patientBloodType : '-';
+=======
+            // Calculate health score (simplified)
+            const healthScore = Math.floor(Math.random() * 20) + 80; // 80-100
+            document.getElementById('healthScore').textContent = healthScore;
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
 
             // Count active medications
             const medications = records

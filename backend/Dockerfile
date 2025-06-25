@@ -37,4 +37,8 @@ COPY wait-for-postgres.sh /wait-for-postgres.sh
 RUN chmod +x /wait-for-postgres.sh
 
 # Run the application
+<<<<<<< HEAD
 CMD ["/wait-for-postgres.sh", "db", "flask", "run", "--host=0.0.0.0", "--port=5000"] 
+=======
+CMD ["/wait-for-postgres.sh", "db", "python", "-u", "app.py"] 
+>>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
