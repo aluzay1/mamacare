@@ -33,7 +33,6 @@ from sqlalchemy import text
 load_dotenv()
 
 app = Flask(__name__)
-<<<<<<< HEAD
 
 # Configure CORS properly with credentials support
 CORS(app, 
@@ -42,20 +41,6 @@ CORS(app,
      allow_headers=["Content-Type", "Authorization"],
      supports_credentials=True,
      expose_headers=["Content-Type", "Authorization"])
-=======
-CORS(app)  # Enable CORS for all routes
-
-# Configure CORS to allow requests from your Flutter app
-CORS(app, resources={
-    r"/*": {  # Allow all routes
-        "origins": ["http://localhost", "http://localhost:5001"],
-        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-        "allow_headers": ["Content-Type", "Authorization"],
-        "supports_credentials": True,
-        "expose_headers": ["Content-Type", "Authorization"]
-    }
-})
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
 
 # Set up logging
 logging.basicConfig(
@@ -82,7 +67,6 @@ app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'your-secret-key')
 
 # Email configuration
-<<<<<<< HEAD
 if os.getenv('EMAIL_USER') and os.getenv('EMAIL_PASSWORD') and os.getenv('EMAIL_USER') != 'your-actual-email@gmail.com':
     # Use Gmail if credentials are properly configured
     app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -100,14 +84,6 @@ else:
     app.config['MAIL_PASSWORD'] = None
     app.config['MAIL_DEFAULT_SENDER'] = 'noreply@mamacare.com'
     logger.warning("Email credentials not configured. Emails will be logged instead of sent.")
-=======
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.getenv('EMAIL_USER')
-app.config['MAIL_PASSWORD'] = os.getenv('EMAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = os.getenv('EMAIL_USER')
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
 
 # Initialize extensions
 db = SQLAlchemy(app)
@@ -1466,11 +1442,8 @@ def register_patient():
         logger.info(f"Successfully committed FHIR ID: {fhir_patient.id}")
     
         # Send email with PIN
-<<<<<<< HEAD
         email_sent = True
         email_error = None
-=======
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
         try:
             logger.info(f"Attempting to send email to {data['email']}")
             msg = Message('Your MamaCare PIN',
@@ -1484,7 +1457,6 @@ This is your permanent PIN for accessing your medical records. Please keep it sa
 
 Best regards,
 MamaCare Team'''
-<<<<<<< HEAD
             mail.send(msg)
             logger.info(f"Email sent successfully to {data['email']}")
         except Exception as e:
@@ -1494,22 +1466,11 @@ MamaCare Team'''
             email_error = str(e)
         
         response = {
-=======
-            
-            mail.send(msg)
-            logger.info(f"Email sent successfully to {data['email']}")
-            
-        except Exception as e:
-            logger.error(f"Failed to send email: {str(e)}")
-        
-        return jsonify({
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             'message': 'Patient registered successfully',
             'pin': pin_str,
             'patient_id': new_user.id,
             'fhir_id': new_user.fhir_id,
             'due_date': new_user.due_date.strftime('%Y-%m-%d') if new_user.due_date else None,
-<<<<<<< HEAD
             'gestational_age': new_user.gestational_age,
             'email_sent': email_sent
         }
@@ -1517,10 +1478,6 @@ MamaCare Team'''
             response['email_error'] = email_error
             response['note'] = f'Email could not be sent, but your PIN is: {pin_str}. Please save this PIN for future access.'
         return jsonify(response), 201
-=======
-            'gestational_age': new_user.gestational_age
-        }), 201
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             
     except Exception as e:
         logger.error(f"Registration error: {str(e)}")
@@ -2551,22 +2508,7 @@ def init_app():
         db.create_all()
         logger.info("Database tables created successfully")
 
-<<<<<<< HEAD
 
-=======
-# Update the main block
-if __name__ == '__main__':
-    try:
-        logger.info("Starting Flask application...")
-        logger.info(f"Database URI: {app.config['SQLALCHEMY_DATABASE_URI']}")
-        init_app()  # Initialize the database
-        app.run(host='0.0.0.0', port=5000)
-    except Exception as e:
-        logger.error(f"Application startup error: {str(e)}")
-        logger.error(f"Error type: {type(e).__name__}")
-        logger.error(f"Error stack: {str(e.__traceback__)}")
-        sys.exit(1)
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
 
 @app.route('/api/admin/hospitals/<int:hospital_id>', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
 @admin_required
@@ -2874,123 +2816,6 @@ MamaCare Team
         logger.error(f'Error sending admin credentials email: {str(e)}')
         raise
 
-<<<<<<< HEAD
-=======
-# Sample doctors data
-DOCTORS = [
-    {
-        "id": 1,
-        "name": "Dr. Sarah Johnson",
-        "specialty": "Obstetrician",
-        "experience": "15 years",
-        "rating": 4.8,
-        "image": "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "location": "Central Hospital",
-        "availability": "Mon-Fri, 9AM-5PM"
-    },
-    {
-        "id": 2,
-        "name": "Dr. Michael Chen",
-        "specialty": "Gynecologist",
-        "experience": "12 years",
-        "rating": 4.9,
-        "image": "https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "location": "Women's Health Center",
-        "availability": "Mon-Sat, 8AM-6PM"
-    },
-    {
-        "id": 3,
-        "name": "Dr. Emily Rodriguez",
-        "specialty": "Pediatrician",
-        "experience": "10 years",
-        "rating": 4.7,
-        "image": "https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "location": "Children's Hospital",
-        "availability": "Mon-Fri, 10AM-7PM"
-    }
-]
-
-@app.route('/api/doctors', methods=['GET'])
-def get_doctors():
-    return jsonify(DOCTORS)
-
-# Sample hospitals data
-HOSPITALS = [
-    {
-        "id": 1,
-        "name": "Central Hospital",
-        "address": "123 Medical Center Drive",
-        "phone": "(555) 123-4567",
-        "rating": 4.7,
-        "image": "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "specialties": ["Obstetrics", "Gynecology", "Pediatrics"],
-        "availability": "24/7"
-    },
-    {
-        "id": 2,
-        "name": "Women's Health Center",
-        "address": "456 Health Avenue",
-        "phone": "(555) 234-5678",
-        "rating": 4.8,
-        "image": "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "specialties": ["Maternity", "Women's Health", "Fertility"],
-        "availability": "Mon-Sat, 8AM-8PM"
-    },
-    {
-        "id": 3,
-        "name": "Children's Hospital",
-        "address": "789 Care Street",
-        "phone": "(555) 345-6789",
-        "rating": 4.9,
-        "image": "https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "specialties": ["Pediatrics", "Neonatal Care", "Child Development"],
-        "availability": "24/7"
-    }
-]
-
-@app.route('/api/hospitals', methods=['GET'])
-def get_hospitals():
-    return jsonify(HOSPITALS)
-
-# Sample pharmacies data
-PHARMACIES = [
-    {
-        "id": 1,
-        "name": "MedPlus Pharmacy",
-        "address": "123 Health Street",
-        "phone": "(555) 123-4567",
-        "rating": 4.6,
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "services": ["Prescription", "OTC", "Delivery"],
-        "hours": "Mon-Sun, 8AM-10PM"
-    },
-    {
-        "id": 2,
-        "name": "HealthFirst Pharmacy",
-        "address": "456 Care Avenue",
-        "phone": "(555) 234-5678",
-        "rating": 4.8,
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "services": ["Prescription", "OTC", "Consultation"],
-        "hours": "Mon-Sat, 9AM-9PM"
-    },
-    {
-        "id": 3,
-        "name": "QuickCare Pharmacy",
-        "address": "789 Medical Drive",
-        "phone": "(555) 345-6789",
-        "rating": 4.5,
-        "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80",
-        "services": ["Prescription", "OTC", "24/7 Service"],
-        "hours": "24/7"
-    }
-]
-
-@app.route('/api/pharmacies', methods=['GET'])
-def get_pharmacies():
-    return jsonify(PHARMACIES)
-
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
 @app.route('/api/doctors/pin/<pin>', methods=['GET'])
 def get_doctor_by_pin(pin):
     try:
@@ -3011,7 +2836,6 @@ def get_doctor_by_pin(pin):
 
     except Exception as e:
         logger.error(f"Error getting doctor by PIN: {str(e)}")
-<<<<<<< HEAD
         return jsonify({'error': 'Internal server error'}), 500
     
 if __name__ == '__main__':
@@ -3026,6 +2850,3 @@ if __name__ == '__main__':
         logger.error(f"Error stack: {str(e.__traceback__)}")
         sys.exit(1)
     
-=======
-        return jsonify({'error': 'Internal server error'}), 500
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe

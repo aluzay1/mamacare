@@ -1006,7 +1006,6 @@
                         </div>
                     </div>
 
-<<<<<<< HEAD
                    <!-- Admins Section -->
                     <div id="admins-section" style="display: none;">
     <h2 class="mb-4">Manage Administrators</h2>
@@ -1103,62 +1102,14 @@
                                                 <!-- Admins will be loaded here -->
                                             </tbody>
                                         </table>
-=======
-                    <!-- Users Section -->
-                    <div id="users-section" style="display: none;">
-                        <h2 class="mb-4">Manage Users</h2>
-                        <div class="table-section">
-                            <div class="card">
-                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                    <h4 class="mb-0">Users List</h4>
-                                    <div class="d-flex gap-2">
-                                        <input type="text" class="form-control" id="user-search" 
-                                               placeholder="Search users...">
-                                        <input type="text" class="form-control" id="admin-search" 
-                                               placeholder="Search administrators...">
-                                        <div class="mb-3">
-                                            <label for="admin-role-filter" class="form-label">Filter by Role</label>
-                                        <select class="form-select" id="admin-role-filter">
-                                            <option value="">All Roles</option>
-                                                <option value="admin">Admin</option>
-                                                <option value="super_admin">Super Admin</option>
-                                        </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                            <div class="table-responsive">
-                                        <table class="table table-hover">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                                    <th>Role</th>
-                                                    <th>Status</th>
-                                            <th>Created At</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="admins-table-body">
-                                        <!-- Admins will be loaded here -->
-                                    </tbody>
-                                </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
     <!-- Edit Modals -->
     <div class="modal fade" id="editHospitalModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
@@ -1507,7 +1458,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Edit Admin Modal -->
 <div class="modal fade" id="editAdminModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
@@ -1596,20 +1546,10 @@ function toggleAuthForm() {
             if (loginSection && dashboardSection) {
                 loginSection.style.display = 'none';
                 dashboardSection.style.display = 'block';
-=======
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Check if user is already logged in
-        const adminToken = localStorage.getItem('admin_token');
-        if (adminToken) {
-            document.getElementById('login-section').style.display = 'none';
-            document.getElementById('dashboard-section').style.display = 'block';
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             loadHospitals();
             loadPharmacies();
             loadDoctors();
             updateStats();
-<<<<<<< HEAD
             }
         }
 
@@ -1617,23 +1557,13 @@ function toggleAuthForm() {
         const loginForm = document.getElementById('login-form');
         if (loginForm) {
             loginForm.addEventListener('submit', async (e) => {
-=======
-        }
-
-        // Login Form Handler
-        document.getElementById('login-form').addEventListener('submit', async (e) => {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             e.preventDefault();
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             
             try {
                 console.log('Login attempt with data:', data);
-<<<<<<< HEAD
                     const response = await fetch('http://localhost:5000/api/admin/login', {
-=======
-                const response = await fetch('http://localhost:5000/api/admin/login', {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1648,24 +1578,16 @@ function toggleAuthForm() {
                 if (response.ok) {
                     console.log('Login successful, token received');
                     localStorage.setItem('admin_token', responseData.token);
-<<<<<<< HEAD
                         const loginSection = document.getElementById('login-section');
                         const dashboardSection = document.getElementById('dashboard-section');
                         if (loginSection && dashboardSection) {
                             loginSection.style.display = 'none';
                             dashboardSection.style.display = 'block';
-=======
-                    document.getElementById('login-section').style.display = 'none';
-                    document.getElementById('dashboard-section').style.display = 'block';
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     loadHospitals();
                     loadPharmacies();
                     loadDoctors();
                     updateStats();
-<<<<<<< HEAD
                         }
-=======
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 } else {
                     console.error('Login failed:', responseData);
                     alert(responseData.error || 'Login failed');
@@ -1675,7 +1597,6 @@ function toggleAuthForm() {
                 alert('Login failed. Please check the console for details.');
             }
         });
-<<<<<<< HEAD
         }
 
         // Logout Handler
@@ -1696,19 +1617,6 @@ function toggleAuthForm() {
         // Section Navigation
         const navLinks = document.querySelectorAll('.nav-link');
         navLinks.forEach(link => {
-=======
-
-        // Logout Handler
-        document.getElementById('logout-btn').addEventListener('click', (e) => {
-            e.preventDefault();
-            localStorage.removeItem('admin_token');
-            document.getElementById('login-section').style.display = 'block';
-            document.getElementById('dashboard-section').style.display = 'none';
-        });
-
-        // Section Navigation
-        document.querySelectorAll('.nav-link').forEach(link => {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const section = e.target.closest('.nav-link').dataset.section;
@@ -1732,7 +1640,6 @@ function toggleAuthForm() {
             });
         });
 
-<<<<<<< HEAD
         // Add Healthcare Professionals Form Handler
         const addDoctorForm = document.getElementById('add-doctor-form');
         if (addDoctorForm) {
@@ -1836,17 +1743,12 @@ function toggleAuthForm() {
                     return;
                 }
 
-=======
-        // Load Hospitals
-        async function loadHospitals() {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             try {
                 const token = localStorage.getItem('admin_token');
                 if (!token) {
                     throw new Error('No authentication token found');
                 }
 
-<<<<<<< HEAD
                     const response = await fetch('http://localhost:5000/api/admin/admins', {
                         method: 'POST',
                     headers: {
@@ -1926,524 +1828,10 @@ function toggleAuthForm() {
                                 'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
                         },
                         body: formData
-=======
-                const response = await fetch('http://localhost:5000/api/admin/hospitals', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to load hospitals');
-                }
-
-                const hospitals = await response.json();
-                const tbody = document.getElementById('hospitals-table-body');
-                tbody.innerHTML = '';
-                
-                hospitals.forEach(hospital => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${hospital.name}</td>
-                        <td>${hospital.license_number}</td>
-                        <td>${hospital.email}</td>
-                        <td>${hospital.phone}</td>
-                        <td>${hospital.address}</td>
-                        <td>
-                            <span class="badge ${hospital.is_verified ? 'bg-success' : 'bg-warning'}">
-                                ${hospital.is_verified ? 'Verified' : 'Pending'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary edit-hospital" data-id="${hospital.id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-hospital" data-id="${hospital.id}">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-                document.getElementById('hospital-count').textContent = hospitals.length;
-            } catch (error) {
-                console.error('Error loading hospitals:', error);
-                if (error.message === 'No authentication token found') {
-                    document.getElementById('login-section').style.display = 'block';
-                    document.getElementById('dashboard-section').style.display = 'none';
-                } else {
-                    alert('Failed to load hospitals');
-                }
-            }
-        }
-
-        // Load Pharmacies
-        async function loadPharmacies() {
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to load pharmacies');
-                }
-
-                const pharmacies = await response.json();
-                const tbody = document.getElementById('pharmacies-table-body');
-                tbody.innerHTML = '';
-                
-                pharmacies.forEach(pharmacy => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${pharmacy.name}</td>
-                        <td>${pharmacy.license_number}</td>
-                        <td>${pharmacy.email}</td>
-                        <td>${pharmacy.phone}</td>
-                        <td>${pharmacy.address}</td>
-                        <td>
-                            <span class="badge ${pharmacy.is_24_hours ? 'bg-success' : 'bg-secondary'}">
-                                ${pharmacy.is_24_hours ? 'Yes' : 'No'}
-                            </span>
-                        </td>
-                        <td>
-                            <span class="badge ${pharmacy.is_verified ? 'bg-success' : 'bg-warning'}">
-                                ${pharmacy.is_verified ? 'Verified' : 'Pending'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary edit-pharmacy" data-id="${pharmacy.id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-pharmacy" data-id="${pharmacy.id}">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-                document.getElementById('pharmacy-count').textContent = pharmacies.length;
-            } catch (error) {
-                console.error('Error loading pharmacies:', error);
-                if (error.message === 'No authentication token found') {
-                    document.getElementById('login-section').style.display = 'block';
-                    document.getElementById('dashboard-section').style.display = 'none';
-                } else {
-                    alert('Failed to load pharmacies');
-                }
-            }
-        }
-
-        // Load Healthcare Professionals
-        async function loadDoctors() {
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch('http://localhost:5000/api/admin/doctors', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error('Failed to load Healthcare Professionals');
-                }
-
-                const doctors = await response.json();
-                window.allDoctors = doctors; // Store all doctors for filtering
-                filterDoctors(); // Apply initial filter
-                document.getElementById('doctor-count').textContent = doctors.length;
-            } catch (error) {
-                console.error('Error loading doctors:', error);
-                if (error.message === 'No authentication token found') {
-                    document.getElementById('login-section').style.display = 'block';
-                    document.getElementById('dashboard-section').style.display = 'none';
-                } else {
-                    alert('Failed to load doctors');
-                }
-            }
-        }
-
-        // Filter doctors by professional type
-        function filterDoctors() {
-            const filterValue = document.getElementById('professionalTypeFilter').value;
-                const tbody = document.getElementById('doctors-table-body');
-                tbody.innerHTML = '';
-                
-            const filteredDoctors = filterValue 
-                ? window.allDoctors.filter(doctor => doctor.professional_type === filterValue)
-                : window.allDoctors;
-            
-            filteredDoctors.forEach(doctor => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${doctor.name}</td>
-                        <td>${doctor.specialization}</td>
-                        <td>${doctor.email}</td>
-                        <td>${doctor.phone}</td>
-                        <td>${doctor.hospital_affiliation}</td>
-                        <td>
-                            <span class="badge ${doctor.is_verified ? 'bg-success' : 'bg-warning'}">
-                                ${doctor.is_verified ? 'Verified' : 'Pending'}
-                            </span>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary edit-doctor" data-id="${doctor.id}">Edit</button>
-                            <button class="btn btn-sm btn-danger delete-doctor" data-id="${doctor.id}">Delete</button>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-        }
-
-        // Function to update stats
-        function updateStats() {
-            // Get hospital count
-            fetch('http://localhost:5000/api/admin/hospitals', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('hospital-count').textContent = data.length;
-            })
-            .catch(error => console.error('Error fetching hospital count:', error));
-
-            // Get pharmacy count
-            fetch('http://localhost:5000/api/admin/pharmacies', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('pharmacy-count').textContent = data.length;
-            })
-            .catch(error => console.error('Error fetching pharmacy count:', error));
-
-            // Get Healthcare Professionals count
-            fetch('http://localhost:5000/api/admin/doctors', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('doctor-count').textContent = data.length;
-            })
-            .catch(error => console.error('Error fetching doctor count:', error));
-
-            // Get patient count
-            fetch('http://localhost:5000/api/admin/patients/count', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('patient-count').textContent = data.count;
-            })
-            .catch(error => console.error('Error fetching patient count:', error));
-        }
-
-        // Load Admins
-        async function loadAdmins() {
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch('http://localhost:5000/api/admin/admins', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    mode: 'cors'
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to load admins');
-                }
-
-                const admins = await response.json();
-                const tbody = document.getElementById('admins-table-body');
-                tbody.innerHTML = '';
-                
-                admins.forEach(admin => {
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td>${admin.name || 'N/A'}</td>
-                        <td>${admin.email || 'N/A'}</td>
-                        <td><span class="badge bg-${getRoleBadgeColor(admin.role)}">${admin.role || 'N/A'}</span></td>
-                        <td><span class="badge bg-${admin.status === 'active' ? 'success' : 'secondary'}">${admin.status || 'N/A'}</span></td>
-                        <td>${formatDate(admin.created_at) || 'N/A'}</td>
-                        <td>
-                            <div class="btn-group">
-                                <button class="btn btn-sm btn-outline-primary" onclick="editAdmin(${admin.id})">
-                                    <i class="bi bi-pencil"></i>
-                            </button>
-                                <button class="btn btn-sm btn-outline-danger" onclick="deleteAdmin(${admin.id})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            } catch (error) {
-                console.error('Error loading admins:', error);
-                if (error.message === 'No authentication token found') {
-                    document.getElementById('login-section').style.display = 'block';
-                    document.getElementById('dashboard-section').style.display = 'none';
-                } else {
-                    alert('Failed to load admins: ' + error.message);
-                }
-            }
-        }
-
-        function getRoleBadgeColor(role) {
-            switch(role) {
-                case 'super_admin': return 'danger';
-                case 'admin': return 'primary';
-                case 'moderator': return 'info';
-                default: return 'secondary';
-            }
-        }
-
-        function formatDate(dateString) {
-            if (!dateString) return 'N/A';
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-        }
-
-        // Add event listeners for edit and delete buttons
-        document.addEventListener('click', async (e) => {
-            // Hospital edit
-            if (e.target.classList.contains('edit-hospital')) {
-                const hospitalId = e.target.dataset.id;
-                const token = localStorage.getItem('admin_token');
-                
-                if (!token) {
-                    alert('Please log in again. Your session has expired.');
-                    return;
-                }
-
-                if (!hospitalId) {
-                    alert('Invalid hospital ID');
-                    return;
-                }
-
-                try {
-                    console.log('Fetching hospital with ID:', hospitalId);
-                    
-                    // Use the correct endpoint for individual hospital
-                    const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        }
-                    });
-                    
-                    console.log('Response status:', response.status);
-                    
-                    const responseText = await response.text();
-                    console.log('Raw response:', responseText);
-                    
-                    if (!response.ok) {
-                        throw new Error(`Server returned ${response.status}: ${responseText}`);
-                    }
-                    
-                    let hospital;
-                    try {
-                        hospital = JSON.parse(responseText);
-                    } catch (parseError) {
-                        console.error('Failed to parse response as JSON:', parseError);
-                        throw new Error('Invalid response from server');
-                    }
-                    
-                    console.log('Found hospital data:', hospital);
-                    
-                    const form = document.getElementById('edit-hospital-form');
-                    if (!form) {
-                        throw new Error('Edit form not found');
-                    }
-                    
-                    // Set all form fields
-                    form.querySelector('[name="id"]').value = hospital.id;
-                    form.querySelector('[name="name"]').value = hospital.name || '';
-                    form.querySelector('[name="license_number"]').value = hospital.license_number || '';
-                    form.querySelector('[name="email"]').value = hospital.email || '';
-                    form.querySelector('[name="phone"]').value = hospital.phone || '';
-                    form.querySelector('[name="address"]').value = hospital.address || '';
-                    form.querySelector('[name="city"]').value = hospital.city || '';
-                    form.querySelector('[name="state"]').value = hospital.state || '';
-                    form.querySelector('[name="postal_code"]').value = hospital.postal_code || '';
-                    form.querySelector('[name="country"]').value = hospital.country || '';
-                    form.querySelector('[name="website"]').value = hospital.website || '';
-                    form.querySelector('[name="directions"]').value = hospital.directions || '';
-                    form.querySelector('[name="is_verified"]').checked = hospital.is_verified || false;
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editHospitalModal'));
-                    modal.show();
-                } catch (error) {
-                    console.error('Error details:', error);
-                    alert('Failed to load hospital details: ' + error.message);
-                }
-            }
-
-            // Hospital delete
-            if (e.target.classList.contains('delete-hospital')) {
-                if (confirm('Are you sure you want to delete this hospital?')) {
-                    const hospitalId = e.target.dataset.id;
-                    try {
-                        const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                            }
-                        });
-                        if (!response.ok) throw new Error('Failed to delete hospital');
-                        
-                        alert('Hospital deleted successfully');
-                        loadHospitals();
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Failed to delete hospital');
-                    }
-                }
-            }
-
-            // Pharmacy edit
-            if (e.target.classList.contains('edit-pharmacy')) {
-                const pharmacyId = e.target.dataset.id;
-                const token = localStorage.getItem('admin_token');
-                
-                if (!token) {
-                    alert('Please log in again. Your session has expired.');
-                    return;
-                }
-
-                if (!pharmacyId) {
-                    alert('Invalid pharmacy ID');
-                    return;
-                }
-
-                try {
-                    console.log('Fetching pharmacy with ID:', pharmacyId);
-                    
-                    // Use the correct endpoint for individual pharmacy
-                    const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        }
-                    });
-                    
-                    console.log('Response status:', response.status);
-                    
-                    const responseText = await response.text();
-                    console.log('Raw response:', responseText);
-                    
-                    if (!response.ok) {
-                        throw new Error(`Server returned ${response.status}: ${responseText}`);
-                    }
-                    
-                    let pharmacy;
-                    try {
-                        pharmacy = JSON.parse(responseText);
-                    } catch (parseError) {
-                        console.error('Failed to parse response as JSON:', parseError);
-                        throw new Error('Invalid response from server');
-                    }
-                    
-                    console.log('Found pharmacy data:', pharmacy);
-                    
-                    const form = document.getElementById('edit-pharmacy-form');
-                    if (!form) {
-                        throw new Error('Edit form not found');
-                    }
-                    
-                    // Set all form fields
-                    form.querySelector('[name="id"]').value = pharmacy.id;
-                    form.querySelector('[name="name"]').value = pharmacy.name || '';
-                    form.querySelector('[name="license_number"]').value = pharmacy.license_number || '';
-                    form.querySelector('[name="email"]').value = pharmacy.email || '';
-                    form.querySelector('[name="phone"]').value = pharmacy.phone || '';
-                    form.querySelector('[name="address"]').value = pharmacy.address || '';
-                    form.querySelector('[name="city"]').value = pharmacy.city || '';
-                    form.querySelector('[name="state"]').value = pharmacy.state || '';
-                    form.querySelector('[name="postal_code"]').value = pharmacy.postal_code || '';
-                    form.querySelector('[name="country"]').value = pharmacy.country || '';
-                    form.querySelector('[name="website"]').value = pharmacy.website || '';
-                    form.querySelector('[name="directions"]').value = pharmacy.directions || '';
-                    form.querySelector('[name="is_24_hours"]').checked = pharmacy.is_24_hours || false;
-                    form.querySelector('[name="is_verified"]').checked = pharmacy.is_verified || false;
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editPharmacyModal'));
-                    modal.show();
-                } catch (error) {
-                    console.error('Error details:', error);
-                    alert('Failed to load pharmacy details: ' + error.message);
-                }
-            }
-
-            // Pharmacy delete
-            if (e.target.classList.contains('delete-pharmacy')) {
-                if (confirm('Are you sure you want to delete this pharmacy?')) {
-                    const pharmacyId = e.target.dataset.id;
-                    try {
-                        const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                            }
-                        });
-                        if (!response.ok) throw new Error('Failed to delete pharmacy');
-                        
-                        alert('Pharmacy deleted successfully');
-                        loadPharmacies();
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Failed to delete pharmacy');
-                    }
-                }
-            }
-
-            // Healthcare Professionals edit
-            if (e.target.classList.contains('edit-doctor')) {
-                const doctorId = e.target.dataset.id;
-                try {
-                    const token = localStorage.getItem('admin_token');
-                    if (!token) {
-                        throw new Error('No authentication token found');
-                    }
-
-                    const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        }
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     });
 
                     if (!response.ok) {
                         const errorData = await response.json();
-<<<<<<< HEAD
                         throw new Error(errorData.error || 'Failed to add pharmacy');
                     }
 
@@ -2461,83 +1849,6 @@ function toggleAuthForm() {
         const saveHospitalChanges = document.getElementById('save-hospital-changes');
         if (saveHospitalChanges) {
             saveHospitalChanges.addEventListener('click', async () => {
-=======
-                        throw new Error(errorData.error || 'Failed to fetch healthcare professional details');
-                    }
-                    
-                    const doctor = await response.json();
-                    const form = document.getElementById('edit-doctor-form');
-                    
-                    if (!form) {
-                        throw new Error('Edit form not found');
-                    }
-
-                    // Populate form fields with null checks
-                    const setFieldValue = (fieldName, value) => {
-                        const field = form.querySelector(`[name="${fieldName}"]`);
-                        if (field) {
-                            if (field.type === 'checkbox') {
-                                field.checked = value;
-                            } else {
-                                field.value = value || '';
-                            }
-                        }
-                    };
-
-                    // Set all form fields
-                    setFieldValue('id', doctor.id);
-                    setFieldValue('name', doctor.name);
-                    setFieldValue('license_number', doctor.license_number);
-                    setFieldValue('email', doctor.email);
-                    setFieldValue('phone', doctor.phone);
-                    setFieldValue('specialization', doctor.specialization);
-                    setFieldValue('hospital_affiliation', doctor.hospital_affiliation);
-                    setFieldValue('city', doctor.city);
-                    setFieldValue('country', doctor.country);
-                    setFieldValue('professional_type', doctor.professional_type);
-                    setFieldValue('qualifications', doctor.qualifications);
-                    setFieldValue('experience', doctor.experience);
-                    setFieldValue('is_verified', doctor.is_verified);
-                    
-                    const modal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
-                    modal.show();
-                } catch (error) {
-                    console.error('Error loading healthcare professional details:', error);
-                    if (error.message === 'No authentication token found') {
-                        document.getElementById('login-section').style.display = 'block';
-                        document.getElementById('dashboard-section').style.display = 'none';
-                    } else {
-                        alert('Failed to load healthcare professional details: ' + error.message);
-                    }
-                }
-            }
-
-            // Doctor delete
-            if (e.target.classList.contains('delete-doctor')) {
-                if (confirm('Are you sure you want to delete this doctor?')) {
-                    const doctorId = e.target.dataset.id;
-                    try {
-                        const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                            }
-                        });
-                        if (!response.ok) throw new Error('Failed to delete Healthcare Professionals');
-                        
-                        alert('Healthcare Professionals deleted successfully');
-                        loadDoctors();
-                    } catch (error) {
-                        console.error('Error:', error);
-                        alert('Failed to delete doctor');
-                    }
-                }
-            }
-        });
-
-        // Add event listeners for save changes buttons
-        document.getElementById('save-hospital-changes').addEventListener('click', async () => {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             const form = document.getElementById('edit-hospital-form');
             const formData = new FormData(form);
             const hospitalId = formData.get('id');
@@ -2566,20 +1877,10 @@ function toggleAuthForm() {
                     postal_code: formData.get('postal_code'),
                     country: formData.get('country'),
                     website: formData.get('website') || '',
-<<<<<<< HEAD
                     is_verified: formData.get('is_verified') === 'on'
                 };
 
                     const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
-=======
-                    directions: formData.get('directions') || '',
-                    is_verified: formData.get('is_verified') === 'on'
-                };
-
-                console.log('Sending hospital data:', hospitalData);
-
-                const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -2589,19 +1890,9 @@ function toggleAuthForm() {
                     body: JSON.stringify(hospitalData)
                 });
 
-<<<<<<< HEAD
                 if (!response.ok) {
                         const errorText = await response.text();
                         throw new Error(`Server returned ${response.status}: ${errorText}`);
-=======
-                console.log('Update response status:', response.status);
-
-                const responseText = await response.text();
-                console.log('Raw update response:', responseText);
-
-                if (!response.ok) {
-                    throw new Error(`Server returned ${response.status}: ${responseText}`);
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 }
                 
                 alert('Hospital updated successfully');
@@ -2609,7 +1900,6 @@ function toggleAuthForm() {
                 modal.hide();
                 loadHospitals();
             } catch (error) {
-<<<<<<< HEAD
                     console.error('Error updating hospital:', error);
                 alert('Failed to update hospital: ' + error.message);
             }
@@ -2620,14 +1910,6 @@ function toggleAuthForm() {
         const savePharmacyChanges = document.getElementById('save-pharmacy-changes');
         if (savePharmacyChanges) {
             savePharmacyChanges.addEventListener('click', async () => {
-=======
-                console.error('Error details:', error);
-                alert('Failed to update hospital: ' + error.message);
-            }
-        });
-
-        document.getElementById('save-pharmacy-changes').addEventListener('click', async () => {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             const form = document.getElementById('edit-pharmacy-form');
             const formData = new FormData(form);
             const pharmacyId = formData.get('id');
@@ -2656,21 +1938,11 @@ function toggleAuthForm() {
                     postal_code: formData.get('postal_code'),
                     country: formData.get('country'),
                     website: formData.get('website') || '',
-<<<<<<< HEAD
-=======
-                    directions: formData.get('directions') || '',
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     is_24_hours: formData.get('is_24_hours') === 'on',
                     is_verified: formData.get('is_verified') === 'on'
                 };
 
-<<<<<<< HEAD
                     const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
-=======
-                console.log('Sending pharmacy data:', pharmacyData);
-
-                const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -2680,19 +1952,9 @@ function toggleAuthForm() {
                     body: JSON.stringify(pharmacyData)
                 });
 
-<<<<<<< HEAD
                 if (!response.ok) {
                         const errorText = await response.text();
                         throw new Error(`Server returned ${response.status}: ${errorText}`);
-=======
-                console.log('Update response status:', response.status);
-
-                const responseText = await response.text();
-                console.log('Raw update response:', responseText);
-
-                if (!response.ok) {
-                    throw new Error(`Server returned ${response.status}: ${responseText}`);
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 }
                 
                 alert('Pharmacy updated successfully');
@@ -2700,7 +1962,6 @@ function toggleAuthForm() {
                 modal.hide();
                 loadPharmacies();
             } catch (error) {
-<<<<<<< HEAD
                     console.error('Error updating pharmacy:', error);
                 alert('Failed to update pharmacy: ' + error.message);
             }
@@ -2758,59 +2019,12 @@ function toggleAuthForm() {
                         const errorText = await response.text();
                         throw new Error(`Server returned ${response.status}: ${errorText}`);
                     }
-=======
-                console.error('Error details:', error);
-                alert('Failed to update pharmacy: ' + error.message);
-            }
-        });
-
-        document.getElementById('save-doctor-changes').addEventListener('click', async () => {
-            const form = document.getElementById('edit-doctor-form');
-            const formData = new FormData(form);
-            const doctorId = formData.get('id');
-
-            // Handle custom specialization
-            const specialization = formData.get('specialization');
-            if (specialization === 'Other') {
-                formData.set('specialization', formData.get('custom_specialization'));
-            }
-
-            // Handle custom experience
-            const experience = formData.get('experience');
-            if (experience === 'Other') {
-                formData.set('experience', formData.get('custom_experience'));
-            }
-
-            // Handle custom qualifications
-            const qualifications = formData.get('qualifications');
-            if (qualifications === 'Other') {
-                formData.set('qualifications', formData.get('custom_qualifications'));
-            }
-
-            // Handle custom hospital affiliation
-            const hospitalAffiliation = formData.get('hospital_affiliation');
-            if (hospitalAffiliation === 'Other') {
-                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
-            }
-
-            try {
-                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) throw new Error('Failed to update doctor');
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                 
                 alert('Doctor updated successfully');
                 const modal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
                 modal.hide();
                 loadDoctors();
             } catch (error) {
-<<<<<<< HEAD
                     console.error('Error updating doctor:', error);
                     alert('Failed to update doctor: ' + error.message);
                 }
@@ -3130,646 +2344,6 @@ if (saveAdminChangesBtn) {
                 console.error('Error deleting doctor:', error);
                 alert('Failed to delete doctor');
                     }
-=======
-                console.error('Error:', error);
-                alert('Failed to update doctor');
-            }
-        });
-
-        // Add Hospital Form Handler
-        document.getElementById('add-hospital-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            try {
-                const response = await fetch('http://localhost:5000/api/admin/hospitals', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add hospital');
-                }
-
-                alert('Hospital added successfully!');
-                e.target.reset();
-                loadHospitals();
-            } catch (error) {
-                console.error('Error adding hospital:', error);
-                alert('Failed to add hospital: ' + error.message);
-            }
-        });
-
-        // Add Pharmacy Form Handler
-        document.getElementById('add-pharmacy-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            try {
-                const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add pharmacy');
-                }
-
-                alert('Pharmacy added successfully!');
-                e.target.reset();
-                loadPharmacies();
-            } catch (error) {
-                console.error('Error adding pharmacy:', error);
-                alert('Failed to add pharmacy: ' + error.message);
-            }
-        });
-
-        // Add Healthcare Professionals Form Handler
-        document.getElementById('add-doctor-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            // Handle custom specialization
-            const specialization = formData.get('specialization');
-            if (specialization === 'Other') {
-                formData.set('specialization', formData.get('custom_specialization'));
-            }
-            
-            // Handle custom experience
-            const experience = formData.get('experience');
-            if (experience === 'Other') {
-                formData.set('experience', formData.get('custom_experience'));
-            }
-
-            // Handle custom qualifications
-            const qualifications = formData.get('qualifications');
-            if (qualifications === 'Other') {
-                formData.set('qualifications', formData.get('custom_qualifications'));
-            }
-
-            // Handle custom hospital affiliation
-            const hospitalAffiliation = formData.get('hospital_affiliation');
-            if (hospitalAffiliation === 'Other') {
-                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
-            }
-            
-            try {
-                const response = await fetch('http://localhost:5000/api/admin/doctors', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add doctor');
-                }
-
-                alert('Healthcare Professionals added successfully!');
-                e.target.reset();
-                loadDoctors();
-            } catch (error) {
-                console.error('Error adding doctor:', error);
-                alert('Failed to add doctor: ' + error.message);
-            }
-        });
-
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = input.nextElementSibling.querySelector('i');
-            
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        }
-
-        function checkPasswordStrength(password) {
-            const strengthBar = document.getElementById('password-strength');
-            let strength = 0;
-            
-            if (password.length >= 8) strength++;
-            if (password.match(/[a-z]+/)) strength++;
-            if (password.match(/[A-Z]+/)) strength++;
-            if (password.match(/[0-9]+/)) strength++;
-            if (password.match(/[^a-zA-Z0-9]+/)) strength++;
-
-            strengthBar.className = 'password-strength';
-            if (strength <= 2) {
-                strengthBar.classList.add('weak');
-            } else if (strength === 3) {
-                strengthBar.classList.add('medium');
-            } else if (strength === 4) {
-                strengthBar.classList.add('strong');
-            } else {
-                strengthBar.classList.add('very-strong');
-            }
-        }
-
-        // Add event listener for password strength check
-        document.getElementById('admin-password').addEventListener('input', function(e) {
-            checkPasswordStrength(e.target.value);
-        });
-
-        // Add event listener for admin search
-        document.getElementById('admin-search').addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#admins-table-body tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
-            });
-        });
-
-        // Add event listener for role filter
-        document.getElementById('admin-role-filter').addEventListener('change', function(e) {
-            const role = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('#admins-table-body tr');
-            
-            rows.forEach(row => {
-                const rowRole = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
-                row.style.display = !role || rowRole === role ? '' : 'none';
-            });
-        });
-
-        // Update the Add Admin Form Handler
-        document.getElementById('add-admin-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            if (formData.get('password') !== formData.get('confirm_password')) {
-                alert('Passwords do not match!');
-                return;
-            }
-
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch('http://localhost:5000/api/admin/admins', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    mode: 'cors',
-                    body: JSON.stringify({
-                        name: formData.get('name'),
-                        email: formData.get('email'),
-                        password: formData.get('password'),
-                        role: formData.get('role'),
-                        status: formData.get('status'),
-                        send_credentials: formData.get('send_credentials') === 'on'
-                    })
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add administrator');
-                }
-
-                alert('Administrator added successfully!');
-                e.target.reset();
-                loadAdmins();
-            } catch (error) {
-                console.error('Error adding administrator:', error);
-                alert('Error adding administrator: ' + error.message);
-            }
-        });
-
-        // Update the Delete Admin Handler
-        async function deleteAdmin(adminId) {
-            if (!confirm('Are you sure you want to delete this administrator?')) {
-                return;
-            }
-
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    mode: 'cors'
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to delete administrator');
-                }
-
-                alert('Administrator deleted successfully!');
-                loadAdmins();
-            } catch (error) {
-                console.error('Error deleting administrator:', error);
-                alert('Error deleting administrator: ' + error.message);
-            }
-        }
-
-        // Add Edit Admin Handler
-        async function editAdmin(adminId) {
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    mode: 'cors'
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to fetch administrator details');
-                }
-
-                const admin = await response.json();
-                const form = document.getElementById('edit-admin-form');
-                
-                // Populate form fields
-                form.querySelector('[name="id"]').value = admin.id;
-                form.querySelector('[name="name"]').value = admin.name;
-                form.querySelector('[name="email"]').value = admin.email;
-                form.querySelector('[name="role"]').value = admin.role;
-                form.querySelector('[name="status"]').value = admin.status;
-                form.querySelector('[name="password"]').value = ''; // Clear password field
-
-                // Show modal
-                const modal = new bootstrap.Modal(document.getElementById('editAdminModal'));
-                modal.show();
-            } catch (error) {
-                console.error('Error fetching administrator details:', error);
-                alert('Error fetching administrator details: ' + error.message);
-            }
-        }
-
-        // Add Save Admin Changes Handler
-        const saveAdminChangesBtn = document.getElementById('save-admin-changes');
-        if (saveAdminChangesBtn) {
-            saveAdminChangesBtn.addEventListener('click', async () => {
-            const form = document.getElementById('edit-admin-form');
-            const formData = new FormData(form);
-            const adminId = formData.get('id');
-
-            try {
-                const token = localStorage.getItem('admin_token');
-                if (!token) {
-                    throw new Error('No authentication token found');
-                }
-
-                const data = {
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    role: formData.get('role'),
-                    status: formData.get('status')
-                };
-
-                // Only include password if it's not empty
-                const password = formData.get('password');
-                if (password) {
-                    data.password = password;
-                }
-
-                const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    credentials: 'include',
-                    mode: 'cors',
-                    body: JSON.stringify(data)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to update administrator');
-                }
-
-                alert('Administrator updated successfully!');
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editAdminModal'));
-                modal.hide();
-                loadAdmins();
-            } catch (error) {
-                console.error('Error updating administrator:', error);
-                alert('Error updating administrator: ' + error.message);
-            }
-        });
-        }
-
-        function handleSpecializationChange(selectElement) {
-            const customInput = selectElement.id === 'specialization' ? 
-                document.getElementById('customSpecialization') : 
-                document.getElementById('editCustomSpecialization');
-            
-            if (customInput && selectElement.value === 'Other') {
-                customInput.style.display = 'block';
-                customInput.required = true;
-            } else if (customInput) {
-                customInput.style.display = 'none';
-                customInput.required = false;
-            }
-        }
-
-        function handleExperienceChange(selectElement) {
-            const customInput = selectElement.id.includes('addDoctorExperience') ? 
-                document.getElementById(selectElement.id.replace('Experience', 'CustomExperience')) : 
-                document.getElementById(selectElement.id.replace('Experience', 'CustomExperience'));
-            
-            if (customInput && selectElement.value === 'Other') {
-                customInput.style.display = 'block';
-                customInput.required = true;
-            } else if (customInput) {
-                customInput.style.display = 'none';
-                customInput.required = false;
-            }
-        }
-
-        function handleQualificationsChange(selectElement) {
-            const customInput = selectElement.id === 'qualifications' ? 
-                document.getElementById('customQualifications') : 
-                document.getElementById('editCustomQualifications');
-            
-            if (customInput && selectElement.value === 'Other') {
-                customInput.style.display = 'block';
-                customInput.required = true;
-            } else if (customInput) {
-                customInput.style.display = 'none';
-                customInput.required = false;
-            }
-        }
-
-        function handleHospitalAffiliationChange(selectElement) {
-            const customInput = selectElement.id === 'hospitalAffiliation' ? 
-                document.getElementById('customHospitalAffiliation') : 
-                document.getElementById('editCustomHospitalAffiliation');
-            
-            if (customInput && selectElement.value === 'Other') {
-                customInput.style.display = 'block';
-                customInput.required = true;
-            } else if (customInput) {
-                customInput.style.display = 'none';
-                customInput.required = false;
-            }
-        }
-
-        // Update the form submission handlers
-        const addDoctorForm = document.getElementById('add-doctor-form');
-        if (addDoctorForm) {
-            addDoctorForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const formData = new FormData(e.target);
-            
-            // Handle custom specialization
-            const specialization = formData.get('specialization');
-            if (specialization === 'Other') {
-                formData.set('specialization', formData.get('custom_specialization'));
-            }
-            
-            // Handle custom experience
-            const experience = formData.get('experience');
-            if (experience === 'Other') {
-                formData.set('experience', formData.get('custom_experience'));
-            }
-
-            // Handle custom qualifications
-            const qualifications = formData.get('qualifications');
-            if (qualifications === 'Other') {
-                formData.set('qualifications', formData.get('custom_qualifications'));
-            }
-
-            // Handle custom hospital affiliation
-            const hospitalAffiliation = formData.get('hospital_affiliation');
-            if (hospitalAffiliation === 'Other') {
-                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
-            }
-            
-            try {
-                const response = await fetch('http://localhost:5000/api/admin/doctors', {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error || 'Failed to add doctor');
-                }
-
-                alert('Doctor added successfully!');
-                e.target.reset();
-                loadDoctors();
-            } catch (error) {
-                console.error('Error adding doctor:', error);
-                alert('Failed to add doctor: ' + error.message);
-            }
-        });
-        }
-
-        // Update the edit doctor form handler
-        const saveDoctorChangesBtn = document.getElementById('save-doctor-changes');
-        if (saveDoctorChangesBtn) {
-            saveDoctorChangesBtn.addEventListener('click', async () => {
-            const form = document.getElementById('edit-doctor-form');
-            const formData = new FormData(form);
-            const doctorId = formData.get('id');
-
-            // Handle custom specialization
-            const specialization = formData.get('specialization');
-            if (specialization === 'Other') {
-                formData.set('specialization', formData.get('custom_specialization'));
-            }
-
-            // Handle custom experience
-            const experience = formData.get('experience');
-            if (experience === 'Other') {
-                formData.set('experience', formData.get('custom_experience'));
-            }
-
-            // Handle custom qualifications
-            const qualifications = formData.get('qualifications');
-            if (qualifications === 'Other') {
-                formData.set('qualifications', formData.get('custom_qualifications'));
-            }
-
-            // Handle custom hospital affiliation
-            const hospitalAffiliation = formData.get('hospital_affiliation');
-            if (hospitalAffiliation === 'Other') {
-                formData.set('hospital_affiliation', formData.get('custom_hospital_affiliation'));
-            }
-
-            try {
-                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    },
-                    body: formData
-                });
-
-                if (!response.ok) throw new Error('Failed to update doctor');
-                
-                alert('Doctor updated successfully');
-                const modal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
-                modal.hide();
-                loadDoctors();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to update doctor');
-            }
-        });
-        }
-
-        // Update the load doctor details function
-        async function loadDoctorDetails(doctorId) {
-            try {
-                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                    }
-                });
-                if (!response.ok) throw new Error('Failed to fetch healthcare professional details');
-                
-                const doctor = await response.json();
-                const form = document.getElementById('edit-doctor-form');
-                if (!form) return;
-                
-                // Check if the experience is in the predefined list
-                const experienceSelect = form.querySelector('#editDoctorExperience1');
-                const customExperience = form.querySelector('#editDoctorCustomExperience1');
-                
-                if (experienceSelect && customExperience) {
-                    const predefinedExperiences = Array.from(experienceSelect.options).map(opt => opt.value);
-                    if (predefinedExperiences.includes(doctor.experience)) {
-                        experienceSelect.value = doctor.experience;
-                        customExperience.style.display = 'none';
-                    } else {
-                        experienceSelect.value = 'Other';
-                        customExperience.style.display = 'block';
-                        customExperience.value = doctor.experience;
-                    }
-                }
-                
-                // Check if the qualifications is in the predefined list
-                const qualificationsSelect = form.querySelector('#editQualifications');
-                const customQualifications = form.querySelector('#editCustomQualifications');
-                
-                const predefinedQualifications = Array.from(qualificationsSelect.options).map(opt => opt.value);
-                if (predefinedQualifications.includes(doctor.qualifications)) {
-                    qualificationsSelect.value = doctor.qualifications;
-                    customQualifications.style.display = 'none';
-                } else {
-                    qualificationsSelect.value = 'Other';
-                    customQualifications.style.display = 'block';
-                    customQualifications.value = doctor.qualifications;
-                }
-
-                // Check if the hospital affiliation is in the predefined list
-                const hospitalAffiliationSelect = form.querySelector('#editHospitalAffiliation');
-                const customHospitalAffiliation = form.querySelector('#editCustomHospitalAffiliation');
-                
-                const predefinedHospitals = Array.from(hospitalAffiliationSelect.options).map(opt => opt.value);
-                if (predefinedHospitals.includes(doctor.hospital_affiliation)) {
-                    hospitalAffiliationSelect.value = doctor.hospital_affiliation;
-                    customHospitalAffiliation.style.display = 'none';
-                } else {
-                    hospitalAffiliationSelect.value = 'Other';
-                    customHospitalAffiliation.style.display = 'block';
-                    customHospitalAffiliation.value = doctor.hospital_affiliation;
-                }
-                
-                // Set other form fields
-                form.querySelector('[name="id"]').value = doctor.id;
-                form.querySelector('[name="name"]').value = doctor.name;
-                form.querySelector('[name="license_number"]').value = doctor.license_number;
-                form.querySelector('[name="email"]').value = doctor.email;
-                form.querySelector('[name="phone"]').value = doctor.phone;
-                form.querySelector('[name="city"]').value = doctor.city || '';
-                form.querySelector('[name="professional_type"]').value = doctor.professional_type || '';
-                form.querySelector('[name="is_verified"]').checked = doctor.is_verified;
-                
-                const modal = new bootstrap.Modal(document.getElementById('editDoctorModal'));
-                modal.show();
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Failed to load healthcare professional details');
-            }
-        }
-
-        // Update the form submission handlers
-        document.addEventListener('DOMContentLoaded', function() {
-            const addDoctorForm = document.getElementById('add-doctor-form');
-            if (addDoctorForm) {
-                addDoctorForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    const formData = new FormData(e.target);
-                    
-                    // Handle custom experience
-                    const experience = formData.get('experience');
-                    if (experience === 'Other') {
-                        formData.set('experience', formData.get('custom_experience'));
-                    }
-                    
-                    try {
-                        const response = await fetch('http://localhost:5000/api/admin/doctors', {
-                            method: 'POST',
-                            headers: {
-                                'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                            },
-                            body: formData
-                        });
-
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            throw new Error(errorData.error || 'Failed to add healthcare professional');
-                        }
-
-                        alert('Healthcare Professional added successfully!');
-                        e.target.reset();
-                        loadDoctors();
-                    } catch (error) {
-                        console.error('Error adding healthcare professional:', error);
-                        alert('Failed to add healthcare professional: ' + error.message);
-                    }
-                });
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
             }
 
             // Signup form handler
@@ -3785,16 +2359,8 @@ if (saveAdminChangesBtn) {
                         return;
                     }
                     
-<<<<<<< HEAD
                     try {
                     const response = await fetch('http://localhost:5000/api/admin/signup', {
-=======
-                    // Remove confirm_password from formData
-                    formData.delete('confirm_password');
-                    
-                    try {
-                        const response = await fetch('http://localhost:5000/api/admin/signup', {
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -3812,10 +2378,6 @@ if (saveAdminChangesBtn) {
                             throw new Error(errorData.error || 'Failed to create admin account');
                         }
 
-<<<<<<< HEAD
-=======
-                        const result = await response.json();
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
                         alert('Admin account created successfully! Please wait for verification.');
                         e.target.reset();
                         toggleAuthForm(); // Switch back to login
@@ -3862,7 +2424,6 @@ if (saveAdminChangesBtn) {
                     passwordStrength.className = `password-strength ${strengthText}`;
                 });
             }
-<<<<<<< HEAD
 
         // Focus management for modals to prevent accessibility warnings
         const modals = document.querySelectorAll('.modal');
@@ -4506,24 +3067,5 @@ function handleSpecializationChange(selectElement) {
         customInput.required = false;
     }
 }
-=======
-        });
-
-        // Toggle between login and signup forms
-        function toggleAuthForm() {
-            const loginSection = document.getElementById('login-section');
-            const signupSection = document.getElementById('signup-section');
-            
-            if (loginSection && signupSection) {
-                if (loginSection.style.display === 'none') {
-                    loginSection.style.display = 'block';
-                    signupSection.style.display = 'none';
-                } else {
-                    loginSection.style.display = 'none';
-                    signupSection.style.display = 'block';
-                }
-            }
-        }
->>>>>>> 7b0d8288c8cacda5fdadffc9a0bae8fe1b5534fe
     </script>
 </body>
