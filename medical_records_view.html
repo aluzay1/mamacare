@@ -1,0 +1,2296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Records View</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Add jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <style>
+        /* Base styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f6fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #2c3e50;
+            color: #fff;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+
+        .nav-links li a {
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li a.active {
+            background-color: #3498db;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Auth section styles */
+        .auth-section {
+            min-height: calc(100vh - 70px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin-top: 70px;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 550px;
+            display: flex;
+            min-height: 400px;
+        }
+
+        .auth-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 1;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+        }
+
+        .logo-container i {
+            font-size: 1.25rem;
+            color: white;
+        }
+
+        .auth-header h1 {
+            position: relative;
+            z-index: 1;
+            color: white;
+            margin: 0;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .auth-subtitle {
+            position: relative;
+            z-index: 1;
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .features-list {
+            position: relative;
+            z-index: 1;
+            list-style: none;
+            margin-top: 1rem;
+            text-align: left;
+            width: 100%;
+        }
+
+        .features-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .features-list i {
+            font-size: 1rem;
+            color: #3498db;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Form styles */
+        .auth-form {
+            flex: 1;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            color: #2c3e50;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.95rem;
+        }
+
+        .pin-input-container {
+            position: relative;
+        }
+
+        .pin-input-container input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            letter-spacing: 8px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            padding-right: 50px;
+        }
+
+        .pin-input-container input:focus {
+            outline: none;
+            border-color: #3498db;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .pin-input-container input::placeholder {
+            color: #adb5bd;
+            letter-spacing: 4px;
+        }
+
+        .toggle-pin-visibility {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 5px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-pin-visibility:hover {
+            background: #e9ecef;
+            color: #2c3e50;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1f5f8b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+            margin-top: 20px;
+            font-weight: 500;
+            background: #fee;
+            color: #c53030;
+            border-left: 4px solid #c53030;
+        }
+
+        /* Medical records section styles */
+        .medical-records {
+            padding: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .medical-records h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* Modern Profile Card Styles */
+        .patient-profile {
+            background: #fff;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            margin: 1.5rem auto;
+            max-width: 1000px;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2.5rem;
+            position: relative;
+            text-align: center;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-tabs {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
+
+        .profile-tab {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+
+        .profile-tab.active {
+            color: #3498db;
+            background: white;
+            border-bottom-color: #3498db;
+        }
+
+        .profile-tab:hover {
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .profile-content {
+            padding: 0;
+            background: white;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 2rem;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .profile-section {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .profile-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section-header i {
+            font-size: 1.25rem;
+            color: #3498db;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 0.6rem;
+            border-radius: 10px;
+        }
+
+        .section-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .info-item:hover {
+            border-color: #3498db;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.1);
+        }
+
+        .info-item label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+            display: block;
+            font-weight: 600;
+        }
+
+        .info-item span {
+            color: #1e293b;
+            font-size: 0.95rem;
+            font-weight: 500;
+            display: block;
+            line-height: 1.4;
+        }
+
+        .info-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            max-width: 100%;
+            line-height: 1.2;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Records section styles */
+        .records-section {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        .records-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .records-header h2 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .records-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .search-filters {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .search-box {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 250px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .filter-select {
+            padding: 0.5rem 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background-color: white;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .download-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download:hover {
+            background: linear-gradient(135deg, #218838 0%, #1ea085 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-download-single {
+            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+            color: white;
+            border: none;
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download-single:hover {
+            background: linear-gradient(135deg, #138496 0%, #5a32a3 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        .records-table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+            background: white;
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 0.75rem 1rem;
+            text-align: left;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+        }
+
+        .records-table th {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .records-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .records-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Mobile menu styles */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 25px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+            transform-origin: center;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding: 80px 20px 20px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                right: 0;
+            }
+
+            .nav-links li {
+                width: 100%;
+                margin: 10px 0;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+                padding: 15px 20px;
+                border-radius: 10px;
+                font-size: 0.9rem;
+                font-weight: 500;
+                text-align: center;
+                transition: all 0.3s ease;
+                border: 1px solid transparent;
+            }
+
+            .nav-links a:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: rgba(255, 255, 255, 0.2);
+                transform: translateX(5px);
+            }
+
+            .nav-links a.active {
+                background: #3498db;
+                border-color: #3498db;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            }
+
+            .nav-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+                z-index: 998;
+            }
+
+            .nav-overlay.active {
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .records-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box,
+            .filter-select {
+                width: 100%;
+            }
+
+            .download-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-download {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 0.75rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .medical-records {
+                padding: 1.5rem;
+            }
+
+            .profile-header {
+                padding: 3rem 2.5rem;
+            }
+
+            .profile-content {
+                padding: 2rem;
+                gap: 2rem;
+            }
+
+            .profile-section {
+                padding: 2rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .medical-records {
+                padding: 1.25rem;
+            }
+
+            .profile-header {
+                padding: 2.5rem 2rem;
+            }
+
+            .profile-content {
+                padding: 1.75rem;
+                gap: 1.75rem;
+            }
+
+            .profile-section {
+                padding: 1.75rem;
+            }
+
+            .section-header {
+                margin-bottom: 1.5rem;
+            }
+
+            .section-header i {
+                font-size: 1.3rem;
+                padding: 0.7rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.3rem;
+            }
+
+            .info-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.25rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                max-width: 100%;
+                margin: 20px;
+                min-height: auto;
+            }
+
+            .auth-header {
+                padding: 20px 15px;
+                order: 2;
+            }
+
+            .auth-form {
+                padding: 20px 15px;
+                order: 1;
+            }
+
+            .auth-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .auth-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .features-list li {
+                font-size: 0.75rem;
+                margin-bottom: 10px;
+            }
+
+            .features-list i {
+                width: 24px;
+                height: 24px;
+                font-size: 0.9rem;
+                padding: 5px;
+            }
+
+            .pin-input-container input {
+                padding: 10px 14px;
+                font-size: 1rem;
+                letter-spacing: 4px;
+            }
+
+            .btn-primary {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+
+            .form-group label {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .auth-section {
+                padding: 1rem;
+                margin-top: 60px;
+            }
+
+            .auth-container {
+                margin: 10px;
+                border-radius: 16px;
+                max-width: calc(100% - 20px);
+            }
+
+            .auth-header,
+            .auth-form {
+                padding: 15px 12px;
+            }
+
+            .auth-header h1 {
+                font-size: 1.3rem;
+            }
+
+            .logo-container {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-container i {
+                font-size: 1rem;
+            }
+
+            .features-list {
+                margin-top: 0.75rem;
+            }
+
+            .features-list li {
+                font-size: 0.7rem;
+                margin-bottom: 8px;
+                gap: 8px;
+            }
+
+            .features-list i {
+                width: 20px;
+                height: 20px;
+                font-size: 0.8rem;
+                padding: 4px;
+            }
+
+            .pin-input-container input {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+                letter-spacing: 3px;
+            }
+
+            .btn-primary {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            .form-group label {
+                font-size: 0.8rem;
+                margin-bottom: 4px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .auth-container {
+                margin: 5px;
+                border-radius: 12px;
+            }
+
+            .auth-header,
+            .auth-form {
+                padding: 12px 10px;
+            }
+
+            .auth-header h1 {
+                font-size: 1.2rem;
+            }
+
+            .auth-subtitle {
+                font-size: 0.8rem;
+            }
+
+            .features-list li {
+                font-size: 0.65rem;
+                margin-bottom: 6px;
+            }
+
+            .features-list i {
+                width: 18px;
+                height: 18px;
+                font-size: 0.75rem;
+                padding: 3px;
+            }
+
+            .pin-input-container input {
+                padding: 6px 10px;
+                font-size: 0.85rem;
+                letter-spacing: 2px;
+            }
+
+            .btn-primary {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .auth-container {
+                max-width: 600px;
+                min-height: 450px;
+            }
+
+            .auth-header {
+                padding: 30px;
+            }
+
+            .auth-form {
+                padding: 30px;
+            }
+
+            .auth-header h1 {
+                font-size: 2rem;
+            }
+
+            .auth-subtitle {
+                font-size: 1rem;
+            }
+
+            .features-list li {
+                font-size: 0.9rem;
+                margin-bottom: 15px;
+            }
+
+            .features-list i {
+                width: 32px;
+                height: 32px;
+                font-size: 1.1rem;
+                padding: 7px;
+            }
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            margin-top: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Responsive Design for Profile */
+        @media (max-width: 768px) {
+            .medical-records {
+                padding: 1rem;
+            }
+
+            .patient-profile {
+                margin: 1rem auto;
+                border-radius: 20px;
+            }
+
+            .profile-header {
+                padding: 2rem 1.5rem;
+            }
+
+            .profile-avatar {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .profile-name {
+                font-size: 1.5rem;
+            }
+
+            .profile-tabs {
+                flex-wrap: wrap;
+            }
+
+            .profile-tab {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 1.5rem;
+            }
+
+            .profile-section {
+                padding: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .info-item {
+                padding: 0.875rem;
+            }
+
+            .section-header {
+                margin-bottom: 1rem;
+                padding-bottom: 0.5rem;
+            }
+
+            .section-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .records-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.75rem;
+            }
+
+            .search-filters {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .search-box {
+                width: 100%;
+            }
+
+            .filter-select {
+                width: 100%;
+            }
+
+            .download-actions {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .medical-records h1 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            .profile-header {
+                padding: 1.5rem 1rem;
+            }
+
+            .profile-avatar {
+                width: 50px;
+                height: 50px;
+                font-size: 1.25rem;
+            }
+
+            .profile-name {
+                font-size: 1.25rem;
+            }
+
+            .profile-tabs {
+                flex-direction: column;
+            }
+
+            .profile-tab {
+                width: 100%;
+                text-align: center;
+                border-radius: 0;
+                border-bottom: 1px solid #e2e8f0;
+            }
+
+            .tab-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-value {
+                font-size: 1.25rem;
+            }
+
+            .profile-section {
+                padding: 1rem;
+            }
+
+            .info-item {
+                padding: 0.75rem;
+            }
+
+            .info-item label {
+                font-size: 0.7rem;
+            }
+
+            .info-item span {
+                font-size: 0.9rem;
+            }
+
+            .records-section {
+                padding: 1rem;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo"><a href="index.html" style="color: #ffffff; text-decoration: none; font-family: 'Poppins', sans-serif;">MamaCare</a></div>
+            <button class="menu-toggle" id="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="nav-links" id="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="hospitals.html">Hospitals</a></li>
+                <li><a href="pharmacy.html">Pharmacy</a></li>
+                <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
+                <li><a href="medical_records_view.html" class="active">Medical Records</a></li>
+                <li><a href="provider_access.html">Healthcare Provider Access</a></li>
+            </ul>
+        </nav>
+        <div class="nav-overlay" id="nav-overlay"></div>
+    </header>
+
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <div class="logo-container">
+                    <i class="fas fa-heartbeat"></i>
+                </div>
+                <h1>Welcome to MamaCare</h1>
+                <p class="auth-subtitle">Access your complete medical records securely</p>
+                
+                <ul class="features-list">
+                    <li>
+                        <i class="bi bi-shield-check"></i>
+                        <span>Secure & Private Access</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-file-earmark-medical"></i>
+                        <span>Complete Health History</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-heart-pulse"></i>
+                        <span>Pregnancy & Maternal Care</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-clock-history"></i>
+                        <span>24/7 Record Access</span>
+                    </li>
+                    <li>
+                        <i class="bi bi-download"></i>
+                        <span>Download & Share Records</span>
+                    </li>
+                </ul>
+            </div>
+            <form id="pinForm" class="auth-form">
+                <div class="form-group">
+                    <label for="patientPin">Enter your 6-digit PIN</label>
+                    <div class="pin-input-container">
+                        <input type="password" id="patientPin" name="patientPin" maxlength="6" pattern="\d{6}" placeholder="Enter PIN" required>
+                        <button type="button" class="toggle-pin-visibility" onclick="togglePinVisibility()">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary btn-block">
+                    <i class="fas fa-sign-in-alt"></i> View Records
+                </button>
+            </form>
+            <p id="pinError" class="error-message" style="display: none;">Invalid PIN. Please try again.</p>
+        </div>
+    </section>
+
+    <section class="medical-records" id="medicalRecords" style="display: none;">
+        <h1>Patient Medical Records</h1>
+
+        <!-- Patient Overview -->
+        <div class="patient-profile">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                    </div>
+                <h1 class="profile-name" id="patientNameDisplay"></h1>
+                <p class="profile-subtitle">Patient Profile</p>
+                </div>
+
+            <div class="profile-tabs">
+                <button class="profile-tab active" onclick="showTab('overview')">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </button>
+                <button class="profile-tab" onclick="showTab('personal')">
+                    <i class="fas fa-user"></i> Personal Info
+                </button>
+                <button class="profile-tab" onclick="showTab('medical')">
+                    <i class="fas fa-heartbeat"></i> Medical Info
+                </button>
+                <button class="profile-tab" onclick="showTab('pregnancy')" id="pregnancyTab" style="display: none;">
+                    <i class="fas fa-baby"></i> Pregnancy
+                </button>
+                <button class="profile-tab" onclick="showTab('records')">
+                    <i class="fas fa-file-medical"></i> Records
+                </button>
+            </div>
+
+            <div class="profile-content">
+                <!-- Overview Tab -->
+                <div id="overview" class="tab-content active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalRecords">0</div>
+                            <div class="stat-label">Total Records</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="lastVisit">-</div>
+                            <div class="stat-label">Last Visit</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="healthScore">-</div>
+                            <div class="stat-label">Blood Group</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="activeMedications">0</div>
+                            <div class="stat-label">Active Medications</div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <i class="fas fa-info-circle"></i>
+                            <h3>Quick Info</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Patient ID</label>
+                                <span id="patientIdDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Blood Type</label>
+                                <span id="patientBloodTypeDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Gender</label>
+                                <span id="patientGenderDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Date of Birth</label>
+                                <span id="patientDobDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <i class="fas fa-phone"></i>
+                            <h3>Emergency Contact</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <label>Contact Name</label>
+                                <span id="emergencyContactNameDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Contact Phone</label>
+                                <span id="emergencyContactPhoneDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Relationship</label>
+                                <span id="emergencyContactRelationshipDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Info Tab -->
+                <div id="personal" class="tab-content">
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-user"></i> 
+                        <h3>Basic Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Full Name</label>
+                                <span id="patientNameDisplay2"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Date of Birth</label>
+                                <span id="patientDobDisplay2"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Gender</label>
+                                <span id="patientGenderDisplay2"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Blood Type</label>
+                                <span id="patientBloodTypeDisplay2"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Marital Status</label>
+                            <span id="patientMaritalStatusDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Language</label>
+                            <span id="patientLanguageDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Nationality</label>
+                            <span id="patientNationalityDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-address-card"></i>
+                        <h3>Contact Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Email</label>
+                            <span id="patientEmailDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Phone</label>
+                            <span id="patientPhoneDisplay"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Address</label>
+                            <span id="patientAddressDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Medical Info Tab -->
+                <div id="medical" class="tab-content">
+                <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-heartbeat"></i>
+                        <h3>Medical Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item full-width">
+                            <label>Allergies</label>
+                            <span id="patientAllergiesDisplay"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Current Medications</label>
+                            <span id="patientMedicationsDisplay"></span>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pregnancy Tab -->
+                <div id="pregnancy" class="tab-content">
+                <div class="profile-section">
+                    <div class="section-header">
+                            <i class="fas fa-baby"></i>
+                            <h3>Basic Pregnancy Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                                <label>Pregnancy Status</label>
+                                <span id="patientPregnancyStatusDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                                <label>Estimated Due Date</label>
+                                <span id="patientDueDateDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                                <label>Gestational Age (weeks)</label>
+                                <span id="patientGestationalAgeDisplay"></span>
+                            </div>
+                            <div class="info-item full-width">
+                                <label>Pregnancy Complications</label>
+                                <span id="patientPregnancyComplicationsDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="profile-section">
+                    <div class="section-header">
+                        <i class="fas fa-baby"></i>
+                            <h3>Detailed Pregnancy Information</h3>
+                    </div>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <label>Pregnancy Status</label>
+                            <span id="pregnancyStatusDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Previous Pregnancies</label>
+                            <span id="previousPregnanciesDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Last Menstrual Period</label>
+                            <span id="lmpDateDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Estimated Due Date</label>
+                            <span id="dueDateDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Gestational Age (weeks)</label>
+                            <span id="gestationalAgeDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Multiple Pregnancy</label>
+                            <span id="multiplePregnancyDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <label>Risk Level</label>
+                            <span id="riskLevelDisplay"></span>
+                        </div>
+                        <div class="info-item full-width">
+                            <label>Risk Factors</label>
+                            <span id="riskFactorsDisplay"></span>
+                            </div>
+                        </div>
+                        </div>
+
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>Medical Measurements</h3>
+                        </div>
+                        <div class="info-grid">
+                        <div class="info-item">
+                            <label>Blood Pressure</label>
+                            <span id="bloodPressureDisplay"></span>
+                        </div>
+                            <div class="info-item">
+                                <label>Hemoglobin Level (g/dL)</label>
+                                <span id="hemoglobinDisplay"></span>
+                    </div>
+                            <div class="info-item">
+                                <label>Blood Sugar (mg/dL)</label>
+                                <span id="bloodSugarDisplay"></span>
+                            </div>
+                            <div class="info-item">
+                                <label>Weight (kg)</label>
+                                <span id="weightDisplay"></span>
+                </div>
+            </div>
+        </div>
+
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <i class="fas fa-pills"></i>
+                            <h3>Prenatal Care</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item full-width">
+                                <label>Prenatal Vitamins/Supplements</label>
+                                <span id="prenatalVitaminsDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="profile-section">
+                        <div class="section-header">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Complications & Emergency Plan</h3>
+                        </div>
+                        <div class="info-grid">
+                            <div class="info-item full-width">
+                                <label>Current Complications</label>
+                                <span id="pregnancyComplicationsDisplay"></span>
+                            </div>
+                            <div class="info-item full-width">
+                                <label>Emergency Hospital</label>
+                                <span id="emergencyHospitalDisplay"></span>
+                            </div>
+                            <div class="info-item full-width">
+                                <label>Birth Plan</label>
+                                <span id="birthPlanDisplay"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Records Tab -->
+                <div id="records" class="tab-content">
+            <div class="records-header">
+                <h2>Medical History</h2>
+                <div class="records-actions">
+                    <div class="search-filters">
+                        <input type="text" id="searchRecords" class="search-box" placeholder="Search records...">
+                        <select id="filterField" class="filter-select">
+                            <option value="all">All Fields</option>
+                            <option value="date">Date</option>
+                            <option value="diagnosis">Diagnosis</option>
+                            <option value="treatment">Treatment</option>
+                            <option value="medication">Medication</option>
+                            <option value="doctor">Doctor</option>
+                            <option value="hospital">Hospital</option>
+                        </select>
+                    </div>
+                    <div class="download-actions">
+                        <button onclick="downloadSelectedRecords()" class="btn-download" id="downloadSelectedBtn" style="display: none;">
+                            <i class="fas fa-download"></i> Download Selected
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="records-table-container">
+                <table class="records-table">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
+                            <th>Date</th>
+                            <th>Diagnosis</th>
+                            <th>Treatment</th>
+                            <th>Medication</th>
+                            <th>Doctor</th>
+                            <th>Hospital</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                    </tbody>
+                </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 MamaCare. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Initialize jsPDF
+        window.jsPDF = window.jspdf.jsPDF;
+
+        // Toggle PIN visibility
+        function togglePinVisibility() {
+            const pinInput = document.getElementById('patientPin');
+            const toggleButton = document.querySelector('.toggle-pin-visibility i');
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleButton.className = 'bi bi-eye-slash';
+            } else {
+                pinInput.type = 'password';
+                toggleButton.className = 'bi bi-eye';
+            }
+        }
+
+        // Handle PIN form submission
+        document.getElementById('pinForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const pin = document.getElementById('patientPin').value;
+            
+            try {
+                // Fetch patient profile using GET method
+                const response = await fetch(`http://localhost:5000/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Invalid PIN or profile not found');
+                }
+
+                const profile = await response.json();
+                
+                // Show the medical records section and hide the auth section
+                document.getElementById('medicalRecords').style.display = 'block';
+                document.querySelector('.auth-section').style.display = 'none';
+                
+                // Update the profile display
+                updateProfileDisplay(profile);
+                
+                // Fetch and display medical records
+                try {
+                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    if (recordsResponse.ok) {
+                        const records = await recordsResponse.json();
+                        displayRecords(records);
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch medical records:', error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                const pinError = document.getElementById('pinError');
+                pinError.textContent = error.message || 'Failed to fetch profile. Please try again.';
+                pinError.style.display = 'block';
+            }
+        });
+
+        function updateProfileDisplay(profile) {
+            try {
+                console.log('Updating profile display with data:', profile);
+                console.log('Gender value:', profile.gender);
+                console.log('Gender type:', typeof profile.gender);
+                
+                // Basic patient information
+                document.getElementById('patientNameDisplay').textContent = profile.name || 'Not available';
+                document.getElementById('patientNameDisplay2').textContent = profile.name || 'Not available';
+                document.getElementById('patientIdDisplay').textContent = profile.id || 'Not available';
+                document.getElementById('patientEmailDisplay').textContent = profile.email || 'Not available';
+                document.getElementById('patientPhoneDisplay').textContent = profile.phone || 'Not available';
+                document.getElementById('patientDobDisplay').textContent = profile.date_of_birth ? 
+                    new Date(profile.date_of_birth).toLocaleDateString() : 'Not available';
+                document.getElementById('patientDobDisplay2').textContent = profile.date_of_birth ? 
+                    new Date(profile.date_of_birth).toLocaleDateString() : 'Not available';
+                document.getElementById('patientGenderDisplay').textContent = profile.gender || 'Not available';
+                document.getElementById('patientGenderDisplay2').textContent = profile.gender || 'Not available';
+                document.getElementById('patientBloodTypeDisplay').textContent = profile.blood_type || 'Not available';
+                document.getElementById('patientBloodTypeDisplay2').textContent = profile.blood_type || 'Not available';
+                document.getElementById('patientAddressDisplay').textContent = profile.address_line || 'Not available';
+                document.getElementById('patientAllergiesDisplay').textContent = profile.allergies || 'None reported';
+                document.getElementById('patientMedicationsDisplay').textContent = profile.medications || 'None reported';
+                document.getElementById('emergencyContactNameDisplay').textContent = profile.emergency_contact_name || 'Not available';
+                document.getElementById('emergencyContactPhoneDisplay').textContent = profile.emergency_contact_phone || 'Not available';
+                document.getElementById('emergencyContactRelationshipDisplay').textContent = profile.emergency_contact_relationship || 'Not available';
+                document.getElementById('patientMaritalStatusDisplay').textContent = profile.marital_status || 'Not available';
+                document.getElementById('patientLanguageDisplay').textContent = profile.language || 'Not available';
+                document.getElementById('patientNationalityDisplay').textContent = profile.nationality || 'Not available';
+                
+                // Pregnancy information
+                console.log('Checking if gender is female:', profile.gender === 'female');
+                console.log('Gender comparison result:', profile.gender && profile.gender.toLowerCase() === 'female');
+                
+                if (profile.gender && profile.gender.toLowerCase() === 'female') {
+                    console.log('Showing pregnancy tab for female patient');
+                    // Show pregnancy tab
+                    const pregnancyTab = document.getElementById('pregnancyTab');
+                    if (pregnancyTab) {
+                        pregnancyTab.style.display = 'block';
+                        console.log('Pregnancy tab displayed');
+                    } else {
+                        console.log('Pregnancy tab element not found');
+                    }
+                    
+                    // Basic Pregnancy Information
+                    document.getElementById('patientPregnancyStatusDisplay').textContent = profile.pregnancy_status || 'Not available';
+                    
+                    // Calculate due date and gestational age from LMP if available
+                    if (profile.lmp_date) {
+                        const lmp = new Date(profile.lmp_date);
+                        const today = new Date();
+                        
+                        // Calculate gestational age
+                        const diffTime = Math.abs(today - lmp);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const weeks = Math.floor(diffDays / 7);
+                        const days = diffDays % 7;
+                        const gestationalAgeText = `${weeks} weeks, ${days} days`;
+                        
+                        // Calculate estimated due date (LMP + 280 days = 40 weeks)
+                        const dueDate = new Date(lmp);
+                        dueDate.setDate(dueDate.getDate() + 280);
+                        
+                        document.getElementById('patientDueDateDisplay').textContent = dueDate.toLocaleDateString();
+                        document.getElementById('patientGestationalAgeDisplay').textContent = gestationalAgeText;
+                    } else {
+                        document.getElementById('patientDueDateDisplay').textContent = profile.due_date ? 
+                            new Date(profile.due_date).toLocaleDateString() : 'Not available';
+                        document.getElementById('patientGestationalAgeDisplay').textContent = profile.gestational_age ? 
+                            `${profile.gestational_age} weeks` : 'Not available';
+                    }
+                    
+                    document.getElementById('patientPregnancyComplicationsDisplay').textContent = profile.pregnancy_complications || 'None reported';
+                    
+                    // Detailed Pregnancy Information
+                    document.getElementById('pregnancyStatusDisplay').textContent = profile.pregnancy_status || 'Not available';
+                    document.getElementById('previousPregnanciesDisplay').textContent = profile.previous_pregnancies || 'Not available';
+                    
+                    // Handle LMP date and gestational age
+                    const lmpDate = profile.lmp_date;
+                    if (lmpDate) {
+                        document.getElementById('lmpDateDisplay').textContent = new Date(lmpDate).toLocaleDateString();
+                        
+                        // Calculate gestational age from LMP
+                        const lmp = new Date(lmpDate);
+                        const today = new Date();
+                        const diffTime = Math.abs(today - lmp);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const weeks = Math.floor(diffDays / 7);
+                        const days = diffDays % 7;
+                        const gestationalAgeText = `${weeks} weeks, ${days} days`;
+                        document.getElementById('gestationalAgeDisplay').textContent = gestationalAgeText;
+                        
+                        // Calculate and update due date from LMP
+                        const dueDate = new Date(lmp);
+                        dueDate.setDate(dueDate.getDate() + 280);
+                        document.getElementById('dueDateDisplay').textContent = dueDate.toLocaleDateString();
+                    } else {
+                        document.getElementById('lmpDateDisplay').textContent = 'Not available';
+                        document.getElementById('gestationalAgeDisplay').textContent = 'Not available';
+                    document.getElementById('dueDateDisplay').textContent = profile.due_date ? 
+                        new Date(profile.due_date).toLocaleDateString() : 'Not available';
+                    }
+                    
+                    document.getElementById('multiplePregnancyDisplay').textContent = profile.multiple_pregnancy || 'Not available';
+                    document.getElementById('riskLevelDisplay').textContent = profile.risk_level || 'Not available';
+                    
+                    // Handle risk factors
+                    if (profile.risk_factors) {
+                        try {
+                            const riskFactors = typeof profile.risk_factors === 'string' ? 
+                                JSON.parse(profile.risk_factors) : profile.risk_factors;
+                            document.getElementById('riskFactorsDisplay').textContent = Array.isArray(riskFactors) ? 
+                                riskFactors.join(', ') : 'None';
+                        } catch (e) {
+                            document.getElementById('riskFactorsDisplay').textContent = profile.risk_factors;
+                        }
+                    } else {
+                        document.getElementById('riskFactorsDisplay').textContent = 'None';
+                    }
+
+                    // Medical Measurements
+                    document.getElementById('bloodPressureDisplay').textContent = profile.blood_pressure || 'Not available';
+                    document.getElementById('hemoglobinDisplay').textContent = profile.hemoglobin ? `${profile.hemoglobin} g/dL` : 'Not available';
+                    document.getElementById('bloodSugarDisplay').textContent = profile.blood_sugar ? `${profile.blood_sugar} mg/dL` : 'Not available';
+                    document.getElementById('weightDisplay').textContent = profile.weight ? `${profile.weight} kg` : 'Not available';
+                    
+                    // Prenatal Care
+                    document.getElementById('prenatalVitaminsDisplay').textContent = profile.prenatal_vitamins || 'Not available';
+                    
+                    // Complications and Emergency Plan
+                    document.getElementById('pregnancyComplicationsDisplay').textContent = profile.pregnancy_complications || 'None reported';
+                    document.getElementById('emergencyHospitalDisplay').textContent = profile.emergency_hospital || 'Not available';
+                    document.getElementById('birthPlanDisplay').textContent = profile.birth_plan || 'Not available';
+                } else {
+                    console.log('Hiding pregnancy tab for non-female patient');
+                    // Hide pregnancy tab for non-female patients
+                    const pregnancyTab = document.getElementById('pregnancyTab');
+                    if (pregnancyTab) pregnancyTab.style.display = 'none';
+                }
+            } catch (error) {
+                console.error('Error updating profile display:', error);
+            }
+        }
+
+        function displayRecords(records) {
+            const tableBody = document.getElementById('recordsTableBody');
+            if (!tableBody) return;
+
+            // Store records for searching
+            window.allRecords = records;
+
+            // Update dashboard stats
+            updateDashboardStats(records);
+
+            // Initial display
+            filterAndDisplayRecords();
+
+            // Add search functionality
+            const searchInput = document.getElementById('searchRecords');
+            const filterField = document.getElementById('filterField');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', filterAndDisplayRecords);
+            }
+            
+            if (filterField) {
+                filterField.addEventListener('change', filterAndDisplayRecords);
+            }
+        }
+
+        function filterAndDisplayRecords() {
+            const searchInput = document.getElementById('searchRecords');
+            const filterField = document.getElementById('filterField');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            const selectedField = filterField ? filterField.value : 'all';
+            const tableBody = document.getElementById('recordsTableBody');
+            
+            if (!tableBody || !window.allRecords) return;
+
+            const filteredRecords = window.allRecords.filter(record => {
+                if (!searchTerm) return true;
+
+                if (selectedField === 'all') {
+                    return (
+                        (record.date && new Date(record.date).toLocaleDateString().toLowerCase().includes(searchTerm)) ||
+                        (record.diagnosis && record.diagnosis.toLowerCase().includes(searchTerm)) ||
+                        (record.treatment && record.treatment.toLowerCase().includes(searchTerm)) ||
+                        (record.medication && record.medication.toLowerCase().includes(searchTerm)) ||
+                        (record.doctor && record.doctor.toLowerCase().includes(searchTerm)) ||
+                        (record.hospital && record.hospital.toLowerCase().includes(searchTerm))
+                    );
+                } else {
+                    const fieldValue = record[selectedField];
+                    return fieldValue && fieldValue.toString().toLowerCase().includes(searchTerm);
+                }
+            });
+
+            tableBody.innerHTML = filteredRecords.map(record => `
+                <tr>
+                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}"></td>
+                    <td>${new Date(record.date).toLocaleDateString()}</td>
+                    <td>${record.diagnosis || 'N/A'}</td>
+                    <td>${record.treatment || 'N/A'}</td>
+                    <td>${record.medication || 'N/A'}</td>
+                    <td>${record.doctor || 'N/A'}</td>
+                    <td>${record.hospital || 'N/A'}</td>
+                    <td>
+                        <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Update select all checkbox
+            updateSelectAllCheckbox();
+        }
+
+        function toggleAllRecords() {
+            const selectAll = document.getElementById('selectAllRecords');
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            const downloadSelectedBtn = document.getElementById('downloadSelectedBtn');
+
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAll.checked;
+            });
+
+            downloadSelectedBtn.style.display = selectAll.checked ? 'flex' : 'none';
+        }
+
+        function updateSelectAllCheckbox() {
+            const selectAll = document.getElementById('selectAllRecords');
+            const checkboxes = document.querySelectorAll('.record-checkbox');
+            const downloadSelectedBtn = document.getElementById('downloadSelectedBtn');
+            
+            const allChecked = checkboxes.length > 0 && Array.from(checkboxes).every(checkbox => checkbox.checked);
+            selectAll.checked = allChecked;
+            
+            const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
+            downloadSelectedBtn.style.display = anyChecked ? 'flex' : 'none';
+        }
+
+        function downloadSingleRecord(recordId) {
+            const record = window.allRecords.find(r => r.id === recordId);
+            if (!record) return;
+
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(16);
+            doc.text('Medical Record', 14, 15);
+            
+            // Add patient info
+            doc.setFontSize(12);
+            doc.text(`Patient: ${document.getElementById('patientNameDisplay').textContent}`, 14, 25);
+            doc.text(`Date: ${new Date(record.date).toLocaleDateString()}`, 14, 35);
+            
+            // Add record details
+            doc.setFontSize(11);
+            const details = [
+                ['Field', 'Details'],
+                ['Diagnosis', record.diagnosis || 'N/A'],
+                ['Treatment', record.treatment || 'N/A'],
+                ['Medication', record.medication || 'N/A'],
+                ['Doctor', record.doctor || 'N/A'],
+                ['Hospital', record.hospital || 'N/A']
+            ];
+            
+            doc.autoTable({
+                startY: 45,
+                head: [details[0]],
+                body: details.slice(1),
+                theme: 'grid',
+                styles: { fontSize: 10 },
+                headStyles: { fillColor: [41, 128, 185] }
+            });
+            
+            // Save the PDF
+            doc.save(`medical_record_${recordId}.pdf`);
+        }
+
+        function downloadSelectedRecords() {
+            const selectedCheckboxes = document.querySelectorAll('.record-checkbox:checked');
+            if (selectedCheckboxes.length === 0) {
+                alert('Please select at least one record to download');
+                return;
+            }
+
+            const selectedRecords = Array.from(selectedCheckboxes).map(checkbox => {
+                const recordId = parseInt(checkbox.dataset.recordId);
+                return window.allRecords.find(r => r.id === recordId);
+            }).filter(Boolean);
+
+            const doc = new jsPDF();
+            
+            // Add title
+            doc.setFontSize(16);
+            doc.text('Selected Medical Records', 14, 15);
+            
+            // Add patient info
+            doc.setFontSize(12);
+            doc.text(`Patient: ${document.getElementById('patientNameDisplay').textContent}`, 14, 25);
+            doc.text(`Total Records: ${selectedRecords.length}`, 14, 35);
+            
+            // Create table data
+            const tableData = selectedRecords.map(record => [
+                new Date(record.date).toLocaleDateString(),
+                record.diagnosis || 'N/A',
+                record.treatment || 'N/A',
+                record.medication || 'N/A',
+                record.doctor || 'N/A',
+                record.hospital || 'N/A'
+            ]);
+            
+            // Add table
+            doc.autoTable({
+                startY: 45,
+                head: [['Date', 'Diagnosis', 'Treatment', 'Medication', 'Doctor', 'Hospital']],
+                body: tableData,
+                theme: 'grid',
+                styles: { fontSize: 8 },
+                headStyles: { fillColor: [41, 128, 185] }
+            });
+            
+            // Add footer
+            const pageCount = doc.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFontSize(8);
+                doc.text(
+                    `Page ${i} of ${pageCount}`,
+                    doc.internal.pageSize.width / 2,
+                    doc.internal.pageSize.height - 10,
+                    { align: 'center' }
+                );
+            }
+            
+            // Save the PDF
+            doc.save('selected_medical_records.pdf');
+        }
+
+        // Add event listener for individual checkboxes
+        document.addEventListener('change', function(e) {
+            if (e.target.classList.contains('record-checkbox')) {
+                updateSelectAllCheckbox();
+            }
+        });
+
+        // Function to set active navigation link based on current page
+        function setActiveNavLink() {
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                const linkPage = link.getAttribute('href');
+                if (linkPage === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            setActiveNavLink();
+        });
+
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.profile-tab');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        // Update stats when records are loaded
+        function updateDashboardStats(records) {
+            if (!records || records.length === 0) return;
+
+            // Update total records
+            document.getElementById('totalRecords').textContent = records.length;
+
+            // Update last visit with very compact date format
+            const sortedRecords = records.sort((a, b) => new Date(b.date) - new Date(a.date));
+            const lastVisit = new Date(sortedRecords[0].date);
+            // Use a very compact date format that fits in the card
+            const month = lastVisit.toLocaleDateString('en-US', { month: 'short' });
+            const day = lastVisit.getDate();
+            const year = lastVisit.getFullYear();
+            document.getElementById('lastVisit').textContent = `${month} ${day}, ${year}`;
+
+            // Get patient's blood group from the profile display
+            const patientBloodType = document.getElementById('patientBloodTypeDisplay').textContent;
+            document.getElementById('healthScore').textContent = patientBloodType !== 'Not available' ? patientBloodType : '-';
+
+            // Count active medications
+            const medications = records
+                .filter(record => record.medication && record.medication !== 'N/A')
+                .map(record => record.medication)
+                .filter((med, index, arr) => arr.indexOf(med) === index);
+            document.getElementById('activeMedications').textContent = medications.length;
+        }
+
+        // Mobile menu toggle
+        const toggle = document.getElementById('menu-toggle');
+        const navLinks = document.getElementById('nav-links');
+        const navOverlay = document.getElementById('nav-overlay');
+      
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+            navOverlay.classList.toggle('active');
+            document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        navOverlay.addEventListener('click', () => {
+            toggle.classList.remove('active');
+            navLinks.classList.remove('active');
+            navOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close menu when clicking on a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                toggle.classList.remove('active');
+                navLinks.classList.remove('active');
+                navOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+    </script>
+</body>
+</html> 

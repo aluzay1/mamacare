@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - MamaCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --info-color: #06b6d4;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --border-color: #e2e8f0;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 2rem 1rem;
+            color: white;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .sidebar h4 {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .sidebar .nav-link {
+            color: rgba(255, 255, 255, 0.9);
+            padding: 1rem 1.5rem;
+            margin: 0.5rem 0;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sidebar .nav-link:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .sidebar .nav-link.active {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: var(--shadow-lg);
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link i {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+            display: inline-block;
+            margin-right: 0.5rem;
+            opacity: 1;
+            color: inherit;
+        }
+
+        .sidebar .nav-link:hover i {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar .nav-link.active i {
+            color: white;
+            opacity: 1;
+        }
+
+        .content {
+            padding: 2rem;
+            background: var(--background-color);
+            min-height: 100vh;
+        }
+
+        .card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1.5rem;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .stats-card {
+            background: var(--card-background);
+            border: none;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+            position: relative;
+            min-height: 160px;
+        }
+
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+        }
+
+        .stats-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .stats-card .card-body {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        .stats-card .card-title {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .stats-card .display-4 {
+            color: var(--primary-color);
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .form-section {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-section h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .form-section h4::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--primary-color), var(--primary-light));
+            border-radius: 2px;
+        }
+
+        .table-section {
+            background: var(--card-background);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .table-section h4 {
+            color: var(--text-primary);
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .table-section h4::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(180deg, var(--success-color), #34d399);
+            border-radius: 2px;
+        }
+
+        .table {
+            margin-bottom: 0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table th {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            padding: 1rem;
+            border: none;
+        }
+
+        .table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05) 0%, rgba(139, 92, 246, 0.05) 100%);
+        }
+
+        .btn {
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%);
+            color: white;
+        }
+
+        .login-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 2.5rem;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-content {
+            border: none;
+            border-radius: 0.35rem;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .modal-header {
+            background-color: #f8f9fc;
+            border-bottom: 1px solid #e3e6f0;
+        }
+
+        .badge {
+            padding: 0.5rem 0.75rem;
+            font-weight: 600;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge.bg-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #059669 100%) !important;
+        }
+
+        .badge.bg-warning {
+            background: linear-gradient(135deg, var(--warning-color) 0%, #d97706 100%) !important;
+        }
+
+        .badge.bg-secondary {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #475569 100%) !important;
+        }
+
+        .badge.bg-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #dc2626 100%) !important;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            background: var(--card-background);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.875rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+
+        .form-control:hover {
+            border-color: var(--primary-light);
+        }
+
+        .password-strength {
+            height: 5px;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .password-strength.weak {
+            background-color: #dc3545;
+            width: 25%;
+        }
+
+        .password-strength.medium {
+            background-color: #ffc107;
+            width: 50%;
+        }
+
+        .password-strength.strong {
+            background-color: #28a745;
+            width: 75%;
+        }
+
+        .password-strength.very-strong {
+            background-color: #20c997;
+            width: 100%;
+        }
+
+        .form-section .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .form-section .card-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .table-section .card {
+            border: none;
+            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        }
+
+        .table-section .card-header {
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+
+        .table-section .card-body {
+            padding: 1.5rem;
+        }
+
+        #admin-search, #admin-role-filter {
+            max-width: 200px;
+        }
+
+        /* Ensure Bootstrap Icons load properly */
+        @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css');
+        
+        /* Fallback for icons */
+        .bi {
+            font-family: "bootstrap-icons" !important;
+            font-style: normal;
+            font-weight: normal !important;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            vertical-align: middle;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Ensure sidebar icons are visible */
+        .sidebar .nav-link .bi {
+            font-size: 1.2rem;
+            width: 20px;
+            text-align: center;
+            display: inline-block;
+            margin-right: 0.5rem;
+            opacity: 1;
+            color: inherit;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <div id="login-section" class="container">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Admin Login</h2>
+            <form id="login-form">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+            <div class="text-center mt-3">
+                <p class="mb-0">Don't have an account?</p>
+                <button type="button" class="btn btn-link" onclick="toggleAuthForm()">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div id="signup-section" class="container" style="display: none;">
+        <div class="login-container">
+            <h2 class="text-center mb-4">Admin Signup</h2>
+            <form id="signup-form">
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone Number</label>
+                    <input type="tel" class="form-control" name="phone" required 
+                        pattern="\+232[0-9]{8}" 
+                        placeholder="e.g., +23271000000"
+                        title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" name="password" id="signup-password" required>
+                    <div class="password-strength mt-2" id="password-strength"></div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" name="confirm_password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
+            </form>
+            <div class="text-center mt-3">
+                <p class="mb-0">Already have an account?</p>
+                <button type="button" class="btn btn-link" onclick="toggleAuthForm()">Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="dashboard-section" style="display: none;">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                <div class="col-md-3 col-lg-2 sidebar">
+                    <h4 class="text-center mb-4">MamaCare Admin</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="hospitals">
+                                <i class="bi bi-hospital"></i> Hospitals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="pharmacies">
+                                <i class="bi bi-capsule"></i> Pharmacies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="doctors">
+                                <i class="bi bi-person-badge"></i> Healthcare Professionals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="admins">
+                                <i class="bi bi-shield-lock"></i> Admins
+                            </a>
+                        </li>
+                        <li class="nav-item mt-4">
+                            <a class="nav-link" href="#" id="logout-btn" style="background: linear-gradient(45deg, #ff6b6b, #ff8e8e); color: white; border: none; border-radius: 8px; padding: 10px 20px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);" onmouseover="this.style.background='linear-gradient(45deg, #ff5252, #ff7676)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 8px rgba(0,0,0,0.2)';" onmouseout="this.style.background='linear-gradient(45deg, #ff6b6b, #ff8e8e)'; this.style.transform='translateY(0)'; this.style.boxShadow='0 2px 4px rgba(0,0,0,0.1)';">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-md-9 col-lg-10 content">
+                    <!-- Stats Overview -->
+                    <div class="row mb-4" id="stats-section">
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Hospitals</div>
+                                    <div class="display-4" id="hospital-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Pharmacies</div>
+                                    <div class="display-4" id="pharmacy-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Healthcare Professionals</div>
+                                    <div class="display-4" id="doctor-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Patients</div>
+                                    <div class="display-4" id="patient-count">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hospitals Section -->
+                    <div id="hospitals-section">
+                        <h2 class="mb-4">Manage Hospitals</h2>
+                        
+                        <!-- Add Hospital Form -->
+                        <div class="form-section">
+                            <h4>Add New Hospital</h4>
+                            <form id="add-hospital-form" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Services</label>
+                                    <textarea class="form-control" name="services" rows="4" placeholder="Enter services (one per line)"></textarea>
+                                    <small class="form-text text-muted">Enter each service on a new line</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">State</label>
+                                        <input type="text" class="form-control" name="state" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" name="postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" name="country" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="url" class="form-control" name="website">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Directions</label>
+                                    <textarea class="form-control" name="directions"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Image</label>
+                                    <input type="file" class="form-control" name="image" accept="image/*">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_verified" id="hospital-verified">
+                                        <label class="form-check-label" for="hospital-verified">
+                                            Verified
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Hospital</button>
+                            </form>
+                        </div>
+
+                        <!-- Hospitals Table -->
+                        <div class="table-section">
+                            <h4>Hospitals List</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>License Number</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="hospitals-table-body">
+                                        <!-- Hospitals will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pharmacies Section -->
+                    <div id="pharmacies-section" style="display: none;">
+                        <h2 class="mb-4">Manage Pharmacies</h2>
+                        
+                        <!-- Add Pharmacy Form -->
+                        <div class="form-section">
+                            <h4>Add New Pharmacy</h4>
+                            <form id="add-pharmacy-form">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">State</label>
+                                        <input type="text" class="form-control" name="state" required>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label class="form-label">Postal Code</label>
+                                        <input type="text" class="form-control" name="postal_code" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Country</label>
+                                    <input type="text" class="form-control" name="country" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Website</label>
+                                    <input type="url" class="form-control" name="website">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Directions</label>
+                                    <textarea class="form-control" name="directions"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_24_hours" id="24-hours">
+                                        <label class="form-check-label" for="24-hours">
+                                            24 Hours Service
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="is_verified" id="pharmacy-verified">
+                                        <label class="form-check-label" for="pharmacy-verified">
+                                            Verified
+                                        </label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Pharmacy</button>
+                            </form>
+                        </div>
+
+                        <!-- Pharmacies Table -->
+                        <div class="table-section">
+                            <h4>Pharmacies List</h4>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>License Number</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Address</th>
+                                            <th>24 Hours</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pharmacies-table-body">
+                                        <!-- Pharmacies will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Doctors Section -->
+                    <div id="doctors-section" style="display: none;">
+                        <h2 class="mb-4">Manage Healthcare Professionals</h2>
+                        <div class="form-section">
+                            <h4>Add New Healthcare Professional</h4>
+                            <form id="add-doctor-form" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">License Number</label>
+                                        <input type="text" class="form-control" name="license_number" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Professional Type</label>
+                                        <select class="form-control" name="professional_type" required>
+                                            <option value="">Select Professional Type</option>
+                                            <option value="Medical Doctor">Medical Doctor</option>
+                                            <option value="Nurse">Nurse</option>
+                                            <option value="Midwife">Midwife</option>
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Laboratory Technician">Laboratory Technician</option>
+                                            <option value="Radiology Technician">Radiology Technician</option>
+                                            <option value="Physiotherapist">Physiotherapist</option>
+                                            <option value="Nutritionist">Nutritionist</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Specialization</label>
+                                        <input type="text" class="form-control" name="specialization" required>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Phone Number</label>
+                                        <input type="tel" class="form-control" name="phone" required 
+                                            pattern="\+232[0-9]{8}" 
+                                            placeholder="e.g., +23271000000"
+                                            title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Hospital Affiliation</label>
+                                        <select class="form-control" name="hospital_affiliation" id="hospitalAffiliation" required onchange="handleHospitalAffiliationChange(this)">
+                                            <option value="">Select Hospital</option>
+                                            <optgroup label="Government Hospitals">
+                                                <option value="Connaught Hospital">Connaught Hospital</option>
+                                                <option value="Princess Christian Maternity Hospital">Princess Christian Maternity Hospital</option>
+                                                <option value="Lakka Government Hospital">Lakka Government Hospital</option>
+                                                <option value="Rokupa Government Hospital">Rokupa Government Hospital</option>
+                                                <option value="Kissy Mental Home">Kissy Mental Home</option>
+                                                <option value="Ola During Children's Hospital">Ola During Children's Hospital</option>
+                                                <option value="34 Military Hospital">34 Military Hospital</option>
+                                                <option value="King Harman Road Hospital">King Harman Road Hospital</option>
+                                            </optgroup>
+                                            <optgroup label="Private Hospitals">
+                                                <option value="Choithram Memorial Hospital">Choithram Memorial Hospital</option>
+                                                <option value="Lumley Government Hospital">Lumley Government Hospital</option>
+                                                <option value="Medicins Sans Frontieres">Medicins Sans Frontieres</option>
+                                                <option value="Mercy Hospital">Mercy Hospital</option>
+                                                <option value="Goderich Medical Center">Goderich Medical Center</option>
+                                                <option value="St. John of God Hospital">St. John of God Hospital</option>
+                                                <option value="Sierra Leone-China Friendship Hospital">Sierra Leone-China Friendship Hospital</option>
+                                                <option value="Emergency Surgical Center">Emergency Surgical Center</option>
+                                            </optgroup>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="customHospitalAffiliation" name="custom_hospital_affiliation" style="display: none;" placeholder="Enter hospital name">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" required>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Experience</label>
+                                        <select class="form-control" name="experience" id="addDoctorExperience1" required onchange="handleExperienceChange(this)">
+                                            <option value="">Select Experience</option>
+                                            <option value="0-2 years">0-2 years</option>
+                                            <option value="3-5 years">3-5 years</option>
+                                            <option value="6-10 years">6-10 years</option>
+                                            <option value="10+ years">10+ years</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience1" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                    <label class="form-label">Qualifications</label>
+                                        <select class="form-control" name="qualifications" id="qualifications" required onchange="handleQualificationsChange(this)">
+                                            <option value="">Select Qualification</option>
+                                            <option value="MBBS">MBBS (Bachelor of Medicine, Bachelor of Surgery)</option>
+                                            <option value="MD">MD (Doctor of Medicine)</option>
+                                            <option value="MS">MS (Master of Surgery)</option>
+                                            <option value="DM">DM (Doctorate of Medicine)</option>
+                                            <option value="MCh">MCh (Master of Chirurgiae)</option>
+                                            <option value="DNB">DNB (Diplomate of National Board)</option>
+                                            <option value="BDS">BDS (Bachelor of Dental Surgery)</option>
+                                            <option value="MDS">MDS (Master of Dental Surgery)</option>
+                                            <option value="BAMS">BAMS (Bachelor of Ayurvedic Medicine and Surgery)</option>
+                                            <option value="BHMS">BHMS (Bachelor of Homeopathic Medicine and Surgery)</option>
+                                            <option value="BPT">BPT (Bachelor of Physiotherapy)</option>
+                                            <option value="MPT">MPT (Master of Physiotherapy)</option>
+                                            <option value="BSc Nursing">BSc Nursing</option>
+                                            <option value="MSc Nursing">MSc Nursing</option>
+                                            <option value="BPharm">BPharm (Bachelor of Pharmacy)</option>
+                                            <option value="MPharm">MPharm (Master of Pharmacy)</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="customQualifications" name="custom_qualifications" style="display: none;" placeholder="Enter qualification">
+                                </div>
+                                    <div class="col-md-6 mb-3">
+                                    <label class="form-label">Experience</label>
+                                        <select class="form-control" name="experience" id="addDoctorExperience2" required onchange="handleExperienceChange(this)">
+                                            <option value="">Select Experience</option>
+                                            <option value="0-2 years">0-2 years</option>
+                                            <option value="3-5 years">3-5 years</option>
+                                            <option value="6-10 years">6-10 years</option>
+                                            <option value="10+ years">10+ years</option>
+                                            <option value="Other">Other (Specify)</option>
+                                        </select>
+                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience2" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Healthcare Professional's Image</label>
+                                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input type="checkbox" class="form-check-input" name="is_verified" id="is_verified">
+                                        <label class="form-check-label" for="is_verified">Verified Doctor</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Add Healthcare Professional</button>
+                            </form>
+                        </div>
+                        <div class="table-section">
+                            <h4>Healthcare Professionals List</h4>
+                            <div class="mb-3">
+                                <label class="form-label">Filter by Professional Type</label>
+                                <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
+                                    <option value="">All Professionals</option>
+                                    <option value="Medical Doctor">Medical Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Midwife">Midwife</option>
+                                    <option value="Pharmacist">Pharmacist</option>
+                                    <option value="Laboratory Technician">Laboratory Technician</option>
+                                    <option value="Radiology Technician">Radiology Technician</option>
+                                    <option value="Physiotherapist">Physiotherapist</option>
+                                    <option value="Nutritionist">Nutritionist</option>
+                                </select>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Specialization</th>
+                                            <th>Email</th>
+                                            <th>Phone</th>
+                                            <th>Hospital</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="doctors-table-body">
+                                        <!-- Healthcare Professionals will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                   <!-- Admins Section -->
+<div id="admins-section" style="display: none;">
+    <h2 class="mb-4">Manage Administrators</h2>
+    
+    <!-- Add Admin Form -->
+    <div class="form-section mb-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Add New Administrator</h4>
+            </div>
+            <div class="card-body">
+                <form id="add-admin-form">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" name="email" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" class="form-control" name="password" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Confirm Password</label>
+                            <input type="password" class="form-control" name="confirm_password" required>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Role</label>
+                            <select class="form-control" name="role" required>
+                                <option value="">Select Role</option>
+                                <option value="admin">Admin</option>
+                                <option value="super_admin">Super Admin</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Status</label>
+                            <select class="form-control" name="status" required>
+                                <option value="">Select Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="send_credentials" id="send-credentials">
+                            <label class="form-check-label" for="send-credentials">
+                                Send credentials via email
+                            </label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Administrator</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admins Table -->
+    <div class="table-section">
+        <div class="card">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h4 class="mb-0">Administrators List</h4>
+                <div class="d-flex gap-2">
+                    <input type="text" class="form-control" id="admin-search" 
+                           placeholder="Search administrators...">
+                    <select class="form-select" id="admin-role-filter">
+                        <option value="">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="super_admin">Super Admin</option>
+                    </select>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Created At</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admins-table-body">
+                            <!-- Admins will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!-- Edit Modals -->
+    <div class="modal fade" id="editHospitalModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Hospital</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-hospital-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="\+232[0-9]{8}" 
+                                    placeholder="e.g., +23271000000"
+                                    title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" name="postal_code" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" name="country" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" name="website">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Directions</label>
+                            <textarea class="form-control" name="directions"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_verified" id="edit-hospital-verified">
+                                <label class="form-check-label" for="edit-hospital-verified">
+                                    Verified
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-hospital-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editPharmacyModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Pharmacy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-pharmacy-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Address</label>
+                            <input type="text" class="form-control" name="address" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" class="form-control" name="state" required>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" class="form-control" name="postal_code" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Country</label>
+                            <input type="text" class="form-control" name="country" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Website</label>
+                            <input type="url" class="form-control" name="website">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Directions</label>
+                            <textarea class="form-control" name="directions"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_24_hours" id="edit-24-hours">
+                                <label class="form-check-label" for="edit-24-hours">
+                                    24 Hours Service
+                                </label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="is_verified" id="edit-pharmacy-verified">
+                                <label class="form-check-label" for="edit-pharmacy-verified">
+                                    Verified
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-pharmacy-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editDoctorModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Doctor</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-doctor-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">License Number</label>
+                                <input type="text" class="form-control" name="license_number" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" name="phone" required 
+                                    pattern="[0-9]{10}" 
+                                    placeholder="e.g., 0712345678"
+                                    title="Please enter a valid 10-digit phone number">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Specialization</label>
+                                <select class="form-control" name="specialization" id="editSpecialization" required onchange="handleSpecializationChange(this)">
+                                    <option value="">Select Specialization</option>
+                                    <option value="General Medicine">General Medicine</option>
+                                    <option value="Pediatrics">Pediatrics</option>
+                                    <option value="Obstetrics & Gynecology">Obstetrics & Gynecology</option>
+                                    <option value="Cardiology">Cardiology</option>
+                                    <option value="Dermatology">Dermatology</option>
+                                    <option value="Orthopedics">Orthopedics</option>
+                                    <option value="Ophthalmology">Ophthalmology</option>
+                                    <option value="Dentistry">Dentistry</option>
+                                    <option value="Neurology">Neurology</option>
+                                    <option value="Psychiatry">Psychiatry</option>
+                                    <option value="Urology">Urology</option>
+                                    <option value="ENT">ENT (Ear, Nose & Throat)</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomSpecialization" name="custom_specialization" style="display: none;" placeholder="Enter specialization">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Hospital Affiliation</label>
+                                <select class="form-control" name="hospital_affiliation" id="editHospitalAffiliation" required onchange="handleHospitalAffiliationChange(this)">
+                                    <option value="">Select Hospital</option>
+                                    <optgroup label="Government Hospitals">
+                                        <option value="Connaught Hospital">Connaught Hospital</option>
+                                        <option value="Princess Christian Maternity Hospital">Princess Christian Maternity Hospital</option>
+                                        <option value="Lakka Government Hospital">Lakka Government Hospital</option>
+                                        <option value="Rokupa Government Hospital">Rokupa Government Hospital</option>
+                                        <option value="Kissy Mental Home">Kissy Mental Home</option>
+                                        <option value="Ola During Children's Hospital">Ola During Children's Hospital</option>
+                                        <option value="34 Military Hospital">34 Military Hospital</option>
+                                        <option value="King Harman Road Hospital">King Harman Road Hospital</option>
+                                    </optgroup>
+                                    <optgroup label="Private Hospitals">
+                                        <option value="Choithram Memorial Hospital">Choithram Memorial Hospital</option>
+                                        <option value="Lumley Government Hospital">Lumley Government Hospital</option>
+                                        <option value="Medicins Sans Frontieres">Medicins Sans Frontieres</option>
+                                        <option value="Mercy Hospital">Mercy Hospital</option>
+                                        <option value="Goderich Medical Center">Goderich Medical Center</option>
+                                        <option value="St. John of God Hospital">St. John of God Hospital</option>
+                                        <option value="Sierra Leone-China Friendship Hospital">Sierra Leone-China Friendship Hospital</option>
+                                        <option value="Emergency Surgical Center">Emergency Surgical Center</option>
+                                    </optgroup>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomHospitalAffiliation" name="custom_hospital_affiliation" style="display: none;" placeholder="Enter hospital name">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" class="form-control" name="city" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Experience</label>
+                                <select class="form-control" name="experience" id="editDoctorExperience1" required onchange="handleExperienceChange(this)">
+                                    <option value="">Select Experience</option>
+                                    <option value="0-2 years">0-2 years</option>
+                                    <option value="3-5 years">3-5 years</option>
+                                    <option value="6-10 years">6-10 years</option>
+                                    <option value="10+ years">10+ years</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editDoctorCustomExperience1" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Professional Type</label>
+                                <select class="form-control" name="professional_type" required>
+                                    <option value="">Select Professional Type</option>
+                                    <option value="Medical Doctor">Medical Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Midwife">Midwife</option>
+                                    <option value="Pharmacist">Pharmacist</option>
+                                    <option value="Laboratory Technician">Laboratory Technician</option>
+                                    <option value="Radiology Technician">Radiology Technician</option>
+                                    <option value="Physiotherapist">Physiotherapist</option>
+                                    <option value="Nutritionist">Nutritionist</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                        </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">Qualifications</label>
+                                <select class="form-control" name="qualifications" id="editQualifications" required onchange="handleQualificationsChange(this)">
+                                    <option value="">Select Qualification</option>
+                                    <option value="MBBS">MBBS (Bachelor of Medicine, Bachelor of Surgery)</option>
+                                    <option value="MD">MD (Doctor of Medicine)</option>
+                                    <option value="MS">MS (Master of Surgery)</option>
+                                    <option value="DM">DM (Doctorate of Medicine)</option>
+                                    <option value="MCh">MCh (Master of Chirurgiae)</option>
+                                    <option value="DNB">DNB (Diplomate of National Board)</option>
+                                    <option value="BDS">BDS (Bachelor of Dental Surgery)</option>
+                                    <option value="MDS">MDS (Master of Dental Surgery)</option>
+                                    <option value="BAMS">BAMS (Bachelor of Ayurvedic Medicine and Surgery)</option>
+                                    <option value="BHMS">BHMS (Bachelor of Homeopathic Medicine and Surgery)</option>
+                                    <option value="BPT">BPT (Bachelor of Physiotherapy)</option>
+                                    <option value="MPT">MPT (Master of Physiotherapy)</option>
+                                    <option value="BSc Nursing">BSc Nursing</option>
+                                    <option value="MSc Nursing">MSc Nursing</option>
+                                    <option value="BPharm">BPharm (Bachelor of Pharmacy)</option>
+                                    <option value="MPharm">MPharm (Master of Pharmacy)</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editCustomQualifications" name="custom_qualifications" style="display: none;" placeholder="Enter qualification">
+                        </div>
+                            <div class="col-md-6 mb-3">
+                            <label class="form-label">Experience</label>
+                                <select class="form-control" name="experience" id="editDoctorExperience2" required onchange="handleExperienceChange(this)">
+                                    <option value="">Select Experience</option>
+                                    <option value="0-2 years">0-2 years</option>
+                                    <option value="3-5 years">3-5 years</option>
+                                    <option value="6-10 years">6-10 years</option>
+                                    <option value="10+ years">10+ years</option>
+                                    <option value="Other">Other (Specify)</option>
+                                </select>
+                                <input type="text" class="form-control mt-2" id="editDoctorCustomExperience2" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Doctor's Image</label>
+                            <input type="file" class="form-control" name="image" accept="image/*">
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="is_verified" id="edit_is_verified">
+                                <label class="form-check-label" for="edit_is_verified">Verified Doctor</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-doctor-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Admin Modal -->
+    <div class="modal fade" id="editAdminModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Administrator</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-admin-form">
+                        <input type="hidden" name="id">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Name</label>
+                                <input type="text" class="form-control" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Role</label>
+                                <select class="form-control" name="role" required>
+                                    <option value="">Select Role</option>
+                                    <option value="super_admin">Super Admin</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="moderator">Moderator</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-control" name="status" required>
+                                    <option value="">Select Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">New Password (leave blank to keep current)</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" name="password" id="edit-admin-password">
+                                <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('edit-admin-password')">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="save-admin-changes">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
