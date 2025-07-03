@@ -10,8 +10,8 @@
     <style>
         .pharmacies-container {
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: calc(100% - 120px);
+            margin: 0 60px;
         }
 
         .page-header {
@@ -97,9 +97,12 @@
 
         .pharmacies-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 25px;
             padding: 20px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .pharmacy-card {
@@ -110,8 +113,9 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(0,0,0,0.05);
             position: relative;
-            max-width: 420px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .pharmacy-card::before {
@@ -410,7 +414,42 @@
             transform: rotate(-45deg) translate(6px, -6px);
         }
 
+        @media (max-width: 1600px) {
+            .pharmacies-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .pharmacies-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .pharmacies-container {
+                width: calc(100% - 40px);
+                margin: 0 20px;
+            }
+            
+            .pharmacies-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .pharmacies-container {
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                padding: 10px;
+            }
+
             .menu-toggle {
                 display: flex;
             }
@@ -482,14 +521,22 @@
                 visibility: visible;
             }
 
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
             .pharmacies-grid {
                 grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 15px;
+                gap: 15px;
+                padding: 10px;
             }
 
             .pharmacy-card {
-                max-width: none;
+                max-width: 100%;
             }
 
             .pharmacy-actions {
@@ -502,6 +549,56 @@
 
             .status-badges {
                 justify-content: flex-start;
+            }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pharmacies-container {
+                width: calc(100% - 10px);
+                margin: 0 5px;
+                padding: 5px;
+            }
+
+            .page-header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-header p {
+                font-size: 0.9rem;
+            }
+
+            .search-section {
+                padding: 15px;
+            }
+
+            .pharmacies-grid {
+                padding: 5px;
+                gap: 10px;
+            }
+
+            .pharmacy-info {
+                padding: 15px;
+            }
+
+            .pharmacy-detail {
+                font-size: 0.85rem;
             }
         }
 
@@ -521,42 +618,6 @@
             color: #dee2e6;
             margin-bottom: 20px;
             display: block;
-        }
-
-        @media (max-width: 768px) {
-            .search-box {
-                flex-direction: column;
-            }
-
-            .search-button {
-                width: 100%;
-            }
-
-            .filters {
-                grid-template-columns: 1fr;
-            }
-
-            .pharmacies-grid {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 15px;
-            }
-
-            .pharmacy-card {
-                max-width: none;
-            }
-
-            .pharmacy-actions {
-                grid-template-columns: 1fr;
-            }
-
-            .pharmacy-name {
-                font-size: 1.2rem;
-            }
-
-            .status-badges {
-                justify-content: flex-start;
-            }
         }
     </style>
 </head>

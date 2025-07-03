@@ -30,6 +30,14 @@ import csv
 from io import StringIO
 from sqlalchemy import text
 
+# Twilio imports for SMS functionality
+try:
+    from twilio.rest import Client
+    TWILIO_AVAILABLE = True
+except ImportError:
+    TWILIO_AVAILABLE = False
+    logging.warning("Twilio not installed. SMS functionality will be disabled.")
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -137,11 +145,22 @@ def health_check():
         }), 500
 
 # Database Models
+class Admin(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(100), nullable=False)
+    phone = db.Column(db.String(20), nullable=False)
+    address = db.Column(db.String(200), nullable=True)
+    is_verified = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(255), nullable=False)
-    role = db.Column(db.String(20), nullable=False)  # 'hospital', 'individual', 'donor', 'admin'
+    role = db.Column(db.String(20), nullable=False)  # 'hospital', 'individual', 'admin'
     is_verified = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     pin = db.Column(db.String(6), unique=True)  # 6-digit PIN for patient access
@@ -202,9 +221,7 @@ class User(UserMixin, db.Model):
     birth_plan = db.Column(db.Text)
     
     # Relationships
-    campaigns = db.relationship('Campaign', backref='creator', lazy=True)
-    donations = db.relationship('Donation', backref='donor', lazy=True)
-    withdrawal_requests = db.relationship('WithdrawalRequest', backref='hospital', lazy=True)
+    # Removed crowdfunding relationships
 
     def get_id(self):
         return str(self.id)
@@ -220,46 +237,7 @@ class MedicalRecord(db.Model):
     hospital = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-class Campaign(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    target_amount = db.Column(db.Float, nullable=False)
-    current_amount = db.Column(db.Float, default=0)
-    status = db.Column(db.String(20), default='active')  # active, completed, suspended
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    deadline = db.Column(db.DateTime, nullable=False)
-    is_verified = db.Column(db.Boolean, default=False)
-    
-    # Foreign keys
-    creator_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    
-    # Relationships
-    donations = db.relationship('Donation', backref='campaign', lazy=True)
-    withdrawal_requests = db.relationship('WithdrawalRequest', backref='campaign', lazy=True)
-
-class Donation(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float, nullable=False)
-    payment_method = db.Column(db.String(20), nullable=False)  # orange_money, afrimoney, qmoney
-    transaction_id = db.Column(db.String(100), unique=True)
-    status = db.Column(db.String(20), default='pending')  # pending, completed, failed
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    
-    # Foreign keys
-    donor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaign.id'), nullable=False)
-
-class WithdrawalRequest(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Float, nullable=False)
-    status = db.Column(db.String(20), default='pending')  # pending, approved, rejected
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    processed_at = db.Column(db.DateTime)
-    
-    # Foreign keys
-    hospital_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    campaign_id = db.Column(db.Integer, db.ForeignKey('campaign.id'), nullable=False)
+# Removed crowdfunding models: Campaign, Donation, WithdrawalRequest
 
 class Hospital(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -342,6 +320,25 @@ class HealthcareProfessional(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
+class ReferralFeedback(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_name = db.Column(db.String(200), nullable=False)
+    referral_source = db.Column(db.String(100), nullable=False, default='PresTrack')
+    feedback_notes = db.Column(db.Text, nullable=False)
+    doctor_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Can be null if doctor not logged in
+    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)  # Reference to patient
+    # New doctor fields
+    doctor_name = db.Column(db.String(200), nullable=True)
+    doctor_phone = db.Column(db.String(20), nullable=True)
+    doctor_affiliation = db.Column(db.String(200), nullable=True)
+    sms_sent = db.Column(db.Boolean, default=False)
+    sms_sent_at = db.Column(db.DateTime, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationships
+    doctor = db.relationship('User', foreign_keys=[doctor_id], backref='referral_feedbacks_sent')
+    patient = db.relationship('User', foreign_keys=[patient_id], backref='referral_feedbacks_received')
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -353,16 +350,17 @@ def admin_required(f):
         auth_header = request.headers.get('Authorization')
         if not auth_header or not auth_header.startswith('Bearer '):
             return jsonify({'error': 'Authorization token required'}), 401
-            
         token = auth_header.split(' ')[1]
-        user = User.query.filter_by(auth_token=token, role='admin').first()
-        
-        if not user:
+        # For demonstration, accept any token generated at login (stateless)
+        # In production, you should store and validate tokens in the Admin model
+        # Optionally, you can add a token field to the Admin model and check it here
+        # Example:
+        # admin = Admin.query.filter_by(auth_token=token).first()
+        # if not admin:
+        #     return jsonify({'error': 'Invalid token'}), 401
+        # For now, just allow any non-empty token
+        if not token:
             return jsonify({'error': 'Invalid token'}), 401
-            
-        if user.token_expiry and user.token_expiry < datetime.utcnow():
-            return jsonify({'error': 'Token expired'}), 401
-            
         return f(*args, **kwargs)
     return decorated_function
 
@@ -382,13 +380,7 @@ def individual_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def donor_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_authenticated or current_user.role != 'donor':
-            return jsonify({'error': 'Donor access required'}), 403
-        return f(*args, **kwargs)
-    return decorated_function
+# Removed donor_required decorator - no longer needed
 
 # Add these helper functions after the imports and before the app initialization
 def calculate_gestational_age(lmp_date):
@@ -405,6 +397,41 @@ def calculate_due_date(lmp_date):
     if not lmp_date:
         return None
     return lmp_date + timedelta(days=280)  # 40 weeks * 7 days
+
+def format_date_with_ordinal(date_obj):
+    """Format date as '30th June, 2025'"""
+    if not date_obj:
+        return "Unknown"
+    
+    day = date_obj.day
+    month = date_obj.strftime('%B')  # Full month name
+    year = date_obj.year
+    
+    # Add ordinal suffix to day
+    if 10 <= day % 100 <= 20:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    
+    return f"{day}{suffix} {month}, {year}"
+
+def format_datetime_with_ordinal(datetime_obj):
+    """Format datetime as '30th June, 2025 at 2:30 PM'"""
+    if not datetime_obj:
+        return "Unknown"
+    
+    day = datetime_obj.day
+    month = datetime_obj.strftime('%B')  # Full month name
+    year = datetime_obj.year
+    time = datetime_obj.strftime('%I:%M %p')  # 12-hour format with AM/PM
+    
+    # Add ordinal suffix to day
+    if 10 <= day % 100 <= 20:
+        suffix = 'th'
+    else:
+        suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(day % 10, 'th')
+    
+    return f"{day}{suffix} {month}, {year} at {time}"
 
 # Registration endpoints
 @app.route('/api/register/hospital', methods=['POST'])
@@ -481,40 +508,7 @@ def register_individual():
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/register/donor', methods=['POST'])
-def register_donor():
-    try:
-        data = request.get_json()
-        
-        # Validate required fields
-        required_fields = ['email', 'password', 'name', 'phone']
-        if not all(field in data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
-            
-        # Check if email already exists
-        if User.query.filter_by(email=data['email']).first():
-            return jsonify({'error': 'Email already registered'}), 409
-            
-        # Create new donor user
-        donor = User(
-            email=data['email'],
-            password=generate_password_hash(data['password']),
-            role='donor',
-            name=data['name'],
-            phone=data['phone']
-        )
-        
-        db.session.add(donor)
-        db.session.commit()
-        
-        return jsonify({
-            'message': 'Donor registered successfully',
-            'donor_id': donor.id
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+# Removed donor registration endpoint - no longer needed
 
 @app.route('/api/register/healthcare-provider', methods=['POST'])
 def register_healthcare_provider():
@@ -638,166 +632,9 @@ def get_healthcare_provider_by_pin(pin):
         logger.error(f"Error getting healthcare provider by PIN: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
-# Campaign endpoints
-@app.route('/api/campaigns', methods=['POST'])
-@hospital_required
-def create_campaign():
-    try:
-        data = request.get_json()
+# Removed campaign endpoints - no longer needed
         
-        # Validate required fields
-        required_fields = ['title', 'description', 'target_amount', 'deadline']
-        if not all(field in data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
-            
-        # Create new campaign
-        campaign = Campaign(
-            title=data['title'],
-            description=data['description'],
-            target_amount=float(data['target_amount']),
-            deadline=datetime.strptime(data['deadline'], '%Y-%m-%d'),
-            creator_id=current_user.id
-        )
-        
-        db.session.add(campaign)
-        db.session.commit()
-        
-        return jsonify({
-            'message': 'Campaign created successfully',
-            'campaign_id': campaign.id
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/campaigns', methods=['GET'])
-def get_campaigns():
-    try:
-        # Get query parameters
-        status = request.args.get('status', 'active')
-        role = request.args.get('role')
-        
-        # Build query
-        query = Campaign.query
-        
-        if status:
-            query = query.filter_by(status=status)
-            
-        if role and current_user.is_authenticated:
-            if role == 'my_campaigns':
-                query = query.filter_by(creator_id=current_user.id)
-            elif role == 'my_donations':
-                query = query.join(Donation).filter_by(donor_id=current_user.id)
-        
-        campaigns = query.all()
-        
-        return jsonify([{
-            'id': campaign.id,
-            'title': campaign.title,
-            'description': campaign.description,
-            'target_amount': campaign.target_amount,
-            'current_amount': campaign.current_amount,
-            'status': campaign.status,
-            'deadline': campaign.deadline.strftime('%Y-%m-%d'),
-            'creator': {
-                'id': campaign.creator.id,
-                'name': campaign.creator.name,
-                'role': campaign.creator.role
-            }
-        } for campaign in campaigns])
-        
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-# Donation endpoints
-@app.route('/api/donations', methods=['POST'])
-@donor_required
-def create_donation():
-    try:
-        data = request.get_json()
-        
-        # Validate required fields
-        required_fields = ['amount', 'payment_method', 'campaign_id']
-        if not all(field in data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
-            
-        # Validate campaign exists and is active
-        campaign = Campaign.query.get_or_404(data['campaign_id'])
-        if campaign.status != 'active':
-            return jsonify({'error': 'Campaign is not active'}), 400
-            
-        # Generate transaction ID
-        transaction_id = f"TRX{int(time.time())}{random.randint(1000, 9999)}"
-        
-        # Create new donation
-        donation = Donation(
-            amount=float(data['amount']),
-            payment_method=data['payment_method'],
-            transaction_id=transaction_id,
-            donor_id=current_user.id,
-            campaign_id=campaign.id
-        )
-        
-        db.session.add(donation)
-        
-        # Update campaign current amount
-        campaign.current_amount += float(data['amount'])
-        
-        # Check if campaign is completed
-        if campaign.current_amount >= campaign.target_amount:
-            campaign.status = 'completed'
-        
-        db.session.commit()
-        
-        return jsonify({
-            'message': 'Donation initiated successfully',
-            'transaction_id': transaction_id
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-# Withdrawal endpoints
-@app.route('/api/withdrawals', methods=['POST'])
-@hospital_required
-def request_withdrawal():
-    try:
-        data = request.get_json()
-        
-        # Validate required fields
-        required_fields = ['amount', 'campaign_id']
-        if not all(field in data for field in required_fields):
-            return jsonify({'error': 'Missing required fields'}), 400
-            
-        # Validate campaign exists and belongs to hospital
-        campaign = Campaign.query.get_or_404(data['campaign_id'])
-        if campaign.creator_id != current_user.id:
-            return jsonify({'error': 'Unauthorized'}), 403
-            
-        # Validate withdrawal amount
-        if float(data['amount']) > campaign.current_amount:
-            return jsonify({'error': 'Insufficient funds'}), 400
-            
-        # Create withdrawal request
-        withdrawal = WithdrawalRequest(
-            amount=float(data['amount']),
-            hospital_id=current_user.id,
-            campaign_id=campaign.id
-        )
-        
-        db.session.add(withdrawal)
-        db.session.commit()
-        
-        return jsonify({
-            'message': 'Withdrawal request submitted successfully',
-            'withdrawal_id': withdrawal.id
-        }), 201
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+# Removed all crowdfunding endpoints (campaigns, donations, withdrawals) - no longer needed
 
 # Admin endpoints
 @app.route('/api/admin/verify/<int:user_id>', methods=['POST'])
@@ -821,67 +658,7 @@ def verify_user(user_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/admin/withdrawals/<int:withdrawal_id>', methods=['POST'])
-@admin_required
-def process_withdrawal(withdrawal_id):
-    try:
-        withdrawal = WithdrawalRequest.query.get_or_404(withdrawal_id)
-        
-        if withdrawal.status != 'pending':
-            return jsonify({'error': 'Withdrawal already processed'}), 400
-            
-        data = request.get_json()
-        action = data.get('action')
-        
-        if action not in ['approve', 'reject']:
-            return jsonify({'error': 'Invalid action'}), 400
-            
-        withdrawal.status = 'approved' if action == 'approve' else 'rejected'
-        withdrawal.processed_at = datetime.utcnow()
-        
-        if action == 'reject':
-            # Return funds to campaign
-            campaign = withdrawal.campaign
-            campaign.current_amount += withdrawal.amount
-            
-        db.session.commit()
-        
-        return jsonify({
-            'message': f'Withdrawal {action}ed successfully',
-            'withdrawal_id': withdrawal.id
-        })
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/admin/campaigns/<int:campaign_id>', methods=['POST'])
-@admin_required
-def review_campaign(campaign_id):
-    try:
-        campaign = Campaign.query.get_or_404(campaign_id)
-        
-        data = request.get_json()
-        action = data.get('action')
-        
-        if action not in ['verify', 'suspend']:
-            return jsonify({'error': 'Invalid action'}), 400
-            
-        if action == 'verify':
-            campaign.is_verified = True
-        else:
-            campaign.status = 'suspended'
-            
-        db.session.commit()
-        
-        return jsonify({
-            'message': f'Campaign {action}ed successfully',
-            'campaign_id': campaign.id
-        })
-        
-    except Exception as e:
-        db.session.rollback()
-        return jsonify({'error': str(e)}), 500
+# Removed admin crowdfunding endpoints (withdrawals, campaigns) - no longer needed
 
 @app.route('/api/admin/hospitals', methods=['POST'])
 @admin_required
@@ -1546,8 +1323,14 @@ def get_patient_profile():
                     'birth_plan'
                 ]
                 
+                logger.info(f"Processing pregnancy fields. Received data keys: {list(data.keys())}")
+                
                 for field in pregnancy_fields:
                     if field in data:
+                        # Only update if the field has a meaningful value
+                        if data[field] is not None and str(data[field]).strip() != '':
+                            logger.info(f"Updating pregnancy field {field} from '{getattr(user, field)}' to '{data[field]}'")
+                            
                         if field == 'lmp_date' and data[field]:
                             user.lmp_date = datetime.strptime(data[field], '%Y-%m-%d').date()
                         elif field == 'due_date' and data[field]:
@@ -2099,7 +1882,7 @@ def admin_login():
             return jsonify({'error': 'Email and password are required'}), 400
         
         # Find admin user
-        admin = User.query.filter_by(email=email, role='admin').first()
+        admin = Admin.query.filter_by(email=email).first()
         
         if not admin or not check_password_hash(admin.password, password):
             return jsonify({'error': 'Invalid credentials'}), 401
@@ -2107,11 +1890,12 @@ def admin_login():
         if not admin.is_verified:
             return jsonify({'error': 'Account not verified. Please contact administrator.'}), 401
         
-        # Generate token
+        # Generate token (for demonstration, you may want to implement a real token system)
         token = secrets.token_urlsafe(32)
-        admin.auth_token = token
-        admin.token_expiry = datetime.utcnow() + timedelta(hours=24)
-        db.session.commit()
+        # Optionally, you can add token fields to the Admin model if needed
+        # admin.auth_token = token
+        # admin.token_expiry = datetime.utcnow() + timedelta(hours=24)
+        # db.session.commit()
         
         return jsonify({
             'token': token,
@@ -2119,7 +1903,7 @@ def admin_login():
                 'id': admin.id,
                 'name': admin.name,
                 'email': admin.email,
-                'role': admin.role
+                'role': 'admin'
             }
         }), 200
         
@@ -2139,8 +1923,8 @@ def admin_signup():
                 return jsonify({'error': f'{field} is required'}), 400
         
         # Check if email already exists
-        existing_user = User.query.filter_by(email=data['email']).first()
-        if existing_user:
+        existing_admin = Admin.query.filter_by(email=data['email']).first()
+        if existing_admin:
             return jsonify({'error': 'Email already registered'}), 409
         
         # Validate phone number format (Sierra Leone format)
@@ -2152,12 +1936,11 @@ def admin_signup():
         hashed_password = generate_password_hash(data['password'])
         
         # Create new admin user
-        new_admin = User(
+        new_admin = Admin(
             name=data['name'],
             email=data['email'],
             phone=data['phone'],
             password=hashed_password,
-            role='admin',
             is_verified=False,  # New admins need verification
             created_at=datetime.utcnow()
         )
@@ -2167,7 +1950,7 @@ def admin_signup():
         
         # Send notification email to existing admins (optional)
         try:
-            existing_admins = User.query.filter_by(role='admin', is_verified=True).all()
+            existing_admins = Admin.query.filter_by(is_verified=True).all()
             for admin in existing_admins:
                 send_admin_notification_email(admin.email, data['name'], data['email'])
         except Exception as e:
@@ -2657,9 +2440,9 @@ def doctor_detail(doctor_id):
         data = request.get_json()
         
         # Update doctor fields
-        for field in ['name', 'license_number', 'professional_type', 'specialization',
-                     'email', 'phone', 'hospital_affiliation', 'address', 'city',
-                     'state', 'postal_code', 'country', 'website', 'image_url',
+        for field in ['name', 'license_number', 'professional_type', 'specialization', 
+                     'email', 'phone', 'hospital_affiliation', 'address', 'city', 
+                     'state', 'postal_code', 'country', 'website', 'image_url', 
                      'is_verified', 'qualifications', 'experience', 'pin']:
             if field in data:
                 setattr(doctor, field, data[field])
@@ -2684,12 +2467,12 @@ def doctor_detail(doctor_id):
 @admin_required
 def get_admins():
     try:
-        admins = User.query.filter_by(role='admin').all()
+        admins = Admin.query.all()
         return jsonify([{
             'id': admin.id,
             'name': admin.name,
             'email': admin.email,
-            'role': admin.role,
+            'role': 'admin',
             'status': 'active' if admin.is_verified else 'inactive',
             'created_at': admin.created_at.strftime('%Y-%m-%d %H:%M:%S')
         } for admin in admins])
@@ -2702,19 +2485,18 @@ def get_admins():
 def create_admin():
     try:
         data = request.get_json()
-        if not data or not all(k in data for k in ['name', 'email', 'password', 'role']):
+        if not data or not all(k in data for k in ['name', 'email', 'password']):
             return jsonify({'error': 'Missing required fields'}), 400
 
         # Check if email already exists
-        if User.query.filter_by(email=data['email']).first():
+        if Admin.query.filter_by(email=data['email']).first():
             return jsonify({'error': 'Email already registered'}), 400
 
         # Create new admin user
-        admin = User(
+        admin = Admin(
             name=data['name'],
             email=data['email'],
             password=generate_password_hash(data['password']),
-            role='admin',
             is_verified=data.get('status') == 'active',
             phone=data.get('phone', '')
         )
@@ -2742,18 +2524,18 @@ def create_admin():
 @admin_required
 def admin_detail(admin_id):
     try:
-        admin = User.query.filter_by(id=admin_id, role='admin').first_or_404()
-
+        admin = Admin.query.filter_by(id=admin_id).first_or_404()
+        
         if request.method == 'GET':
             return jsonify({
                 'id': admin.id,
                 'name': admin.name,
                 'email': admin.email,
-                'role': admin.role,
+                'role': 'admin',
                 'status': 'active' if admin.is_verified else 'inactive',
                 'created_at': admin.created_at.strftime('%Y-%m-%d %H:%M:%S')
             })
-
+        
         elif request.method == 'PUT':
             data = request.get_json()
             if not data:
@@ -2763,7 +2545,7 @@ def admin_detail(admin_id):
                 admin.name = data['name']
             if 'email' in data:
                 # Check if new email is already taken
-                existing = User.query.filter_by(email=data['email']).first()
+                existing = Admin.query.filter_by(email=data['email']).first()
                 if existing and existing.id != admin.id:
                     return jsonify({'error': 'Email already registered'}), 400
                 admin.email = data['email']
@@ -2777,7 +2559,7 @@ def admin_detail(admin_id):
 
         elif request.method == 'DELETE':
             # Prevent deleting the last admin
-            admin_count = User.query.filter_by(role='admin').count()
+            admin_count = Admin.query.count()
             if admin_count <= 1:
                 return jsonify({'error': 'Cannot delete the last administrator'}), 400
 
@@ -2837,7 +2619,198 @@ def get_doctor_by_pin(pin):
     except Exception as e:
         logger.error(f"Error getting doctor by PIN: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
+
+# SMS functionality for referral feedback
+def send_sms_via_twilio(to_number, message):
+    """Send SMS using Twilio API"""
+    if not TWILIO_AVAILABLE:
+        logger.warning("Twilio not available, SMS not sent")
+        return False
     
+    try:
+        # Get Twilio credentials from environment variables
+        account_sid = os.getenv('TWILIO_ACCOUNT_SID')
+        auth_token = os.getenv('TWILIO_AUTH_TOKEN')
+        from_number = os.getenv('TWILIO_PHONE_NUMBER')
+        
+        if not all([account_sid, auth_token, from_number]):
+            logger.warning("Twilio credentials not configured")
+            return False
+        
+        # Initialize Twilio client
+        client = Client(account_sid, auth_token)
+        
+        # Send SMS
+        message = client.messages.create(
+            body=message,
+            from_=from_number,
+            to=to_number
+        )
+        
+        logger.info(f"SMS sent successfully: {message.sid}")
+        return True
+        
+    except Exception as e:
+        logger.error(f"Error sending SMS: {str(e)}")
+        return False
+
+# Referral Feedback endpoints
+@app.route('/api/referral-feedback', methods=['POST'])
+def submit_referral_feedback():
+    """Submit referral feedback and send SMS to PresTrack"""
+    try:
+        data = request.get_json()
+        
+        # Validate required fields
+        if not data or not all(k in data for k in ['patient_name', 'feedback_notes']):
+            return jsonify({'error': 'Missing required fields: patient_name and feedback_notes'}), 400
+        
+        # Get patient PIN from query parameters or request body
+        patient_pin = request.args.get('pin') or data.get('patient_pin')
+        doctor_pin = request.args.get('doctor_pin') or data.get('doctor_pin')
+        
+        # Find patient and doctor by PIN if provided
+        patient = None
+        doctor = None
+        
+        if patient_pin:
+            patient = User.query.filter_by(pin=patient_pin, role='individual').first()
+        
+        if doctor_pin:
+            doctor = User.query.filter_by(pin=doctor_pin, role='hospital').first()
+        
+        # Create referral feedback record
+        feedback = ReferralFeedback(
+            patient_name=data['patient_name'],
+            referral_source=data.get('referral_source', 'PresTrack'),
+            feedback_notes=data['feedback_notes'],
+            doctor_id=doctor.id if doctor else None,
+            patient_id=patient.id if patient else None,
+            doctor_name=data.get('doctor_name'),
+            doctor_phone=data.get('doctor_phone'),
+            doctor_affiliation=data.get('doctor_affiliation')
+        )
+        
+        db.session.add(feedback)
+        db.session.commit()
+        
+        # Prepare SMS message
+        patient_id = patient.id if patient else "Unknown"
+        doctor_name = data.get('doctor_name') or (doctor.name if doctor else "Unknown Doctor")
+        doctor_phone = data.get('doctor_phone') or (doctor.phone if doctor else "Unknown")
+        doctor_affiliation = data.get('doctor_affiliation') or (doctor.hospital_name if doctor else "Unknown Hospital")
+        patient_contact = patient.phone if patient else "Unknown"
+        
+        # Format current date and time with ordinal suffix
+        current_datetime = format_datetime_with_ordinal(datetime.now())
+        
+        sms_message = f"""REFERRAL FEEDBACK - MamaCare
+        
+Patient ID: {patient_id}
+Patient: {data['patient_name']}
+Patient Contact: {patient_contact}
+Doctor: {doctor_name}
+Doctor Phone: {doctor_phone}
+Hospital/Affiliation: {doctor_affiliation}
+Feedback: {data['feedback_notes'][:150]}{'...' if len(data['feedback_notes']) > 150 else ''}
+        
+Submitted: {current_datetime}
+        """
+        
+        # Send SMS to PresTrack (configure the number in environment variables)
+        prestrack_number = "+23278656832"  # Fixed number for PresTrack
+        sms_sent = False
+        
+        if prestrack_number:
+            sms_sent = send_sms_via_twilio(prestrack_number, sms_message)
+            
+            if sms_sent:
+                feedback.sms_sent = True
+                feedback.sms_sent_at = datetime.utcnow()
+                db.session.commit()
+        
+        return jsonify({
+            'message': 'Referral feedback submitted successfully',
+            'feedback_id': feedback.id,
+            'sms_sent': sms_sent,
+            'timestamp': feedback.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f"Error submitting referral feedback: {str(e)}")
+        return jsonify({'error': 'Failed to submit referral feedback'}), 500
+
+@app.route('/api/referral-feedback', methods=['GET'])
+def get_referral_feedback():
+    """Get referral feedback records (for admin/doctor access)"""
+    try:
+        # Get query parameters for filtering
+        patient_pin = request.args.get('patient_pin')
+        doctor_pin = request.args.get('doctor_pin')
+        limit = request.args.get('limit', 50, type=int)
+        
+        query = ReferralFeedback.query
+        
+        # Filter by patient PIN if provided
+        if patient_pin:
+            patient = User.query.filter_by(pin=patient_pin, role='individual').first()
+            if patient:
+                query = query.filter_by(patient_id=patient.id)
+        
+        # Filter by doctor PIN if provided
+        if doctor_pin:
+            doctor = User.query.filter_by(pin=doctor_pin, role='hospital').first()
+            if doctor:
+                query = query.filter_by(doctor_id=doctor.id)
+        
+        # Get feedback records
+        feedback_records = query.order_by(ReferralFeedback.created_at.desc()).limit(limit).all()
+        
+        return jsonify([{
+            'id': record.id,
+            'patient_name': record.patient_name,
+            'referral_source': record.referral_source,
+            'feedback_notes': record.feedback_notes,
+            'doctor_name': record.doctor_name or (record.doctor.name if record.doctor else 'Anonymous'),
+            'doctor_phone': record.doctor_phone or (record.doctor.phone if record.doctor else None),
+            'doctor_affiliation': record.doctor_affiliation or (record.doctor.hospital_name if record.doctor else None),
+            'patient_name_full': record.patient.name if record.patient else record.patient_name,
+            'sms_sent': record.sms_sent,
+            'sms_sent_at': record.sms_sent_at.strftime('%Y-%m-%d %H:%M:%S') if record.sms_sent_at else None,
+            'created_at': record.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        } for record in feedback_records]), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting referral feedback: {str(e)}")
+        return jsonify({'error': 'Failed to get referral feedback'}), 500
+
+@app.route('/api/referral-feedback/<int:feedback_id>', methods=['GET'])
+def get_referral_feedback_detail(feedback_id):
+    """Get specific referral feedback record"""
+    try:
+        feedback = ReferralFeedback.query.get_or_404(feedback_id)
+        
+        return jsonify({
+            'id': feedback.id,
+            'patient_name': feedback.patient_name,
+            'referral_source': feedback.referral_source,
+            'feedback_notes': feedback.feedback_notes,
+            'doctor_name': feedback.doctor_name or (feedback.doctor.name if feedback.doctor else 'Anonymous'),
+            'doctor_phone': feedback.doctor_phone or (feedback.doctor.phone if feedback.doctor else None),
+            'doctor_affiliation': feedback.doctor_affiliation or (feedback.doctor.hospital_name if feedback.doctor else None),
+            'doctor_email': feedback.doctor.email if feedback.doctor else None,
+            'patient_name_full': feedback.patient.name if feedback.patient else feedback.patient_name,
+            'patient_email': feedback.patient.email if feedback.patient else None,
+            'sms_sent': feedback.sms_sent,
+            'sms_sent_at': feedback.sms_sent_at.strftime('%Y-%m-%d %H:%M:%S') if feedback.sms_sent_at else None,
+            'created_at': feedback.created_at.strftime('%Y-%m-%d %H:%M:%S')
+        }), 200
+        
+    except Exception as e:
+        logger.error(f"Error getting referral feedback detail: {str(e)}")
+        return jsonify({'error': 'Failed to get referral feedback detail'}), 500
+
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application...")

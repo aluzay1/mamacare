@@ -10,8 +10,8 @@
     <style>
         .hospitals-container {
             padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
+            width: calc(100% - 120px);
+            margin: 0 60px;
         }
 
         .page-header {
@@ -97,9 +97,12 @@
 
         .hospitals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
             padding: 20px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .hospital-card {
@@ -110,8 +113,9 @@
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(0,0,0,0.05);
             position: relative;
-            max-width: 320px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
         }
 
         .hospital-card::before {
@@ -520,7 +524,42 @@
             transform: rotate(-45deg) translate(6px, -6px);
         }
 
+        @media (max-width: 1600px) {
+            .hospitals-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 1400px) {
+            .hospitals-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .hospitals-container {
+                width: calc(100% - 40px);
+                margin: 0 20px;
+            }
+            
+            .hospitals-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+                padding: 15px;
+            }
+        }
+
         @media (max-width: 768px) {
+            .hospitals-container {
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                padding: 10px;
+            }
+
             .menu-toggle {
                 display: flex;
             }
@@ -592,14 +631,22 @@
                 visibility: visible;
             }
 
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
             .hospitals-grid {
-                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                grid-template-columns: 1fr;
                 gap: 15px;
-                padding: 15px;
+                padding: 10px;
             }
 
             .hospital-card {
-                max-width: none;
+                max-width: 100%;
             }
 
             .hospital-actions {
@@ -613,11 +660,59 @@
             .status-badges {
                 justify-content: flex-start;
             }
+
+            .search-box {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+            }
         }
 
-        @media (min-width: 1200px) {
+        @media (max-width: 480px) {
+            .hospitals-container {
+                width: calc(100% - 10px);
+                margin: 0 5px;
+                padding: 5px;
+            }
+
+            .page-header {
+                padding: 15px;
+                margin-bottom: 20px;
+            }
+
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-header p {
+                font-size: 0.9rem;
+            }
+
+            .search-section {
+                padding: 15px;
+            }
+
             .hospitals-grid {
-                grid-template-columns: repeat(4, 1fr);
+                padding: 5px;
+                gap: 10px;
+            }
+
+            .hospital-info {
+                padding: 15px;
+            }
+
+            .hospital-detail {
+                font-size: 0.85rem;
+            }
+
+            .hospital-image-container {
+                height: 120px;
             }
         }
     </style>
@@ -655,16 +750,6 @@
                 <button class="search-button" onclick="searchHospitals()">Search</button>
             </div>
             <div class="filters">
-                <div class="filter-group">
-                    <label for="specialtyFilter">Specialty</label>
-                    <select class="filter-select" id="specialtyFilter" onchange="searchHospitals()">
-                        <option value="">All Specialties</option>
-                        <option value="General">General Hospital</option>
-                        <option value="Specialized">Specialized Hospital</option>
-                        <option value="Teaching">Teaching Hospital</option>
-                        <option value="District">District Hospital</option>
-                    </select>
-                </div>
                 <div class="filter-group">
                     <label for="locationFilter">Location</label>
                     <select class="filter-select" id="locationFilter" onchange="searchHospitals()">
@@ -738,23 +823,20 @@
             hospitalsGrid.innerHTML = hospitals.map(hospital => `
                 <div class="hospital-card">
                     <div class="hospital-image-container">
-                        <img src="${getHospitalImageUrl(hospital)}" alt="${hospital.name}" class="hospital-image">
-                        <div class="hospital-image-overlay">${hospital.name}</div>
+                        <img src="${getHospitalImageUrl(hospital)}" alt="${hospital.name || 'Hospital'}" class="hospital-image">
+                        <div class="hospital-image-overlay">${hospital.name || 'Hospital'}</div>
                     </div>
                     <div class="hospital-info">
                         <div class="hospital-header">
                             <div class="hospital-name">
-                                <span class="name-text">${hospital.name}</span>
+                                <span class="name-text">${hospital.name || 'Hospital Name Not Available'}</span>
                                 <div class="status-badges">
-                                    ${hospital.type === 'General' ? '<span class="status verified"><i class="fas fa-check-circle"></i> Verified</span>' : ''}
-                                    ${hospital.type === 'Specialized' ? '<span class="status emergency"><i class="fas fa-star"></i> Specialized</span>' : ''}
-                                    ${hospital.type === 'Teaching' ? '<span class="status"><i class="fas fa-graduation-cap"></i> Teaching</span>' : ''}
-                                    ${hospital.type === 'District' ? '<span class="status"><i class="fas fa-hospital"></i> District</span>' : ''}
+                                    <span class="status verified"><i class="fas fa-check-circle"></i> Verified</span>
                                 </div>
                             </div>
                             <div class="hospital-location">
                                 <i class="fas fa-map-marker-alt"></i>
-                                <span>${hospital.city}, ${hospital.country}</span>
+                                <span>${hospital.city || 'City'}, ${hospital.country || 'Sierra Leone'}</span>
                             </div>
                         </div>
                         <div class="hospital-details">
@@ -762,7 +844,7 @@
                                 <i class="fas fa-phone"></i>
                                 <div class="detail-content">
                                     <div class="detail-label">Phone</div>
-                                    <div class="detail-value">${hospital.phone}</div>
+                                    <div class="detail-value">${hospital.phone || 'Phone number not available'}</div>
                                 </div>
                             </div>
                             ${hospital.email ? `
@@ -783,13 +865,19 @@
                                 </div>
                             </div>
                             ` : ''}
+                            ${hospital.website ? `
                             <div class="hospital-detail">
-                                <i class="fas fa-hospital"></i>
+                                <i class="fas fa-globe"></i>
                                 <div class="detail-content">
-                                    <div class="detail-label">Type</div>
-                                    <div class="detail-value">${hospital.type}</div>
+                                    <div class="detail-label">Website</div>
+                                    <div class="detail-value">
+                                        <a href="${hospital.website}" target="_blank" style="color: #3498db; text-decoration: none;">
+                                            ${hospital.website.replace(/^https?:\/\//, '')}
+                                        </a>
                                 </div>
                             </div>
+                            </div>
+                            ` : ''}
                         </div>
                         ${hospital.services && hospital.services.length > 0 ? `
                         <div class="services-section">
@@ -802,10 +890,10 @@
                         </div>
                         ` : ''}
                         <div class="hospital-actions">
-                            <a href="tel:${hospital.phone}" class="action-button call-now">
+                            <a href="tel:${hospital.phone || ''}" class="action-button call-now">
                                 <i class="fas fa-phone"></i> Call Now
                             </a>
-                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hospital.address || ''}, ${hospital.city}, ${hospital.state || ''} ${hospital.country}`)}" 
+                            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${hospital.address || ''}, ${hospital.city || ''}, ${hospital.state || ''} ${hospital.country || 'Sierra Leone'}`)}" 
                                class="action-button get-directions" target="_blank">
                                 <i class="fas fa-directions"></i> Get Directions
                             </a>
@@ -814,7 +902,7 @@
                     <div class="hospital-meta">
                         <div class="type">
                             <i class="fas fa-hospital"></i>
-                            ${hospital.type} Hospital
+                            Healthcare Facility
                         </div>
                         <div class="distance">
                             <i class="fas fa-location-arrow"></i>
@@ -828,17 +916,15 @@
         // Function to search and filter hospitals
         async function searchHospitals() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const specialtyFilter = document.getElementById('specialtyFilter').value;
             const locationFilter = document.getElementById('locationFilter').value;
 
             const hospitals = await fetchHospitals();
             const filteredHospitals = hospitals.filter(hospital => {
                 const matchesSearch = hospital.name.toLowerCase().includes(searchTerm) ||
                                     hospital.city.toLowerCase().includes(searchTerm);
-                const matchesSpecialty = !specialtyFilter || hospital.type === specialtyFilter;
                 const matchesLocation = !locationFilter || hospital.city === locationFilter;
 
-                return matchesSearch && matchesSpecialty && matchesLocation;
+                return matchesSearch && matchesLocation;
             });
 
             displayHospitals(filteredHospitals);

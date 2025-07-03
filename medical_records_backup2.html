@@ -725,12 +725,12 @@
                         </div>
                             <div class="info-item">
                             <label>Estimated Due Date</label>
-                            <span id="patientDueDateDisplay" onclick="enableIndividualPregnancyFieldEdit('patientDueDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="patientDueDateDisplay"></span>
                             <input type="date" id="patientDueDateInput" style="display: none;" class="input-field" />
                         </div>
                             <div class="info-item">
                             <label>Gestational Age (weeks)</label>
-                            <span id="patientGestationalAgeDisplay" onclick="enableIndividualPregnancyFieldEdit('patientGestationalAge')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="patientGestationalAgeDisplay"></span>
                             <input type="number" id="patientGestationalAgeInput" min="0" max="40" step="1" style="display: none;" class="input-field" />
                         </div>
                             <div class="info-item full-width">
@@ -762,19 +762,19 @@
 
                         <div class="info-item">
                             <label>Last Menstrual Period</label>
-                            <span id="lmpDateDisplay" onclick="enableIndividualPregnancyFieldEdit('lmpDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="lmpDateDisplay"></span>
                             <input type="date" id="lmpDateInput" style="display: none;" class="input-field" />
                         </div>
 
                         <div class="info-item">
                             <label>Estimated Due Date</label>
-                            <span id="dueDateDisplay" onclick="enableIndividualPregnancyFieldEdit('dueDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="dueDateDisplay"></span>
                             <input type="date" id="dueDateInput" style="display: none;" class="input-field" />
                         </div>
 
                         <div class="info-item">
                             <label>Gestational Age (weeks)</label>
-                            <span id="gestationalAgeDisplay" onclick="enableIndividualPregnancyFieldEdit('gestationalAge')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="gestationalAgeDisplay"></span>
                             <input type="number" id="gestationalAgeInput" style="display: none;" class="input-field" min="0" max="45" />
                         </div>
 
@@ -3952,18 +3952,17 @@
                 'emergencyContactName', 'emergencyContactPhone', 'emergencyContactRelationship'
             ];
 
-            // Pregnancy Information (basic) - EXCLUDE critical fields
+            // Pregnancy Information (basic)
             const pregnancyFields = [
-                'patientPregnancyStatus', 'patientPregnancyComplications'
-                // Excluded: 'patientDueDate', 'patientGestationalAge' - these require individual edit
+                'patientPregnancyStatus', 'patientDueDate', 'patientGestationalAge', 'patientPregnancyComplications'
             ];
 
-            // Pregnancy Information (detailed) - EXCLUDE critical fields
+            // Pregnancy Information (detailed)
             const detailedPregnancyFields = [
-                'pregnancyStatus', 'previousPregnancies', 'multiplePregnancy', 'riskLevel', 'riskFactors',
+                'pregnancyStatus', 'previousPregnancies', 'lmpDate', 'dueDate',
+                'gestationalAge', 'multiplePregnancy', 'riskLevel', 'riskFactors',
                 'bloodPressure', 'hemoglobin', 'bloodSugar', 'weight',
                 'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
-                // Excluded: 'lmpDate', 'dueDate', 'gestationalAge' - these require individual edit
             ];
 
             // Enable editing for all fields
@@ -4031,18 +4030,6 @@
                 if (patientDueDateInput) patientDueDateInput.value = pregnancyDates.dueDate || '';
             }
 
-            // Show visual indicators for pregnancy fields being edited
-            // showPregnancyEditIndicators(); // REMOVED: Pregnancy fields are now individually editable
-
-            // CRITICAL: Do NOT automatically enable editing for these pregnancy fields
-            // They should only be editable when individually clicked
-            const criticalPregnancyFields = [
-                'lmpDate', 'dueDate', 'gestationalAge', 
-                'patientDueDate', 'patientGestationalAge'
-            ];
-            
-            console.log('Critical pregnancy fields excluded from general edit:', criticalPregnancyFields);
-
             const saveBtn = document.getElementById("saveProfileBtn");
             if (saveBtn) {
                 saveBtn.style.display = "inline-block";
@@ -4050,59 +4037,6 @@
             } else {
                 console.log('Save button not found');
             }
-        }
-
-        // Function to show visual indicators for pregnancy fields being edited
-        function showPregnancyEditIndicators() {
-            const criticalPregnancyFields = [
-                'lmpDate', 'gestationalAge', 'dueDate', 'patientGestationalAge', 'patientDueDate'
-            ];
-            
-            criticalPregnancyFields.forEach(field => {
-                const input = document.getElementById(field + "Input");
-                const display = document.getElementById(field + "Display");
-                
-                if (input && input.style.display !== 'none') {
-                    // Add a visual indicator that this field is being edited
-                    input.style.border = '2px solid #ff6b6b';
-                    input.style.backgroundColor = '#fff5f5';
-                    
-                    // Add a small indicator text
-                    const indicator = document.createElement('div');
-                    indicator.id = field + 'EditIndicator';
-                    indicator.style.fontSize = '12px';
-                    indicator.style.color = '#ff6b6b';
-                    indicator.style.marginTop = '2px';
-                    indicator.style.fontWeight = 'bold';
-                    indicator.textContent = '⚠️ This field is being edited';
-                    
-                    // Insert the indicator after the input
-                    input.parentNode.insertBefore(indicator, input.nextSibling);
-                    
-                    console.log(`Added edit indicator for pregnancy field: ${field}`);
-                }
-            });
-        }
-
-        // Function to remove pregnancy edit indicators
-        function removePregnancyEditIndicators() {
-            const criticalPregnancyFields = [
-                'lmpDate', 'gestationalAge', 'dueDate', 'patientGestationalAge', 'patientDueDate'
-            ];
-            
-            criticalPregnancyFields.forEach(field => {
-                const input = document.getElementById(field + "Input");
-                const indicator = document.getElementById(field + 'EditIndicator');
-                
-                if (input) {
-                    input.style.border = '';
-                    input.style.backgroundColor = '';
-                }
-                
-                if (indicator) {
-                    indicator.remove();
-                }
-            });
         }
 
         async function saveProfileChanges() {
@@ -4170,12 +4104,9 @@
                 // Helper function to get value only if input is visible
                 function getEditedValue(fieldName) {
                     const input = document.getElementById(fieldName + "Input");
-                    if (input && input.style.display !== 'none' && input.style.display !== '') {
-                        const value = input.value;
-                        console.log(`Field ${fieldName} is being edited with value: "${value}"`);
-                        return value;
+                    if (input && input.style.display !== 'none') {
+                        return input.value;
                     }
-                    console.log(`Field ${fieldName} is not being edited (input hidden or not found)`);
                     return undefined; // Not being edited
                 }
 
@@ -4204,10 +4135,6 @@
                 };
 
                 // Pregnancy fields: only include if being edited
-                // CRITICAL: These fields should only be updated when explicitly edited by the user
-                // - gestational_age: Calculated from LMP, should not change unless LMP is updated
-                // - lmp_date: Last Menstrual Period, critical for pregnancy calculations
-                // - due_date: Estimated due date, calculated from LMP
                 const pregnancyFields = [
                     ['pregnancy_status', 'patientPregnancyStatus', formatTextField],
                     ['due_date', 'patientDueDate', formatDateForBackend],
@@ -4226,16 +4153,10 @@
                     ['emergency_hospital', 'emergencyHospital', formatTextField],
                     ['birth_plan', 'birthPlan', formatTextField],
                 ];
-                
-                // Only include pregnancy fields that are actually being edited
-                // This prevents unwanted updates to gestational age, LMP, and due date
                 pregnancyFields.forEach(([apiField, domField, formatter]) => {
                     const editedValue = getEditedValue(domField);
-                    if (editedValue !== undefined && editedValue !== null && editedValue !== '') {
+                    if (editedValue !== undefined) {
                         data[apiField] = formatter(editedValue);
-                        console.log(`Including pregnancy field ${apiField} with value: ${editedValue}`);
-                    } else {
-                        console.log(`Excluding pregnancy field ${apiField} - not being edited`);
                     }
                 });
 
@@ -4300,9 +4221,6 @@
                             input.style.display = "none";
                     }
                 });
-
-                // Remove pregnancy edit indicators
-                removePregnancyEditIndicators();
 
                 document.getElementById("saveProfileBtn").style.display = "none";
                     alert('Profile changes saved successfully!');
@@ -4511,9 +4429,6 @@
         // Function to clear the feedback form
         function clearFeedbackForm() {
             document.getElementById('feedbackNotes').value = '';
-            document.getElementById('feedbackDoctorName').value = '';
-            document.getElementById('feedbackDoctorPhone').value = '';
-            document.getElementById('feedbackDoctorAffiliation').value = '';
             hideFeedbackMessages();
         }
         
@@ -4574,9 +4489,6 @@
             const feedbackData = {
                 patient_name: formData.get('patient_name'),
                 referral_source: formData.get('referral_source'),
-                doctor_name: formData.get('doctor_name'),
-                doctor_phone: formData.get('doctor_phone'),
-                doctor_affiliation: formData.get('doctor_affiliation'),
                 feedback_notes: formData.get('feedback_notes'),
                 patient_pin: patientPin
             };
@@ -4645,58 +4557,6 @@
                 patientNameInput.value = profile.name || 'Unknown Patient';
             }
         };
-
-        // Individual edit functions for critical pregnancy fields
-        function enableIndividualPregnancyFieldEdit(fieldName) {
-            console.log(`Enabling individual edit for pregnancy field: ${fieldName}`);
-            
-            const display = document.getElementById(fieldName + "Display");
-            const input = document.getElementById(fieldName + "Input");
-            
-            if (display && input) {
-                // Set the input value from display
-                let displayValue = display.textContent.trim();
-                
-                // Special handling for gestational age (remove "weeks, X days" format)
-                if (fieldName === 'gestationalAge' || fieldName === 'patientGestationalAge') {
-                    if (displayValue.includes('weeks')) {
-                        displayValue = displayValue.split(' ')[0]; // Extract just the number
-                    }
-                }
-                
-                input.value = displayValue;
-                
-                // Hide display and show input
-                display.style.display = "none";
-                input.style.display = "block";
-                
-                // Add visual indicator
-                input.style.border = '2px solid #ff6b6b';
-                input.style.backgroundColor = '#fff5f5';
-                
-                // Add indicator text
-                const indicator = document.createElement('div');
-                indicator.id = fieldName + 'EditIndicator';
-                indicator.style.fontSize = '12px';
-                indicator.style.color = '#ff6b6b';
-                indicator.style.marginTop = '2px';
-                indicator.style.fontWeight = 'bold';
-                indicator.textContent = '⚠️ This field is being edited';
-                
-                // Insert the indicator after the input
-                input.parentNode.insertBefore(indicator, input.nextSibling);
-                
-                // Show save button if not already visible
-                const saveBtn = document.getElementById("saveProfileBtn");
-                if (saveBtn && saveBtn.style.display === 'none') {
-                    saveBtn.style.display = "inline-block";
-                }
-                
-                console.log(`Individual edit enabled for: ${fieldName}`);
-            } else {
-                console.log(`Field not found for individual edit: ${fieldName}`);
-            }
-        }
     </script>
 
     <!-- Referral Feedback Section -->
@@ -4714,7 +4574,7 @@
             
             <div class="feedback-content" id="feedbackContent">
                 <div class="feedback-info">
-                    <p><i class="fas fa-info-circle"></i> Submit feedback about this patient's referral to Prestrack. This will be sent via SMS and logged in our system.</p>
+                    <p><i class="fas fa-info-circle"></i> Submit feedback about this patient's referral to PresTrack. This will be sent via SMS and logged in our system.</p>
                 </div>
                 
                 <form id="referralFeedbackForm" class="feedback-form">
@@ -4732,34 +4592,7 @@
                                 <i class="fas fa-share-alt"></i>
                                 Referral Source
                             </label>
-                            <input type="text" id="feedbackReferralSource" name="referral_source" class="form-control" value="PresTrack" readonly>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="feedbackDoctorName">
-                                <i class="fas fa-user-md"></i>
-                                Doctor's Name
-                            </label>
-                            <input type="text" id="feedbackDoctorName" name="doctor_name" class="form-control" 
-                                   placeholder="Enter doctor's full name" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="feedbackDoctorPhone">
-                                <i class="fas fa-phone"></i>
-                                Doctor's Phone Number
-                            </label>
-                            <input type="tel" id="feedbackDoctorPhone" name="doctor_phone" class="form-control" 
-                                   placeholder="Enter doctor's phone number" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="feedbackDoctorAffiliation">
-                                <i class="fas fa-hospital"></i>
-                                Doctor's Affiliation
-                            </label>
-                            <input type="text" id="feedbackDoctorAffiliation" name="doctor_affiliation" class="form-control" 
-                                   placeholder="Enter hospital or clinic name" required>
+                            <input type="text" id="feedbackReferralSource" name="referral_source" class="form-control" value="MamaCare" readonly>
                         </div>
 
                         <div class="form-group full-width">
@@ -4789,7 +4622,7 @@
                     <div class="success-content">
                         <i class="fas fa-check-circle"></i>
                         <h3>Feedback Submitted Successfully!</h3>
-                        <p>Your referral feedback has been sent to Prestrack via SMS and logged in our system.</p>
+                        <p>Your referral feedback has been sent to Presstrack via SMS and logged in our system.</p>
                         <div class="success-details">
                             <span id="feedbackTimestamp"></span>
                             <span id="smsStatus"></span>

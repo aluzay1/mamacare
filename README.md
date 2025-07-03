@@ -608,22 +608,404 @@ PUT /api/admin/pharmacies/<id>
 DELETE /api/admin/pharmacies/<id>
 ```
 
-## 🗄 Database Schema
+## 🗄️ Database Schema
+
+### **Overview**
+The MamaCare system uses PostgreSQL as its primary database with SQLAlchemy ORM for database operations. The schema is designed to support comprehensive healthcare management with FHIR compliance for interoperability.
 
 ### **Core Tables**
-- **user** - Patient information and profiles
-- **healthcare_professional** - Healthcare provider details
-- **hospital** - Hospital information and services
-- **pharmacy** - Pharmacy details and services
-- **medical_record** - Patient medical records
-- **admin** - System administrators
 
-### **Key Features**
-- FHIR-compliant data structure
-- Secure PIN-based authentication
-- Comprehensive medical tracking
-- Pregnancy-specific data fields
-- Professional verification system
+#### **1. Users Table (`user`)**
+The central user management table supporting multiple user types with role-based access control. **Note: Admin users are stored in this same table with `role='admin'` - there is no separate admins table.**
+
+```sql
+CREATE TABLE "user" (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL,  -- 'hospital', 'individual', 'donor', 'admin'
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    pin VARCHAR(6) UNIQUE,  -- 6-digit PIN for patient access
+    auth_token VARCHAR(255) UNIQUE,  -- Token for API authentication
+    token_expiry TIMESTAMP,  -- Token expiration time
+    
+    -- Common fields
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    address VARCHAR(200),
+    
+    -- FHIR-compliant fields
+    given_name VARCHAR(100),
+    family_name VARCHAR(100),
+    gender VARCHAR(10),
+    date_of_birth DATE,
+    address_line VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    marital_status VARCHAR(50),
+    language VARCHAR(10),
+    nationality VARCHAR(100),
+    blood_type VARCHAR(5),
+    allergies TEXT,
+    medications TEXT,
+    emergency_contact_name VARCHAR(100),
+    emergency_contact_phone VARCHAR(20),
+    emergency_contact_relationship VARCHAR(50),
+    fhir_id VARCHAR(100),
+    
+    -- Hospital-specific fields
+    hospital_name VARCHAR(200),
+    license_number VARCHAR(50),
+    registration_document VARCHAR(255),
+    
+    -- Individual-specific fields
+    medical_condition TEXT,
+    medical_documents TEXT,  -- JSON string of document URLs
+    
+    -- Pregnancy-related fields
+    pregnancy_status VARCHAR(20),  -- 'not_pregnant', 'pregnant', 'postpartum'
+    previous_pregnancies INTEGER,
+    lmp_date DATE,  -- Last Menstrual Period date
+    due_date DATE,
+    gestational_age INTEGER,
+    multiple_pregnancy VARCHAR(20),  -- 'no', 'twins', 'triplets'
+    risk_factors TEXT,  -- Store as JSON string
+    blood_pressure VARCHAR(20),
+    hemoglobin FLOAT,
+    blood_sugar FLOAT,
+    weight FLOAT,
+    prenatal_vitamins TEXT,
+    pregnancy_complications TEXT,
+    emergency_hospital VARCHAR(200),
+    birth_plan TEXT
+);
+```
+
+#### **2. Medical Records Table (`medical_record`)**
+Stores patient medical records with FHIR compliance.
+
+```sql
+CREATE TABLE medical_record (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES "user"(id),
+    date DATE NOT NULL,
+    diagnosis VARCHAR(200) NOT NULL,
+    treatment TEXT NOT NULL,
+    medication TEXT,
+    doctor VARCHAR(100) NOT NULL,
+    hospital VARCHAR(200) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **3. Hospitals Table (`hospital`)**
+Comprehensive hospital information management.
+
+```sql
+CREATE TABLE hospital (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    website VARCHAR(200),
+    services TEXT,  -- Store services as a JSON string
+    image_url VARCHAR(500),  -- Hospital image URL
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **4. Pharmacies Table (`pharmacy`)**
+Pharmacy information and service management.
+
+```sql
+CREATE TABLE pharmacy (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    website VARCHAR(200),
+    is_24_hours BOOLEAN DEFAULT FALSE,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **5. Doctors Table (`doctor`)**
+Healthcare professional profiles and specializations.
+
+```sql
+CREATE TABLE doctor (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    professional_type VARCHAR(50) NOT NULL DEFAULT 'Medical Doctor',
+    specialization VARCHAR(100) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    hospital_affiliation VARCHAR(200) NOT NULL,
+    address VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    website VARCHAR(200),
+    image_url VARCHAR(255),
+    is_verified BOOLEAN DEFAULT FALSE,
+    qualifications TEXT,
+    experience VARCHAR(100),
+    pin VARCHAR(6) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **6. Healthcare Professionals Table (`healthcare_professional`)**
+Extended healthcare professional management.
+
+```sql
+CREATE TABLE healthcare_professional (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    professional_type VARCHAR(50) NOT NULL,  -- e.g., Medical Doctor, Nurse, Midwife, etc.
+    specialization VARCHAR(100) NOT NULL,
+    hospital_affiliation VARCHAR(200) NOT NULL,
+    address VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    website VARCHAR(200),
+    image_url VARCHAR(255),
+    is_verified BOOLEAN DEFAULT FALSE,
+    qualifications TEXT,
+    experience VARCHAR(100),
+    pin VARCHAR(6) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **7. Campaigns Table (`campaign`)**
+Healthcare fundraising campaign management.
+
+```sql
+CREATE TABLE campaign (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(200) NOT NULL,
+    description TEXT NOT NULL,
+    target_amount FLOAT NOT NULL,
+    current_amount FLOAT DEFAULT 0,
+    status VARCHAR(20) DEFAULT 'active',  -- active, completed, suspended
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deadline TIMESTAMP NOT NULL,
+    is_verified BOOLEAN DEFAULT FALSE,
+    creator_id INTEGER NOT NULL REFERENCES "user"(id)
+);
+```
+
+#### **8. Donations Table (`donation`)**
+Donation tracking and payment management.
+
+```sql
+CREATE TABLE donation (
+    id SERIAL PRIMARY KEY,
+    amount FLOAT NOT NULL,
+    payment_method VARCHAR(20) NOT NULL,  -- orange_money, afrimoney, qmoney
+    transaction_id VARCHAR(100) UNIQUE,
+    status VARCHAR(20) DEFAULT 'pending',  -- pending, completed, failed
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    donor_id INTEGER NOT NULL REFERENCES "user"(id),
+    campaign_id INTEGER NOT NULL REFERENCES campaign(id)
+);
+```
+
+#### **9. Withdrawal Requests Table (`withdrawal_request`)**
+Hospital withdrawal request management.
+
+```sql
+CREATE TABLE withdrawal_request (
+    id SERIAL PRIMARY KEY,
+    amount FLOAT NOT NULL,
+    status VARCHAR(20) DEFAULT 'pending',  -- pending, approved, rejected
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    processed_at TIMESTAMP,
+    hospital_id INTEGER NOT NULL REFERENCES "user"(id),
+    campaign_id INTEGER NOT NULL REFERENCES campaign(id)
+);
+```
+
+#### **10. Referral Feedback Table (`referral_feedback`)**
+Patient referral feedback and tracking system.
+
+```sql
+CREATE TABLE referral_feedback (
+    id SERIAL PRIMARY KEY,
+    patient_name VARCHAR(200) NOT NULL,
+    referral_source VARCHAR(100) NOT NULL DEFAULT 'PresTrack',
+    feedback_notes TEXT NOT NULL,
+    doctor_id INTEGER REFERENCES "user"(id),  -- Can be null if doctor not logged in
+    patient_id INTEGER REFERENCES "user"(id),  -- Reference to patient
+    doctor_name VARCHAR(200),
+    doctor_phone VARCHAR(20),
+    doctor_affiliation VARCHAR(200),
+    sms_sent BOOLEAN DEFAULT FALSE,
+    sms_sent_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### **User Roles and Access Control**
+
+The system uses a role-based access control system where all users (including admins) are stored in the single `user` table. The `role` field determines user permissions and access levels:
+
+#### **User Roles:**
+- **`'admin'`** - System administrators with full access to all features
+- **`'hospital'`** - Hospital users who can create campaigns and manage hospital data
+- **`'individual'`** - Individual patients with access to medical records
+- **`'donor'`** - Donor users who can make donations to campaigns
+
+#### **Role-Based Permissions:**
+- **Admins**: Full system access, user verification, campaign approval, withdrawal processing
+- **Hospitals**: Campaign creation, withdrawal requests, hospital data management
+- **Individuals**: Medical record access, profile management, PIN-based authentication
+- **Donors**: Donation management, campaign browsing
+
+### **Database Relationships**
+
+#### **One-to-Many Relationships:**
+- **User → Campaigns**: A user can create multiple campaigns
+- **User → Donations**: A user can make multiple donations
+- **User → Withdrawal Requests**: A hospital user can make multiple withdrawal requests
+- **User → Medical Records**: A patient can have multiple medical records
+- **Campaign → Donations**: A campaign can receive multiple donations
+- **Campaign → Withdrawal Requests**: A campaign can have multiple withdrawal requests
+
+#### **Foreign Key Constraints:**
+- `medical_record.user_id` → `user.id`
+- `campaign.creator_id` → `user.id`
+- `donation.donor_id` → `user.id`
+- `donation.campaign_id` → `campaign.id`
+- `withdrawal_request.hospital_id` → `user.id`
+- `withdrawal_request.campaign_id` → `campaign.id`
+- `referral_feedback.doctor_id` → `user.id`
+- `referral_feedback.patient_id` → `user.id`
+
+### **Indexes and Performance**
+
+#### **Primary Indexes:**
+- All tables have primary key indexes on `id` columns
+- Unique indexes on email fields across all user-related tables
+- Unique indexes on license numbers for hospitals, pharmacies, and doctors
+- Unique indexes on PIN fields for secure access
+
+#### **Performance Optimizations:**
+- Foreign key indexes for efficient joins
+- Composite indexes on frequently queried fields
+- Text search indexes for medical records and feedback
+- Timestamp indexes for temporal queries
+
+### **Data Integrity and Constraints**
+
+#### **Check Constraints:**
+- Email format validation
+- Phone number format validation
+- Amount validation (positive values)
+- Date range validation for pregnancy-related fields
+- Status field validation (enum-like constraints)
+
+#### **Not Null Constraints:**
+- Essential identification fields (name, email, phone)
+- Required relationship fields (foreign keys)
+- Critical business fields (amounts, dates, status)
+
+### **FHIR Compliance**
+
+The database schema is designed to support FHIR (Fast Healthcare Interoperability Resources) compliance:
+
+#### **FHIR Mappings:**
+- **Patient Resource**: Mapped to `user` table with FHIR-compliant fields
+- **Observation Resource**: Mapped to `medical_record` table
+- **MedicationRequest Resource**: Supported through medication fields
+- **Organization Resource**: Mapped to `hospital` and `pharmacy` tables
+- **Practitioner Resource**: Mapped to `doctor` and `healthcare_professional` tables
+
+#### **FHIR Identifiers:**
+- `fhir_id` field in user table for external FHIR system integration
+- Standardized field naming conventions
+- Extensible JSON fields for FHIR extensions
+
+### **Security Features**
+
+#### **Data Protection:**
+- Password hashing using Werkzeug security
+- JWT token authentication
+- PIN-based access for patients
+- Role-based access control
+- Encrypted sensitive data fields
+
+#### **Audit Trail:**
+- `created_at` and `updated_at` timestamps on all tables
+- User activity tracking through foreign key relationships
+- Transaction logging for financial operations
+
+### **Migration Management**
+
+The database uses Flask-Migrate for schema versioning:
+
+#### **Migration Files:**
+- `add_doctor_fields_to_referral_feedback.py`: Added doctor-specific fields
+- `add_services_to_hospital.py`: Added services JSON field to hospitals
+- `add_image_url_to_hospital.py`: Added image URL support for hospitals
+
+#### **Migration Commands:**
+```bash
+# Initialize migrations
+flask db init
+
+# Create new migration
+flask db migrate -m "Description of changes"
+
+# Apply migrations
+flask db upgrade
+
+# Rollback migration
+flask db downgrade
+```
+
+### **Backup and Recovery**
+
+#### **Backup Strategy:**
+- Automated daily backups using PostgreSQL pg_dump
+- Point-in-time recovery capabilities
+- Encrypted backup storage
+- Cross-region backup replication
+
+#### **Recovery Procedures:**
+- Full database restore procedures
+- Incremental backup restoration
+- Data consistency verification
+- Rollback procedures for failed migrations
 
 ## 🔒 Security Features
 
