@@ -3,8 +3,38 @@
   command = ""
 
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/hospitals"
+  to = "/hospitals.html"
+  status = 200
+
+[[redirects]]
+  from = "/pharmacy"
+  to = "/pharmacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/medical_personnel"
+  to = "/medical_personnel.html"
+  status = 200
+
+[[redirects]]
+  from = "/medical_records_view"
+  to = "/medical_records_view.html"
+  status = 200
+
+[[redirects]]
+  from = "/medical_records"
+  to = "/medical_records.html"
+  status = 200
+
+[[redirects]]
+  from = "/provider_access"
+  to = "/provider_access.html"
+  status = 200
+
+[[redirects]]
+  from = "/providers_access"
+  to = "/providers_access.html"
   status = 200
 
 [headers]
