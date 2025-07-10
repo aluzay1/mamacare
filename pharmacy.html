@@ -95,6 +95,63 @@
             font-size: 0.9rem;
         }
 
+        /* Searchable Select Styles */
+        .searchable-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .searchable-select-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .searchable-select-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .searchable-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .searchable-select-option {
+            padding: 10px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .searchable-select-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .searchable-select-option:last-child {
+            border-bottom: none;
+        }
+
+        .searchable-select-option.hidden {
+            display: none;
+        }
+
         .pharmacies-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -562,6 +619,15 @@
             .filters {
                 grid-template-columns: 1fr;
             }
+
+            .searchable-select-dropdown {
+                max-height: 150px;
+            }
+
+            .searchable-select-option {
+                padding: 12px;
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -655,15 +721,6 @@
             </div>
             <div class="filters">
                 <div class="filter-group">
-                    <label for="typeFilter">Type</label>
-                    <select class="filter-select" id="typeFilter" onchange="searchPharmacies()">
-                        <option value="">All Types</option>
-                        <option value="Community">Community Pharmacy</option>
-                        <option value="Hospital">Hospital Pharmacy</option>
-                        <option value="Chain">Chain Pharmacy</option>
-                    </select>
-                </div>
-                <div class="filter-group">
                     <label for="locationFilter">Location</label>
                     <select class="filter-select" id="locationFilter" onchange="searchPharmacies()">
                         <option value="">All Locations</option>
@@ -677,6 +734,25 @@
                         <option value="Kailahun">Kailahun</option>
                         <option value="Kabala">Kabala</option>
                     </select>
+                </div>
+                <div class="filter-group">
+                    <label for="pharmacyTypeFilter">Pharmacy Type</label>
+                    <div class="searchable-select-container">
+                        <input type="text" class="searchable-select-input" id="pharmacyTypeFilter" placeholder="Search pharmacy types..." oninput="filterPharmacyTypeOptions()" onfocus="showPharmacyTypeDropdown()">
+                        <div class="searchable-select-dropdown" id="pharmacyTypeDropdown" style="display: none;">
+                            <div class="searchable-select-option" data-value="" onclick="selectPharmacyType('')">All Pharmacies</div>
+                            <div class="searchable-select-option" data-value="24_hours" onclick="selectPharmacyType('24_hours')">24 Hours</div>
+                            <div class="searchable-select-option" data-value="not_24_hours" onclick="selectPharmacyType('not_24_hours')">Not 24 Hours</div>
+                            <div class="searchable-select-option" data-value="verified" onclick="selectPharmacyType('verified')">Verified Pharmacies</div>
+                            <div class="searchable-select-option" data-value="community" onclick="selectPharmacyType('community')">Community Pharmacies</div>
+                            <div class="searchable-select-option" data-value="hospital" onclick="selectPharmacyType('hospital')">Hospital Pharmacies</div>
+                            <div class="searchable-select-option" data-value="chain" onclick="selectPharmacyType('chain')">Chain Pharmacies</div>
+                            <div class="searchable-select-option" data-value="independent" onclick="selectPharmacyType('independent')">Independent Pharmacies</div>
+                            <div class="searchable-select-option" data-value="online" onclick="selectPharmacyType('online')">Online Pharmacies</div>
+                            <div class="searchable-select-option" data-value="specialty" onclick="selectPharmacyType('specialty')">Specialty Pharmacies</div>
+                            <div class="searchable-select-option" data-value="compounding" onclick="selectPharmacyType('compounding')">Compounding Pharmacies</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -801,24 +877,145 @@
             `).join('');
         }
 
+        // Store the selected pharmacy type value globally
+        let selectedPharmacyTypeValue = '';
+
         // Function to search and filter pharmacies
         async function searchPharmacies() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const typeFilter = document.getElementById('typeFilter').value;
             const locationFilter = document.getElementById('locationFilter').value;
 
+            console.log('Searching pharmacies with:', {
+                searchTerm,
+                locationFilter,
+                selectedPharmacyTypeValue
+            });
+
             const pharmacies = await fetchPharmacies();
-                const filteredPharmacies = pharmacies.filter(pharmacy => {
-                    const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
-                                        pharmacy.city.toLowerCase().includes(searchTerm);
-                const matchesType = !typeFilter || pharmacy.type === typeFilter;
-                    const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
+            console.log('Total pharmacies fetched:', pharmacies.length);
+            
+            const filteredPharmacies = pharmacies.filter(pharmacy => {
+                const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
+                                    pharmacy.city.toLowerCase().includes(searchTerm);
+                const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
+                
+                // Filter by pharmacy type based on actual data fields
+                let matchesType = true;
+                if (selectedPharmacyTypeValue) {
+                    console.log(`Checking pharmacy ${pharmacy.name} for type: ${selectedPharmacyTypeValue}`);
+                    switch (selectedPharmacyTypeValue) {
+                        case '24_hours':
+                            matchesType = pharmacy.is_24_hours === true;
+                            console.log(`24_hours check: ${pharmacy.is_24_hours} = ${matchesType}`);
+                            break;
+                        case 'not_24_hours':
+                            matchesType = pharmacy.is_24_hours === false;
+                            console.log(`not_24_hours check: ${pharmacy.is_24_hours} = ${matchesType}`);
+                            break;
+                        case 'verified':
+                            matchesType = pharmacy.is_verified === true;
+                            console.log(`verified check: ${pharmacy.is_verified} = ${matchesType}`);
+                            break;
+                        case 'community':
+                            matchesType = pharmacy.name.toLowerCase().includes('community') || 
+                                         pharmacy.name.toLowerCase().includes('local');
+                            console.log(`community check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                        case 'hospital':
+                            matchesType = pharmacy.name.toLowerCase().includes('hospital') || 
+                                         pharmacy.name.toLowerCase().includes('medical center');
+                            console.log(`hospital check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                        case 'chain':
+                            matchesType = pharmacy.name.toLowerCase().includes('chain') || 
+                                         (pharmacy.name.toLowerCase().includes('pharm') && 
+                                         !pharmacy.name.toLowerCase().includes('community'));
+                            console.log(`chain check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                        case 'independent':
+                            matchesType = !pharmacy.name.toLowerCase().includes('chain') && 
+                                         !pharmacy.name.toLowerCase().includes('hospital');
+                            console.log(`independent check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                        case 'online':
+                            matchesType = pharmacy.website && pharmacy.website !== '';
+                            console.log(`online check: ${pharmacy.website} = ${matchesType}`);
+                            break;
+                        case 'specialty':
+                            matchesType = pharmacy.name.toLowerCase().includes('specialty') || 
+                                         pharmacy.name.toLowerCase().includes('specialized');
+                            console.log(`specialty check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                        case 'compounding':
+                            matchesType = pharmacy.name.toLowerCase().includes('compounding') || 
+                                         pharmacy.name.toLowerCase().includes('compound');
+                            console.log(`compounding check: ${pharmacy.name} = ${matchesType}`);
+                            break;
+                    }
+                }
 
-                    return matchesSearch && matchesType && matchesLocation;
-                });
+                const result = matchesSearch && matchesLocation && matchesType;
+                console.log(`Pharmacy ${pharmacy.name}: search=${matchesSearch}, location=${matchesLocation}, type=${matchesType}, result=${result}`);
+                return result;
+            });
 
-                displayPharmacies(filteredPharmacies);
+            console.log('Filtered pharmacies:', filteredPharmacies.length);
+            displayPharmacies(filteredPharmacies);
         }
+
+        // Searchable Select Functions
+        function showPharmacyTypeDropdown() {
+            const dropdown = document.getElementById('pharmacyTypeDropdown');
+            dropdown.style.display = 'block';
+        }
+
+        function hidePharmacyTypeDropdown() {
+            const dropdown = document.getElementById('pharmacyTypeDropdown');
+            dropdown.style.display = 'none';
+        }
+
+        function filterPharmacyTypeOptions() {
+            const input = document.getElementById('pharmacyTypeFilter');
+            const searchTerm = input.value.toLowerCase();
+            const options = document.querySelectorAll('#pharmacyTypeDropdown .searchable-select-option');
+
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+        }
+
+        function selectPharmacyType(value) {
+            const input = document.getElementById('pharmacyTypeFilter');
+            const dropdown = document.getElementById('pharmacyTypeDropdown');
+            
+            // Store the actual value globally
+            selectedPharmacyTypeValue = value;
+            
+            if (value === '') {
+                input.value = '';
+                input.placeholder = 'Search pharmacy types...';
+            } else {
+                const selectedOption = document.querySelector(`[data-value="${value}"]`);
+                input.value = selectedOption.textContent;
+            }
+            
+            dropdown.style.display = 'none';
+            console.log('Selected pharmacy type:', value);
+            searchPharmacies();
+        }
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const container = document.querySelector('.searchable-select-container');
+            if (!container.contains(event.target)) {
+                hidePharmacyTypeDropdown();
+            }
+        });
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', async () => {

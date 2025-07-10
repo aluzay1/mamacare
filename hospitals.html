@@ -95,6 +95,72 @@
             font-size: 0.9rem;
         }
 
+        /* Searchable Select Styles */
+        .searchable-select-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .searchable-select-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+        }
+
+        .searchable-select-input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        .searchable-select-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .searchable-select-dropdown.show {
+            display: block;
+        }
+
+        .searchable-select-option {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .searchable-select-option:hover {
+            background-color: #f8f9fa;
+        }
+
+        .searchable-select-option:last-child {
+            border-bottom: none;
+        }
+
+        .searchable-select-option.selected {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .searchable-select-option.hidden {
+            display: none;
+        }
+
         .hospitals-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -672,6 +738,15 @@
             .filters {
                 grid-template-columns: 1fr;
             }
+
+            .searchable-select-dropdown {
+                max-height: 150px;
+            }
+
+            .searchable-select-option {
+                padding: 12px;
+                font-size: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -764,6 +839,34 @@
                         <option value="Kailahun">Kailahun</option>
                         <option value="Kabala">Kabala</option>
                     </select>
+                </div>
+                <div class="filter-group">
+                    <label for="serviceFilter">Service Type</label>
+                    <div class="searchable-select-container">
+                        <input type="text" class="searchable-select-input" id="serviceFilterInput" placeholder="Search services..." oninput="filterServiceOptions()">
+                        <div class="searchable-select-dropdown" id="serviceFilterDropdown">
+                            <div class="searchable-select-option" data-value="" onclick="selectService('')">All Services</div>
+                            <div class="searchable-select-option" data-value="Emergency Care" onclick="selectService('Emergency Care')">Emergency Care</div>
+                            <div class="searchable-select-option" data-value="Maternity Care" onclick="selectService('Maternity Care')">Maternity Care</div>
+                            <div class="searchable-select-option" data-value="Pediatrics" onclick="selectService('Pediatrics')">Pediatrics</div>
+                            <div class="searchable-select-option" data-value="Surgery" onclick="selectService('Surgery')">Surgery</div>
+                            <div class="searchable-select-option" data-value="Cardiology" onclick="selectService('Cardiology')">Cardiology</div>
+                            <div class="searchable-select-option" data-value="Oncology" onclick="selectService('Oncology')">Oncology</div>
+                            <div class="searchable-select-option" data-value="Orthopedics" onclick="selectService('Orthopedics')">Orthopedics</div>
+                            <div class="searchable-select-option" data-value="Neurology" onclick="selectService('Neurology')">Neurology</div>
+                            <div class="searchable-select-option" data-value="Dermatology" onclick="selectService('Dermatology')">Dermatology</div>
+                            <div class="searchable-select-option" data-value="Psychiatry" onclick="selectService('Psychiatry')">Psychiatry</div>
+                            <div class="searchable-select-option" data-value="Radiology" onclick="selectService('Radiology')">Radiology</div>
+                            <div class="searchable-select-option" data-value="Laboratory" onclick="selectService('Laboratory')">Laboratory</div>
+                            <div class="searchable-select-option" data-value="Pharmacy" onclick="selectService('Pharmacy')">Pharmacy</div>
+                            <div class="searchable-select-option" data-value="Rehabilitation" onclick="selectService('Rehabilitation')">Rehabilitation</div>
+                            <div class="searchable-select-option" data-value="Dental Care" onclick="selectService('Dental Care')">Dental Care</div>
+                            <div class="searchable-select-option" data-value="Eye Care" onclick="selectService('Eye Care')">Eye Care</div>
+                            <div class="searchable-select-option" data-value="Family Medicine" onclick="selectService('Family Medicine')">Family Medicine</div>
+                            <div class="searchable-select-option" data-value="Internal Medicine" onclick="selectService('Internal Medicine')">Internal Medicine</div>
+                        </div>
+                        <input type="hidden" id="serviceFilter" value="">
+                    </div>
                 </div>
             </div>
         </div>
@@ -917,18 +1020,97 @@
         async function searchHospitals() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const locationFilter = document.getElementById('locationFilter').value;
+            const serviceFilter = document.getElementById('serviceFilter').value;
 
             const hospitals = await fetchHospitals();
             const filteredHospitals = hospitals.filter(hospital => {
                 const matchesSearch = hospital.name.toLowerCase().includes(searchTerm) ||
                                     hospital.city.toLowerCase().includes(searchTerm);
                 const matchesLocation = !locationFilter || hospital.city === locationFilter;
+                const matchesService = !serviceFilter || 
+                    (hospital.services && hospital.services.some(service => 
+                        service.toLowerCase().includes(serviceFilter.toLowerCase())
+                    ));
 
-                return matchesSearch && matchesLocation;
+                return matchesSearch && matchesLocation && matchesService;
             });
 
             displayHospitals(filteredHospitals);
         }
+
+        // Searchable Select Functions
+        function filterServiceOptions() {
+            const input = document.getElementById('serviceFilterInput');
+            const dropdown = document.getElementById('serviceFilterDropdown');
+            const searchTerm = input.value.toLowerCase();
+            const options = dropdown.querySelectorAll('.searchable-select-option');
+
+            options.forEach(option => {
+                const text = option.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    option.classList.remove('hidden');
+                } else {
+                    option.classList.add('hidden');
+                }
+            });
+
+            dropdown.classList.add('show');
+        }
+
+        function selectService(value) {
+            const input = document.getElementById('serviceFilterInput');
+            const hiddenInput = document.getElementById('serviceFilter');
+            const dropdown = document.getElementById('serviceFilterDropdown');
+
+            if (value === '') {
+                input.value = 'All Services';
+            } else {
+                input.value = value;
+            }
+            
+            hiddenInput.value = value;
+            dropdown.classList.remove('show');
+            
+            // Update selected state
+            const options = dropdown.querySelectorAll('.searchable-select-option');
+            options.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.value === value) {
+                    option.classList.add('selected');
+                }
+            });
+
+            searchHospitals();
+        }
+
+        // Toggle dropdown when clicking on input
+        document.addEventListener('DOMContentLoaded', function() {
+            const serviceInput = document.getElementById('serviceFilterInput');
+            const dropdown = document.getElementById('serviceFilterDropdown');
+
+            serviceInput.addEventListener('click', function() {
+                dropdown.classList.toggle('show');
+                this.select();
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!serviceInput.contains(event.target) && !dropdown.contains(event.target)) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // Handle keyboard navigation
+            serviceInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    dropdown.classList.toggle('show');
+                }
+            });
+
+            // Initialize with "All Services" selected
+            selectService('');
+        });
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', async () => {

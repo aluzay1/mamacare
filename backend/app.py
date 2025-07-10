@@ -540,6 +540,15 @@ def register_healthcare_provider():
                 'status': 'already_registered'
             }), 409
             
+        # Check if license number already exists
+        existing_license = HealthcareProfessional.query.filter_by(license_number=data['license_number']).first()
+        if existing_license:
+            logger.info(f"Registration attempt with existing license number: {data['license_number']}")
+            return jsonify({
+                'error': 'This license number is already registered. Please use your existing PIN to access your records.',
+                'status': 'license_exists'
+            }), 409
+            
         # Generate PIN
         pin = secrets.randbelow(1000000)
         pin_str = str(pin).zfill(6)

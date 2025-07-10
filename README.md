@@ -623,7 +623,7 @@ CREATE TABLE "user" (
     id SERIAL PRIMARY KEY,
     email VARCHAR(120) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) NOT NULL,  -- 'hospital', 'individual', 'donor', 'admin'
+    role VARCHAR(20) NOT NULL,  -- 'hospital', 'individual', 'admin'
     is_verified BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     pin VARCHAR(6) UNIQUE,  -- 6-digit PIN for patient access
@@ -806,56 +806,7 @@ CREATE TABLE healthcare_professional (
 );
 ```
 
-#### **7. Campaigns Table (`campaign`)**
-Healthcare fundraising campaign management.
-
-```sql
-CREATE TABLE campaign (
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(200) NOT NULL,
-    description TEXT NOT NULL,
-    target_amount FLOAT NOT NULL,
-    current_amount FLOAT DEFAULT 0,
-    status VARCHAR(20) DEFAULT 'active',  -- active, completed, suspended
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    deadline TIMESTAMP NOT NULL,
-    is_verified BOOLEAN DEFAULT FALSE,
-    creator_id INTEGER NOT NULL REFERENCES "user"(id)
-);
-```
-
-#### **8. Donations Table (`donation`)**
-Donation tracking and payment management.
-
-```sql
-CREATE TABLE donation (
-    id SERIAL PRIMARY KEY,
-    amount FLOAT NOT NULL,
-    payment_method VARCHAR(20) NOT NULL,  -- orange_money, afrimoney, qmoney
-    transaction_id VARCHAR(100) UNIQUE,
-    status VARCHAR(20) DEFAULT 'pending',  -- pending, completed, failed
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    donor_id INTEGER NOT NULL REFERENCES "user"(id),
-    campaign_id INTEGER NOT NULL REFERENCES campaign(id)
-);
-```
-
-#### **9. Withdrawal Requests Table (`withdrawal_request`)**
-Hospital withdrawal request management.
-
-```sql
-CREATE TABLE withdrawal_request (
-    id SERIAL PRIMARY KEY,
-    amount FLOAT NOT NULL,
-    status VARCHAR(20) DEFAULT 'pending',  -- pending, approved, rejected
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    processed_at TIMESTAMP,
-    hospital_id INTEGER NOT NULL REFERENCES "user"(id),
-    campaign_id INTEGER NOT NULL REFERENCES campaign(id)
-);
-```
-
-#### **10. Referral Feedback Table (`referral_feedback`)**
+#### **7. Referral Feedback Table (`referral_feedback`)**
 Patient referral feedback and tracking system.
 
 ```sql
@@ -881,33 +832,21 @@ The system uses a role-based access control system where all users (including ad
 
 #### **User Roles:**
 - **`'admin'`** - System administrators with full access to all features
-- **`'hospital'`** - Hospital users who can create campaigns and manage hospital data
+- **`'hospital'`** - Hospital users who can manage hospital data
 - **`'individual'`** - Individual patients with access to medical records
-- **`'donor'`** - Donor users who can make donations to campaigns
 
 #### **Role-Based Permissions:**
-- **Admins**: Full system access, user verification, campaign approval, withdrawal processing
-- **Hospitals**: Campaign creation, withdrawal requests, hospital data management
+- **Admins**: Full system access, user verification, system management
+- **Hospitals**: Hospital data management, patient care coordination
 - **Individuals**: Medical record access, profile management, PIN-based authentication
-- **Donors**: Donation management, campaign browsing
 
 ### **Database Relationships**
 
 #### **One-to-Many Relationships:**
-- **User → Campaigns**: A user can create multiple campaigns
-- **User → Donations**: A user can make multiple donations
-- **User → Withdrawal Requests**: A hospital user can make multiple withdrawal requests
 - **User → Medical Records**: A patient can have multiple medical records
-- **Campaign → Donations**: A campaign can receive multiple donations
-- **Campaign → Withdrawal Requests**: A campaign can have multiple withdrawal requests
 
 #### **Foreign Key Constraints:**
 - `medical_record.user_id` → `user.id`
-- `campaign.creator_id` → `user.id`
-- `donation.donor_id` → `user.id`
-- `donation.campaign_id` → `campaign.id`
-- `withdrawal_request.hospital_id` → `user.id`
-- `withdrawal_request.campaign_id` → `campaign.id`
 - `referral_feedback.doctor_id` → `user.id`
 - `referral_feedback.patient_id` → `user.id`
 
@@ -967,7 +906,7 @@ The database schema is designed to support FHIR (Fast Healthcare Interoperabilit
 #### **Audit Trail:**
 - `created_at` and `updated_at` timestamps on all tables
 - User activity tracking through foreign key relationships
-- Transaction logging for financial operations
+- Medical record access logging
 
 ### **Migration Management**
 

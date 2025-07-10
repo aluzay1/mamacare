@@ -365,6 +365,7 @@
             padding: 3rem 2.5rem;
             position: relative;
             text-align: center;
+            overflow: hidden;
         }
 
         .profile-header::before {
@@ -405,6 +406,41 @@
             opacity: 0.9;
             position: relative;
             z-index: 1;
+        }
+
+        .profile-actions {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 10;
+        }
+
+        .btn-logout {
+            background: rgba(220, 53, 69, 0.9);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+        }
+
+        .btn-logout:active {
+            transform: translateY(0);
         }
 
         .profile-tabs {
@@ -1191,6 +1227,16 @@
                 padding: 2rem 1.5rem;
             }
 
+            .profile-actions {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .btn-logout {
+                padding: 0.5rem 1rem;
+                font-size: 0.8rem;
+            }
+
             .profile-avatar {
                 width: 60px;
                 height: 60px;
@@ -1282,6 +1328,16 @@
 
             .profile-header {
                 padding: 1.5rem 1rem;
+            }
+
+            .profile-actions {
+                top: 0.75rem;
+                right: 0.75rem;
+            }
+
+            .btn-logout {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
             }
 
             .profile-avatar {
@@ -1431,6 +1487,9 @@
                     </div>
                 <h1 class="profile-name" id="patientNameDisplay"></h1>
                 <p class="profile-subtitle">Patient Profile</p>
+                <div class="profile-actions">
+                    <button onclick="logout()" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
                 </div>
 
             <div class="profile-tabs">
@@ -2291,6 +2350,71 @@
                 document.body.style.overflow = '';
             });
         });
+
+        // Logout function
+        function logout() {
+            if (confirm('Are you sure you want to logout? You will need to enter your PIN again to access your records.')) {
+                // Clear the stored PIN
+                window.currentPatientPIN = null;
+                
+                // Hide the medical records section
+                document.getElementById('medicalRecords').style.display = 'none';
+                
+                // Show the auth section
+                document.querySelector('.auth-section').style.display = 'block';
+                
+                // Clear the PIN input
+                document.getElementById('patientPin').value = '';
+                
+                // Clear any error messages
+                document.getElementById('pinError').style.display = 'none';
+                
+                // Reset the form
+                document.getElementById('pinForm').reset();
+                
+                // Clear any displayed data
+                clearDisplayedData();
+                
+                console.log('User logged out successfully');
+            }
+        }
+
+        // Function to clear displayed data
+        function clearDisplayedData() {
+            // Clear all display elements
+            const displayElements = [
+                'patientNameDisplay', 'patientNameDisplay2', 'patientIdDisplay',
+                'patientDobDisplay', 'patientDobDisplay2', 'patientGenderDisplay', 'patientGenderDisplay2',
+                'patientBloodTypeDisplay', 'patientBloodTypeDisplay2', 'patientMaritalStatusDisplay',
+                'patientLanguageDisplay', 'patientNationalityDisplay', 'patientEmailDisplay', 
+                'patientPhoneDisplay', 'patientAddressDisplay', 'emergencyContactNameDisplay', 
+                'emergencyContactPhoneDisplay', 'emergencyContactRelationshipDisplay',
+                'patientAllergiesDisplay', 'patientMedicationsDisplay', 'patientPregnancyStatusDisplay',
+                'patientDueDateDisplay', 'patientGestationalAgeDisplay'
+            ];
+            
+            displayElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = '';
+                }
+            });
+            
+            // Clear the records table
+            const recordsTableBody = document.querySelector('.records-table tbody');
+            if (recordsTableBody) {
+                recordsTableBody.innerHTML = '';
+            }
+            
+            // Reset overview stats
+            const statsElements = ['totalRecords', 'lastVisit', 'healthScore', 'activeMedications'];
+            statsElements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = id === 'totalRecords' || id === 'activeMedications' ? '0' : '-';
+                }
+            });
+        }
     </script>
 </body>
 </html> 

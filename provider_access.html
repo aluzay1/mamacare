@@ -98,7 +98,7 @@
 
         .features-list i {
             font-size: 1.5rem;
-            color: #3498db;
+            color: white;
             background: rgba(255, 255, 255, 0.2);
             padding: 10px;
             border-radius: 50%;
@@ -420,7 +420,7 @@
                         <span>Secure Access to Patient Records</span>
                     </li>
                     <li>
-                        <i class="bi bi-heart-pulse"></i>
+                        <i class="bi bi-activity"></i>
                         <span>Real-time Medical Information</span>
                     </li>
                     <li>
@@ -687,10 +687,10 @@
                     throw new Error('Please enter a valid email address');
                 }
 
-                // Validate phone number (basic validation)
-                const phoneRegex = /^[+]?[\d\s-]{10,}$/;
+                // Validate phone number (Sierra Leone format)
+                const phoneRegex = /^(\+232|232)?[\d\s-]{8,}$/;
                 if (!phoneRegex.test(formData.phone)) {
-                    throw new Error('Please enter a valid phone number');
+                    throw new Error('Please enter a valid Sierra Leone phone number (e.g., +23278656832 or 078656832)');
                 }
                 
                 const response = await fetch('http://localhost:5000/api/register/healthcare-provider', {
@@ -716,7 +716,15 @@
                 toggleForms();
             }, 3000);
                 } else {
-                    throw new Error(data.error || 'Registration failed. Please try again.');
+                    if (response.status === 409) {
+                        if (data.status === 'license_exists') {
+                            throw new Error('This license number is already registered. Please use your existing PIN to access your records.');
+                        } else {
+                            throw new Error('This email is already registered. Please use your existing PIN to access your records.');
+                        }
+                    } else {
+                        throw new Error(data.error || 'Registration failed. Please try again.');
+                    }
                 }
             } catch (error) {
                 console.error('Registration error:', error);
