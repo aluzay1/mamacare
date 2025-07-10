@@ -1123,12 +1123,12 @@
 
         // Function to set active navigation link based on current page
         function setActiveNavLink() {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            let currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            currentPage = currentPage.replace('.html', '');
             const navLinks = document.querySelectorAll('.nav-links a');
-            
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                const linkPage = link.getAttribute('href');
+                let linkPage = link.getAttribute('href').replace('.html', '');
                 if (linkPage === currentPage) {
                     link.classList.add('active');
                 }
