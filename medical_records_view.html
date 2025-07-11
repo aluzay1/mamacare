@@ -119,6 +119,14 @@
             max-width: 550px;
             display: flex;
             min-height: 400px;
+            flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .auth-container {
+                flex-direction: row;
+                max-width: 800px;
+            }
         }
 
         .auth-header {
@@ -225,6 +233,7 @@
             flex-direction: column;
             justify-content: center;
             background: white;
+            position: relative;
         }
 
         .form-group {
@@ -327,6 +336,21 @@
             background: #fee;
             color: #c53030;
             border-left: 4px solid #c53030;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 2px 8px rgba(197, 48, 48, 0.1);
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Medical records section styles */
@@ -1471,8 +1495,8 @@
                 <button type="submit" class="btn-primary btn-block">
                     <i class="fas fa-sign-in-alt"></i> View Records
                 </button>
+                <p id="pinError" class="error-message" style="display: none;">Invalid PIN. Please try again.</p>
             </form>
-            <p id="pinError" class="error-message" style="display: none;">Invalid PIN. Please try again.</p>
         </div>
     </section>
 
