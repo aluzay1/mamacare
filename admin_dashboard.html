@@ -1670,7 +1670,13 @@ function toggleAuthForm() {
                 }
                 
                 try {
-                                    const response = await apiCall('/api/admin/doctors', {
+                    // Debug: Log form data
+                    console.log('Form data being sent:');
+                    for (let [key, value] of formData.entries()) {
+                        console.log(`${key}: ${value}`);
+                    }
+                    
+                    const response = await apiCall('/api/admin/doctors', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
