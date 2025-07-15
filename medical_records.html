@@ -1438,6 +1438,26 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             position: relative;
             background: white;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Custom scrollbar for better visibility */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
         }
 
         /* Table header improvements */
@@ -1459,6 +1479,7 @@
             width: 100%;
             border-collapse: collapse;
             min-width: 800px;
+            table-layout: fixed;
         }
 
         th, td {
@@ -1469,9 +1490,10 @@
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: auto;
-            max-width: 200px;
             vertical-align: top;
-            line-height: 1.4;
+            line-height: 1.5;
+            color: #2c3e50;
+            font-size: 0.95rem;
         }
 
         th {
@@ -1480,56 +1502,106 @@
             font-weight: 600;
             position: sticky;
             top: 0;
-        }
-
-        td {
-            line-height: 1.4;
+            z-index: 10;
+            border-bottom: 2px solid #dee2e6;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        /* Ensure text wraps properly in all cells */
+        /* Ensure header text is always visible */
+        th > * {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        td {
+            background-color: #ffffff;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        /* Ensure text is fully visible and readable */
         td > * {
             word-wrap: break-word;
             overflow-wrap: break-word;
+            color: inherit;
         }
 
-        /* Specific column widths */
-        th:nth-child(1), td:nth-child(1) { /* Date */
+        /* Specific column widths with better alignment */
+        th:nth-child(1), td:nth-child(1) { /* Checkbox */
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            text-align: center;
+            padding: 1rem 0.5rem;
+        }
+
+        th:nth-child(2), td:nth-child(2) { /* Date */
+            width: 120px;
             min-width: 120px;
             max-width: 120px;
             word-break: break-word;
-        }
-
-        th:nth-child(2), td:nth-child(2) { /* Doctor */
-            min-width: 150px;
-            max-width: 150px;
-            word-break: break-word;
+            font-weight: 500;
         }
 
         th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+            width: 200px;
             min-width: 200px;
             max-width: 200px;
             word-break: break-word;
         }
 
         th:nth-child(4), td:nth-child(4) { /* Treatment */
+            width: 200px;
             min-width: 200px;
             max-width: 200px;
             word-break: break-word;
         }
 
-        th:nth-child(5), td:nth-child(5) { /* Notes */
-            min-width: 250px;
-            max-width: 250px;
+        th:nth-child(5), td:nth-child(5) { /* Medication */
+            width: 200px;
+            min-width: 200px;
+            max-width: 200px;
             word-break: break-word;
         }
 
-        th:nth-child(6), td:nth-child(6) { /* Actions */
-            min-width: 100px;
-            max-width: 100px;
+        th:nth-child(6), td:nth-child(6) { /* Doctor */
+            width: 150px;
+            min-width: 150px;
+            max-width: 150px;
+            word-break: break-word;
+        }
+
+        th:nth-child(7), td:nth-child(7) { /* Hospital */
+            width: 150px;
+            min-width: 150px;
+            max-width: 150px;
+            word-break: break-word;
+        }
+
+        th:nth-child(8), td:nth-child(8) { /* Actions */
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
             text-align: center;
             word-break: keep-all;
+        }
+
+        /* Improve text visibility and contrast */
+        td {
+            color: #2c3e50;
+            font-weight: 400;
+        }
+
+        /* Hover effect for better row visibility */
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        tbody tr:hover td {
+            background-color: #f8f9fa;
         }
 
         @media (max-width: 768px) {
@@ -1550,6 +1622,7 @@
             table {
                 min-width: auto;
                 display: block;
+                table-layout: auto;
             }
 
             thead {
@@ -1572,12 +1645,17 @@
 
             td {
                 display: block;
-                padding: 0.5rem 0;
+                padding: 0.75rem 0;
                 border: none;
                 text-align: left;
                 position: relative;
                 padding-left: 120px;
                 min-height: 2rem;
+                color: #2c3e50;
+                font-size: 0.9rem;
+                line-height: 1.4;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
             }
 
             td:before {
@@ -1592,7 +1670,7 @@
                 letter-spacing: 0.5px;
             }
 
-            td:nth-child(6) {
+            td:nth-child(8) {
                 padding-left: 0;
                 text-align: center;
                 margin-top: 0.5rem;
@@ -1600,7 +1678,7 @@
                 padding-top: 0.75rem;
             }
 
-            td:nth-child(6):before {
+            td:nth-child(8):before {
                 display: none;
             }
 
@@ -4165,13 +4243,13 @@
                 const row = document.createElement('tr');
                 row.innerHTML = `
                     <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
-                    <td>${new Date(record.date).toLocaleDateString()}</td>
-                    <td>${record.diagnosis || 'N/A'}</td>
-                    <td>${record.treatment || 'N/A'}</td>
-                    <td>${record.medication || 'N/A'}</td>
-                    <td>${record.doctor || 'N/A'}</td>
-                    <td>${record.hospital || 'N/A'}</td>
-                    <td>
+                    <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
+                    <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
+                    <td data-label="Treatment">${record.treatment || 'N/A'}</td>
+                    <td data-label="Medication">${record.medication || 'N/A'}</td>
+                    <td data-label="Doctor">${record.doctor || 'N/A'}</td>
+                    <td data-label="Hospital">${record.hospital || 'N/A'}</td>
+                    <td data-label="Actions">
                         <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
                             <i class="fas fa-download"></i> Download
                         </button>
