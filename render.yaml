@@ -26,8 +26,8 @@ services:
         sync: false
       - key: TIMEZONE
         value: "Africa/Freetown"
-      - key: FLASK_ENV
-        value: "production"
+      - key: FLASK_DEBUG
+        value: "false"
       - key: PYTHONUNBUFFERED
         value: "1"
 
