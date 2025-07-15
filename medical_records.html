@@ -3000,18 +3000,93 @@
                 white-space: nowrap;
             }
             
-            /* Stack table on very small screens */
-            @media (max-width: 480px) {
+            /* Responsive table for small screens */
+            @media (max-width: 768px) {
                 .table-container {
-                    overflow-x: auto;
+                    margin: 0;
+                    border-radius: 0;
+                    overflow-x: visible;
                 }
                 
                 table {
-                    min-width: 500px;
+                    min-width: auto;
+                    width: 100%;
+                    border-collapse: collapse;
                 }
                 
-                th, td {
-                    padding: 0.5rem 0.25rem;
+                thead {
+                    display: none;
+                }
+                
+                tbody tr {
+                    display: block;
+                    margin-bottom: 1rem;
+                    border: 1px solid #e2e8f0;
+                    border-radius: 8px;
+                    background: white;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                }
+                
+                tbody td {
+                    display: block;
+                    text-align: left;
+                    padding: 0.75rem;
+                    border: none;
+                    border-bottom: 1px solid #f1f5f9;
+                    white-space: normal;
+                    word-wrap: break-word;
+                }
+                
+                tbody td:last-child {
+                    border-bottom: none;
+                }
+                
+                tbody td:before {
+                    content: attr(data-label) ": ";
+                    font-weight: 600;
+                    color: #64748b;
+                    display: inline-block;
+                    width: 80px;
+                    margin-right: 0.5rem;
+                }
+                
+                /* Special handling for checkbox and actions */
+                tbody td:first-child:before {
+                    content: "Select: ";
+                }
+                
+                tbody td:last-child:before {
+                    content: "Actions: ";
+                }
+                
+                /* Make action buttons stack vertically */
+                tbody td:last-child {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+                
+                .btn-download-single, .btn-delete {
+                    width: 100%;
+                    justify-content: center;
+                    margin: 0;
+                }
+            }
+            
+            /* Stack table on very small screens */
+            @media (max-width: 480px) {
+                tbody tr {
+                    margin-bottom: 0.75rem;
+                    border-radius: 6px;
+                }
+                
+                tbody td {
+                    padding: 0.5rem;
+                    font-size: 0.85rem;
+                }
+                
+                tbody td:before {
+                    width: 70px;
                     font-size: 0.8rem;
                 }
             }
