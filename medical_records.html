@@ -3000,93 +3000,85 @@
                 white-space: nowrap;
             }
             
-            /* Responsive table for small screens */
-            @media (max-width: 768px) {
-                .table-container {
-                    margin: 0;
-                    border-radius: 0;
-                    overflow-x: auto;
-                }
-                
-                table {
-                    min-width: 800px;
-                    width: 100%;
-                    border-collapse: collapse;
-                }
-                
-                /* Keep table headers visible and in a row */
-                thead {
-                    display: table-header-group;
-                }
-                
-                th {
-                    background-color: #f8f9fa;
-                    color: #2c3e50;
-                    font-weight: 600;
-                    padding: 0.75rem 0.5rem;
-                    text-align: left;
-                    border-bottom: 2px solid #dee2e6;
-                    white-space: nowrap;
-                    font-size: 0.9rem;
-                }
-                
-                /* Ensure table rows display properly */
-                tbody tr {
-                    display: table-row;
-                    border-bottom: 1px solid #eee;
-                }
-                
-                tbody tr:hover {
-                    background-color: #f8f9fa;
-                }
-                
-                tbody td {
-                    display: table-cell;
-                    text-align: left;
-                    padding: 0.75rem 0.5rem;
-                    border-bottom: 1px solid #eee;
-                    white-space: normal;
-                    word-wrap: break-word;
-                    vertical-align: top;
-                    font-size: 0.85rem;
-                }
-                
-                /* Improve button styling for mobile */
-                .btn-download-single, .btn-delete {
-                    padding: 0.5rem 0.75rem;
-                    font-size: 0.8rem;
-                    border-radius: 6px;
-                    margin: 0.25rem;
-                }
-                
-                .btn-download-single {
-                    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-                }
-                
-                .btn-delete {
-                    background: linear-gradient(135deg, #ef4444, #dc2626);
-                }
+            /* Mobile table improvements */
+            .table-container {
+                margin: 0 -1.25rem;
+                border-radius: 0;
+                overflow: visible;
             }
-            
-            /* Very small screens - keep horizontal scroll */
-            @media (max-width: 480px) {
-                .table-container {
-                    overflow-x: auto;
-                }
-                
-                table {
-                    min-width: 700px;
-                    font-size: 0.8rem;
-                }
-                
-                th, td {
-                    padding: 0.5rem 0.4rem;
-                }
-                
-                .btn-download-single, .btn-delete {
-                    padding: 0.4rem 0.6rem;
-                    font-size: 0.75rem;
-                }
+
+            table {
+                min-width: auto;
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody {
+                display: block;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 1rem;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                padding: 1rem;
+                border: 1px solid #e9ecef;
+            }
+
+            td {
+                display: block;
+                padding: 0.5rem 0;
+                border: none;
+                text-align: left;
+                position: relative;
+                padding-left: 120px;
+                min-height: 2rem;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 110px;
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            td:nth-child(8) {
+                padding-left: 0;
+                text-align: center;
+                margin-top: 0.5rem;
+                border-top: 1px solid #e9ecef;
+                padding-top: 0.75rem;
+            }
+
+            td:nth-child(8):before {
+                display: none;
+            }
+
+            /* Hide checkbox column on mobile for cleaner look */
+            td:first-child {
+                display: none;
+            }
+
+            /* Improve button styling on mobile */
+            .btn-download-single, .btn-delete {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                margin: 0.2rem;
+            }
+
+            /* Add some spacing between records */
+            tr:not(:last-child) {
+                margin-bottom: 1.5rem;
             }
         }
 
@@ -3168,6 +3160,33 @@
                 padding: 0.25rem 0.5rem;
                 font-size: 0.75rem;
             }
+
+            /* Table responsive improvements for 576px */
+            .table-container {
+                margin: 0 -1rem;
+            }
+
+            tr {
+                margin-bottom: 0.75rem;
+                padding: 0.75rem;
+            }
+
+            td {
+                padding: 0.4rem 0;
+                padding-left: 100px;
+                min-height: 1.8rem;
+                font-size: 0.85rem;
+            }
+
+            td:before {
+                width: 90px;
+                font-size: 0.75rem;
+            }
+
+            td:nth-child(8) {
+                padding: 0.5rem 0;
+                margin-top: 0.25rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -3243,18 +3262,35 @@
             
             /* Table improvements for very small screens */
             .table-container {
-                margin: 0;
-                border-radius: 0;
+                margin: 0 -0.75rem;
             }
             
-            table {
-                min-width: 400px;
-                font-size: 0.75rem;
+            tr {
+                margin-bottom: 0.5rem;
+                padding: 0.5rem;
             }
-            
-            th, td {
-                padding: 0.25rem;
+
+            td {
+                padding: 0.3rem 0;
+                padding-left: 90px;
+                min-height: 1.5rem;
+                font-size: 0.8rem;
+            }
+
+            td:before {
+                width: 80px;
                 font-size: 0.7rem;
+            }
+
+            td:nth-child(8) {
+                padding: 0.4rem 0;
+                margin-top: 0.2rem;
+            }
+
+            .btn-download-single, .btn-delete {
+                padding: 0.3rem 0.6rem;
+                font-size: 0.75rem;
+                margin: 0.1rem;
             }
         }
 
@@ -4332,14 +4368,14 @@
             filteredRecords.forEach(record => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
-                    <td>${new Date(record.date).toLocaleDateString()}</td>
-                    <td>${record.diagnosis || 'N/A'}</td>
-                    <td>${record.treatment || 'N/A'}</td>
-                    <td>${record.medication || 'N/A'}</td>
-                    <td>${record.doctor || 'N/A'}</td>
-                    <td>${record.hospital || 'N/A'}</td>
-                    <td>
+                    <td data-label="Select"><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
+                    <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
+                    <td data-label="Treatment">${record.treatment || 'N/A'}</td>
+                    <td data-label="Medication">${record.medication || 'N/A'}</td>
+                    <td data-label="Doctor">${record.doctor || 'N/A'}</td>
+                    <td data-label="Hospital">${record.hospital || 'N/A'}</td>
+                    <td data-label="Actions">
                         <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
                             <i class="fas fa-download"></i> Download
                         </button>
