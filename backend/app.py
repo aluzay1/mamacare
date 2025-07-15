@@ -2810,6 +2810,13 @@ def init_db():
 # Call init_db when the application starts
 init_db()
 
+# Import and run default admin creation
+try:
+    from create_default_admin import create_default_admin
+    create_default_admin()
+except Exception as e:
+    logger.error(f"Failed to create default admin: {str(e)}")
+
 @app.route('/api/doctors', methods=['GET'])
 def get_public_doctors():
     try:

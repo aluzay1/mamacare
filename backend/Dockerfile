@@ -36,5 +36,15 @@ ENV PYTHONDONTWRITEBYTECODE=1
 COPY wait-for-postgres.sh /wait-for-postgres.sh
 RUN chmod +x /wait-for-postgres.sh
 
-# Run the application
-CMD ["/wait-for-postgres.sh", "db", "flask", "run", "--host=0.0.0.0", "--port=5000"] 
+# Create startup script
+COPY startup.py /startup.py
+RUN chmod +x /startup.py
+
+# Create a startup wrapper script
+RUN echo '#!/bin/bash\n\
+/wait-for-postgres.sh db\n\
+python /startup.py\n\
+flask run --host=0.0.0.0 --port=5000' > /start.sh && chmod +x /start.sh
+
+# Run the application with startup script
+CMD ["/start.sh"] 
