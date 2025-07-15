@@ -1437,6 +1437,22 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             position: relative;
+            background: white;
+        }
+
+        /* Table header improvements */
+        .table-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: 0;
+        }
+
+        .table-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
         }
 
         table {
@@ -1522,6 +1538,87 @@
                 flex-direction: column;
                 text-align: center;
                 gap: 1.5rem;
+            }
+
+            /* Mobile table improvements */
+            .table-container {
+                margin: 0 -1.25rem;
+                border-radius: 0;
+                overflow: visible;
+            }
+
+            table {
+                min-width: auto;
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            tbody {
+                display: block;
+            }
+
+            tr {
+                display: block;
+                margin-bottom: 1rem;
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                padding: 1rem;
+                border: 1px solid #e9ecef;
+            }
+
+            td {
+                display: block;
+                padding: 0.5rem 0;
+                border: none;
+                text-align: left;
+                position: relative;
+                padding-left: 120px;
+                min-height: 2rem;
+            }
+
+            td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 110px;
+                font-weight: 600;
+                color: #2c3e50;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            td:nth-child(6) {
+                padding-left: 0;
+                text-align: center;
+                margin-top: 0.5rem;
+                border-top: 1px solid #e9ecef;
+                padding-top: 0.75rem;
+            }
+
+            td:nth-child(6):before {
+                display: none;
+            }
+
+            /* Hide checkbox column on mobile for cleaner look */
+            td:first-child {
+                display: none;
+            }
+
+            /* Improve button styling on mobile */
+            .btn-download-single, .btn-delete {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+                margin: 0.2rem;
+            }
+
+            /* Add some spacing between records */
+            tr:not(:last-child) {
+                margin-bottom: 1.5rem;
             }
 
             .profile-avatar i {
@@ -1656,6 +1753,33 @@
             .profile-header {
                 padding: 1.5rem 1rem;
                 gap: 1rem;
+            }
+
+            /* Enhanced mobile table for small screens */
+            .table-container {
+                margin: 0 -1rem;
+            }
+
+            tr {
+                margin-bottom: 0.75rem;
+                padding: 0.75rem;
+            }
+
+            td {
+                padding: 0.4rem 0;
+                padding-left: 100px;
+                min-height: 1.8rem;
+                font-size: 0.85rem;
+            }
+
+            td:before {
+                width: 90px;
+                font-size: 0.75rem;
+            }
+
+            td:nth-child(6) {
+                padding: 0.5rem 0;
+                margin-top: 0.25rem;
             }
 
             .profile-avatar i {
@@ -4135,14 +4259,14 @@
             filteredRecords.forEach(record => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
-                    <td>${new Date(record.date).toLocaleDateString()}</td>
-                    <td>${record.diagnosis || 'N/A'}</td>
-                    <td>${record.treatment || 'N/A'}</td>
-                    <td>${record.medication || 'N/A'}</td>
-                    <td>${record.doctor || 'N/A'}</td>
-                    <td>${record.hospital || 'N/A'}</td>
-                    <td>
+                    <td data-label="Select"><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
+                    <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
+                    <td data-label="Treatment">${record.treatment || 'N/A'}</td>
+                    <td data-label="Medication">${record.medication || 'N/A'}</td>
+                    <td data-label="Doctor">${record.doctor || 'N/A'}</td>
+                    <td data-label="Hospital">${record.hospital || 'N/A'}</td>
+                    <td data-label="Actions">
                         <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
                             <i class="fas fa-download"></i> Download
                         </button>
