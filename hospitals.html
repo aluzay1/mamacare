@@ -876,6 +876,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
         // Store hospitals data globally
         let allHospitals = [];
@@ -888,7 +889,7 @@
             }
 
             try {
-                const response = await fetch('http://localhost:5000/api/hospitals');
+                const response = await apiCall('/api/hospitals');
                 if (!response.ok) {
                     throw new Error('Failed to fetch hospitals');
                 }
@@ -908,7 +909,7 @@
             if (hospital.image_url) {
                 // If the image_url is a relative path, prepend the base URL
                 if (hospital.image_url.startsWith('/')) {
-                    return `http://localhost:5000${hospital.image_url}`;
+                    return `${API_CONFIG.getBaseUrl()}${hospital.image_url}`;
                 }
                 return hospital.image_url;
             }

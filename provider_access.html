@@ -556,6 +556,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="config.js"></script>
     <script>
         // Toggle PIN visibility
         function togglePinVisibility() {
@@ -610,11 +611,8 @@
             
             try {
                 // First, find the healthcare provider by PIN
-                const response = await fetch(`http://localhost:5000/api/healthcare-provider/pin/${pin}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
+                const response = await apiCall(`/api/healthcare-provider/pin/${pin}`, {
+                    method: 'GET'
                 });
 
                 const data = await response.json();
@@ -693,12 +691,8 @@
                     throw new Error('Please enter a valid Sierra Leone phone number (e.g., +23278656832 or 078656832)');
                 }
                 
-                const response = await fetch('http://localhost:5000/api/register/healthcare-provider', {
+                const response = await apiCall('/api/register/healthcare-provider', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
                     body: JSON.stringify(formData)
                 });
 

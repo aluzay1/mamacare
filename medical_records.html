@@ -10,6 +10,7 @@
     <!-- Add jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="config.js"></script>
 </head>
 <body>
     <header>
@@ -3588,13 +3589,13 @@
 
             try {
                 // First check if the backend is available
-                const healthResponse = await fetch('/health');
+                const healthResponse = await apiCall('/health');
                 if (!healthResponse.ok) {
                     throw new Error('Backend service is not available');
                 }
 
                 // Then fetch the profile
-                const response = await fetch(`/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                const response = await apiCall(`/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -3625,7 +3626,7 @@
                 
                 // Fetch and display medical records
                 try {
-                    const recordsResponse = await fetch(`/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    const recordsResponse = await apiCall(`/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
                     if (recordsResponse.ok) {
                         const records = await recordsResponse.json();
                         displayRecords(records);
@@ -3982,7 +3983,7 @@
             
             try {
                 // Use relative URL to work with both local and Docker setups
-                const response = await fetch('/api/patient/register', {
+                const response = await apiCall('/api/patient/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -4031,7 +4032,7 @@
             };
             
             try {
-                const response = await fetch('/api/patient/medical-records', {
+                const response = await apiCall('/api/patient/medical-records', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -4047,7 +4048,7 @@
                     e.target.reset();
                     
                     // Fetch updated records using query parameter
-                    const recordsResponse = await fetch(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                    const recordsResponse = await apiCall(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json'
@@ -4290,7 +4291,7 @@
 
             if (confirm('Are you sure you want to delete this record?')) {
                 try {
-                    const response = await fetch(`/api/patient/medical-records/${recordId}`, {
+                    const response = await apiCall(`/api/patient/medical-records/${recordId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -4301,7 +4302,7 @@
                     
                     if (response.ok) {
                         // Fetch updated records using query parameter
-                        const recordsResponse = await fetch(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                        const recordsResponse = await apiCall(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
                             method: 'GET',
                             headers: {
                                 'Accept': 'application/json'
@@ -4702,7 +4703,7 @@
                 console.log('Sending profile update data:', data);
 
                 // Send the updated data to the backend
-                const response = await fetch('/api/patient/profile', {
+                const response = await apiCall('/api/patient/profile', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -5049,7 +5050,7 @@
                 submitButton.disabled = true;
                 
                 // Submit the feedback
-                const response = await fetch(`/api/referral-feedback?pin=${encodeURIComponent(patientPin)}`, {
+                const response = await apiCall(`/api/referral-feedback?pin=${encodeURIComponent(patientPin)}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

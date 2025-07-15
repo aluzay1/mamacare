@@ -762,6 +762,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
         // Store pharmacies data globally
         let allPharmacies = [];
@@ -774,7 +775,7 @@
             }
 
             try {
-                const response = await fetch('/api/pharmacies');
+                const response = await apiCall('/api/pharmacies');
                 if (!response.ok) {
                     throw new Error('Failed to fetch pharmacies');
                 }

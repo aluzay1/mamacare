@@ -11,6 +11,7 @@
     <!-- Add jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="config.js"></script>
     <style>
         /* Base styles */
         body {
@@ -1889,11 +1890,8 @@
             
             try {
                 // Fetch patient profile using GET method
-                const response = await fetch(`http://localhost:5000/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
+                const response = await apiCall(`/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                    method: 'GET'
                 });
 
                 if (!response.ok) {
@@ -1911,7 +1909,7 @@
                 
                 // Fetch and display medical records
                 try {
-                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    const recordsResponse = await apiCall(`/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
                     if (recordsResponse.ok) {
                         const records = await recordsResponse.json();
                         displayRecords(records);
