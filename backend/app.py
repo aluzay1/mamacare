@@ -2625,6 +2625,16 @@ def add_doctor():
             image.save(image_path)
             image_url = f"/static/uploads/doctors/{filename}"
 
+        # Generate unique PIN for doctor
+        import random
+        import string
+        
+        def generate_unique_pin():
+            while True:
+                pin = ''.join(random.choices(string.digits, k=6))
+                if not Doctor.query.filter_by(pin=pin).first():
+                    return pin
+        
         new_doctor = Doctor(
             name=data['name'],
             license_number=data['license_number'],
@@ -2642,7 +2652,8 @@ def add_doctor():
             image_url=image_url,
             qualifications=data.get('qualifications'),
             experience=data.get('experience'),
-            is_verified=data.get('is_verified') == 'on'
+            is_verified=data.get('is_verified') == 'on',
+            pin=generate_unique_pin()
         )
 
         db.session.add(new_doctor)
