@@ -28,7 +28,6 @@ from datetime import datetime, timedelta
 import logging
 import time
 import sys
-import psycopg
 import smtplib
 import random
 from werkzeug.utils import secure_filename
