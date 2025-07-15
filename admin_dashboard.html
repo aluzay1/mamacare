@@ -1747,15 +1747,13 @@ function toggleAuthForm() {
                     throw new Error('No authentication token found');
                 }
 
-                    const response = await fetch('http://localhost:5000/api/admin/admins', {
+                    const response = await apiCall('/api/admin/admins', {
                         method: 'POST',
-                    headers: {
+                        headers: {
                             'Authorization': `Bearer ${token}`,
                             'Content-Type': 'application/json',
                             'Accept': 'application/json'
                         },
-                        credentials: 'include',
-                        mode: 'cors',
                         body: JSON.stringify({
                             name: formData.get('name'),
                             email: formData.get('email'),
@@ -1764,7 +1762,7 @@ function toggleAuthForm() {
                             status: formData.get('status'),
                             send_credentials: formData.get('send_credentials') === 'on'
                         })
-                });
+                    });
 
                 if (!response.ok) {
                         const errorData = await response.json();
@@ -1789,7 +1787,7 @@ function toggleAuthForm() {
                 const formData = new FormData(e.target);
                 
                 try {
-                    const response = await fetch('http://localhost:5000/api/admin/hospitals', {
+                    const response = await apiCall('/api/admin/hospitals', {
                         method: 'POST',
                         headers: {
                             'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
@@ -1820,7 +1818,7 @@ function toggleAuthForm() {
                 const formData = new FormData(e.target);
                 
                 try {
-                    const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
+                    const response = await apiCall('/api/admin/pharmacies', {
                         method: 'POST',
                             headers: {
                                 'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
@@ -1878,7 +1876,7 @@ function toggleAuthForm() {
                     is_verified: formData.get('is_verified') === 'on'
                 };
 
-                    const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
+                    const response = await apiCall(`/api/admin/hospitals/${hospitalId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -1940,7 +1938,7 @@ function toggleAuthForm() {
                     is_verified: formData.get('is_verified') === 'on'
                 };
 
-                    const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
+                    const response = await apiCall(`/api/admin/pharmacies/${pharmacyId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -2003,7 +2001,7 @@ function toggleAuthForm() {
                         is_verified: formData.get('is_verified') === 'on'
                     };
 
-                    const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                    const response = await apiCall(`/api/admin/doctors/${doctorId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -2056,15 +2054,13 @@ function toggleAuthForm() {
                     data.password = password;
                 }
 
-            const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+            const response = await apiCall(`/api/admin/admins/${adminId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
-                    credentials: 'include',
-                    mode: 'cors',
                     body: JSON.stringify(data)
                 });
 
@@ -2132,7 +2128,7 @@ function toggleAuthForm() {
         async function editHospital(hospitalId) {
                 try {
                     const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
+                const response = await apiCall(`/api/admin/hospitals/${hospitalId}`, {
                         headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2179,7 +2175,7 @@ function toggleAuthForm() {
         async function deleteHospital(hospitalId) {
             try {
                 const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/hospitals/${hospitalId}`, {
+                const response = await apiCall(`/api/admin/hospitals/${hospitalId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -2591,7 +2587,7 @@ function toggleAuthForm() {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch('http://localhost:5000/api/admin/pharmacies', {
+            const response = await apiCall('/api/admin/pharmacies', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
@@ -2660,7 +2656,7 @@ function toggleAuthForm() {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch('http://localhost:5000/api/admin/doctors', {
+            const response = await apiCall('/api/admin/doctors', {
                             headers: {
                                 'Authorization': `Bearer ${token}`
                             }
@@ -2726,15 +2722,13 @@ function toggleAuthForm() {
             }
 
             console.log('Loading admins...');
-            const response = await fetch('http://localhost:5000/api/admin/admins', {
+            const response = await apiCall('/api/admin/admins', {
                 method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                        },
-                credentials: 'include',
-                mode: 'cors'
+                        }
                     });
 
             console.log('Response status:', response.status);
@@ -2805,7 +2799,7 @@ async function updateStats() {
         }
 
         // Get hospital count
-        const hospitalResponse = await fetch('http://localhost:5000/api/admin/hospitals', {
+        const hospitalResponse = await apiCall('/api/admin/hospitals', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -2816,7 +2810,7 @@ async function updateStats() {
         }
 
         // Get pharmacy count
-        const pharmacyResponse = await fetch('http://localhost:5000/api/admin/pharmacies', {
+        const pharmacyResponse = await apiCall('/api/admin/pharmacies', {
                         headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -2827,7 +2821,7 @@ async function updateStats() {
         }
 
         // Get doctor count
-        const doctorResponse = await fetch('http://localhost:5000/api/admin/doctors', {
+        const doctorResponse = await apiCall('/api/admin/doctors', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -2838,7 +2832,7 @@ async function updateStats() {
         }
 
         // Get patient count - THIS WAS MISSING!
-        const patientResponse = await fetch('http://localhost:5000/api/admin/patients/count', {
+        const patientResponse = await apiCall('/api/admin/patients/count', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
