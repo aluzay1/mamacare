@@ -908,7 +908,7 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Experience</label>
-                                        <select class="form-control" name="experience" id="addDoctorExperience1" required onchange="handleExperienceChange(this)">
+                                        <select class="form-control" name="experience" id="addDoctorExperience" required onchange="handleExperienceChange(this)">
                                             <option value="">Select Experience</option>
                                             <option value="0-2 years">0-2 years</option>
                                             <option value="3-5 years">3-5 years</option>
@@ -916,12 +916,12 @@
                                             <option value="10+ years">10+ years</option>
                                             <option value="Other">Other (Specify)</option>
                                         </select>
-                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience1" name="custom_experience" style="display: none;" placeholder="Enter experience">
-                                </div>
+                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
-                                    <label class="form-label">Qualifications</label>
+                                        <label class="form-label">Qualifications</label>
                                         <select class="form-control" name="qualifications" id="qualifications" required onchange="handleQualificationsChange(this)">
                                             <option value="">Select Qualification</option>
                                             <option value="MBBS">MBBS (Bachelor of Medicine, Bachelor of Surgery)</option>
@@ -943,18 +943,10 @@
                                             <option value="Other">Other (Specify)</option>
                                         </select>
                                         <input type="text" class="form-control mt-2" id="customQualifications" name="custom_qualifications" style="display: none;" placeholder="Enter qualification">
-                                </div>
+                                    </div>
                                     <div class="col-md-6 mb-3">
-                                    <label class="form-label">Experience</label>
-                                        <select class="form-control" name="experience" id="addDoctorExperience2" required onchange="handleExperienceChange(this)">
-                                            <option value="">Select Experience</option>
-                                            <option value="0-2 years">0-2 years</option>
-                                            <option value="3-5 years">3-5 years</option>
-                                            <option value="6-10 years">6-10 years</option>
-                                            <option value="10+ years">10+ years</option>
-                                            <option value="Other">Other (Specify)</option>
-                                        </select>
-                                        <input type="text" class="form-control mt-2" id="addDoctorCustomExperience2" name="custom_experience" style="display: none;" placeholder="Enter experience">
+                                        <label class="form-label">Address</label>
+                                        <input type="text" class="form-control" name="address" placeholder="Street address">
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -3031,9 +3023,15 @@ async function updateStats() {
     }
     // Handle Experience Change
 function handleExperienceChange(selectElement) {
-    const customInput = selectElement.id.includes('addDoctorExperience') ? 
-        document.getElementById(selectElement.id.replace('Experience', 'CustomExperience')) : 
-        document.getElementById(selectElement.id.replace('Experience', 'CustomExperience'));
+    let customInput;
+    
+    if (selectElement.id === 'addDoctorExperience') {
+        customInput = document.getElementById('addDoctorCustomExperience');
+    } else if (selectElement.id === 'editDoctorExperience1') {
+        customInput = document.getElementById('editDoctorCustomExperience1');
+    } else if (selectElement.id === 'editDoctorExperience2') {
+        customInput = document.getElementById('editDoctorCustomExperience2');
+    }
     
     if (customInput && selectElement.value === 'Other') {
         customInput.style.display = 'block';

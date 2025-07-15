@@ -2580,13 +2580,25 @@ def send_admin_notification_email(admin_email, new_admin_name, new_admin_email):
 @admin_required
 def add_doctor():
     try:
+        # Debug: Log request data
+        logger.info(f"Request method: {request.method}")
+        logger.info(f"Request headers: {dict(request.headers)}")
+        logger.info(f"Request form data: {request.form.to_dict()}")
+        logger.info(f"Request files: {list(request.files.keys())}")
+        
         data = request.form.to_dict()
         image = request.files.get('image')
+        
+        # Debug: Log parsed data
+        logger.info(f"Parsed form data: {data}")
+        logger.info(f"Image file: {image}")
         
         # Validate required fields
         required_fields = ['name', 'license_number', 'email', 'phone', 'professional_type', 'specialization', 'hospital_affiliation']
         for field in required_fields:
             if not data.get(field):
+                logger.error(f"Missing required field: {field}")
+                logger.error(f"Available fields: {list(data.keys())}")
                 return jsonify({'error': f'{field} is required'}), 400
 
         # Check if doctor with same license number or email already exists
