@@ -2229,7 +2229,7 @@ function toggleAuthForm() {
         async function editPharmacy(pharmacyId) {
             try {
                 const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
+                const response = await apiCall(`/api/admin/pharmacies/${pharmacyId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2277,7 +2277,7 @@ function toggleAuthForm() {
         async function deletePharmacy(pharmacyId) {
             try {
                 const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/pharmacies/${pharmacyId}`, {
+                const response = await apiCall(`/api/admin/pharmacies/${pharmacyId}`, {
                     method: 'DELETE',
                     headers: {
                         'Authorization': `Bearer ${token}`
@@ -2301,7 +2301,7 @@ function toggleAuthForm() {
         async function editDoctor(doctorId) {
             try {
                 const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                const response = await apiCall(`/api/admin/doctors/${doctorId}`, {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -2350,12 +2350,12 @@ function toggleAuthForm() {
         async function deleteDoctor(doctorId) {
             try {
                 const token = localStorage.getItem('admin_token');
-                const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+                const response = await apiCall(`/api/admin/doctors/${doctorId}`, {
                     method: 'DELETE',
-                            headers: {
+                    headers: {
                         'Authorization': `Bearer ${token}`
                     }
-                        });
+                });
 
                         if (!response.ok) {
                     throw new Error('Failed to delete doctor');
@@ -2919,16 +2919,14 @@ async function updateStats() {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
-                            method: 'DELETE',
-                            headers: {
+            const response = await apiCall(`/api/admin/admins/${adminId}`, {
+                method: 'DELETE',
+                headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                },
-                credentials: 'include',
-                mode: 'cors'
-                        });
+                }
+            });
 
                         if (!response.ok) {
                             const errorData = await response.json();
@@ -2951,16 +2949,14 @@ async function updateStats() {
                 throw new Error('No authentication token found');
             }
 
-            const response = await fetch(`http://localhost:5000/api/admin/admins/${adminId}`, {
+            const response = await apiCall(`/api/admin/admins/${adminId}`, {
                 method: 'GET',
-                            headers: {
-                                'Authorization': `Bearer ${token}`,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
-                },
-                credentials: 'include',
-                mode: 'cors'
-                        });
+                }
+            });
 
                         if (!response.ok) {
                             const errorData = await response.json();
@@ -2989,7 +2985,7 @@ async function updateStats() {
     // Load Doctor Details
     async function loadDoctorDetails(doctorId) {
         try {
-            const response = await fetch(`http://localhost:5000/api/admin/doctors/${doctorId}`, {
+            const response = await apiCall(`/api/admin/doctors/${doctorId}`, {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
                 }
