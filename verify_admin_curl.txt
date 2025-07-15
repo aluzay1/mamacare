@@ -1,0 +1,24 @@
+# Verify Admin Account - alusinekuyateh6@gmail.com
+# Run these commands in your terminal:
+
+# 1. Verify the admin account
+curl -X POST "https://mamacare-backend.onrender.com/api/admin/verify-admin/alusinekuyateh6@gmail.com" \
+  -H "Content-Type: application/json"
+
+# 2. Test login (optional)
+curl -X POST "https://mamacare-backend.onrender.com/api/admin/login" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alusinekuyateh6@gmail.com",
+    "password": "Admin123"
+  }'
+
+# 3. Create admin if it doesn't exist
+curl -X POST "https://mamacare-backend.onrender.com/api/admin/create-admin" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alusinekuyateh6@gmail.com",
+    "password": "Admin123",
+    "name": "Alusine Kuyateh",
+    "phone": "+23212345678"
+  }' 
