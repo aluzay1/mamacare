@@ -13,4 +13,6 @@ services:
       - key: PYTHONUNBUFFERED
         value: 1
       - key: TIMEZONE
-        value: Africa/Freetown 
+        value: Africa/Freetown
+      - key: SECRET_KEY
+        generateValue: true 
