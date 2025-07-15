@@ -710,6 +710,77 @@ def verify_user(user_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/admin/verify-admin/<email>', methods=['POST'])
+def verify_admin_by_email(email):
+    """Verify admin account by email (for first admin setup)"""
+    try:
+        # Check Admin table first
+        admin = Admin.query.filter_by(email=email).first()
+        if admin:
+            admin.is_verified = True
+            db.session.commit()
+            return jsonify({
+                'message': f'Admin {email} verified successfully',
+                'admin_id': admin.id,
+                'table': 'admin'
+            })
+        
+        # Check User table
+        user = User.query.filter_by(email=email, role='admin').first()
+        if user:
+            user.is_verified = True
+            db.session.commit()
+            return jsonify({
+                'message': f'Admin {email} verified successfully',
+                'admin_id': user.id,
+                'table': 'user'
+            })
+        
+        return jsonify({'error': f'Admin with email {email} not found'}), 404
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/admin/create-admin', methods=['POST'])
+def create_admin_direct():
+    """Create admin account directly (for first admin setup)"""
+    try:
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
+        name = data.get('name', 'Admin User')
+        
+        if not email or not password:
+            return jsonify({'error': 'Email and password are required'}), 400
+        
+        # Check if admin already exists
+        existing_admin = Admin.query.filter_by(email=email).first()
+        if existing_admin:
+            return jsonify({'error': 'Admin already exists'}), 409
+        
+        # Create new admin
+        admin = Admin(
+            email=email,
+            password=generate_password_hash(password),
+            name=name,
+            phone=data.get('phone', '+23212345678'),
+            is_verified=True,  # Auto-verify
+            created_at=datetime.utcnow()
+        )
+        
+        db.session.add(admin)
+        db.session.commit()
+        
+        return jsonify({
+            'message': f'Admin {email} created and verified successfully',
+            'admin_id': admin.id
+        }), 201
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({'error': str(e)}), 500
+
 # Removed admin crowdfunding endpoints (withdrawals, campaigns) - no longer needed
 
 @app.route('/api/admin/hospitals', methods=['POST'])
