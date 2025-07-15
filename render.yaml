@@ -3,8 +3,8 @@ services:
     name: mamacare-backend
     env: python
     region: frankfurt
-    buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && gunicorn app:app
+    buildCommand: pip install -r backend/requirements.txt && pip install gunicorn
+    startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT app:app
     envVars:
       - key: SECRET_KEY
         generateValue: true
@@ -16,8 +16,18 @@ services:
         sync: false
       - key: EMAIL_PASSWORD
         sync: false
+      - key: TWILIO_ACCOUNT_SID
+        sync: false
+      - key: TWILIO_AUTH_TOKEN
+        sync: false
+      - key: TWILIO_PHONE_NUMBER
+        sync: false
       - key: TIMEZONE
         value: "Africa/Freetown"
+      - key: FLASK_ENV
+        value: "production"
+      - key: PYTHONUNBUFFERED
+        value: "1"
 
 databases:
   - name: mamacare-db

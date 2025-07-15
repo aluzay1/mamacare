@@ -77,6 +77,8 @@
                             <input type="text" id="first_name" name="first_name" class="form-control" required>
                         </div>
 
+                        
+
                         <div class="form-group">
                             <label for="middle_name">Middle Name</label>
                             <input type="text" id="middle_name" name="middle_name" class="form-control">
@@ -95,9 +97,12 @@
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" class="form-control" required>
-                    <option value="" disabled selected>Select gender</option>
-                    <option value="female">Female</option>
-                </select>
+                                <option value="" disabled selected>Select gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                                <option value="unknown">Unknown</option>
+                            </select>
                         </div>
                     </div>
             </div>
@@ -178,8 +183,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="postal_code">Postal Code</label>
-                            <input type="text" id="postal_code" name="postal_code" class="form-control" required>
+                            <label for="postal_code">Postal Code (Optional)</label>
+                            <input type="text" id="postal_code" name="postal_code" class="form-control" placeholder="Not applicable in some regions">
                         </div>
 
                         <div class="form-group">
@@ -263,12 +268,44 @@
 
                         <div class="form-group full-width">
                             <label for="allergies">Allergies</label>
-                            <textarea id="allergies" name="allergies" class="form-control" placeholder="List any allergies..."></textarea>
+                            <select id="allergies" name="allergies" class="form-control" multiple>
+                                <option value="">Select allergies (hold Ctrl/Cmd to select multiple)</option>
+                                <option value="penicillin">Penicillin</option>
+                                <option value="amoxicillin">Amoxicillin</option>
+                                <option value="aspirin">Aspirin</option>
+                                <option value="ibuprofen">Ibuprofen</option>
+                                <option value="sulfa_drugs">Sulfa Drugs</option>
+                                <option value="latex">Latex</option>
+                                <option value="peanuts">Peanuts</option>
+                                <option value="shellfish">Shellfish</option>
+                                <option value="eggs">Eggs</option>
+                                <option value="milk">Milk</option>
+                                <option value="dust">Dust</option>
+                                <option value="pollen">Pollen</option>
+                                <option value="pet_dander">Pet Dander</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <small class="form-help">Hold Ctrl (Windows) or Cmd (Mac) to select multiple allergies</small>
                         </div>
 
                         <div class="form-group full-width">
                             <label for="medications">Current Medications</label>
-                            <textarea id="medications" name="medications" class="form-control" placeholder="List current medications..."></textarea>
+                            <select id="medications" name="medications" class="form-control" multiple>
+                                <option value="">Select medications (hold Ctrl/Cmd to select multiple)</option>
+                                <option value="folic_acid">Folic Acid</option>
+                                <option value="iron_supplements">Iron Supplements</option>
+                                <option value="calcium">Calcium</option>
+                                <option value="vitamin_d">Vitamin D</option>
+                                <option value="prenatal_vitamins">Prenatal Vitamins</option>
+                                <option value="blood_pressure_medication">Blood Pressure Medication</option>
+                                <option value="diabetes_medication">Diabetes Medication</option>
+                                <option value="thyroid_medication">Thyroid Medication</option>
+                                <option value="antidepressants">Antidepressants</option>
+                                <option value="pain_medication">Pain Medication</option>
+                                <option value="antibiotics">Antibiotics</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <small class="form-help">Hold Ctrl (Windows) or Cmd (Mac) to select multiple medications</small>
                         </div>
                     </div>
                 </div>
@@ -362,8 +399,24 @@
 
                         <div class="form-group full-width">
                             <label for="pregnancy_complications">Pregnancy Complications</label>
-                            <textarea id="pregnancy_complications" name="pregnancy_complications" class="form-control" rows="3"></textarea>
-                            </div>
+                            <select id="pregnancy_complications" name="pregnancy_complications" class="form-control" multiple>
+                                <option value="">Select complications (hold Ctrl/Cmd to select multiple)</option>
+                                <option value="gestational_diabetes">Gestational Diabetes</option>
+                                <option value="preeclampsia">Preeclampsia</option>
+                                <option value="eclampsia">Eclampsia</option>
+                                <option value="placenta_previa">Placenta Previa</option>
+                                <option value="placental_abruption">Placental Abruption</option>
+                                <option value="preterm_labor">Preterm Labor</option>
+                                <option value="anemia">Anemia</option>
+                                <option value="hypertension">Hypertension</option>
+                                <option value="hyperemesis_gravidarum">Hyperemesis Gravidarum</option>
+                                <option value="oligohydramnios">Oligohydramnios</option>
+                                <option value="polyhydramnios">Polyhydramnios</option>
+                                <option value="intrauterine_growth_restriction">Intrauterine Growth Restriction</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <small class="form-help">Hold Ctrl (Windows) or Cmd (Mac) to select multiple complications</small>
+                        </div>
 
                         <div class="form-group">
                             <label for="emergency_hospital">Preferred Emergency Hospital</label>
@@ -1486,7 +1539,7 @@
                 padding: 0.6rem 1.2rem;
                 font-size: 0.9rem;
                 justify-content: center;
-            }
+        }
 
         .profile-content {
                 padding: 1.75rem;
@@ -3535,13 +3588,13 @@
 
             try {
                 // First check if the backend is available
-                const healthResponse = await fetch('http://localhost:5000/health');
+                const healthResponse = await fetch('/health');
                 if (!healthResponse.ok) {
                     throw new Error('Backend service is not available');
                 }
 
                 // Then fetch the profile
-                const response = await fetch(`http://localhost:5000/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                const response = await fetch(`/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
                     method: 'GET',
                     headers: {
                         'Accept': 'application/json'
@@ -3572,7 +3625,7 @@
                 
                 // Fetch and display medical records
                 try {
-                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    const recordsResponse = await fetch(`/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
                     if (recordsResponse.ok) {
                         const records = await recordsResponse.json();
                         displayRecords(records);
@@ -3773,31 +3826,163 @@
             }
         }
 
+        // Form validation and conditional display functions
+        function validatePhoneNumber(phone) {
+            const phoneRegex = /^\+232\d{8}$/;
+            return phoneRegex.test(phone);
+        }
+
+        function validateEmail(email) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            return emailRegex.test(email);
+        }
+
+        function validateBloodPressure(bp) {
+            if (!bp) return true; // Optional field
+            const bpRegex = /^\d{2,3}\/\d{2,3}$/;
+            if (!bpRegex.test(bp)) return false;
+            
+            const [systolic, diastolic] = bp.split('/').map(Number);
+            return systolic >= 70 && systolic <= 200 && 
+                   diastolic >= 40 && diastolic <= 130 && 
+                   systolic > diastolic;
+        }
+
+        function getSelectedValues(selectElement) {
+            const selected = [];
+            for (let option of selectElement.options) {
+                if (option.selected && option.value) {
+                    selected.push(option.value);
+                }
+            }
+            return selected;
+        }
+
+        // Handle gender change to show/hide pregnancy section
+        document.getElementById('gender').addEventListener('change', function() {
+            const gender = this.value;
+            const pregnancySection = document.getElementById('pregnancySection');
+            const pregnancyDetails = document.getElementById('pregnancyDetails');
+            
+            if (gender === 'female') {
+                pregnancySection.style.display = 'block';
+            } else {
+                pregnancySection.style.display = 'none';
+                pregnancyDetails.style.display = 'none';
+            }
+        });
+
+        // Handle pregnancy status change
+        document.getElementById('pregnancy_status').addEventListener('change', function() {
+            const status = this.value;
+            const pregnancyDetails = document.getElementById('pregnancyDetails');
+            
+            if (status === 'pregnant') {
+                pregnancyDetails.style.display = 'block';
+            } else {
+                pregnancyDetails.style.display = 'none';
+            }
+        });
+
+        // Real-time validation
+        document.getElementById('phone').addEventListener('blur', function() {
+            const phone = this.value;
+            if (phone && !validatePhoneNumber(phone)) {
+                this.setCustomValidity('Phone number must be in Sierra Leone format: +232XXXXXXXX');
+                this.reportValidity();
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('email').addEventListener('blur', function() {
+            const email = this.value;
+            if (email && !validateEmail(email)) {
+                this.setCustomValidity('Please enter a valid email address');
+                this.reportValidity();
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        document.getElementById('blood_pressure').addEventListener('blur', function() {
+            const bp = this.value;
+            if (bp && !validateBloodPressure(bp)) {
+                this.setCustomValidity('Blood pressure must be in format: systolic/diastolic (e.g., 120/80)');
+                this.reportValidity();
+            } else {
+                this.setCustomValidity('');
+            }
+        });
+
+        // Add form help styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .form-help {
+                display: block;
+                margin-top: 0.25rem;
+                font-size: 0.875rem;
+                color: #6c757d;
+            }
+            
+            .form-control:invalid {
+                border-color: #dc3545;
+            }
+            
+            .form-control:valid {
+                border-color: #28a745;
+            }
+        `;
+        document.head.appendChild(style);
+
         document.getElementById("addPatientForm").addEventListener("submit", async (e) => {
             e.preventDefault();
             
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             
-            // Construct the full name from first, middle, and last name
-            const firstName = data.first_name || '';
-            const middleName = data.middle_name || '';
-            const lastName = data.last_name || '';
+                          // Construct the full name from first, middle, and last name
+              const firstName = data.first_name || '';
+              const middleName = data.middle_name || '';
+              const lastName = data.last_name || '';
             
             // Create full name by combining the parts
-            const fullName = [firstName, middleName, lastName].filter(part => part.trim()).join(' ');
+                                                     const fullName = [firstName, middleName, lastName].filter(part => part.trim()).join(' ');
             
             // Add the constructed name fields to the data object
             data.name = fullName;
             data.given_name = firstName;
             data.family_name = lastName;
             
+            // Handle multi-select fields
+            data.allergies = getSelectedValues(document.getElementById('allergies'));
+            data.medications = getSelectedValues(document.getElementById('medications'));
+            data.risk_factors = getSelectedValues(document.getElementById('risk_factors'));
+            data.pregnancy_complications = getSelectedValues(document.getElementById('pregnancy_complications'));
+            
+            // Validate required fields
+            if (!validatePhoneNumber(data.phone)) {
+                alert('Phone number must be in Sierra Leone format: +232XXXXXXXX');
+                return;
+            }
+            
+            if (!validateEmail(data.email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+            
+            if (data.blood_pressure && !validateBloodPressure(data.blood_pressure)) {
+                alert('Blood pressure must be in format: systolic/diastolic (e.g., 120/80)');
+                return;
+            }
+            
             const submitButton = e.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
             submitButton.textContent = 'Registering...';
             
             try {
-                const response = await fetch('http://localhost:5000/api/patient/register', {
+                // Use relative URL to work with both local and Docker setups
+                const response = await fetch('/api/patient/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3846,7 +4031,7 @@
             };
             
             try {
-                const response = await fetch('http://localhost:5000/api/patient/medical-records', {
+                const response = await fetch('/api/patient/medical-records', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -3862,7 +4047,7 @@
                     e.target.reset();
                     
                     // Fetch updated records using query parameter
-                    const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                    const recordsResponse = await fetch(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
                         method: 'GET',
                         headers: {
                             'Accept': 'application/json'
@@ -4105,7 +4290,7 @@
 
             if (confirm('Are you sure you want to delete this record?')) {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/patient/medical-records/${recordId}`, {
+                    const response = await fetch(`/api/patient/medical-records/${recordId}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -4116,7 +4301,7 @@
                     
                     if (response.ok) {
                         // Fetch updated records using query parameter
-                        const recordsResponse = await fetch(`http://localhost:5000/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
+                        const recordsResponse = await fetch(`/api/patient/medical-records?pin=${window.currentPatientPIN}`, {
                             method: 'GET',
                             headers: {
                                 'Accept': 'application/json'
@@ -4517,7 +4702,7 @@
                 console.log('Sending profile update data:', data);
 
                 // Send the updated data to the backend
-                const response = await fetch('http://localhost:5000/api/patient/profile', {
+                const response = await fetch('/api/patient/profile', {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -4864,7 +5049,7 @@
                 submitButton.disabled = true;
                 
                 // Submit the feedback
-                const response = await fetch(`http://localhost:5000/api/referral-feedback?pin=${encodeURIComponent(patientPin)}`, {
+                const response = await fetch(`/api/referral-feedback?pin=${encodeURIComponent(patientPin)}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

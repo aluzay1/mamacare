@@ -894,11 +894,11 @@
             const pharmacies = await fetchPharmacies();
             console.log('Total pharmacies fetched:', pharmacies.length);
             
-            const filteredPharmacies = pharmacies.filter(pharmacy => {
-                const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
-                                    pharmacy.city.toLowerCase().includes(searchTerm);
-                const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
-                
+                const filteredPharmacies = pharmacies.filter(pharmacy => {
+                    const matchesSearch = pharmacy.name.toLowerCase().includes(searchTerm) ||
+                                        pharmacy.city.toLowerCase().includes(searchTerm);
+                    const matchesLocation = !locationFilter || pharmacy.city === locationFilter;
+
                 // Filter by pharmacy type based on actual data fields
                 let matchesType = true;
                 if (selectedPharmacyTypeValue) {
@@ -960,7 +960,7 @@
             });
 
             console.log('Filtered pharmacies:', filteredPharmacies.length);
-            displayPharmacies(filteredPharmacies);
+                displayPharmacies(filteredPharmacies);
         }
 
         // Searchable Select Functions

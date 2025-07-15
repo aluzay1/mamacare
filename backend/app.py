@@ -7,10 +7,21 @@ from fhirclient import client
 from fhirclient.models.patient import Patient
 from fhirclient.models.observation import Observation
 from fhirclient.models.medicationrequest import MedicationRequest
+from fhirclient.models.medicationstatement import MedicationStatement
+from fhirclient.models.allergyintolerance import AllergyIntolerance
+from fhirclient.models.condition import Condition
+from fhirclient.models.careplan import CarePlan
 from fhirclient.models.humanname import HumanName
 from fhirclient.models.contactpoint import ContactPoint
 from fhirclient.models.address import Address
 from fhirclient.models.identifier import Identifier
+from fhirclient.models.extension import Extension
+from fhirclient.models.codeableconcept import CodeableConcept
+from fhirclient.models.coding import Coding
+from fhirclient.models.quantity import Quantity
+from fhirclient.models.reference import Reference
+from fhirclient.models.period import Period
+# Removed problematic FHIR imports that don't exist in current fhirclient version
 import os
 import secrets
 from datetime import datetime, timedelta
@@ -44,9 +55,14 @@ app = Flask(__name__)
 
 # Configure CORS properly with credentials support
 CORS(app, 
-     origins=["http://localhost", "http://localhost:5001", "http://localhost:3000"],
+     origins=[
+         "http://localhost", "http://localhost:80", "http://localhost:5000", "http://localhost:5001", "http://localhost:3000",
+         "https://*.netlify.app", "https://*.netlify.com",  # Allow Netlify domains
+         "https://mamacare.netlify.app", "https://mamacare.netlify.com",  # Specific Netlify domains
+         "*"  # Allow all origins for development
+     ],
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization"],
+     allow_headers=["Content-Type", "Authorization", "Accept"],
      supports_credentials=True,
      expose_headers=["Content-Type", "Authorization"])
 
@@ -62,7 +78,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@db:5432/mamacare'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:postgres@db:5432/mamacare')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_pre_ping': True,
@@ -109,6 +125,17 @@ settings = {
 }
 fhir_client = client.FHIRClient(settings=settings)
 
+# CORS handler for all routes - only add headers if not already present
+@app.after_request
+def after_request(response):
+    if 'Access-Control-Allow-Origin' not in response.headers:
+        response.headers.add('Access-Control-Allow-Origin', '*')
+    if 'Access-Control-Allow-Headers' not in response.headers:
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
+    if 'Access-Control-Allow-Methods' not in response.headers:
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
+
 # Database connection check
 @app.before_request
 def check_db_connection():
@@ -125,6 +152,15 @@ def check_db_connection():
         except:
             pass
         return jsonify({'error': 'Database connection error'}), 500
+
+# CORS preflight handler
+@app.route('/api/patient/register', methods=['OPTIONS'])
+def handle_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
 
 # Health check endpoint
 @app.route('/health')
@@ -174,6 +210,7 @@ class User(UserMixin, db.Model):
     
     # FHIR-compliant fields
     given_name = db.Column(db.String(100))
+    middle_name = db.Column(db.String(100))  # Add middle name field
     family_name = db.Column(db.String(100))
     gender = db.Column(db.String(10))
     date_of_birth = db.Column(db.Date)
@@ -1066,17 +1103,110 @@ def delete_pharmacy(pharmacy_id):
         db.session.rollback()
         return jsonify({'error': str(e)}), 500
 
+# FHIR Helper Functions
+def create_codeable_concept(system, code, display):
+    """Create a CodeableConcept with coding"""
+    coding = Coding()
+    coding.system = system
+    coding.code = code
+    coding.display = display
+    
+    codeable_concept = CodeableConcept()
+    codeable_concept.coding = [coding]
+    codeable_concept.text = display
+    
+    return codeable_concept
+
+def create_extension(url, value):
+    """Create a FHIR extension"""
+    extension = Extension()
+    extension.url = url
+    
+    if isinstance(value, str):
+        extension.valueString = value
+    elif isinstance(value, int):
+        extension.valueInteger = value
+    elif isinstance(value, float):
+        extension.valueDecimal = value
+    elif isinstance(value, bool):
+        extension.valueBoolean = value
+    elif hasattr(value, 'as_json'):  # FHIR resource
+        extension.valueReference = value
+    else:
+        extension.valueString = str(value)
+    
+    return extension
+
+def create_quantity(value, unit, system="http://unitsofmeasure.org", code=None):
+    """Create a Quantity for observations"""
+    quantity = Quantity()
+    quantity.value = value
+    quantity.unit = unit
+    quantity.system = system
+    if code:
+        quantity.code = code
+    return quantity
+
+def create_reference(resource_type, resource_id):
+    """Create a Reference to another FHIR resource"""
+    reference = Reference()
+    reference.reference = f"{resource_type}/{resource_id}"
+    return reference
+
+# Validation Functions
+def validate_phone_number(phone):
+    """Validate phone number format (Sierra Leone: +232XXXXXXXX)"""
+    import re
+    # Sierra Leone format: +232XXXXXXXX (8 digits after +232)
+    pattern = r'^\+232\d{8}$'
+    if not re.match(pattern, phone):
+        return False, "Phone number must be in Sierra Leone format: +232XXXXXXXX"
+    return True, None
+
+def validate_blood_pressure(bp):
+    """Validate blood pressure format (e.g., 120/80)"""
+    import re
+    pattern = r'^\d{2,3}/\d{2,3}$'
+    if not re.match(pattern, bp):
+        return False, "Blood pressure must be in format: systolic/diastolic (e.g., 120/80)"
+    
+    systolic, diastolic = map(int, bp.split('/'))
+    if systolic < 70 or systolic > 200:
+        return False, "Systolic pressure must be between 70 and 200"
+    if diastolic < 40 or diastolic > 130:
+        return False, "Diastolic pressure must be between 40 and 130"
+    if systolic <= diastolic:
+        return False, "Systolic pressure must be greater than diastolic pressure"
+    
+    return True, None
+
+def validate_email(email):
+    """Validate email format"""
+    import re
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    if not re.match(pattern, email):
+        return False, "Invalid email format"
+    return True, None
+
 def create_fhir_patient(user_data):
-    """Create a FHIR Patient resource from user data"""
+    """Create a FHIR Patient resource from user data with full compliance"""
     patient = Patient()
     
-    # Set name
+    # Set name with middle name support
     name = HumanName()
     name.family = user_data.get('family_name', '')
-    name.given = [user_data.get('given_name', '')]
+    
+    # Handle given names (first and middle)
+    given_names = []
+    if user_data.get('given_name'):
+        given_names.append(user_data['given_name'])
+    if user_data.get('middle_name'):
+        given_names.append(user_data['middle_name'])
+    
+    name.given = given_names
     patient.name = [name]
     
-    # Set gender
+    # Set gender with full FHIR compliance
     gender_map = {
         'male': 'male',
         'female': 'female',
@@ -1089,12 +1219,22 @@ def create_fhir_patient(user_data):
     if user_data.get('date_of_birth'):
         patient.birthDate = user_data['date_of_birth']
     
-    # Set contact information
+    # Set contact information (phone and email)
+    telecom = []
     if user_data.get('phone'):
         phone = ContactPoint()
         phone.system = 'phone'
         phone.value = user_data['phone']
-        patient.telecom = [phone]
+        telecom.append(phone)
+    
+    if user_data.get('email'):
+        email = ContactPoint()
+        email.system = 'email'
+        email.value = user_data['email']
+        telecom.append(email)
+    
+    if telecom:
+        patient.telecom = telecom
     
     # Set address
     if user_data.get('address_line'):
@@ -1106,13 +1246,220 @@ def create_fhir_patient(user_data):
         address.country = user_data.get('country', '')
         patient.address = [address]
     
+    # Set emergency contact (will be added to extensions later)
+    emergency_contact_data = None
+    if user_data.get('emergency_contact_name') and user_data.get('emergency_contact_phone'):
+        emergency_contact_data = {
+            "name": user_data['emergency_contact_name'],
+            "phone": user_data.get('emergency_contact_phone', ''),
+            "relationship": user_data.get('emergency_contact_relationship', '')
+        }
+    
     # Set identifier
     identifier = Identifier()
     identifier.system = 'urn:mamacare:patients'
     identifier.value = str(user_data.get('id', ''))
     patient.identifier = [identifier]
     
+    # Add custom extensions
+    extensions = []
+    
+    # Blood type extension
+    if user_data.get('blood_type'):
+        blood_type_ext = create_extension(
+            "http://mamacare.com/fhir/StructureDefinition/patient-bloodType",
+            create_codeable_concept(
+                "http://mamacare.com/fhir/CodeSystem/blood-type",
+                user_data['blood_type'],
+                f"{user_data['blood_type']} Blood Type"
+            )
+        )
+        extensions.append(blood_type_ext)
+    
+    # Nationality extension
+    if user_data.get('nationality'):
+        nationality_ext = create_extension(
+            "http://mamacare.com/fhir/StructureDefinition/patient-nationality",
+            create_codeable_concept(
+                "http://hl7.org/fhir/ValueSet/iso3166-1-2",
+                user_data['nationality'],
+                user_data['nationality']
+            )
+        )
+        extensions.append(nationality_ext)
+    
+    # Emergency contact extension
+    if emergency_contact_data:
+        emergency_contact_ext = create_extension(
+            "http://mamacare.com/fhir/StructureDefinition/patient-emergencyContact",
+            emergency_contact_data
+        )
+        extensions.append(emergency_contact_ext)
+    
+    # Pregnancy-related extensions (only for females)
+    if user_data.get('gender', '').lower() == 'female':
+        # Pregnancy status
+        if user_data.get('pregnancy_status'):
+            pregnancy_status_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-pregnancyStatus",
+                create_codeable_concept(
+                    "http://mamacare.com/fhir/CodeSystem/pregnancy-status",
+                    user_data['pregnancy_status'],
+                    user_data['pregnancy_status'].replace('_', ' ').title()
+                )
+            )
+            extensions.append(pregnancy_status_ext)
+        
+        # LMP date
+        if user_data.get('lmp_date'):
+            lmp_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-lmpDate",
+                user_data['lmp_date']
+            )
+            extensions.append(lmp_ext)
+        
+        # Due date
+        if user_data.get('due_date'):
+            due_date_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-dueDate",
+                user_data['due_date']
+            )
+            extensions.append(due_date_ext)
+        
+        # Gestational age
+        if user_data.get('gestational_age'):
+            gestational_age_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-gestationalAge",
+                user_data['gestational_age']
+            )
+            extensions.append(gestational_age_ext)
+        
+        # Multiple pregnancy
+        if user_data.get('multiple_pregnancy'):
+            multiple_pregnancy_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-multiplePregnancy",
+                create_codeable_concept(
+                    "http://mamacare.com/fhir/CodeSystem/multiple-pregnancy",
+                    user_data['multiple_pregnancy'],
+                    user_data['multiple_pregnancy'].replace('_', ' ').title()
+                )
+            )
+            extensions.append(multiple_pregnancy_ext)
+        
+        # Risk level
+        if user_data.get('risk_level'):
+            risk_level_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-pregnancyRiskLevel",
+                create_codeable_concept(
+                    "http://mamacare.com/fhir/CodeSystem/pregnancy-risk-level",
+                    user_data['risk_level'],
+                    f"{user_data['risk_level'].title()} Risk"
+                )
+            )
+            extensions.append(risk_level_ext)
+        
+        # Previous pregnancies
+        if user_data.get('previous_pregnancies'):
+            prev_pregnancies_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-previousPregnancies",
+                user_data['previous_pregnancies']
+            )
+            extensions.append(prev_pregnancies_ext)
+        
+        # Prenatal vitamins
+        if user_data.get('prenatal_vitamins'):
+            prenatal_vitamins_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-prenatalVitamins",
+                user_data['prenatal_vitamins']
+            )
+            extensions.append(prenatal_vitamins_ext)
+        
+        # Emergency hospital
+        if user_data.get('emergency_hospital'):
+            emergency_hospital_ext = create_extension(
+                "http://mamacare.com/fhir/StructureDefinition/patient-emergencyHospital",
+                user_data['emergency_hospital']
+            )
+            extensions.append(emergency_hospital_ext)
+    
+    if extensions:
+        patient.extension = extensions
+    
     return patient
+
+def create_fhir_observation(patient_id, code, value, effective_date=None, status='final'):
+    """Create a FHIR Observation resource"""
+    observation = Observation()
+    observation.status = status
+    observation.code = code
+    observation.subject = create_reference('Patient', patient_id)
+    
+    if effective_date:
+        observation.effectiveDateTime = effective_date
+    
+    # Set value based on type
+    if isinstance(value, (int, float)):
+        quantity = Quantity()
+        quantity.value = value
+        observation.valueQuantity = quantity
+    else:
+        observation.valueString = str(value)
+    
+    return observation
+
+def create_fhir_allergy(patient_id, substance, category='medication', criticality='low'):
+    """Create a FHIR AllergyIntolerance resource"""
+    allergy = AllergyIntolerance()
+    allergy.type = 'allergy'
+    allergy.category = [category]
+    allergy.criticality = criticality
+    allergy.patient = create_reference('Patient', patient_id)
+    allergy.code = substance
+    allergy.clinicalStatus = create_codeable_concept(
+        "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+        "active",
+        "Active"
+    )
+    
+    return allergy
+
+def create_fhir_medication_statement(patient_id, medication, status='active'):
+    """Create a FHIR MedicationStatement resource"""
+    med_statement = MedicationStatement()
+    med_statement.status = status
+    med_statement.medicationCodeableConcept = medication
+    med_statement.subject = create_reference('Patient', patient_id)
+    
+    return med_statement
+
+def create_fhir_condition(patient_id, code, clinical_status='active'):
+    """Create a FHIR Condition resource"""
+    condition = Condition()
+    condition.clinicalStatus = create_codeable_concept(
+        "http://terminology.hl7.org/CodeSystem/condition-clinical",
+        clinical_status,
+        clinical_status.title()
+    )
+    condition.verificationStatus = create_codeable_concept(
+        "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+        "confirmed",
+        "Confirmed"
+    )
+    condition.code = code
+    condition.subject = create_reference('Patient', patient_id)
+    
+    return condition
+
+def create_fhir_care_plan(patient_id, title, description, status='active'):
+    """Create a FHIR CarePlan resource"""
+    care_plan = CarePlan()
+    care_plan.status = status
+    care_plan.intent = 'plan'
+    care_plan.title = title
+    care_plan.description = description
+    care_plan.subject = create_reference('Patient', patient_id)
+    
+    return care_plan
 
 @app.route('/api/patient/register', methods=['POST'])
 def register_patient():
@@ -1129,14 +1476,36 @@ def register_patient():
                 'status': 'already_registered'
             }), 409
         
+        # Validate required fields (postal_code is now optional)
         required_fields = ['email', 'name', 'given_name', 'family_name', 'gender', 
                          'date_of_birth', 'phone', 'address_line', 'city', 'state', 
-                         'postal_code', 'country']
+                         'country']
         
         if not all(key in data for key in required_fields):
             missing_fields = [field for field in required_fields if field not in data]
             logger.error(f"Missing required fields: {missing_fields}")
             return jsonify({'error': f'Missing required fields: {", ".join(missing_fields)}'}), 400
+        
+        # Validate email format
+        is_valid_email, email_error = validate_email(data['email'])
+        if not is_valid_email:
+            return jsonify({'error': email_error}), 400
+        
+        # Validate phone number format
+        is_valid_phone, phone_error = validate_phone_number(data['phone'])
+        if not is_valid_phone:
+            return jsonify({'error': phone_error}), 400
+        
+        # Validate gender (must be one of the FHIR-compliant values)
+        valid_genders = ['male', 'female', 'other', 'unknown']
+        if data['gender'].lower() not in valid_genders:
+            return jsonify({'error': f'Gender must be one of: {", ".join(valid_genders)}'}), 400
+        
+        # Validate blood pressure if provided
+        if data.get('blood_pressure'):
+            is_valid_bp, bp_error = validate_blood_pressure(data['blood_pressure'])
+            if not is_valid_bp:
+                return jsonify({'error': bp_error}), 400
             
         # Generate PIN
         pin = secrets.randbelow(1000000)
@@ -1154,14 +1523,15 @@ def register_patient():
             'pin': pin_str,
             'name': data['name'],
             'given_name': data['given_name'],
+            'middle_name': data.get('middle_name', ''),  # Add middle name support
             'family_name': data['family_name'],
             'date_of_birth': datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date(),
-            'gender': data['gender'],
+            'gender': data['gender'].lower(),
             'phone': data['phone'],
             'address_line': data['address_line'],
             'city': data['city'],
             'state': data['state'],
-            'postal_code': data['postal_code'],
+            'postal_code': data.get('postal_code'),  # Make postal_code optional
             'country': data['country'],
             'marital_status': data.get('marital_status'),
             'language': data.get('language', 'en'),
@@ -1169,9 +1539,9 @@ def register_patient():
             'blood_type': data.get('blood_type'),
             'allergies': data.get('allergies'),
             'medications': data.get('medications'),
-            'emergency_contact_name': data['emergency_contact_name'],
-            'emergency_contact_phone': data['emergency_contact_phone'],
-            'emergency_contact_relationship': data['emergency_contact_relationship']
+            'emergency_contact_name': data.get('emergency_contact_name'),
+            'emergency_contact_phone': data.get('emergency_contact_phone'),
+            'emergency_contact_relationship': data.get('emergency_contact_relationship')
         }
 
         # Only add pregnancy-related fields if the patient is female
@@ -1219,9 +1589,132 @@ def register_patient():
         
         # Create FHIR Patient resource
         logger.info("Creating FHIR Patient resource")
-        fhir_patient = create_fhir_patient(data)
+        fhir_patient = create_fhir_patient(user_data)
         fhir_patient.id = str(new_user.id)
         new_user.fhir_id = fhir_patient.id
+        
+        # Save Patient resource to FHIR server
+        try:
+            fhir_patient.save(fhir_client.server)
+            logger.info(f"FHIR Patient resource saved with ID: {fhir_patient.id}")
+        except Exception as e:
+            logger.error(f"Failed to save FHIR Patient resource: {str(e)}")
+            # Continue with registration even if FHIR save fails
+        
+        # Create additional FHIR resources for medical data
+        fhir_resources_created = []
+        
+        # Create Observation resources for measurements
+        if data.get('blood_pressure'):
+            try:
+                bp_observation = create_fhir_observation(
+                    new_user.id,
+                    create_codeable_concept("http://loinc.org", "55284-4", "Blood pressure panel"),
+                    data['blood_pressure'],
+                    datetime.now().date()
+                )
+                bp_observation.save(fhir_client.server)
+                fhir_resources_created.append(f"Blood Pressure Observation: {bp_observation.id}")
+            except Exception as e:
+                logger.error(f"Failed to create blood pressure observation: {str(e)}")
+        
+        if data.get('hemoglobin'):
+            try:
+                hb_observation = create_fhir_observation(
+                    new_user.id,
+                    create_codeable_concept("http://loinc.org", "718-7", "Hemoglobin"),
+                    data['hemoglobin'],
+                    datetime.now().date()
+                )
+                hb_observation.valueQuantity = create_quantity(data['hemoglobin'], "g/dL", "http://unitsofmeasure.org", "g/dL")
+                hb_observation.save(fhir_client.server)
+                fhir_resources_created.append(f"Hemoglobin Observation: {hb_observation.id}")
+            except Exception as e:
+                logger.error(f"Failed to create hemoglobin observation: {str(e)}")
+        
+        if data.get('blood_sugar'):
+            try:
+                bs_observation = create_fhir_observation(
+                    new_user.id,
+                    create_codeable_concept("http://loinc.org", "2339-0", "Glucose"),
+                    data['blood_sugar'],
+                    datetime.now().date()
+                )
+                bs_observation.valueQuantity = create_quantity(data['blood_sugar'], "mg/dL", "http://unitsofmeasure.org", "mg/dL")
+                bs_observation.save(fhir_client.server)
+                fhir_resources_created.append(f"Blood Sugar Observation: {bs_observation.id}")
+            except Exception as e:
+                logger.error(f"Failed to create blood sugar observation: {str(e)}")
+        
+        if data.get('weight'):
+            try:
+                weight_observation = create_fhir_observation(
+                    new_user.id,
+                    create_codeable_concept("http://loinc.org", "29463-7", "Body weight"),
+                    data['weight'],
+                    datetime.now().date()
+                )
+                weight_observation.valueQuantity = create_quantity(data['weight'], "kg", "http://unitsofmeasure.org", "kg")
+                weight_observation.save(fhir_client.server)
+                fhir_resources_created.append(f"Weight Observation: {weight_observation.id}")
+            except Exception as e:
+                logger.error(f"Failed to create weight observation: {str(e)}")
+        
+        # Create AllergyIntolerance resources
+        if data.get('allergies'):
+            allergies_list = data['allergies'] if isinstance(data['allergies'], list) else [data['allergies']]
+            for allergy in allergies_list:
+                try:
+                    allergy_resource = create_fhir_allergy(
+                        new_user.id,
+                        create_codeable_concept("http://snomed.info/sct", "419199007", allergy),
+                        'medication'
+                    )
+                    allergy_resource.save(fhir_client.server)
+                    fhir_resources_created.append(f"Allergy: {allergy_resource.id}")
+                except Exception as e:
+                    logger.error(f"Failed to create allergy resource: {str(e)}")
+        
+        # Create MedicationStatement resources
+        if data.get('medications'):
+            medications_list = data['medications'] if isinstance(data['medications'], list) else [data['medications']]
+            for medication in medications_list:
+                try:
+                    med_statement = create_fhir_medication_statement(
+                        new_user.id,
+                        create_codeable_concept("http://www.nlm.nih.gov/research/umls/rxnorm", "unknown", medication)
+                    )
+                    med_statement.save(fhir_client.server)
+                    fhir_resources_created.append(f"Medication: {med_statement.id}")
+                except Exception as e:
+                    logger.error(f"Failed to create medication statement: {str(e)}")
+        
+        # Create Condition resources for pregnancy complications
+        if data.get('pregnancy_complications'):
+            complications_list = data['pregnancy_complications'] if isinstance(data['pregnancy_complications'], list) else [data['pregnancy_complications']]
+            for complication in complications_list:
+                try:
+                    condition = create_fhir_condition(
+                        new_user.id,
+                        create_codeable_concept("http://snomed.info/sct", "77386006", complication)
+                    )
+                    condition.save(fhir_client.server)
+                    fhir_resources_created.append(f"Pregnancy Complication: {condition.id}")
+                except Exception as e:
+                    logger.error(f"Failed to create pregnancy complication condition: {str(e)}")
+        
+        # Create CarePlan for birth plan
+        if data.get('birth_plan'):
+            try:
+                care_plan = create_fhir_care_plan(
+                    new_user.id,
+                    "Birth Plan",
+                    data['birth_plan']
+                )
+                care_plan.save(fhir_client.server)
+                fhir_resources_created.append(f"Birth Plan: {care_plan.id}")
+            except Exception as e:
+                logger.error(f"Failed to create birth plan care plan: {str(e)}")
         
         logger.info("Attempting to commit FHIR ID to database")
         db.session.commit()
@@ -1258,7 +1751,8 @@ MamaCare Team'''
             'fhir_id': new_user.fhir_id,
             'due_date': new_user.due_date.strftime('%Y-%m-%d') if new_user.due_date else None,
             'gestational_age': new_user.gestational_age,
-            'email_sent': email_sent
+            'email_sent': email_sent,
+            'fhir_resources_created': fhir_resources_created
         }
         if not email_sent:
             response['email_error'] = email_error
@@ -2727,7 +3221,7 @@ Submitted: {current_datetime}
         """
         
         # Send SMS to PresTrack (configure the number in environment variables)
-        prestrack_number = "+23278656832"  # Fixed number for PresTrack
+        prestrack_number = os.getenv('PRESTRACK_PHONE_NUMBER', "+23233237891")  # Configurable number for PresTrack
         sms_sent = False
         
         if prestrack_number:
