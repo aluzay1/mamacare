@@ -3,9 +3,11 @@ services:
     name: mamacare-backend
     env: python
     region: frankfurt
-    buildCommand: pip install -r backend/requirements.txt && pip install gunicorn
+    buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT app:app
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.11"
       - key: SECRET_KEY
         generateValue: true
       - key: DATABASE_URL

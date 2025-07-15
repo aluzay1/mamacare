@@ -62,8 +62,9 @@ You'll need to set these in Render:
 - **Branch:** `main` (or your default branch)
 
 **Build & Deploy Settings:**
-- **Build Command:** `pip install -r backend/requirements.txt && pip install gunicorn`
+- **Build Command:** `pip install -r backend/requirements.txt`
 - **Start Command:** `cd backend && gunicorn --bind 0.0.0.0:$PORT app:app`
+- **Python Version:** `3.11` (specified in runtime.txt)
 
 ### 2.3 Create PostgreSQL Database
 
