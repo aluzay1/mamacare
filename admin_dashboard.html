@@ -959,7 +959,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Healthcare Professional's Image</label>
-                                    <input type="file" class="form-control" name="image" accept="image/*" required>
+                                    <input type="file" class="form-control" name="image" accept="image/*">
+                                    <small class="form-text text-muted">Optional - You can add an image later</small>
                                 </div>
                                 <div class="mb-3">
                                     <div class="form-check">
@@ -1676,6 +1677,13 @@ function toggleAuthForm() {
                         console.log(`${key}: ${value}`);
                     }
                     
+                    // Check if image file is too large
+                    const imageFile = formData.get('image');
+                    if (imageFile && imageFile.size > 5 * 1024 * 1024) { // 5MB limit
+                        throw new Error('Image file is too large. Please use a file smaller than 5MB.');
+                    }
+                    
+                    console.log('Sending request to backend...');
                     const response = await apiCall('/api/admin/doctors', {
                     method: 'POST',
                     headers: {
@@ -1685,8 +1693,21 @@ function toggleAuthForm() {
                 });
 
                 if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Failed to add doctor');
+                        console.log('Response status:', response.status);
+                        console.log('Response headers:', response.headers);
+                        
+                        let errorMessage = 'Failed to add doctor';
+                        try {
+                            const errorData = await response.json();
+                            errorMessage = errorData.error || errorMessage;
+                            console.log('Error data:', errorData);
+                        } catch (parseError) {
+                            console.log('Could not parse error response:', parseError);
+                            const errorText = await response.text();
+                            console.log('Error text:', errorText);
+                            errorMessage = errorText || errorMessage;
+                        }
+                        throw new Error(errorMessage);
                     }
 
                     alert('Healthcare Professionals added successfully!');
