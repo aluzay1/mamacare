@@ -949,12 +949,12 @@
                         <thead>
                             <tr>
                                 <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
-                                <th>Date</th>
-                                <th>Diagnosis</th>
-                                <th>Treatment</th>
-                                <th>Medication</th>
-                                <th>Doctor</th>
-                                <th>Hospital</th>
+                                <th class="sortable" onclick="sortTable(1, 'date')">Date</th>
+                                <th class="sortable" onclick="sortTable(2, 'diagnosis')">Diagnosis</th>
+                                <th class="sortable" onclick="sortTable(3, 'treatment')">Treatment</th>
+                                <th class="sortable" onclick="sortTable(4, 'medication')">Medication</th>
+                                <th class="sortable" onclick="sortTable(5, 'doctor')">Doctor</th>
+                                <th class="sortable" onclick="sortTable(6, 'hospital')">Hospital</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -1505,6 +1505,61 @@
             background: #a8a8a8;
         }
 
+        /* Table loading state */
+        .table-loading {
+            position: relative;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .table-loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            margin: -15px 0 0 -15px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #4158D0;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Table responsive improvements */
+        @media (max-width: 1200px) {
+            table {
+                min-width: 700px;
+            }
+            
+            th, td {
+                padding: 1rem 0.75rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 992px) {
+            table {
+                min-width: 600px;
+            }
+            
+            th, td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+            
+            .btn-download-single, .btn-delete {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                min-width: 70px;
+            }
+        }
+
         /* Table header improvements */
         .table-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -1520,118 +1575,217 @@
             font-weight: 600;
         }
 
+        /* Enhanced Table Layout with Consistent Alignment */
         table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             min-width: 800px;
             table-layout: fixed;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-            white-space: normal;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: auto;
-            vertical-align: top;
-            line-height: 1.5;
-            color: #2c3e50;
-            font-size: 0.95rem;
+        /* Table Header Styling */
+        thead {
+            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
         }
 
         th {
-            background-color: #f8f9fa;
-            color: #2c3e50;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            border: none;
+            color: white;
             font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: sticky;
             top: 0;
             z-index: 10;
-            border-bottom: 2px solid #dee2e6;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
 
-        /* Ensure header text is always visible */
-        th > * {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        th:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        th.sortable {
+            position: relative;
+            padding-right: 2rem;
+        }
+
+        th.sortable::after {
+            content: '↕';
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        th.sort-asc::after {
+            content: '↑';
+            opacity: 1;
+        }
+
+        th.sort-desc::after {
+            content: '↓';
+            opacity: 1;
+        }
+
+        /* Table Body Styling */
+        tbody tr {
+            transition: all 0.3s ease;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        tbody tr:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
         }
 
         td {
-            background-color: #ffffff;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        /* Ensure text is fully visible and readable */
-        td > * {
+            padding: 1.25rem 1rem;
+            text-align: center;
+            border: none;
+            vertical-align: middle;
+            line-height: 1.5;
+            color: #2c3e50;
+            font-size: 0.9rem;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            color: inherit;
+            hyphens: auto;
         }
 
-        /* Specific column widths with better alignment */
+        /* Column-specific styling */
         th:nth-child(1), td:nth-child(1) { /* Checkbox */
-            width: 50px;
-            min-width: 50px;
-            max-width: 50px;
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
             text-align: center;
-            padding: 1rem 0.5rem;
+            padding: 1.25rem 0.5rem;
         }
 
         th:nth-child(2), td:nth-child(2) { /* Date */
             width: 120px;
             min-width: 120px;
             max-width: 120px;
-            word-break: break-word;
-            font-weight: 500;
+            font-weight: 600;
+            color: #4158D0;
         }
 
         th:nth-child(3), td:nth-child(3) { /* Diagnosis */
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            word-break: break-word;
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+            text-align: left;
+            padding-left: 1.5rem;
         }
 
         th:nth-child(4), td:nth-child(4) { /* Treatment */
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            word-break: break-word;
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+            text-align: left;
+            padding-left: 1.5rem;
         }
 
         th:nth-child(5), td:nth-child(5) { /* Medication */
-            width: 200px;
-            min-width: 200px;
-            max-width: 200px;
-            word-break: break-word;
+            width: 180px;
+            min-width: 180px;
+            max-width: 180px;
+            text-align: left;
+            padding-left: 1.5rem;
         }
 
         th:nth-child(6), td:nth-child(6) { /* Doctor */
-            width: 150px;
-            min-width: 150px;
-            max-width: 150px;
-            word-break: break-word;
+            width: 140px;
+            min-width: 140px;
+            max-width: 140px;
+            font-weight: 500;
         }
 
         th:nth-child(7), td:nth-child(7) { /* Hospital */
-            width: 150px;
-            min-width: 150px;
-            max-width: 150px;
-            word-break: break-word;
+            width: 140px;
+            min-width: 140px;
+            max-width: 140px;
+            font-weight: 500;
         }
 
         th:nth-child(8), td:nth-child(8) { /* Actions */
-            width: 120px;
-            min-width: 120px;
-            max-width: 120px;
+            width: 140px;
+            min-width: 140px;
+            max-width: 140px;
             text-align: center;
-            word-break: keep-all;
+        }
+
+        /* Standardized Button Styling */
+        .btn-download-single, .btn-delete {
+            padding: 0.5rem 0.75rem;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 0.25rem;
+            min-width: 80px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+        }
+
+        .btn-download-single {
+            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
+            color: white;
+        }
+
+        .btn-download-single:hover {
+            background: linear-gradient(135deg, #138496 0%, #5a32a3 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        /* Checkbox styling */
+        .record-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #4158D0;
+        }
+
+        /* Empty state styling */
+        tbody tr td[colspan] {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6c757d;
+            font-style: italic;
+            background: #f8f9fa;
         }
 
         /* Improve text visibility and contrast */
@@ -5221,6 +5375,68 @@
             } else if (lastVisitDate) {
                 lastVisitDate.textContent = 'N/A';
             }
+        }
+
+        // Table Sorting Functionality
+        let currentSortColumn = -1;
+        let currentSortDirection = 'asc';
+
+        function sortTable(columnIndex, fieldName) {
+            const table = document.querySelector('table');
+            const tbody = table.querySelector('tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const headers = table.querySelectorAll('th');
+
+            // Remove previous sort indicators
+            headers.forEach(header => {
+                header.classList.remove('sort-asc', 'sort-desc');
+            });
+
+            // Determine sort direction
+            if (currentSortColumn === columnIndex) {
+                currentSortDirection = currentSortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSortColumn = columnIndex;
+                currentSortDirection = 'asc';
+            }
+
+            // Add sort indicator to current column
+            headers[columnIndex].classList.add(currentSortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+
+            // Sort the rows
+            rows.sort((a, b) => {
+                const aValue = getCellValue(a, columnIndex, fieldName);
+                const bValue = getCellValue(b, columnIndex, fieldName);
+
+                if (fieldName === 'date') {
+                    return currentSortDirection === 'asc' 
+                        ? new Date(aValue) - new Date(bValue)
+                        : new Date(bValue) - new Date(aValue);
+                } else {
+                    if (currentSortDirection === 'asc') {
+                        return aValue.localeCompare(bValue, undefined, { numeric: true, sensitivity: 'base' });
+                    } else {
+                        return bValue.localeCompare(aValue, undefined, { numeric: true, sensitivity: 'base' });
+                    }
+                }
+            });
+
+            // Reorder the rows in the table
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        function getCellValue(row, columnIndex, fieldName) {
+            const cell = row.cells[columnIndex];
+            if (!cell) return '';
+            
+            // For date fields, get the actual date value
+            if (fieldName === 'date') {
+                const dateText = cell.textContent.trim();
+                return dateText || '';
+            }
+            
+            // For other fields, get the text content
+            return cell.textContent.trim() || '';
         }
 
         // Test function to verify medical measurement field handling
