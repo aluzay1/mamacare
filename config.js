@@ -4,7 +4,7 @@ const API_CONFIG = {
     development: 'http://localhost:5000',
     
     // Production - Render backend
-    production: 'https://mamacare-backend.onrender.com', // Update this with your actual Render URL
+    production: 'https://mamacare-backend-1bdm.onrender.com', // Update this with your actual Render URL
     
     // Get current environment
     getBaseUrl: function() {
