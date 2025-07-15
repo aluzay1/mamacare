@@ -2444,13 +2444,17 @@ def admin_signup():
         # Hash password
         hashed_password = generate_password_hash(data['password'])
         
+        # Check if this is the first admin (auto-verify the first admin)
+        existing_admin_count = Admin.query.count()
+        is_first_admin = existing_admin_count == 0
+        
         # Create new admin user
         new_admin = Admin(
             name=data['name'],
             email=data['email'],
             phone=data['phone'],
             password=hashed_password,
-            is_verified=False,  # New admins need verification
+            is_verified=is_first_admin,  # Auto-verify the first admin
             created_at=datetime.utcnow()
         )
         
@@ -2465,9 +2469,16 @@ def admin_signup():
         except Exception as e:
             logger.error(f'Failed to send admin notification email: {str(e)}')
         
+        # Determine success message based on verification status
+        if is_first_admin:
+            message = 'Admin account created successfully! You are the first admin and have been automatically verified. You can now login.'
+        else:
+            message = 'Admin account created successfully. Please wait for verification by an existing admin.'
+        
         return jsonify({
-            'message': 'Admin account created successfully. Please wait for verification.',
-            'admin_id': new_admin.id
+            'message': message,
+            'admin_id': new_admin.id,
+            'is_verified': is_first_admin
         }), 201
         
     except Exception as e:

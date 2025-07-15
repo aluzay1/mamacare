@@ -2373,9 +2373,14 @@ function toggleAuthForm() {
                             throw new Error(errorData.error || 'Failed to create admin account');
                         }
 
-                        alert('Admin account created successfully! Please wait for verification.');
+                        const result = await response.json();
+                        alert(result.message);
                         e.target.reset();
-                        toggleAuthForm(); // Switch back to login
+                        
+                        // If auto-verified, switch to login form
+                        if (result.is_verified) {
+                            toggleAuthForm(); // Switch back to login
+                        }
                     } catch (error) {
                         console.error('Error creating admin account:', error);
                         alert('Failed to create admin account: ' + error.message);
