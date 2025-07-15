@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mamacare-backend"
+version = "1.0.0"
+description = "MamaCare Healthcare Platform Backend"
+requires-python = ">=3.11,<3.12"
+
+[tool.setuptools.packages.find]
+where = ["backend"]
+
+[tool.pytest.ini_options]
+pythonpath = ["backend"] 
