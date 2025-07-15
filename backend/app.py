@@ -79,12 +79,12 @@ logger = logging.getLogger(__name__)
 # Database configuration
 database_url = os.getenv('DATABASE_URL')
 if database_url and not database_url.startswith('[Leave blank'):
-    # Use psycopg2 for PostgreSQL connections (compatible with Python 3.11)
+    # Use pg8000 for PostgreSQL connections (pure Python, compatible with Python 3.13)
     if database_url.startswith('postgresql://'):
-        database_url = database_url.replace('postgresql://', 'postgresql+psycopg2://')
+        database_url = database_url.replace('postgresql://', 'postgresql+pg8000://')
     app.config['SQLALCHEMY_DATABASE_URI'] = database_url
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://postgres:postgres@db:5432/mamacare'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+pg8000://postgres:postgres@db:5432/mamacare'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
     'pool_pre_ping': True,

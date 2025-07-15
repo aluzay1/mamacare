@@ -7,14 +7,10 @@ services:
     startCommand: cd backend && gunicorn --bind 0.0.0.0:$PORT app:app
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.7
-      - key: PYTHONPATH
-        value: /opt/render/project/src
+        value: 3.11.18
       - key: FLASK_DEBUG
         value: False
       - key: PYTHONUNBUFFERED
         value: 1
       - key: TIMEZONE
-        value: Africa/Freetown
-      - key: SECRET_KEY
-        generateValue: true 
+        value: Africa/Freetown 
