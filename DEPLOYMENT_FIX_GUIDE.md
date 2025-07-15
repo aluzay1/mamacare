@@ -13,26 +13,26 @@ Fixed SQLAlchemy compatibility issues with Python 3.13 by using Python 3.11 and 
 ### **Key Dependencies**
 ```txt
 Flask==2.2.5
-Flask-SQLAlchemy==3.0.2
-SQLAlchemy==1.4.41
-psycopg2-binary==2.9.9
+Flask-SQLAlchemy==3.1.1
+SQLAlchemy==2.0.23
+psycopg[binary]==3.2.9
 ```
 
 ### **Database Configuration**
-- URL: `postgresql+psycopg2://`
-- Driver: `psycopg2-binary` (compatible with Python 3.11)
+- URL: `postgresql+psycopg://`
+- Driver: `psycopg3` (compatible with SQLAlchemy 2.0 and Python 3.11)
 
 ## 🔧 **Files Updated**
 
 ### 1. **backend/requirements.txt**
-- Downgraded to SQLAlchemy 1.4.41
-- Using psycopg2-binary for PostgreSQL
-- Flask-SQLAlchemy 3.0.2 for compatibility
+- Upgraded to SQLAlchemy 2.0.23
+- Using psycopg3 for PostgreSQL
+- Flask-SQLAlchemy 3.1.1 for compatibility
 
 ### 2. **backend/app.py**
-- Database URL uses `postgresql+psycopg2://`
+- Database URL uses `postgresql+psycopg://`
 - Removed unused imports
-- Compatible with Python 3.11
+- Compatible with Python 3.11 and SQLAlchemy 2.0
 
 ### 3. **render.yaml**
 - Forces Python 3.11.18
@@ -68,7 +68,7 @@ DATABASE_URL = [Auto-linked from PostgreSQL]
 
 1. **✅ Build Success** - All packages compatible with Python 3.11
 2. **✅ App Startup** - No SQLAlchemy typing errors
-3. **✅ Database Connection** - psycopg2-binary works perfectly
+3. **✅ Database Connection** - psycopg3 works perfectly with SQLAlchemy 2.0
 4. **✅ Health Check** - `/health` endpoint returns healthy status
 
 ## 🔍 **Troubleshooting**
