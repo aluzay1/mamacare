@@ -1675,6 +1675,12 @@ function toggleAuthForm() {
                         throw new Error('Image file is too large. Please use a file smaller than 5MB.');
                     }
                     
+                    // For debugging: remove image if it exists to test without image upload
+                    if (imageFile) {
+                        console.log('Image file detected, removing for test...');
+                        formData.delete('image');
+                    }
+                    
                     console.log('Sending request to backend...');
                     const response = await apiCall('/api/admin/doctors', {
                     method: 'POST',
@@ -1705,6 +1711,8 @@ function toggleAuthForm() {
                             }
                         } catch (parseError) {
                             console.log('Could not read error response:', parseError);
+                            // If we can't read the response, try to get a basic error message
+                            errorMessage = `HTTP ${response.status}: ${response.statusText}`;
                         }
                         throw new Error(errorMessage);
                     }
