@@ -26,13 +26,21 @@ async function apiCall(endpoint, options = {}) {
     
     console.log(`Making API call to: ${url}`);
     
+    // Prepare headers
+    let headers = {
+        'Accept': 'application/json',
+        ...options.headers
+    };
+    
+    // Only set Content-Type if it's not FormData
+    // For FormData, let the browser set the correct content-type with boundary
+    if (!(options.body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+    }
+    
     const response = await fetch(url, {
         ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            ...options.headers
-        }
+        headers: headers
     });
     
     return response;
