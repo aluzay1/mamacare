@@ -17,12 +17,8 @@ document.getElementById("pinForm").addEventListener("submit", async (e) => {
         const requestData = { pin };
         console.log('Request data:', requestData);
         
-        const response = await fetch('/api/patient/profile', {
+        const response = await apiCall('/api/patient/profile', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
             body: JSON.stringify(requestData)
         });
 
@@ -140,12 +136,8 @@ if (addRecordForm) {
         };
         
         try {
-            const response = await fetch('/api/patient/medical-records', {
+            const response = await apiCall('/api/patient/medical-records', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
                 body: JSON.stringify(record)
             });
             
@@ -155,12 +147,8 @@ if (addRecordForm) {
             }
             
             // Refresh the profile to get updated records
-            const profileResponse = await fetch('/api/patient/profile', {
+            const profileResponse = await apiCall('/api/patient/profile', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
                 body: JSON.stringify({
                     pin: record.pin
                 })
@@ -193,12 +181,8 @@ async function deleteRecord(recordId) {
     }
     
     try {
-        const response = await fetch(`/api/patient/medical-records/${recordId}`, {
+        const response = await apiCall(`/api/patient/medical-records/${recordId}`, {
             method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
             body: JSON.stringify({
                 pin: document.getElementById("patientPin").value.trim()
             })
@@ -210,12 +194,8 @@ async function deleteRecord(recordId) {
         }
         
         // Refresh the profile to get updated records
-        const profileResponse = await fetch('/api/patient/profile', {
+        const profileResponse = await apiCall('/api/patient/profile', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
             body: JSON.stringify({
                 pin: document.getElementById("patientPin").value.trim()
             })

@@ -1,35 +1,39 @@
-// Configuration for MamaCare API endpoints
-const config = {
-    // Development configuration (localhost)
-    development: {
-        apiBaseUrl: 'http://localhost:5000',
-        environment: 'development'
-    },
+// API Configuration
+const API_CONFIG = {
+    // Development - local backend
+    development: 'http://localhost:5000',
     
-    // Production configuration (Render)
-    production: {
-        apiBaseUrl: 'https://mamacare-backend.onrender.com', // Update this with your actual Render URL
-        environment: 'production'
+    // Production - Render backend
+    production: 'https://mamacare-backend.onrender.com', // Update this with your actual Render URL
+    
+    // Get current environment
+    getBaseUrl: function() {
+        // Check if we're on Netlify (production)
+        if (window.location.hostname.includes('netlify.app') || 
+            window.location.hostname.includes('netlify.com') ||
+            window.location.hostname === 'mamacare.netlify.app') {
+            return this.production;
+        }
+        // Otherwise use development
+        return this.development;
     }
 };
 
-// Determine which configuration to use
-const isDevelopment = window.location.hostname === 'localhost' || 
-                     window.location.hostname === '127.0.0.1' ||
-                     window.location.hostname.includes('localhost');
-
-// Export the current configuration
-const currentConfig = isDevelopment ? config.development : config.production;
-
-// Make it available globally
-window.MamaCareConfig = currentConfig;
-
-// Helper function to get API URL
-function getApiUrl(endpoint) {
-    return `${currentConfig.apiBaseUrl}${endpoint}`;
-}
-
-// Export for use in other scripts
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { config, currentConfig, getApiUrl };
+// Helper function to make API calls
+async function apiCall(endpoint, options = {}) {
+    const baseUrl = API_CONFIG.getBaseUrl();
+    const url = `${baseUrl}${endpoint}`;
+    
+    console.log(`Making API call to: ${url}`);
+    
+    const response = await fetch(url, {
+        ...options,
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            ...options.headers
+        }
+    });
+    
+    return response;
 } 
