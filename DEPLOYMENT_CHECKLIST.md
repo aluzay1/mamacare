@@ -36,7 +36,7 @@
 ### Step 4: Set Environment Variables
 - [ ] SECRET_KEY (auto-generated)
 - [ ] DATABASE_URL (auto-linked from PostgreSQL)
-- [ ] FLASK_ENV = production
+- [ ] FLASK_DEBUG = False
 - [ ] PYTHONUNBUFFERED = 1
 - [ ] TIMEZONE = Africa/Freetown
 - [ ] EMAIL_USER = your-gmail@gmail.com

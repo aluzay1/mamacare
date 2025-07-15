@@ -267,7 +267,7 @@ pip install -r requirements.txt
 
 # Set up environment
 export FLASK_APP=app.py
-export FLASK_ENV=development
+export FLASK_DEBUG=True
 
 # Run migrations
 flask db upgrade
