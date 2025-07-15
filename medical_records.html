@@ -1451,7 +1451,11 @@
             border-bottom: 1px solid #eee;
             white-space: normal;
             word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
             max-width: 200px;
+            vertical-align: top;
+            line-height: 1.4;
         }
 
         th {
@@ -1464,38 +1468,52 @@
 
         td {
             line-height: 1.4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Ensure text wraps properly in all cells */
+        td > * {
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         /* Specific column widths */
         th:nth-child(1), td:nth-child(1) { /* Date */
             min-width: 120px;
             max-width: 120px;
+            word-break: break-word;
         }
 
         th:nth-child(2), td:nth-child(2) { /* Doctor */
             min-width: 150px;
             max-width: 150px;
+            word-break: break-word;
         }
 
         th:nth-child(3), td:nth-child(3) { /* Diagnosis */
             min-width: 200px;
             max-width: 200px;
+            word-break: break-word;
         }
 
         th:nth-child(4), td:nth-child(4) { /* Treatment */
             min-width: 200px;
             max-width: 200px;
+            word-break: break-word;
         }
 
         th:nth-child(5), td:nth-child(5) { /* Notes */
             min-width: 250px;
             max-width: 250px;
+            word-break: break-word;
         }
 
         th:nth-child(6), td:nth-child(6) { /* Actions */
             min-width: 100px;
             max-width: 100px;
             text-align: center;
+            word-break: keep-all;
         }
 
         @media (max-width: 768px) {
@@ -1596,6 +1614,10 @@
             th, td {
                 padding: 0.75rem;
                 font-size: 0.9rem;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                hyphens: auto;
+                vertical-align: top;
             }
 
             /* Adjust column widths for mobile */
