@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "mamacare-backend"
 version = "1.0.0"
 description = "MamaCare Healthcare Platform Backend"
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.11.0,<3.12"
 
 [tool.setuptools.packages.find]
 where = ["backend"]
