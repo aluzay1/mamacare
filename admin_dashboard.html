@@ -1670,12 +1670,12 @@ function toggleAuthForm() {
                 }
                 
                 try {
-                    const response = await fetch('http://localhost:5000/api/admin/doctors', {
-                        method: 'POST',
+                                    const response = await apiCall('/api/admin/doctors', {
+                    method: 'POST',
                     headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
-                        },
-                        body: formData
+                        'Authorization': `Bearer ${localStorage.getItem('admin_token')}`
+                    },
+                    body: formData
                 });
 
                 if (!response.ok) {
@@ -2358,18 +2358,15 @@ function toggleAuthForm() {
                     }
                     
                     try {
-                    const response = await fetch('http://localhost:5000/api/admin/signup', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                name: formData.get('name'),
-                                email: formData.get('email'),
-                                phone: formData.get('phone'),
-                                password: formData.get('password')
-                            })
-                        });
+                    const response = await apiCall('/api/admin/signup', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            name: formData.get('name'),
+                            email: formData.get('email'),
+                            phone: formData.get('phone'),
+                            password: formData.get('password')
+                        })
+                    });
 
                         if (!response.ok) {
                             const errorData = await response.json();
@@ -2525,11 +2522,11 @@ function toggleAuthForm() {
                             throw new Error('No authentication token found');
                         }
                         
-            const response = await fetch('http://localhost:5000/api/admin/hospitals', {
-                            headers: {
+            const response = await apiCall('/api/admin/hospitals', {
+                headers: {
                     'Authorization': `Bearer ${token}`
                 }
-                        });
+            });
 
                         if (!response.ok) {
                 throw new Error('Failed to load hospitals');
