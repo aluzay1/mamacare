@@ -6379,17 +6379,13 @@
                     'prenatalVitamins', 'pregnancyComplications', 'emergencyHospital', 'birthPlan'
                 ];
 
-                    // Update display and hide inputs
+                    // Hide all input fields and show displays (will be updated by server reload)
                     [...basicFields, ...contactFields, ...medicalFields, ...emergencyFields, ...pregnancyFields, ...detailedPregnancyFields].forEach(field => {
                     const display = document.getElementById(field + "Display");
                     const input = document.getElementById(field + "Input");
                     if (display && input) {
-                            // Only update if the input was visible (being edited)
-                            if (input.style.display !== 'none') {
-                                display.textContent = input.value || 'Not available';
-                            }
                         display.style.display = "block";
-                            input.style.display = "none";
+                        input.style.display = "none";
                     }
                 });
 
@@ -6397,7 +6393,29 @@
                 removePregnancyEditIndicators();
 
                 document.getElementById("saveProfileBtn").style.display = "none";
-                    alert('Profile changes saved successfully!');
+                
+                // Reload patient data from server to ensure display consistency
+                try {
+                    console.log('Reloading patient data from server...');
+                    const reloadResponse = await apiCall(`/api/patient/profile?pin=${encodeURIComponent(window.currentPatientPIN)}`, {
+                        method: 'GET',
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    if (reloadResponse.ok) {
+                        const reloadedData = await reloadResponse.json();
+                        updateProfileDisplay(reloadedData);
+                        console.log('Patient data reloaded successfully');
+                    } else {
+                        console.warn('Failed to reload patient data, but save was successful');
+                    }
+                } catch (error) {
+                    console.warn('Error reloading patient data:', error);
+                }
+                
+                alert('Profile changes saved successfully!');
                 } else {
                     const errorData = await response.json();
                     console.error('Error response:', errorData);
