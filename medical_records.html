@@ -5076,6 +5076,21 @@
                     if (element) {
                         const displayValue = value || defaultValue;
                         element.textContent = displayValue;
+                        
+                        // Add visual feedback for updated elements
+                        element.style.backgroundColor = '#e8f5e8';
+                        element.style.border = '1px solid #4CAF50';
+                        element.style.padding = '2px 4px';
+                        element.style.borderRadius = '3px';
+                        
+                        // Remove the highlight after 3 seconds
+                        setTimeout(() => {
+                            element.style.backgroundColor = '';
+                            element.style.border = '';
+                            element.style.padding = '';
+                            element.style.borderRadius = '';
+                        }, 3000);
+                        
                         console.log(`Updated element ${id} with value: ${displayValue}`);
                     } else {
                         console.warn(`Element with id ${id} not found`);
@@ -5249,6 +5264,16 @@
 
                 // Update the display name in the header
                 updateElement('patientNameHeader', profile.name, 'Patient Profile');
+                
+                // Scroll to pregnancy section if it exists and has data
+                if (profile.gender === 'female' && (profile.pregnancy_status || profile.lmp_date || profile.due_date)) {
+                    const pregnancySection = document.getElementById('pregnancyProfileSection');
+                    if (pregnancySection) {
+                        setTimeout(() => {
+                            pregnancySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 500);
+                    }
+                }
                 
             } catch (error) {
                 console.error('Error updating profile display:', error);
@@ -6443,7 +6468,24 @@
                     console.warn('Error reloading patient data:', error);
                 }
                 
-                alert('Profile changes saved successfully!');
+                // Show detailed success message
+                const updatedFields = [];
+                if (data.pregnancy_status) updatedFields.push('Pregnancy Status');
+                if (data.previous_pregnancies) updatedFields.push('Previous Pregnancies');
+                if (data.lmp_date) updatedFields.push('LMP Date');
+                if (data.due_date) updatedFields.push('Due Date');
+                if (data.gestational_age) updatedFields.push('Gestational Age');
+                if (data.blood_pressure) updatedFields.push('Blood Pressure');
+                if (data.weight) updatedFields.push('Weight');
+                if (data.pregnancy_complications) updatedFields.push('Pregnancy Complications');
+                if (data.allergies) updatedFields.push('Allergies');
+                if (data.medications) updatedFields.push('Medications');
+                
+                const message = updatedFields.length > 0 
+                    ? `Profile changes saved successfully!\n\nUpdated fields:\n${updatedFields.join('\n')}\n\nPlease scroll down to see the updated information.`
+                    : 'Profile changes saved successfully!';
+                
+                alert(message);
                 } else {
                     const errorData = await response.json();
                     console.error('Error response:', errorData);
