@@ -962,23 +962,11 @@
                         </tbody>
                     </table>
                 </div>
-                <!-- Mobile table container -->
-                <div class="records-table-mobile" id="recordsTableMobile">
-                    <table class="mobile-table">
-                        <thead>
-                            <tr>
-                                <th>DATE</th>
-                                <th>DIAGNOSIS</th>
-                                <th>TREATMENT</th>
-                                <th>MEDICATION</th>
-                                <th>DOCTOR</th>
-                                <th>HOSPITAL</th>
-                                <th>ACTIONS</th>
-                            </tr>
-                        </thead>
-                        <tbody id="recordsTableMobileBody">
-                        </tbody>
-                    </table>
+                <!-- Mobile cards container -->
+                <div class="records-cards-mobile" id="recordsCardsMobile">
+                    <div class="cards-container" id="cardsContainer">
+                        <!-- Cards will be dynamically generated here -->
+                    </div>
                 </div>
                         </div>
                     </div>
@@ -3537,176 +3525,216 @@
                     display: none;
                 }
                 
-                /* Show mobile table container */
-                .records-table-mobile {
-                    padding: 0.25rem;
-                    overflow-x: auto;
-                    -webkit-overflow-scrolling: touch;
+                /* Show mobile cards container */
+                .records-cards-mobile {
+                    padding: 0.5rem;
+                }
+                
+                .cards-container {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+                
+                .record-card {
+                    background: white;
+                    border-radius: 16px;
+                    padding: 1.25rem;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    border: 1px solid #e2e8f0;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+                
+                .record-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    height: 4px;
+                    background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                }
+                
+                .record-card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+                }
+                
+                .record-card-header {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    margin-bottom: 1rem;
+                    padding-bottom: 0.75rem;
+                    border-bottom: 1px solid #f1f5f9;
+                }
+                
+                .record-date {
+                    font-weight: 700;
+                    color: #2c3e50;
+                    font-size: 1.1rem;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                }
+                
+                .record-date::before {
+                    content: '📅';
+                    font-size: 1rem;
+                }
+                
+                .record-actions {
+                    display: flex;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
+                }
+                
+                .record-card-content {
+                    display: grid;
+                    gap: 1rem;
+                }
+                
+                .record-field {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 0.5rem;
+                    padding: 0.75rem;
                     border-radius: 8px;
                     background: #f8fafc;
+                    border-left: 4px solid transparent;
                 }
                 
-                .mobile-table {
-                    width: 100%;
-                    min-width: 700px;
-                    border-collapse: collapse;
-                    background: white;
-                    border-radius: 8px;
-                    overflow: hidden;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                    font-size: 0.8rem;
-                }
-                
-                .mobile-table thead {
-                    background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-                    color: white;
-                    position: sticky;
-                    top: 0;
-                    z-index: 10;
-                }
-                
-                .mobile-table th {
-                    padding: 0.75rem 0.5rem;
-                    text-align: left;
-                    font-weight: 600;
+                .record-field-label {
                     font-size: 0.75rem;
+                    font-weight: 700;
+                    color: #64748b;
                     text-transform: uppercase;
-                    letter-spacing: 0.3px;
-                    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-                    white-space: nowrap;
+                    letter-spacing: 0.5px;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
                 }
                 
-                .mobile-table tbody tr {
-                    border-bottom: 1px solid #e2e8f0;
-                    transition: all 0.2s ease;
-                }
-                
-                .mobile-table tbody tr:hover {
-                    background-color: #f1f5f9;
-                    transform: translateY(-1px);
-                    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-                }
-                
-                /* Touch-friendly improvements */
-                .mobile-table tbody tr {
-                    cursor: pointer;
-                }
-                
-                .mobile-table tbody tr:active {
-                    background-color: #e2e8f0;
-                    transform: translateY(0);
-                }
-                
-                /* Improved scrollbar for mobile */
-                .records-table-mobile::-webkit-scrollbar {
-                    height: 6px;
-                }
-                
-                .records-table-mobile::-webkit-scrollbar-track {
-                    background: #f1f5f9;
-                    border-radius: 3px;
-                }
-                
-                .records-table-mobile::-webkit-scrollbar-thumb {
-                    background: #cbd5e1;
-                    border-radius: 3px;
-                }
-                
-                .records-table-mobile::-webkit-scrollbar-thumb:hover {
-                    background: #94a3b8;
-                }
-                
-                .mobile-table td {
-                    padding: 0.75rem 0.5rem;
-                    font-size: 0.8rem;
-                    line-height: 1.3;
-                    vertical-align: top;
+                .record-field-value {
+                    font-size: 0.9rem;
+                    color: #1e293b;
+                    line-height: 1.4;
                     word-wrap: break-word;
-                    max-width: 120px;
+                    font-weight: 500;
                 }
                 
-                /* Color-coded columns with improved contrast */
-                .mobile-table td:nth-child(2) { /* Diagnosis */
+                .record-field-value:empty::before {
+                    content: "Not specified";
+                    color: #94a3b8;
+                    font-style: italic;
+                    font-weight: normal;
+                }
+                
+                /* Color-coded fields with icons */
+                .record-field.diagnosis {
+                    border-left-color: #dc2626;
+                    background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.02) 100%);
+                }
+                
+                .record-field.diagnosis .record-field-label::before {
+                    content: '🔴';
+                }
+                
+                .record-field.diagnosis .record-field-value {
                     color: #dc2626;
-                    font-weight: 500;
-                    background-color: rgba(220, 38, 38, 0.05);
                 }
                 
-                .mobile-table td:nth-child(3) { /* Treatment */
+                .record-field.treatment {
+                    border-left-color: #059669;
+                    background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(5, 150, 105, 0.02) 100%);
+                }
+                
+                .record-field.treatment .record-field-label::before {
+                    content: '🟢';
+                }
+                
+                .record-field.treatment .record-field-value {
                     color: #059669;
-                    font-weight: 500;
-                    background-color: rgba(5, 150, 105, 0.05);
                 }
                 
-                .mobile-table td:nth-child(4) { /* Medication */
+                .record-field.medication {
+                    border-left-color: #7c3aed;
+                    background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0.02) 100%);
+                }
+                
+                .record-field.medication .record-field-label::before {
+                    content: '🟣';
+                }
+                
+                .record-field.medication .record-field-value {
                     color: #7c3aed;
-                    font-weight: 500;
-                    background-color: rgba(124, 58, 237, 0.05);
                 }
                 
-                .mobile-table td:nth-child(5) { /* Doctor */
+                .record-field.doctor {
+                    border-left-color: #2563eb;
+                    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%);
+                }
+                
+                .record-field.doctor .record-field-label::before {
+                    content: '👨‍⚕️';
+                }
+                
+                .record-field.doctor .record-field-value {
                     color: #2563eb;
-                    font-weight: 500;
-                    background-color: rgba(37, 99, 235, 0.05);
                 }
                 
-                .mobile-table td:nth-child(6) { /* Hospital */
+                .record-field.hospital {
+                    border-left-color: #ea580c;
+                    background: linear-gradient(135deg, rgba(234, 88, 12, 0.05) 0%, rgba(234, 88, 12, 0.02) 100%);
+                }
+                
+                .record-field.hospital .record-field-label::before {
+                    content: '🏥';
+                }
+                
+                .record-field.hospital .record-field-value {
                     color: #ea580c;
-                    font-weight: 500;
-                    background-color: rgba(234, 88, 12, 0.05);
                 }
                 
-                /* Date column styling */
-                .mobile-table td:first-child {
-                    font-weight: 600;
-                    color: #2c3e50;
-                    background-color: rgba(44, 62, 80, 0.05);
-                    min-width: 80px;
-                }
-                
-                /* Actions column */
-                .mobile-table td:last-child {
-                    white-space: nowrap;
-                    min-width: 100px;
-                    text-align: center;
-                }
-                
-                .mobile-table .btn-download-single,
-                .mobile-table .btn-delete {
-                    padding: 0.4rem 0.6rem;
-                    font-size: 0.7rem;
-                    border-radius: 4px;
-                    margin: 0.1rem;
+                /* Action buttons */
+                .record-actions .btn-download-single,
+                .record-actions .btn-delete {
+                    padding: 0.6rem 1rem;
+                    font-size: 0.8rem;
+                    border-radius: 8px;
                     border: none;
                     cursor: pointer;
-                    transition: all 0.2s ease;
+                    transition: all 0.3s ease;
                     display: inline-flex;
                     align-items: center;
-                    gap: 0.2rem;
-                    min-width: 60px;
+                    gap: 0.4rem;
+                    font-weight: 600;
+                    min-width: 80px;
                     justify-content: center;
                 }
                 
-                .mobile-table .btn-download-single {
+                .record-actions .btn-download-single {
                     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
                     color: white;
                 }
                 
-                .mobile-table .btn-download-single:hover {
+                .record-actions .btn-download-single:hover {
                     background: linear-gradient(135deg, #2563eb, #1e40af);
-                    transform: translateY(-1px);
-                    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
                 }
                 
-                .mobile-table .btn-delete {
+                .record-actions .btn-delete {
                     background: linear-gradient(135deg, #ef4444, #dc2626);
                     color: white;
                 }
                 
-                .mobile-table .btn-delete:hover {
+                .record-actions .btn-delete:hover {
                     background: linear-gradient(135deg, #dc2626, #b91c1c);
-                    transform: translateY(-1px);
-                    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+                    transform: translateY(-2px);
+                    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
                 }
             }
         }
@@ -4875,13 +4903,13 @@
             console.log('Filtered records:', filteredRecords);
 
             const tableBody = document.getElementById("recordsTableBody");
-            const mobileTableBody = document.getElementById("recordsTableMobileBody");
+            const cardsContainer = document.getElementById("cardsContainer");
             tableBody.innerHTML = "";
-            mobileTableBody.innerHTML = "";
+            cardsContainer.innerHTML = "";
             
             if (!filteredRecords || filteredRecords.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No records found</td></tr>';
-                mobileTableBody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No records found</td></tr>';
+                cardsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666; font-style: italic;">No records found</div>';
                 document.getElementById('bulkDownloadBtn').style.display = 'none';
                 return;
             }
@@ -4909,25 +4937,45 @@
                 `;
                 tableBody.appendChild(row);
 
-                // Create mobile table row
-                const mobileRow = document.createElement('tr');
-                mobileRow.innerHTML = `
-                    <td>${new Date(record.date).toLocaleDateString()}</td>
-                    <td>${record.diagnosis || 'Not specified'}</td>
-                    <td>${record.treatment || 'Not specified'}</td>
-                    <td>${record.medication || 'Not specified'}</td>
-                    <td>${record.doctor || 'Not specified'}</td>
-                    <td>${record.hospital || 'Not specified'}</td>
-                    <td>
-                        <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
-                            <i class="fas fa-download"></i> Download
-                        </button>
-                        <button onclick="deleteRecord(${record.id})" class="btn-delete">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                    </td>
+                // Create mobile card
+                const card = document.createElement('div');
+                card.className = 'record-card';
+                card.innerHTML = `
+                    <div class="record-card-header">
+                        <div class="record-date">${new Date(record.date).toLocaleDateString()}</div>
+                        <div class="record-actions">
+                            <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
+                                <i class="fas fa-download"></i> Download
+                            </button>
+                            <button onclick="deleteRecord(${record.id})" class="btn-delete">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="record-card-content">
+                        <div class="record-field diagnosis">
+                            <div class="record-field-label">Diagnosis</div>
+                            <div class="record-field-value">${record.diagnosis || 'Not specified'}</div>
+                        </div>
+                        <div class="record-field treatment">
+                            <div class="record-field-label">Treatment</div>
+                            <div class="record-field-value">${record.treatment || 'Not specified'}</div>
+                        </div>
+                        <div class="record-field medication">
+                            <div class="record-field-label">Medication</div>
+                            <div class="record-field-value">${record.medication || 'Not specified'}</div>
+                        </div>
+                        <div class="record-field doctor">
+                            <div class="record-field-label">Doctor</div>
+                            <div class="record-field-value">${record.doctor || 'Not specified'}</div>
+                        </div>
+                        <div class="record-field hospital">
+                            <div class="record-field-label">Hospital</div>
+                            <div class="record-field-value">${record.hospital || 'Not specified'}</div>
+                        </div>
+                    </div>
                 `;
-                mobileTableBody.appendChild(mobileRow);
+                cardsContainer.appendChild(card);
             });
 
             // Update bulk download button visibility
@@ -4939,21 +4987,21 @@
 
         function updateTableDisplay() {
             const tableContainer = document.querySelector('.table-container');
-            const mobileTableContainer = document.getElementById('recordsTableMobile');
+            const mobileCardsContainer = document.getElementById('recordsCardsMobile');
             
             console.log('Window width:', window.innerWidth);
             console.log('Table container:', tableContainer);
-            console.log('Mobile table container:', mobileTableContainer);
+            console.log('Mobile cards container:', mobileCardsContainer);
             
             if (window.innerWidth <= 768) {
-                // Mobile view - show mobile table, hide desktop table
+                // Mobile view - show cards, hide desktop table
                 tableContainer.style.display = 'none';
-                mobileTableContainer.style.display = 'block';
-                console.log('Showing mobile table');
+                mobileCardsContainer.style.display = 'block';
+                console.log('Showing mobile cards');
             } else {
-                // Desktop view - show desktop table, hide mobile table
+                // Desktop view - show desktop table, hide cards
                 tableContainer.style.display = 'block';
-                mobileTableContainer.style.display = 'none';
+                mobileCardsContainer.style.display = 'none';
                 console.log('Showing desktop table');
             }
         }
