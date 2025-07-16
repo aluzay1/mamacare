@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=1.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
@@ -1955,67 +1955,7 @@
             hyphens: auto;
             }
 
-        /* Column-specific styling */
-        th:nth-child(1), td:nth-child(1) { /* Checkbox */
-            width: 60px;
-            min-width: 60px;
-            max-width: 60px;
-            text-align: center;
-            padding: 1.25rem 0.5rem;
-        }
 
-        th:nth-child(2), td:nth-child(2) { /* Date */
-            width: 120px;
-                min-width: 120px;
-                max-width: 120px;
-            font-weight: 600;
-            color: #4158D0;
-            }
-
-            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
-            width: 180px;
-            min-width: 180px;
-            max-width: 180px;
-            text-align: left;
-            padding-left: 1.5rem;
-            }
-
-            th:nth-child(4), td:nth-child(4) { /* Treatment */
-            width: 180px;
-            min-width: 180px;
-            max-width: 180px;
-            text-align: left;
-            padding-left: 1.5rem;
-            }
-
-        th:nth-child(5), td:nth-child(5) { /* Medication */
-            width: 180px;
-            min-width: 180px;
-            max-width: 180px;
-            text-align: left;
-            padding-left: 1.5rem;
-        }
-
-        th:nth-child(6), td:nth-child(6) { /* Doctor */
-            width: 140px;
-            min-width: 140px;
-            max-width: 140px;
-            font-weight: 500;
-        }
-
-        th:nth-child(7), td:nth-child(7) { /* Hospital */
-            width: 140px;
-            min-width: 140px;
-            max-width: 140px;
-            font-weight: 500;
-        }
-
-        th:nth-child(8), td:nth-child(8) { /* Actions */
-            width: 140px;
-            min-width: 140px;
-            max-width: 140px;
-            text-align: center;
-            }
 
         /* Standardized Button Styling */
         .btn-download-single, .btn-delete {
@@ -4501,95 +4441,7 @@
                 transform: translateY(-1px);
             }
             
-            /* Optimize column widths and styling for mobile */
-            th:nth-child(1), td:nth-child(1) { /* Checkbox */
-                width: 50px;
-                min-width: 50px;
-                text-align: center;
-                background-color: #f8fafc;
-                border-right: 2px solid #e2e8f0;
-            }
-            
-            th:nth-child(2), td:nth-child(2) { /* Date */
-                width: 100px;
-                min-width: 100px;
-                font-weight: 700;
-                color: #1e40af;
-                background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(30, 64, 175, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
-                width: 150px;
-                min-width: 150px;
-                max-width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #dc2626;
-                font-weight: 600;
-                background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(4), td:nth-child(4) { /* Treatment */
-                width: 150px;
-                min-width: 150px;
-                max-width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #059669;
-                font-weight: 600;
-                background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(5, 150, 105, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(5), td:nth-child(5) { /* Medication */
-                width: 150px;
-                min-width: 150px;
-                max-width: 150px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #7c3aed;
-                font-weight: 600;
-                background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(6), td:nth-child(6) { /* Doctor */
-                width: 120px;
-                min-width: 120px;
-                max-width: 120px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #ea580c;
-                font-weight: 600;
-                background: linear-gradient(135deg, rgba(234, 88, 12, 0.05) 0%, rgba(234, 88, 12, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(7), td:nth-child(7) { /* Hospital */
-                width: 120px;
-                min-width: 120px;
-                max-width: 120px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #0891b2;
-                font-weight: 600;
-                background: linear-gradient(135deg, rgba(8, 145, 178, 0.05) 0%, rgba(8, 145, 178, 0.02) 100%);
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            th:nth-child(8), td:nth-child(8) { /* Actions */
-                width: 140px;
-                min-width: 140px;
-                text-align: center;
-                background-color: #f8fafc;
-            }
+
             
             /* Mobile table header improvements */
             .table-container thead th {
@@ -5529,8 +5381,14 @@
         }
 
         function updateTableDisplay() {
-            // Simple responsive table approach - no special mobile handling needed
-            // The table will automatically adjust based on CSS media queries
+            // Force table layout recalculation
+            const table = document.querySelector('.records-table');
+            if (table) {
+                table.style.display = 'none';
+                setTimeout(() => {
+                    table.style.display = 'table';
+                }, 10);
+            }
         }
 
         // Add event listener for window resize
