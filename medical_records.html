@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css?v=2.3">
+    <link rel="stylesheet" href="styles.css?v=2.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
@@ -5045,16 +5045,6 @@
         .modern-table-wrapper {
             overflow-x: auto;
             border-radius: 0 0 12px 12px;
-            position: relative;
-        }
-
-        /* Mobile Table Container */
-        @media (max-width: 768px) {
-            .modern-table-wrapper {
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-                margin: 0.5rem 0;
-            }
         }
 
         /* Enhanced Header Styling */
@@ -5130,27 +5120,6 @@
 
         .record-row:last-child {
             border-bottom: none;
-        }
-
-        /* Mobile Row Improvements */
-        @media (max-width: 768px) {
-            .record-row {
-                border-bottom: 1px solid #e9ecef;
-            }
-
-            .record-row:hover {
-                transform: none;
-                box-shadow: none;
-                background: #f8f9fa;
-            }
-
-            .record-row:nth-child(even) {
-                background: #fafbfc;
-            }
-
-            .record-row:nth-child(even):hover {
-                background: #f0f2f5;
-            }
         }
 
         /* Cell Content Styling */
@@ -5339,279 +5308,88 @@
 
         /* Mobile Responsive Design */
         @media (max-width: 768px) {
-            /* Table Container */
-            .table-container {
-                margin: 0 -1rem;
-                padding: 0 1rem;
-            }
-
-            /* Header Controls */
             .table-header-controls {
                 flex-direction: column;
                 gap: 1rem;
                 align-items: stretch;
-                padding: 1rem;
-                border-radius: 8px;
             }
 
             .table-info {
                 justify-content: space-between;
-                flex-wrap: wrap;
-                gap: 0.5rem;
             }
 
-            .records-count, .last-updated {
-                font-size: 0.85rem;
-                flex: 1;
-                min-width: 140px;
-            }
-
-            .table-actions {
-                justify-content: center;
-            }
-
-            /* Table Wrapper */
-            .modern-table-wrapper {
-                border-radius: 8px;
-                margin: 0 -0.5rem;
-            }
-
-            /* Table Headers */
             .modern-medical-table th {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.8rem;
-                white-space: nowrap;
+            }
+
+            .modern-medical-table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
             }
 
             .header-content {
                 flex-direction: column;
                 gap: 0.25rem;
-                align-items: center;
             }
 
             .header-label {
                 font-size: 0.75rem;
-                text-align: center;
             }
 
             .sort-icon {
                 display: none;
             }
 
-            /* Table Cells */
-            .modern-medical-table td {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.85rem;
-            }
-
-            /* Column Widths for Mobile */
-            .checkbox-cell {
-                width: 50px;
-                min-width: 50px;
-            }
-
-            .date-cell {
-                width: 100px;
-                min-width: 100px;
-            }
-
-            .diagnosis-cell, .treatment-cell, .medication-cell {
-                max-width: 150px;
-                min-width: 120px;
-            }
-
-            .doctor-cell, .hospital-cell {
-                width: 120px;
-                min-width: 120px;
-            }
-
-            .actions-cell {
-                width: 120px;
-                min-width: 120px;
-            }
-
-            /* Cell Content */
-            .date-content, .doctor-content, .hospital-content {
-                flex-direction: column;
-                gap: 0.25rem;
-                align-items: center;
-            }
-
-            .date-icon, .doctor-icon, .hospital-icon {
-                font-size: 0.8rem;
-            }
-
-            .diagnosis-content, .treatment-content, .medication-content {
-                max-height: 60px;
-                overflow: hidden;
-            }
-
-            .diagnosis-text, .treatment-text, .medication-text {
-                font-size: 0.8rem;
-                line-height: 1.4;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-            }
-
-            /* Actions */
             .actions-content {
                 flex-direction: column;
                 gap: 0.25rem;
-                align-items: center;
             }
 
             .modern-btn {
                 padding: 0.5rem 0.75rem;
                 font-size: 0.75rem;
                 min-width: 60px;
-                width: 100%;
-                justify-content: center;
             }
 
             .btn-text {
                 display: none;
             }
 
-            /* Table Footer */
             .table-footer {
                 flex-direction: column;
                 gap: 0.5rem;
                 text-align: center;
-                padding: 1rem;
-            }
-
-            .table-stats, .table-help {
-                font-size: 0.8rem;
             }
         }
 
         @media (max-width: 480px) {
-            /* Ultra Mobile */
-            .table-container {
-                margin: 0 -0.5rem;
-                padding: 0 0.5rem;
-            }
-
             .table-header-controls {
-                padding: 0.75rem;
-                gap: 0.75rem;
+                padding: 0.75rem 1rem;
             }
 
             .table-info {
                 flex-direction: column;
                 gap: 0.5rem;
-                align-items: center;
-            }
-
-            .records-count, .last-updated {
-                font-size: 0.8rem;
-                min-width: auto;
-                justify-content: center;
-            }
-
-            /* Table */
-            .modern-medical-table {
-                font-size: 0.75rem;
             }
 
             .modern-medical-table th {
                 padding: 0.5rem 0.25rem;
-                font-size: 0.7rem;
+                font-size: 0.75rem;
             }
 
             .modern-medical-table td {
                 padding: 0.5rem 0.25rem;
-                font-size: 0.75rem;
+                font-size: 0.8rem;
             }
 
-            .header-content {
-                gap: 0.2rem;
-            }
-
-            .header-label {
-                font-size: 0.7rem;
-            }
-
-            /* Column Widths */
-            .checkbox-cell {
-                width: 40px;
-                min-width: 40px;
-            }
-
-            .date-cell {
-                width: 80px;
-                min-width: 80px;
-            }
-
-            .diagnosis-cell, .treatment-cell, .medication-cell {
-                max-width: 100px;
-                min-width: 80px;
-            }
-
-            .doctor-cell, .hospital-cell {
-                width: 100px;
-                min-width: 100px;
-            }
-
-            .actions-cell {
-                width: 100px;
-                min-width: 100px;
-            }
-
-            /* Content */
             .date-content, .doctor-content, .hospital-content {
-                gap: 0.2rem;
+                flex-direction: column;
+                gap: 0.25rem;
             }
 
             .date-icon, .doctor-icon, .hospital-icon {
-                font-size: 0.7rem;
-            }
-
-            .diagnosis-text, .treatment-text, .medication-text {
-                font-size: 0.7rem;
-                -webkit-line-clamp: 2;
-            }
-
-            /* Buttons */
-            .modern-btn {
-                padding: 0.4rem 0.5rem;
-                font-size: 0.7rem;
-                min-width: 50px;
-            }
-
-            /* Footer */
-            .table-footer {
-                padding: 0.75rem;
-            }
-
-            .table-stats, .table-help {
-                font-size: 0.75rem;
-            }
-        }
-
-        /* Horizontal Scroll Indicator for Mobile */
-        @media (max-width: 768px) {
-            .modern-table-wrapper::after {
-                content: '← Scroll →';
-                position: absolute;
-                bottom: -25px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(65, 88, 208, 0.9);
-                color: white;
-                padding: 0.25rem 0.75rem;
-                border-radius: 15px;
-                font-size: 0.75rem;
-                font-weight: 500;
-                z-index: 5;
-                animation: pulse 2s infinite;
-            }
-
-            @keyframes pulse {
-                0%, 100% { opacity: 0.7; }
-                50% { opacity: 1; }
+                font-size: 0.8rem;
             }
         }
     </style>
