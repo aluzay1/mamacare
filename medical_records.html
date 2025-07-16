@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css?v=2.2">
+    <link rel="stylesheet" href="styles.css?v=2.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
@@ -950,103 +950,40 @@
                     </button>
                 </div>
                 <div class="table-container">
-                    <div class="table-header-controls">
-                        <div class="table-info">
-                            <span class="records-count">
-                                <i class="fas fa-file-medical"></i>
-                                <span id="totalRecordsCount">0</span> Records
-                            </span>
-                            <span class="last-updated">
-                                <i class="fas fa-clock"></i>
-                                Updated: <span id="lastUpdatedTime">-</span>
-                            </span>
-                        </div>
-                        <div class="table-actions">
-                            <button onclick="downloadSelectedRecords()" class="btn-download" id="bulkDownloadBtn" style="display: none;">
-                                <i class="fas fa-download"></i> Download Selected
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="modern-table-wrapper">
-                        <table class="records-table modern-medical-table">
-                            <thead>
-                                <tr>
-                                    <th class="checkbox-header" title="Select All Records">
-                                        <div class="header-content">
-                                            <input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()">
-                                            <span class="header-label">Select</span>
-                                        </div>
-                                    </th>
-                                    <th class="sortable date-header" onclick="sortTable(1, 'date')" title="Click to sort by date">
-                                        <div class="header-content">
-                                            <i class="fas fa-calendar-alt"></i>
-                                            <span class="header-label">Visit Date</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sortable diagnosis-header" onclick="sortTable(2, 'diagnosis')" title="Click to sort by diagnosis">
-                                        <div class="header-content">
-                                            <i class="fas fa-stethoscope"></i>
-                                            <span class="header-label">Diagnosis</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sortable treatment-header" onclick="sortTable(3, 'treatment')" title="Click to sort by treatment">
-                                        <div class="header-content">
-                                            <i class="fas fa-notes-medical"></i>
-                                            <span class="header-label">Treatment</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sortable medication-header" onclick="sortTable(4, 'medication')" title="Click to sort by medication">
-                                        <div class="header-content">
-                                            <i class="fas fa-pills"></i>
-                                            <span class="header-label">Medication</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sortable doctor-header" onclick="sortTable(5, 'doctor')" title="Click to sort by doctor">
-                                        <div class="header-content">
-                                            <i class="fas fa-user-md"></i>
-                                            <span class="header-label">Doctor</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="sortable hospital-header" onclick="sortTable(6, 'hospital')" title="Click to sort by hospital">
-                                        <div class="header-content">
-                                            <i class="fas fa-hospital"></i>
-                                            <span class="header-label">Hospital</span>
-                                            <i class="fas fa-sort sort-icon"></i>
-                                        </div>
-                                    </th>
-                                    <th class="actions-header" title="Record Actions">
-                                        <div class="header-content">
-                                            <i class="fas fa-cogs"></i>
-                                            <span class="header-label">Actions</span>
-                                        </div>
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="recordsTableBody">
-                                <!-- Medical records will be dynamically populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="table-footer">
-                        <div class="table-stats">
-                            <span class="showing-records">
-                                Showing <span id="showingRecordsCount">0</span> of <span id="totalRecordsCount2">0</span> records
-                            </span>
-                        </div>
-                        <div class="table-help">
-                            <span class="help-text">
-                                <i class="fas fa-info-circle"></i>
-                                Click column headers to sort • Use search to filter records
-                            </span>
-                        </div>
-                    </div>
+                    <table class="records-table">
+                        <thead>
+                            <tr>
+                                <th class="checkbox-header" title="Select All Records">
+                                    <input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()">
+                                </th>
+                                <th class="sortable" onclick="sortTable(1, 'date')" title="Click to sort by date">
+                                    <i class="fas fa-calendar-alt"></i> Date
+                                </th>
+                                <th class="sortable" onclick="sortTable(2, 'diagnosis')" title="Click to sort by diagnosis">
+                                    <i class="fas fa-stethoscope"></i> Diagnosis
+                                </th>
+                                <th class="sortable" onclick="sortTable(3, 'treatment')" title="Click to sort by treatment">
+                                    <i class="fas fa-notes-medical"></i> Treatment
+                                </th>
+                                <th class="sortable" onclick="sortTable(4, 'medication')" title="Click to sort by medication">
+                                    <i class="fas fa-pills"></i> Medication
+                                </th>
+                                <th class="sortable" onclick="sortTable(5, 'doctor')" title="Click to sort by doctor">
+                                    <i class="fas fa-user-md"></i> Doctor
+                                </th>
+                                <th class="sortable" onclick="sortTable(6, 'hospital')" title="Click to sort by hospital">
+                                    <i class="fas fa-hospital"></i> Hospital
+                                </th>
+                                <th title="Record Actions" class="actions-header">
+                                    <i class="fas fa-cogs"></i> Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTableBody">
+                            <!-- Medical records will be dynamically populated here -->
+                        </tbody>
+
+                    </table>
                 </div>
 
                         </div>
@@ -4992,406 +4929,6 @@
                 padding: 0.4rem 0.5rem;
             }
         }
-
-        /* Modern Medical Table Styles */
-        .modern-medical-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            margin: 0;
-        }
-
-        /* Table Container and Header Controls */
-        .table-header-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-bottom: 1px solid #dee2e6;
-            border-radius: 12px 12px 0 0;
-        }
-
-        .table-info {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .records-count, .last-updated {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: #495057;
-            font-weight: 500;
-        }
-
-        .records-count i, .last-updated i {
-            color: #4158D0;
-            font-size: 1rem;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        /* Modern Table Wrapper */
-        .modern-table-wrapper {
-            overflow-x: auto;
-            border-radius: 0 0 12px 12px;
-        }
-
-        /* Enhanced Header Styling */
-        .modern-medical-table thead {
-            background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .modern-medical-table th {
-            padding: 1rem 0.75rem;
-            border: none;
-            color: white;
-            font-weight: 600;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-
-        .header-label {
-            font-weight: 600;
-        }
-
-        .sort-icon {
-            font-size: 0.75rem;
-            opacity: 0.7;
-            transition: opacity 0.3s ease;
-        }
-
-        .sortable:hover .sort-icon {
-            opacity: 1;
-        }
-
-        /* Column-specific header styling */
-        .checkbox-header .header-content {
-            justify-content: center;
-        }
-
-        .date-header .header-content,
-        .doctor-header .header-content,
-        .hospital-header .header-content,
-        .actions-header .header-content {
-            justify-content: center;
-        }
-
-        .diagnosis-header .header-content,
-        .treatment-header .header-content,
-        .medication-header .header-content {
-            justify-content: flex-start;
-        }
-
-        /* Enhanced Row Styling */
-        .record-row {
-            transition: all 0.3s ease;
-            border-bottom: 1px solid #f1f3f4;
-        }
-
-        .record-row:hover {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .record-row:last-child {
-            border-bottom: none;
-        }
-
-        /* Cell Content Styling */
-        .modern-medical-table td {
-            padding: 1rem 0.75rem;
-            border: none;
-            vertical-align: middle;
-            line-height: 1.6;
-            color: #2c3e50;
-            font-size: 0.9rem;
-        }
-
-        /* Checkbox Cell */
-        .checkbox-cell {
-            text-align: center;
-            width: 60px;
-        }
-
-        .checkbox-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .record-checkbox {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #4158D0;
-            border-radius: 4px;
-        }
-
-        /* Date Cell */
-        .date-cell {
-            text-align: center;
-            width: 120px;
-        }
-
-        .date-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .date-icon {
-            color: #4158D0;
-            font-size: 0.9rem;
-        }
-
-        .date-text {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        /* Medical Content Cells */
-        .diagnosis-cell, .treatment-cell, .medication-cell {
-            text-align: left;
-            max-width: 200px;
-        }
-
-        .diagnosis-content, .treatment-content, .medication-content {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .diagnosis-text, .treatment-text, .medication-text {
-            line-height: 1.5;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: auto;
-        }
-
-        /* Doctor and Hospital Cells */
-        .doctor-cell, .hospital-cell {
-            text-align: center;
-            width: 140px;
-        }
-
-        .doctor-content, .hospital-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .doctor-icon, .hospital-icon {
-            color: #4158D0;
-            font-size: 0.9rem;
-        }
-
-        .doctor-name, .hospital-name {
-            font-weight: 500;
-            color: #2c3e50;
-        }
-
-        /* Actions Cell */
-        .actions-cell {
-            text-align: center;
-            width: 160px;
-        }
-
-        .actions-content {
-            display: flex;
-            gap: 0.5rem;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* Modern Button Styling */
-        .modern-btn {
-            padding: 0.6rem 1rem;
-            font-size: 0.8rem;
-            font-weight: 500;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            min-width: 70px;
-            justify-content: center;
-        }
-
-        .btn-download-single.modern-btn {
-            background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
-            color: white;
-        }
-
-        .btn-download-single.modern-btn:hover {
-            background: linear-gradient(135deg, #138496 0%, #5a32a3 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(23, 162, 184, 0.3);
-        }
-
-        .btn-delete.modern-btn {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            color: white;
-        }
-
-        .btn-delete.modern-btn:hover {
-            background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(220, 53, 69, 0.3);
-        }
-
-        .btn-text {
-            font-weight: 500;
-        }
-
-        /* Table Footer */
-        .table-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            background: #f8f9fa;
-            border-top: 1px solid #dee2e6;
-            border-radius: 0 0 12px 12px;
-        }
-
-        .table-stats {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        .showing-records {
-            font-weight: 500;
-        }
-
-        .table-help {
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-
-        .help-text {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .help-text i {
-            color: #4158D0;
-        }
-
-        /* Mobile Responsive Design */
-        @media (max-width: 768px) {
-            .table-header-controls {
-                flex-direction: column;
-                gap: 1rem;
-                align-items: stretch;
-            }
-
-            .table-info {
-                justify-content: space-between;
-            }
-
-            .modern-medical-table th {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.8rem;
-            }
-
-            .modern-medical-table td {
-                padding: 0.75rem 0.5rem;
-                font-size: 0.85rem;
-            }
-
-            .header-content {
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-
-            .header-label {
-                font-size: 0.75rem;
-            }
-
-            .sort-icon {
-                display: none;
-            }
-
-            .actions-content {
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-
-            .modern-btn {
-                padding: 0.5rem 0.75rem;
-                font-size: 0.75rem;
-                min-width: 60px;
-            }
-
-            .btn-text {
-                display: none;
-            }
-
-            .table-footer {
-                flex-direction: column;
-                gap: 0.5rem;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .table-header-controls {
-                padding: 0.75rem 1rem;
-            }
-
-            .table-info {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-
-            .modern-medical-table th {
-                padding: 0.5rem 0.25rem;
-                font-size: 0.75rem;
-            }
-
-            .modern-medical-table td {
-                padding: 0.5rem 0.25rem;
-                font-size: 0.8rem;
-            }
-
-            .date-content, .doctor-content, .hospital-content {
-                flex-direction: column;
-                gap: 0.25rem;
-            }
-
-            .date-icon, .doctor-icon, .hospital-icon {
-                font-size: 0.8rem;
-            }
-        }
     </style>
 
     <script>
@@ -6022,60 +5559,24 @@
             filteredRecords.forEach(record => {
                 // Create table row
                 const row = document.createElement('tr');
-                row.className = 'record-row';
                 row.innerHTML = `
-                    <td data-label="Select" class="checkbox-cell">
-                        <div class="checkbox-wrapper">
-                            <input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()">
-                        </div>
-                    </td>
-                    <td data-label="Visit Date" class="date-cell">
-                        <div class="date-content">
-                            <i class="fas fa-calendar-alt date-icon"></i>
-                            <span class="date-text">${new Date(record.date).toLocaleDateString()}</span>
-                        </div>
-                    </td>
-                    <td data-label="Diagnosis" class="diagnosis-cell">
-                        <div class="diagnosis-content">
-                            <div class="diagnosis-text">${record.diagnosis || 'N/A'}</div>
-                        </div>
-                    </td>
-                    <td data-label="Treatment" class="treatment-cell">
-                        <div class="treatment-content">
-                            <div class="treatment-text">${record.treatment || 'N/A'}</div>
-                        </div>
-                    </td>
-                    <td data-label="Medication" class="medication-cell">
-                        <div class="medication-content">
-                            <div class="medication-text">${record.medication || 'N/A'}</div>
-                        </div>
-                    </td>
-                    <td data-label="Doctor" class="doctor-cell">
-                        <div class="doctor-content">
-                            <i class="fas fa-user-md doctor-icon"></i>
-                            <span class="doctor-name">${record.doctor || 'N/A'}</span>
-                        </div>
-                    </td>
-                    <td data-label="Hospital" class="hospital-cell">
-                        <div class="hospital-content">
-                            <i class="fas fa-hospital hospital-icon"></i>
-                            <span class="hospital-name">${record.hospital || 'N/A'}</span>
-                        </div>
-                    </td>
-                    <td data-label="Actions" class="actions-cell">
-                        <div class="actions-content">
-                            <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single modern-btn">
-                                <i class="fas fa-download"></i>
-                                <span class="btn-text">Download</span>
-                            </button>
-                            <button onclick="deleteRecord(${record.id})" class="btn-delete modern-btn">
-                                <i class="fas fa-trash"></i>
-                                <span class="btn-text">Delete</span>
-                            </button>
-                        </div>
+                    <td data-label="Select"><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
+                    <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
+                    <td data-label="Treatment">${record.treatment || 'N/A'}</td>
+                    <td data-label="Medication">${record.medication || 'N/A'}</td>
+                    <td data-label="Doctor">${record.doctor || 'N/A'}</td>
+                    <td data-label="Hospital">${record.hospital || 'N/A'}</td>
+                    <td data-label="Actions">
+                        <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
+                            <i class="fas fa-download"></i> Download
+                        </button>
+                        <button onclick="deleteRecord(${record.id})" class="btn-delete">Delete</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
+
+
             });
 
             // Update bulk download button visibility
@@ -6226,20 +5727,10 @@
         
         function updateTableFooter(recordCount) {
             const totalRecordsElement = document.getElementById('totalRecordsCount');
-            const totalRecordsElement2 = document.getElementById('totalRecordsCount2');
-            const showingRecordsElement = document.getElementById('showingRecordsCount');
             const lastUpdatedElement = document.getElementById('lastUpdatedTime');
             
             if (totalRecordsElement) {
                 totalRecordsElement.textContent = recordCount;
-            }
-            
-            if (totalRecordsElement2) {
-                totalRecordsElement2.textContent = recordCount;
-            }
-            
-            if (showingRecordsElement) {
-                showingRecordsElement.textContent = recordCount;
             }
             
             if (lastUpdatedElement) {
