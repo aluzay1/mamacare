@@ -972,7 +972,7 @@
                                 <th class="sortable" onclick="sortTable(6, 'hospital')" title="Click to sort by hospital">
                                     <i class="fas fa-hospital"></i> Hospital
                                 </th>
-                                <th title="Record Actions">
+                                <th title="Record Actions" class="actions-header">
                                     <i class="fas fa-cogs"></i> Actions
                                 </th>
                             </tr>
@@ -2441,6 +2441,8 @@
             align-items: center;
             gap: 4px;
             box-shadow: 0 2px 4px rgba(23, 162, 184, 0.2);
+            white-space: nowrap;
+            text-decoration: none;
         }
 
         .btn-download-single:hover {
@@ -3663,6 +3665,104 @@
                 margin: -1rem -1rem 1rem -1rem;
                 padding: 1rem;
                 border-radius: 12px 12px 0 0;
+            }
+
+            /* Enhanced table action buttons for mobile */
+            .records-table td:last-child {
+                min-width: 120px;
+                white-space: nowrap;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                min-width: 60px;
+                margin: 0.1rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.25rem;
+            }
+
+            .records-table .btn-download-single i,
+            .records-table .btn-delete i {
+                font-size: 0.75rem;
+            }
+
+            /* Responsive actions header */
+            .records-table .actions-header {
+                min-width: 120px;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.85rem;
+            }
+
+            .records-table .actions-header i {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            /* Further optimize action buttons for small screens */
+            .records-table td:last-child {
+                min-width: 100px;
+                padding: 0.5rem 0.25rem;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                min-width: 50px;
+                margin: 0.05rem;
+            }
+
+            .records-table .btn-download-single i,
+            .records-table .btn-delete i {
+                font-size: 0.7rem;
+            }
+
+            /* Small screen actions header */
+            .records-table .actions-header {
+                min-width: 100px;
+                padding: 0.6rem 0.25rem;
+                font-size: 0.8rem;
+            }
+
+            .records-table .actions-header i {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            /* Ultra-compact action buttons */
+            .records-table td:last-child {
+                min-width: 90px;
+                padding: 0.4rem 0.2rem;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                padding: 0.35rem 0.5rem;
+                font-size: 0.7rem;
+                min-width: 45px;
+                margin: 0.02rem;
+            }
+
+            .records-table .btn-download-single i,
+            .records-table .btn-delete i {
+                font-size: 0.65rem;
+            }
+
+            /* Compact actions header */
+            .records-table .actions-header {
+                min-width: 90px;
+                padding: 0.5rem 0.2rem;
+                font-size: 0.75rem;
+            }
+
+            .records-table .actions-header i {
+                font-size: 0.7rem;
             }
         }
 
