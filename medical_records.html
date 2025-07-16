@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css?v=2.0">
+    <link rel="stylesheet" href="styles.css?v=2.1">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
@@ -1877,6 +1877,37 @@
         .records-table td:nth-child(8) {
             text-align: center;
             vertical-align: middle;
+        }
+
+        /* Ensure proper column alignment for all columns */
+        .records-table th:nth-child(2),
+        .records-table td:nth-child(2) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .records-table th:nth-child(3),
+        .records-table td:nth-child(3),
+        .records-table th:nth-child(4),
+        .records-table td:nth-child(4),
+        .records-table th:nth-child(5),
+        .records-table td:nth-child(5) {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        .records-table th:nth-child(6),
+        .records-table td:nth-child(6),
+        .records-table th:nth-child(7),
+        .records-table td:nth-child(7) {
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        /* Center the download button in actions column */
+        .records-table .btn-download-single {
+            margin: 0 auto;
+            display: inline-block;
         }
 
         /* Table Header Styling */
@@ -3919,6 +3950,17 @@
                 display: none !important;
             }
 
+            /* Center the download button in actions column */
+            .records-table td:nth-child(8) {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .records-table .btn-download-single {
+                margin: 0 auto;
+                display: inline-block;
+            }
+
             /* Small screen actions header */
             .records-table .actions-header {
                 width: 110px;
@@ -3926,6 +3968,7 @@
                 max-width: 110px;
                 padding: 0.6rem 0.25rem;
                 font-size: 0.8rem;
+                text-align: center;
             }
 
             .records-table .actions-header i {
@@ -3988,6 +4031,17 @@
                 display: none !important;
             }
 
+            /* Center the download button in actions column */
+            .records-table td:nth-child(8) {
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .records-table .btn-download-single {
+                margin: 0 auto;
+                display: inline-block;
+            }
+
             /* Compact actions header */
             .records-table .actions-header {
                 width: 100px;
@@ -3995,6 +4049,7 @@
                 max-width: 100px;
                 padding: 0.5rem 0.2rem;
                 font-size: 0.75rem;
+                text-align: center;
             }
 
             .records-table .actions-header i {
@@ -5564,14 +5619,32 @@
                                 header.style.boxSizing = 'border-box';
                                 
                                 // Apply column-specific text alignment
-                                if (index === 0 || index === 1 || index === 5 || index === 6 || index === 7) {
-                                    // Center align: checkbox, date, doctor, hospital, actions
+                                if (index === 0) {
+                                    // Center align: checkbox column
                                     header.style.textAlign = 'center';
                                     dataCells[index].style.textAlign = 'center';
-                                } else {
+                                } else if (index === 1) {
+                                    // Center align: date column
+                                    header.style.textAlign = 'center';
+                                    dataCells[index].style.textAlign = 'center';
+                                } else if (index === 2 || index === 3 || index === 4) {
                                     // Left align: diagnosis, treatment, medication
                                     header.style.textAlign = 'left';
                                     dataCells[index].style.textAlign = 'left';
+                                } else if (index === 5 || index === 6) {
+                                    // Center align: doctor, hospital
+                                    header.style.textAlign = 'center';
+                                    dataCells[index].style.textAlign = 'center';
+                                } else if (index === 7) {
+                                    // Center align: actions column with button
+                                    header.style.textAlign = 'center';
+                                    dataCells[index].style.textAlign = 'center';
+                                    // Ensure button is centered in the cell
+                                    const button = dataCells[index].querySelector('.btn-download-single');
+                                    if (button) {
+                                        button.style.margin = '0 auto';
+                                        button.style.display = 'inline-block';
+                                    }
                                 }
                             }
                         });
