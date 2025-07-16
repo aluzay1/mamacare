@@ -4305,66 +4305,192 @@
                 overflow-x: auto;
                 margin: 0 -1rem;
                 padding: 0 1rem;
+                border-radius: 12px;
+                background: white;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             }
             
             table {
                 min-width: 600px;
                 font-size: 0.85rem;
+                border-collapse: collapse;
+                width: 100%;
             }
             
             th, td {
-                padding: 0.5rem 0.3rem;
+                padding: 0.75rem 0.5rem;
                 white-space: nowrap;
                 vertical-align: top;
+                border-bottom: 1px solid #e2e8f0;
+                text-align: left;
+            }
+            
+            th {
+                background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                color: white;
+                font-weight: 600;
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+            
+            tr:hover {
+                background-color: #f8fafc;
+            }
+            
+            tr:nth-child(even) {
+                background-color: #fafbfc;
             }
             
             /* Make action buttons more touch-friendly */
             .btn-download-single, .btn-delete {
-                padding: 0.5rem 0.75rem;
+                padding: 0.6rem 0.8rem;
                 font-size: 0.75rem;
-                min-width: 60px;
-                margin: 0.1rem;
+                min-width: 65px;
+                margin: 0.15rem;
+                border-radius: 8px;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.3rem;
+                font-weight: 600;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .btn-download-single {
+                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                color: white;
+            }
+            
+            .btn-download-single:hover {
+                background: linear-gradient(135deg, #2563eb, #1e40af);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+            }
+            
+            .btn-delete {
+                background: linear-gradient(135deg, #ef4444, #dc2626);
+                color: white;
+            }
+            
+            .btn-delete:hover {
+                background: linear-gradient(135deg, #dc2626, #b91c1c);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
             }
             
             /* Optimize column widths for mobile */
             th:nth-child(1), td:nth-child(1) { /* Checkbox */
-                width: 30px;
-                min-width: 30px;
+                width: 40px;
+                min-width: 40px;
+                text-align: center;
             }
             
             th:nth-child(2), td:nth-child(2) { /* Date */
-                width: 80px;
-                min-width: 80px;
+                width: 90px;
+                min-width: 90px;
+                font-weight: 600;
+                color: #2563eb;
             }
             
             th:nth-child(3), td:nth-child(3) { /* Diagnosis */
-                width: 120px;
-                min-width: 120px;
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             
             th:nth-child(4), td:nth-child(4) { /* Treatment */
-                width: 120px;
-                min-width: 120px;
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             
             th:nth-child(5), td:nth-child(5) { /* Medication */
-                width: 120px;
-                min-width: 120px;
+                width: 140px;
+                min-width: 140px;
+                max-width: 140px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             
             th:nth-child(6), td:nth-child(6) { /* Doctor */
-                width: 100px;
-                min-width: 100px;
+                width: 110px;
+                min-width: 110px;
+                max-width: 110px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #059669;
             }
             
             th:nth-child(7), td:nth-child(7) { /* Hospital */
-                width: 100px;
-                min-width: 100px;
+                width: 110px;
+                min-width: 110px;
+                max-width: 110px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #7c3aed;
             }
             
             th:nth-child(8), td:nth-child(8) { /* Actions */
-                width: 120px;
-                min-width: 120px;
+                width: 130px;
+                min-width: 130px;
+                text-align: center;
+            }
+            
+            /* Mobile table header improvements */
+            .table-container thead th {
+                position: sticky;
+                top: 0;
+                background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                color: white;
+                font-weight: 600;
+                z-index: 10;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            /* Mobile table body improvements */
+            .table-container tbody tr {
+                border-bottom: 1px solid #e2e8f0;
+                transition: background-color 0.2s ease;
+            }
+            
+            .table-container tbody tr:hover {
+                background-color: #f1f5f9;
+                transform: scale(1.01);
+            }
+            
+            /* Mobile checkbox styling */
+            .table-container input[type="checkbox"] {
+                width: 18px;
+                height: 18px;
+                accent-color: #4158D0;
+                cursor: pointer;
+            }
+            
+            /* Mobile empty state styling */
+            .table-container tbody tr td[colspan] {
+                text-align: center;
+                padding: 2rem;
+                color: #64748b;
+                font-style: italic;
+                background: #f8fafc;
+                border-radius: 8px;
+                margin: 1rem 0;
             }
         }
     </style>
