@@ -1735,7 +1735,7 @@
 
         /* Enhanced Table Layout with Consistent Alignment */
         table {
-                width: 100%;
+            width: 100%;
             border-collapse: separate;
             border-spacing: 0;
             min-width: 800px;
@@ -1744,7 +1744,121 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* Responsive table for mobile devices */
+        @media (max-width: 768px) {
+            .records-table {
+                min-width: auto;
+                table-layout: auto;
             }
+
+            .records-table thead {
+                display: none;
+            }
+
+            .records-table tbody {
+                display: block;
+            }
+
+            .records-table tr {
+                display: block;
+                margin-bottom: 1rem;
+                border: 1px solid #e9ecef;
+                border-radius: 8px;
+                background: white;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 1rem;
+            }
+
+            .records-table td {
+                display: block;
+                text-align: left;
+                padding: 0.5rem 0;
+                border: none;
+                position: relative;
+                padding-left: 120px;
+                min-height: 2.5rem;
+            }
+
+            .records-table td:before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 110px;
+                font-weight: 600;
+                color: #495057;
+                font-size: 0.85rem;
+            }
+
+            .records-table td:first-child {
+                padding-left: 0;
+                text-align: center;
+                border-bottom: 1px solid #e9ecef;
+                padding-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .records-table td:first-child:before {
+                display: none;
+            }
+
+            .records-table td:last-child {
+                padding-left: 0;
+                text-align: center;
+                border-top: 1px solid #e9ecef;
+                padding-top: 0.75rem;
+                margin-top: 0.5rem;
+            }
+
+            .records-table td:last-child:before {
+                display: none;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                margin: 0.25rem;
+                min-width: 80px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .records-table td {
+                padding-left: 100px;
+                min-height: 2.25rem;
+            }
+
+            .records-table td:before {
+                width: 90px;
+                font-size: 0.8rem;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                min-width: 70px;
+                font-size: 0.75rem;
+                padding: 0.4rem 0.6rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .records-table td {
+                padding-left: 85px;
+                min-height: 2rem;
+            }
+
+            .records-table td:before {
+                width: 80px;
+                font-size: 0.75rem;
+            }
+
+            .records-table .btn-download-single,
+            .records-table .btn-delete {
+                min-width: 60px;
+                font-size: 0.7rem;
+                padding: 0.35rem 0.5rem;
+            }
+        }
 
         /* Table Header Styling */
         thead {
@@ -3433,47 +3547,7 @@
             }
         }
 
-        /* Extra small screens - further optimize table */
-        @media (max-width: 480px) {
-            .records-table-mobile {
-                padding: 0.15rem;
-                margin: 0 -0.5rem;
-            }
-            
-            .mobile-table {
-                min-width: 600px;
-                font-size: 0.75rem;
-                border-radius: 6px;
-            }
-            
-            .mobile-table th {
-                padding: 0.6rem 0.4rem;
-                font-size: 0.7rem;
-                letter-spacing: 0.2px;
-            }
-            
-            .mobile-table td {
-                padding: 0.6rem 0.4rem;
-                font-size: 0.75rem;
-                max-width: 100px;
-            }
-            
-            .mobile-table .btn-download-single,
-            .mobile-table .btn-delete {
-                padding: 0.3rem 0.5rem;
-                font-size: 0.65rem;
-                min-width: 50px;
-                gap: 0.15rem;
-            }
-            
-            .mobile-table td:first-child {
-                min-width: 70px;
-            }
-            
-            .mobile-table td:last-child {
-                min-width: 90px;
-            }
-        }
+
 
         @media (max-width: 360px) {
             .patient-basic-info h2 {
@@ -3505,42 +3579,7 @@
                 font-size: 0.75rem;
             }
             
-            /* Ultra small screen table optimization */
-            .records-table-mobile {
-                padding: 0.1rem;
-                margin: 0 -0.75rem;
-            }
-            
-            .mobile-table {
-                min-width: 550px;
-                font-size: 0.7rem;
-            }
-            
-            .mobile-table th {
-                padding: 0.5rem 0.3rem;
-                font-size: 0.65rem;
-            }
-            
-            .mobile-table td {
-                padding: 0.5rem 0.3rem;
-                font-size: 0.7rem;
-                max-width: 80px;
-            }
-            
-            .mobile-table .btn-download-single,
-            .mobile-table .btn-delete {
-                padding: 0.25rem 0.4rem;
-                font-size: 0.6rem;
-                min-width: 45px;
-            }
-            
-            .mobile-table td:first-child {
-                min-width: 60px;
-            }
-            
-            .mobile-table td:last-child {
-                min-width: 80px;
-            }
+
         }
 
         /* Landscape orientation adjustments */
@@ -3668,11 +3707,6 @@
             }
 
             /* Enhanced table action buttons for mobile */
-            .records-table td:last-child {
-                min-width: 120px;
-                white-space: nowrap;
-            }
-
             .records-table .btn-download-single,
             .records-table .btn-delete {
                 padding: 0.5rem 0.75rem;
@@ -3688,81 +3722,6 @@
             .records-table .btn-download-single i,
             .records-table .btn-delete i {
                 font-size: 0.75rem;
-            }
-
-            /* Responsive actions header */
-            .records-table .actions-header {
-                min-width: 120px;
-                padding: 0.75rem 0.5rem;
-                font-size: 0.85rem;
-            }
-
-            .records-table .actions-header i {
-                font-size: 0.8rem;
-            }
-        }
-
-        @media (max-width: 576px) {
-            /* Further optimize action buttons for small screens */
-            .records-table td:last-child {
-                min-width: 100px;
-                padding: 0.5rem 0.25rem;
-            }
-
-            .records-table .btn-download-single,
-            .records-table .btn-delete {
-                padding: 0.4rem 0.6rem;
-                font-size: 0.75rem;
-                min-width: 50px;
-                margin: 0.05rem;
-            }
-
-            .records-table .btn-download-single i,
-            .records-table .btn-delete i {
-                font-size: 0.7rem;
-            }
-
-            /* Small screen actions header */
-            .records-table .actions-header {
-                min-width: 100px;
-                padding: 0.6rem 0.25rem;
-                font-size: 0.8rem;
-            }
-
-            .records-table .actions-header i {
-                font-size: 0.75rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            /* Ultra-compact action buttons */
-            .records-table td:last-child {
-                min-width: 90px;
-                padding: 0.4rem 0.2rem;
-            }
-
-            .records-table .btn-download-single,
-            .records-table .btn-delete {
-                padding: 0.35rem 0.5rem;
-                font-size: 0.7rem;
-                min-width: 45px;
-                margin: 0.02rem;
-            }
-
-            .records-table .btn-download-single i,
-            .records-table .btn-delete i {
-                font-size: 0.65rem;
-            }
-
-            /* Compact actions header */
-            .records-table .actions-header {
-                min-width: 90px;
-                padding: 0.5rem 0.2rem;
-                font-size: 0.75rem;
-            }
-
-            .records-table .actions-header i {
-                font-size: 0.7rem;
             }
         }
 
@@ -5345,7 +5304,7 @@
             console.log('Table body found:', tableBody);
             
             if (!filteredRecords || filteredRecords.length === 0) {
-                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No records found</td></tr>';
+                tableBody.innerHTML = '<tr><td data-label="No Records" colspan="8" style="text-align: center;">No records found</td></tr>';
                 document.getElementById('bulkDownloadBtn').style.display = 'none';
                 return;
             }
@@ -5357,7 +5316,7 @@
                 // Create table row
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td data-label="Select"><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
                     <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
                     <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
                     <td data-label="Treatment">${record.treatment || 'N/A'}</td>
