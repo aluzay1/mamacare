@@ -98,12 +98,12 @@
                         <div class="form-group">
                             <label for="gender">Gender</label>
                             <select id="gender" name="gender" class="form-control" required>
-                                <option value="" disabled selected>Select gender</option>
+                    <option value="" disabled selected>Select gender</option>
                                 <option value="male">Male</option>
-                                <option value="female">Female</option>
+                    <option value="female">Female</option>
                                 <option value="other">Other</option>
                                 <option value="unknown">Unknown</option>
-                            </select>
+                </select>
                         </div>
                     </div>
             </div>
@@ -417,7 +417,7 @@
                                 <option value="other">Other</option>
                             </select>
                             <small class="form-help">Hold Ctrl (Windows) or Cmd (Mac) to select multiple complications</small>
-                        </div>
+                            </div>
 
                         <div class="form-group">
                             <label for="emergency_hospital">Preferred Emergency Hospital</label>
@@ -1539,11 +1539,11 @@
 
         /* Table responsive improvements */
         @media (max-width: 1200px) {
-            table {
+        table {
                 min-width: 700px;
-            }
-            
-            th, td {
+        }
+
+        th, td {
                 padding: 1rem 0.75rem;
                 font-size: 0.85rem;
             }
@@ -3578,7 +3578,7 @@
                 
                 .record-actions {
                     display: flex;
-                    gap: 0.5rem;
+                gap: 0.5rem;
                     flex-wrap: wrap;
                 }
                 
@@ -3591,8 +3591,8 @@
                     display: flex;
                     flex-direction: column;
                     gap: 0.5rem;
-                    padding: 0.75rem;
-                    border-radius: 8px;
+                padding: 0.75rem;
+                border-radius: 8px;
                     background: #f8fafc;
                     border-left: 4px solid transparent;
                 }
@@ -3605,9 +3605,9 @@
                     letter-spacing: 0.5px;
                     display: flex;
                     align-items: center;
-                    gap: 0.5rem;
-                }
-                
+                gap: 0.5rem;
+            }
+            
                 .record-field-value {
                     font-size: 0.9rem;
                     color: #1e293b;
@@ -3729,7 +3729,7 @@
                 }
                 
                 /* Ensure table is always visible on mobile */
-                .table-container {
+            .table-container {
                     display: block !important;
                 }
             }
@@ -4305,9 +4305,10 @@
                 overflow-x: auto;
                 margin: 0 -1rem;
                 padding: 0 1rem;
-                border-radius: 12px;
+                border-radius: 16px;
                 background: white;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+                box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                border: 1px solid #e2e8f0;
             }
             
             table {
@@ -4315,141 +4316,204 @@
                 font-size: 0.85rem;
                 border-collapse: collapse;
                 width: 100%;
+                background: white;
+                border-radius: 12px;
+                overflow: hidden;
             }
             
             th, td {
-                padding: 0.75rem 0.5rem;
+                padding: 1rem 0.75rem;
                 white-space: nowrap;
-                vertical-align: top;
-                border-bottom: 1px solid #e2e8f0;
+                vertical-align: middle;
+                border-bottom: 1px solid #f1f5f9;
                 text-align: left;
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
             
             th {
-                background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
                 color: white;
-                font-weight: 600;
+                font-weight: 700;
                 font-size: 0.8rem;
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
+                letter-spacing: 1px;
                 position: sticky;
                 top: 0;
                 z-index: 10;
+                box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
+                border-bottom: 2px solid #1e40af;
+            }
+            
+            tr {
+                transition: all 0.3s ease;
+                border-left: 3px solid transparent;
             }
             
             tr:hover {
-                background-color: #f8fafc;
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                border-left-color: #3b82f6;
+                transform: translateX(2px);
+                box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
             }
             
             tr:nth-child(even) {
                 background-color: #fafbfc;
             }
             
-            /* Make action buttons more touch-friendly */
+            tr:nth-child(even):hover {
+                background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            }
+            
+            /* Enhanced action buttons with better organization */
             .btn-download-single, .btn-delete {
-                padding: 0.6rem 0.8rem;
+                padding: 0.7rem 1rem;
                 font-size: 0.75rem;
-                min-width: 65px;
-                margin: 0.15rem;
-                border-radius: 8px;
+                min-width: 70px;
+                margin: 0.2rem;
+                border-radius: 10px;
                 border: none;
                 cursor: pointer;
                 transition: all 0.3s ease;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                gap: 0.3rem;
-                font-weight: 600;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                gap: 0.4rem;
+                font-weight: 700;
+                box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: relative;
+                overflow: hidden;
             }
             
             .btn-download-single {
-                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
                 color: white;
+                border: 2px solid #059669;
             }
             
             .btn-download-single:hover {
-                background: linear-gradient(135deg, #2563eb, #1e40af);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+                background: linear-gradient(135deg, #047857 0%, #059669 50%, #10b981 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(5, 150, 105, 0.4);
+                border-color: #047857;
             }
             
             .btn-delete {
-                background: linear-gradient(135deg, #ef4444, #dc2626);
+                background: linear-gradient(135deg, #dc2626 0%, #ef4444 50%, #f87171 100%);
                 color: white;
+                border: 2px solid #dc2626;
             }
             
             .btn-delete:hover {
-                background: linear-gradient(135deg, #dc2626, #b91c1c);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 8px rgba(239, 68, 68, 0.3);
+                background: linear-gradient(135deg, #b91c1c 0%, #dc2626 50%, #ef4444 100%);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 12px rgba(220, 38, 38, 0.4);
+                border-color: #b91c1c;
             }
             
-            /* Optimize column widths for mobile */
+            /* Button icons styling */
+            .btn-download-single i, .btn-delete i {
+                font-size: 0.8rem;
+                transition: transform 0.3s ease;
+            }
+            
+            .btn-download-single:hover i {
+                transform: translateY(-1px);
+            }
+            
+            .btn-delete:hover i {
+                transform: translateY(-1px);
+            }
+            
+            /* Optimize column widths and styling for mobile */
             th:nth-child(1), td:nth-child(1) { /* Checkbox */
-                width: 40px;
-                min-width: 40px;
+                width: 50px;
+                min-width: 50px;
                 text-align: center;
+                background-color: #f8fafc;
+                border-right: 2px solid #e2e8f0;
             }
             
             th:nth-child(2), td:nth-child(2) { /* Date */
-                width: 90px;
-                min-width: 90px;
-                font-weight: 600;
-                color: #2563eb;
+                width: 100px;
+                min-width: 100px;
+                font-weight: 700;
+                color: #1e40af;
+                background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(30, 64, 175, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
             }
             
             th:nth-child(3), td:nth-child(3) { /* Diagnosis */
-                width: 140px;
-                min-width: 140px;
-                max-width: 140px;
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
+                color: #dc2626;
+                font-weight: 600;
+                background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
             }
             
             th:nth-child(4), td:nth-child(4) { /* Treatment */
-                width: 140px;
-                min-width: 140px;
-                max-width: 140px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            
-            th:nth-child(5), td:nth-child(5) { /* Medication */
-                width: 140px;
-                min-width: 140px;
-                max-width: 140px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            
-            th:nth-child(6), td:nth-child(6) { /* Doctor */
-                width: 110px;
-                min-width: 110px;
-                max-width: 110px;
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: #059669;
+                font-weight: 600;
+                background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(5, 150, 105, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
             }
             
-            th:nth-child(7), td:nth-child(7) { /* Hospital */
-                width: 110px;
-                min-width: 110px;
-                max-width: 110px;
+            th:nth-child(5), td:nth-child(5) { /* Medication */
+                width: 150px;
+                min-width: 150px;
+                max-width: 150px;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 color: #7c3aed;
+                font-weight: 600;
+                background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
+            }
+            
+            th:nth-child(6), td:nth-child(6) { /* Doctor */
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #ea580c;
+                font-weight: 600;
+                background: linear-gradient(135deg, rgba(234, 88, 12, 0.05) 0%, rgba(234, 88, 12, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
+            }
+            
+            th:nth-child(7), td:nth-child(7) { /* Hospital */
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                color: #0891b2;
+                font-weight: 600;
+                background: linear-gradient(135deg, rgba(8, 145, 178, 0.05) 0%, rgba(8, 145, 178, 0.02) 100%);
+                border-right: 1px solid #e2e8f0;
             }
             
             th:nth-child(8), td:nth-child(8) { /* Actions */
-                width: 130px;
-                min-width: 130px;
+                width: 140px;
+                min-width: 140px;
                 text-align: center;
+                background-color: #f8fafc;
             }
             
             /* Mobile table header improvements */
@@ -4474,23 +4538,116 @@
                 transform: scale(1.01);
             }
             
-            /* Mobile checkbox styling */
+            /* Enhanced checkbox styling */
             .table-container input[type="checkbox"] {
-                width: 18px;
-                height: 18px;
-                accent-color: #4158D0;
+                width: 20px;
+                height: 20px;
+                accent-color: #3b82f6;
                 cursor: pointer;
+                border-radius: 4px;
+                border: 2px solid #e2e8f0;
+                transition: all 0.3s ease;
+                position: relative;
             }
             
-            /* Mobile empty state styling */
+            .table-container input[type="checkbox"]:checked {
+                background-color: #3b82f6;
+                border-color: #3b82f6;
+                box-shadow: 0 2px 4px rgba(59, 130, 246, 0.3);
+            }
+            
+            .table-container input[type="checkbox"]:hover {
+                border-color: #3b82f6;
+                transform: scale(1.1);
+            }
+            
+            /* Select all checkbox styling */
+            .table-container th input[type="checkbox"] {
+                width: 22px;
+                height: 22px;
+                accent-color: #1e40af;
+            }
+            
+            /* Enhanced empty state styling */
             .table-container tbody tr td[colspan] {
                 text-align: center;
-                padding: 2rem;
+                padding: 3rem 2rem;
                 color: #64748b;
                 font-style: italic;
-                background: #f8fafc;
-                border-radius: 8px;
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                border-radius: 12px;
                 margin: 1rem 0;
+                border: 2px dashed #cbd5e1;
+                font-size: 1.1rem;
+                font-weight: 500;
+                position: relative;
+            }
+            
+            .table-container tbody tr td[colspan]::before {
+                content: '📋';
+                font-size: 2rem;
+                display: block;
+                margin-bottom: 1rem;
+                opacity: 0.7;
+            }
+            
+            /* Table header organization improvements */
+            .table-container thead th {
+                position: sticky;
+                top: 0;
+                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+                color: white;
+                font-weight: 700;
+                z-index: 10;
+                box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+                border-bottom: 3px solid #1e40af;
+                text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            }
+            
+            /* Table body organization improvements */
+            .table-container tbody tr {
+                border-bottom: 1px solid #e2e8f0;
+                transition: all 0.3s ease;
+                position: relative;
+            }
+            
+            .table-container tbody tr:hover {
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                border-left-color: #3b82f6;
+                transform: translateX(3px);
+                box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+                z-index: 1;
+            }
+            
+            /* Row numbering for better organization */
+            .table-container tbody tr::before {
+                content: counter(row-counter);
+                counter-increment: row-counter;
+                position: absolute;
+                left: -30px;
+                top: 50%;
+                transform: translateY(-50%);
+                background: #3b82f6;
+                color: white;
+                width: 24px;
+                height: 24px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.7rem;
+                font-weight: 700;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .table-container tbody tr:hover::before {
+                opacity: 1;
+            }
+            
+            /* Counter initialization */
+            .table-container tbody {
+                counter-reset: row-counter;
             }
         }
     </style>
@@ -4910,13 +5067,13 @@
             const formData = new FormData(e.target);
             const data = Object.fromEntries(formData.entries());
             
-                          // Construct the full name from first, middle, and last name
-              const firstName = data.first_name || '';
-              const middleName = data.middle_name || '';
-              const lastName = data.last_name || '';
+            // Construct the full name from first, middle, and last name
+            const firstName = data.first_name || '';
+            const middleName = data.middle_name || '';
+            const lastName = data.last_name || '';
             
             // Create full name by combining the parts
-                                                     const fullName = [firstName, middleName, lastName].filter(part => part.trim()).join(' ');
+            const fullName = [firstName, middleName, lastName].filter(part => part.trim()).join(' ');
             
             // Add the constructed name fields to the data object
             data.name = fullName;
