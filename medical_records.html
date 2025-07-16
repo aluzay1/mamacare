@@ -1646,6 +1646,32 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        /* Ensure table is always fully visible */
+        .table-container table {
+            margin: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        /* Add visual indicator for horizontal scroll on mobile */
+        @media (max-width: 768px) {
+            .table-container::after {
+                content: '← Scroll →';
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(65, 88, 208, 0.9);
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                z-index: 5;
+                pointer-events: none;
+            }
+        }
+
         @media (max-width: 768px) {
             .table-container {
                 margin-top: 1rem;
@@ -1723,12 +1749,39 @@
 
         @media (max-width: 992px) {
             table {
-                min-width: 800px;
+                min-width: 750px;
             }
             
             th, td {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.8rem;
+            }
+
+            .records-table th:nth-child(2),
+            .records-table td:nth-child(2) {
+                width: 90px;
+                min-width: 90px;
+                max-width: 90px;
+            }
+
+            .records-table th:nth-child(3),
+            .records-table td:nth-child(3),
+            .records-table th:nth-child(4),
+            .records-table td:nth-child(4),
+            .records-table th:nth-child(5),
+            .records-table td:nth-child(5) {
+                width: 110px;
+                min-width: 110px;
+                max-width: 110px;
+            }
+
+            .records-table th:nth-child(6),
+            .records-table td:nth-child(6),
+            .records-table th:nth-child(7),
+            .records-table td:nth-child(7) {
+                width: 100px;
+                min-width: 100px;
+                max-width: 100px;
             }
 
             .records-table th:nth-child(8),
@@ -1773,7 +1826,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        /* Strict table column widths for perfect alignment */
+        /* Responsive table column widths - Desktop */
         .records-table th:nth-child(1),
         .records-table td:nth-child(1) {
             width: 60px;
@@ -1895,7 +1948,28 @@
             text-overflow: ellipsis;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            box-sizing: border-box;
             }
+
+        /* Ensure headers are always visible and properly sized */
+        .records-table th {
+            font-size: 0.85rem;
+            padding: 1rem 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Specific header styling for better visibility */
+        .records-table th:nth-child(1) {
+            font-size: 0.8rem;
+            padding: 1rem 0.25rem;
+        }
+
+        .records-table th:nth-child(8) {
+            font-size: 0.8rem;
+            padding: 1rem 0.25rem;
+        }
 
         th:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -3735,11 +3809,42 @@
             }
 
             /* Enhanced table action buttons for mobile */
+            .records-table {
+                min-width: 700px;
+            }
+
+            .records-table th:nth-child(2),
+            .records-table td:nth-child(2) {
+                width: 80px;
+                min-width: 80px;
+                max-width: 80px;
+            }
+
+            .records-table th:nth-child(3),
+            .records-table td:nth-child(3),
+            .records-table th:nth-child(4),
+            .records-table td:nth-child(4),
+            .records-table th:nth-child(5),
+            .records-table td:nth-child(5) {
+                width: 100px;
+                min-width: 100px;
+                max-width: 100px;
+            }
+
+            .records-table th:nth-child(6),
+            .records-table td:nth-child(6),
+            .records-table th:nth-child(7),
+            .records-table td:nth-child(7) {
+                width: 90px;
+                min-width: 90px;
+                max-width: 90px;
+            }
+
             .records-table th:nth-child(8),
             .records-table td:nth-child(8) {
-                width: 130px;
-                min-width: 130px;
-                max-width: 130px;
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
                 white-space: nowrap;
             }
 
@@ -3747,7 +3852,7 @@
             .records-table .btn-delete {
                 padding: 0.5rem 0.75rem;
                 font-size: 0.8rem;
-                min-width: 55px;
+                min-width: 50px;
                 margin: 0.1rem;
                 display: inline-flex;
                 align-items: center;
@@ -3762,9 +3867,9 @@
 
             /* Responsive actions header */
             .records-table .actions-header {
-                width: 130px;
-                min-width: 130px;
-                max-width: 130px;
+                width: 120px;
+                min-width: 120px;
+                max-width: 120px;
                 padding: 0.75rem 0.5rem;
                 font-size: 0.85rem;
             }
@@ -3776,6 +3881,37 @@
 
         @media (max-width: 576px) {
             /* Further optimize action buttons for small screens */
+            .records-table {
+                min-width: 650px;
+            }
+
+            .records-table th:nth-child(2),
+            .records-table td:nth-child(2) {
+                width: 70px;
+                min-width: 70px;
+                max-width: 70px;
+            }
+
+            .records-table th:nth-child(3),
+            .records-table td:nth-child(3),
+            .records-table th:nth-child(4),
+            .records-table td:nth-child(4),
+            .records-table th:nth-child(5),
+            .records-table td:nth-child(5) {
+                width: 90px;
+                min-width: 90px;
+                max-width: 90px;
+            }
+
+            .records-table th:nth-child(6),
+            .records-table td:nth-child(6),
+            .records-table th:nth-child(7),
+            .records-table td:nth-child(7) {
+                width: 80px;
+                min-width: 80px;
+                max-width: 80px;
+            }
+
             .records-table th:nth-child(8),
             .records-table td:nth-child(8) {
                 width: 110px;
@@ -3813,6 +3949,37 @@
 
         @media (max-width: 480px) {
             /* Ultra-compact action buttons */
+            .records-table {
+                min-width: 600px;
+            }
+
+            .records-table th:nth-child(2),
+            .records-table td:nth-child(2) {
+                width: 65px;
+                min-width: 65px;
+                max-width: 65px;
+            }
+
+            .records-table th:nth-child(3),
+            .records-table td:nth-child(3),
+            .records-table th:nth-child(4),
+            .records-table td:nth-child(4),
+            .records-table th:nth-child(5),
+            .records-table td:nth-child(5) {
+                width: 85px;
+                min-width: 85px;
+                max-width: 85px;
+            }
+
+            .records-table th:nth-child(6),
+            .records-table td:nth-child(6),
+            .records-table th:nth-child(7),
+            .records-table td:nth-child(7) {
+                width: 75px;
+                min-width: 75px;
+                max-width: 75px;
+            }
+
             .records-table th:nth-child(8),
             .records-table td:nth-child(8) {
                 width: 100px;
