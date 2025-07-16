@@ -945,21 +945,56 @@
                     </button>
                 </div>
                 <div class="table-container">
+                    <div class="table-header">
+                        <h3><i class="fas fa-table"></i> Medical Records Table</h3>
+                        <p>View and manage your medical records in an organized table format</p>
+                    </div>
                     <table>
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()"></th>
-                                <th class="sortable" onclick="sortTable(1, 'date')">Date</th>
-                                <th class="sortable" onclick="sortTable(2, 'diagnosis')">Diagnosis</th>
-                                <th class="sortable" onclick="sortTable(3, 'treatment')">Treatment</th>
-                                <th class="sortable" onclick="sortTable(4, 'medication')">Medication</th>
-                                <th class="sortable" onclick="sortTable(5, 'doctor')">Doctor</th>
-                                <th class="sortable" onclick="sortTable(6, 'hospital')">Hospital</th>
-                                <th>Actions</th>
+                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()" title="Select All Records"></th>
+                                <th class="sortable" onclick="sortTable(1, 'date')" title="Click to sort by date">
+                                    <i class="fas fa-calendar-alt"></i> Date
+                                </th>
+                                <th class="sortable" onclick="sortTable(2, 'diagnosis')" title="Click to sort by diagnosis">
+                                    <i class="fas fa-stethoscope"></i> Diagnosis
+                                </th>
+                                <th class="sortable" onclick="sortTable(3, 'treatment')" title="Click to sort by treatment">
+                                    <i class="fas fa-notes-medical"></i> Treatment
+                                </th>
+                                <th class="sortable" onclick="sortTable(4, 'medication')" title="Click to sort by medication">
+                                    <i class="fas fa-pills"></i> Medication
+                                </th>
+                                <th class="sortable" onclick="sortTable(5, 'doctor')" title="Click to sort by doctor">
+                                    <i class="fas fa-user-md"></i> Doctor
+                                </th>
+                                <th class="sortable" onclick="sortTable(6, 'hospital')" title="Click to sort by hospital">
+                                    <i class="fas fa-hospital"></i> Hospital
+                                </th>
+                                <th title="Record Actions">
+                                    <i class="fas fa-cogs"></i> Actions
+                                </th>
                             </tr>
                         </thead>
                         <tbody id="recordsTableBody">
+                            <!-- Medical records will be dynamically populated here -->
                         </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8" class="table-footer">
+                                    <div class="footer-content">
+                                        <span class="record-count">
+                                            <i class="fas fa-list"></i>
+                                            <span id="totalRecordsCount">0</span> records found
+                                        </span>
+                                        <span class="last-updated">
+                                            <i class="fas fa-clock"></i>
+                                            Last updated: <span id="lastUpdatedTime"></span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
                 <!-- Mobile cards container -->
@@ -4300,11 +4335,38 @@
                 display: table !important;
             }
             
+            /* Table header styling */
+            .table-header {
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                padding: 1.5rem;
+                border-bottom: 2px solid #e2e8f0;
+                border-radius: 16px 16px 0 0;
+                text-align: center;
+            }
+            
+            .table-header h3 {
+                margin: 0 0 0.5rem 0;
+                color: #1e293b;
+                font-size: 1.5rem;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.5rem;
+            }
+            
+            .table-header p {
+                margin: 0;
+                color: #64748b;
+                font-size: 0.95rem;
+                font-weight: 500;
+            }
+            
             /* Mobile-optimized table styles */
             .table-container {
                 overflow-x: auto;
                 margin: 0 -1rem;
-                padding: 0 1rem;
+                padding: 0;
                 border-radius: 16px;
                 background: white;
                 box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -4334,7 +4396,7 @@
                 background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
                 color: white;
                 font-weight: 700;
-                font-size: 0.8rem;
+                font-size: 0.85rem;
                 text-transform: uppercase;
                 letter-spacing: 1px;
                 position: sticky;
@@ -4342,6 +4404,28 @@
                 z-index: 10;
                 box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
                 border-bottom: 2px solid #1e40af;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            th:hover {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+            }
+            
+            th i {
+                margin-right: 0.5rem;
+                font-size: 0.9rem;
+                opacity: 0.9;
+            }
+            
+            th.sortable {
+                cursor: pointer;
+            }
+            
+            th.sortable:hover {
+                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
             }
             
             tr {
@@ -4648,6 +4732,43 @@
             /* Counter initialization */
             .table-container tbody {
                 counter-reset: row-counter;
+            }
+            
+            /* Table footer styling */
+            .table-footer {
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                border-top: 2px solid #e2e8f0;
+                padding: 1rem;
+            }
+            
+            .footer-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.9rem;
+                color: #64748b;
+                font-weight: 500;
+            }
+            
+            .record-count, .last-updated {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            
+            .record-count i, .last-updated i {
+                color: #3b82f6;
+                font-size: 0.8rem;
+            }
+            
+            .record-count span {
+                font-weight: 700;
+                color: #1e293b;
+            }
+            
+            .last-updated span {
+                font-weight: 600;
+                color: #059669;
             }
         }
     </style>
@@ -5298,6 +5419,9 @@
             // Update bulk download button visibility
             updateBulkDownloadButton();
             
+            // Update table footer information
+            updateTableFooter(filteredRecords.length);
+            
             // Show/hide table vs cards based on screen size
             updateTableDisplay();
         }
@@ -5345,6 +5469,20 @@
             const bulkDownloadBtn = document.getElementById('bulkDownloadBtn');
             const anyChecked = Array.from(checkboxes).some(checkbox => checkbox.checked);
             bulkDownloadBtn.style.display = anyChecked ? 'inline-block' : 'none';
+        }
+        
+        function updateTableFooter(recordCount) {
+            const totalRecordsElement = document.getElementById('totalRecordsCount');
+            const lastUpdatedElement = document.getElementById('lastUpdatedTime');
+            
+            if (totalRecordsElement) {
+                totalRecordsElement.textContent = recordCount;
+            }
+            
+            if (lastUpdatedElement) {
+                const now = new Date();
+                lastUpdatedElement.textContent = now.toLocaleString();
+            }
         }
 
         function downloadSingleRecord(recordId) {
