@@ -769,6 +769,43 @@
             margin-top: 1rem;
             border-radius: 12px;
             border: 1px solid #e2e8f0;
+            position: relative;
+        }
+
+        /* Scroll instruction for mobile devices */
+        .scroll-instruction {
+            display: none;
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+            animation: pulse 2s infinite;
+        }
+
+        .scroll-instruction::before {
+            content: '← Scroll →';
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05);
+                opacity: 0.9;
+            }
         }
 
         .records-table {
@@ -949,6 +986,15 @@
             .records-table td {
                 padding: 0.75rem;
                 font-size: 0.875rem;
+            }
+
+            /* Show scroll instruction on mobile */
+            .scroll-instruction {
+                display: block !important;
+            }
+
+            .records-table-container {
+                margin-top: 3rem;
             }
         }
 
@@ -1427,6 +1473,17 @@
                 padding: 0.5rem 0.75rem;
                 font-size: 0.8rem;
             }
+
+            /* Show scroll instruction on small mobile */
+            .scroll-instruction {
+                display: block !important;
+                font-size: 0.75rem;
+                padding: 0.4rem 0.8rem;
+            }
+
+            .records-table-container {
+                margin-top: 3rem;
+            }
         }
     </style>
 </head>
@@ -1839,6 +1896,7 @@
             </div>
 
             <div class="records-table-container">
+                <div class="scroll-instruction" id="scrollInstruction"></div>
                 <table class="records-table">
                     <thead>
                         <tr>
@@ -2304,6 +2362,7 @@
         // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
             setActiveNavLink();
+            initScrollInstruction();
         });
 
         // Tab functionality
@@ -2449,6 +2508,53 @@
                 }
             });
         }
+
+        // Scroll instruction functionality
+        function initScrollInstruction() {
+            const scrollInstruction = document.getElementById('scrollInstruction');
+            const tableContainer = document.querySelector('.records-table-container');
+            
+            if (!scrollInstruction || !tableContainer) return;
+            
+            // Show scroll instruction on mobile devices
+            function checkAndShowScrollInstruction() {
+                if (window.innerWidth <= 768) {
+                    scrollInstruction.style.display = 'block';
+                    
+                    // Hide instruction after 5 seconds
+                    setTimeout(() => {
+                        if (scrollInstruction) {
+                            scrollInstruction.style.opacity = '0';
+                            scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                            setTimeout(() => {
+                                if (scrollInstruction) {
+                                    scrollInstruction.style.display = 'none';
+                                }
+                            }, 300);
+                        }
+                    }, 5000);
+                }
+            }
+            
+            // Hide instruction when user scrolls horizontally
+            tableContainer.addEventListener('scroll', () => {
+                if (scrollInstruction.style.display === 'block') {
+                    scrollInstruction.style.opacity = '0';
+                    scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                    setTimeout(() => {
+                        if (scrollInstruction) {
+                            scrollInstruction.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+            
+            // Check on page load and resize
+            checkAndShowScrollInstruction();
+            window.addEventListener('resize', checkAndShowScrollInstruction);
+        }
+
+
     </script>
 </body>
 </html> 
