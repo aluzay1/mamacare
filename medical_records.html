@@ -1723,7 +1723,7 @@
 
         @media (max-width: 992px) {
             table {
-                min-width: 700px;
+                min-width: 800px;
             }
             
             th, td {
@@ -1731,10 +1731,11 @@
                 font-size: 0.8rem;
             }
 
-            .records-table th:last-child,
-            .records-table td:last-child {
+            .records-table th:nth-child(8),
+            .records-table td:nth-child(8) {
                 width: 140px;
                 min-width: 140px;
+                max-width: 140px;
             }
 
             .btn-download-single, .btn-delete {
@@ -1772,19 +1773,63 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        /* Table column widths for better alignment */
-        .records-table th:first-child,
-        .records-table td:first-child {
-            width: 50px;
-            min-width: 50px;
-            max-width: 50px;
+        /* Strict table column widths for perfect alignment */
+        .records-table th:nth-child(1),
+        .records-table td:nth-child(1) {
+            width: 60px;
+            min-width: 60px;
+            max-width: 60px;
             text-align: center;
+            padding: 0.75rem 0.5rem;
         }
 
-        .records-table th:last-child,
-        .records-table td:last-child {
-            width: 150px;
-            min-width: 150px;
+        .records-table th:nth-child(2),
+        .records-table td:nth-child(2) {
+            width: 100px;
+            min-width: 100px;
+            max-width: 100px;
+        }
+
+        .records-table th:nth-child(3),
+        .records-table td:nth-child(3) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .records-table th:nth-child(4),
+        .records-table td:nth-child(4) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .records-table th:nth-child(5),
+        .records-table td:nth-child(5) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .records-table th:nth-child(6),
+        .records-table td:nth-child(6) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .records-table th:nth-child(7),
+        .records-table td:nth-child(7) {
+            width: 120px;
+            min-width: 120px;
+            max-width: 120px;
+        }
+
+        .records-table th:nth-child(8),
+        .records-table td:nth-child(8) {
+            width: 160px;
+            min-width: 160px;
+            max-width: 160px;
             text-align: center;
         }
 
@@ -1795,6 +1840,37 @@
 
         .checkbox-header input[type="checkbox"] {
             margin: 0;
+        }
+
+        /* Ensure all cells have consistent padding */
+        .records-table th,
+        .records-table td {
+            padding: 0.75rem 0.5rem;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            box-sizing: border-box;
+        }
+
+        /* Prevent table layout shifts */
+        .records-table {
+            table-layout: fixed !important;
+            width: 100% !important;
+        }
+
+        /* Ensure checkbox column is always properly aligned */
+        .records-table th:nth-child(1),
+        .records-table td:nth-child(1) {
+            text-align: center !important;
+            vertical-align: middle !important;
+        }
+
+        /* Ensure action buttons are always visible */
+        .records-table th:nth-child(8),
+        .records-table td:nth-child(8) {
+            text-align: center !important;
+            vertical-align: middle !important;
         }
 
         /* Table Header Styling */
@@ -3719,10 +3795,11 @@
             }
 
             /* Enhanced table action buttons for mobile */
-            .records-table th:last-child,
-            .records-table td:last-child {
+            .records-table th:nth-child(8),
+            .records-table td:nth-child(8) {
                 width: 130px;
                 min-width: 130px;
+                max-width: 130px;
                 white-space: nowrap;
             }
 
@@ -3747,6 +3824,7 @@
             .records-table .actions-header {
                 width: 130px;
                 min-width: 130px;
+                max-width: 130px;
                 padding: 0.75rem 0.5rem;
                 font-size: 0.85rem;
             }
@@ -3758,10 +3836,11 @@
 
         @media (max-width: 576px) {
             /* Further optimize action buttons for small screens */
-            .records-table th:last-child,
-            .records-table td:last-child {
+            .records-table th:nth-child(8),
+            .records-table td:nth-child(8) {
                 width: 110px;
                 min-width: 110px;
+                max-width: 110px;
                 padding: 0.5rem 0.25rem;
             }
 
@@ -3782,6 +3861,7 @@
             .records-table .actions-header {
                 width: 110px;
                 min-width: 110px;
+                max-width: 110px;
                 padding: 0.6rem 0.25rem;
                 font-size: 0.8rem;
             }
@@ -3793,10 +3873,11 @@
 
         @media (max-width: 480px) {
             /* Ultra-compact action buttons */
-            .records-table th:last-child,
-            .records-table td:last-child {
+            .records-table th:nth-child(8),
+            .records-table td:nth-child(8) {
                 width: 100px;
                 min-width: 100px;
+                max-width: 100px;
                 padding: 0.4rem 0.2rem;
             }
 
@@ -3817,6 +3898,7 @@
             .records-table .actions-header {
                 width: 100px;
                 min-width: 100px;
+                max-width: 100px;
                 padding: 0.5rem 0.2rem;
                 font-size: 0.75rem;
             }
@@ -5417,7 +5499,7 @@
                 // Create table row
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
+                    <td data-label="Select"><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
                     <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
                     <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
                     <td data-label="Treatment">${record.treatment || 'N/A'}</td>
