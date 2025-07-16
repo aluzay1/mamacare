@@ -649,6 +649,53 @@
             z-index: 1;
         }
 
+        /* Mobile responsive styles for overview stats */
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+                min-height: 100px;
+                border-radius: 12px;
+            }
+
+            .stat-value {
+                font-size: 1.4rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .stat-label {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .stat-card {
+                padding: 0.75rem;
+                min-height: 80px;
+                border-radius: 10px;
+            }
+
+            .stat-value {
+                font-size: 1.2rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .stat-label {
+                font-size: 0.75rem;
+            }
+        }
+
         /* Records section styles */
         .records-section {
             background: white;
