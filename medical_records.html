@@ -949,32 +949,30 @@
                         <h3><i class="fas fa-table"></i> Medical Records Table</h3>
                         <p>View and manage your medical records in an organized table format</p>
                     </div>
-                    <table class="medical-records-table">
+                    <table>
                         <thead>
                             <tr>
-                                <th class="checkbox-header">
-                                    <input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()" title="Select All Records">
+                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()" title="Select All Records"></th>
+                                <th class="sortable" onclick="sortTable(1, 'date')" title="Click to sort by date">
+                                    <i class="fas fa-calendar-alt"></i> Date
                                 </th>
-                                <th class="date-header">
-                                    <i class="fas fa-calendar-alt"></i> DATE
+                                <th class="sortable" onclick="sortTable(2, 'diagnosis')" title="Click to sort by diagnosis">
+                                    <i class="fas fa-stethoscope"></i> Diagnosis
                                 </th>
-                                <th class="diagnosis-header">
-                                    <i class="fas fa-stethoscope"></i> DIAGNOSIS
+                                <th class="sortable" onclick="sortTable(3, 'treatment')" title="Click to sort by treatment">
+                                    <i class="fas fa-notes-medical"></i> Treatment
                                 </th>
-                                <th class="treatment-header">
-                                    <i class="fas fa-notes-medical"></i> TREATMENT
+                                <th class="sortable" onclick="sortTable(4, 'medication')" title="Click to sort by medication">
+                                    <i class="fas fa-pills"></i> Medication
                                 </th>
-                                <th class="medication-header">
-                                    <i class="fas fa-pills"></i> MEDICATION
+                                <th class="sortable" onclick="sortTable(5, 'doctor')" title="Click to sort by doctor">
+                                    <i class="fas fa-user-md"></i> Doctor
                                 </th>
-                                <th class="doctor-header">
-                                    <i class="fas fa-user-md"></i> DOCTOR
+                                <th class="sortable" onclick="sortTable(6, 'hospital')" title="Click to sort by hospital">
+                                    <i class="fas fa-hospital"></i> Hospital
                                 </th>
-                                <th class="hospital-header">
-                                    <i class="fas fa-hospital"></i> HOSPITAL
-                                </th>
-                                <th class="actions-header">
-                                    <i class="fas fa-cogs"></i> ACTIONS
+                                <th title="Record Actions">
+                                    <i class="fas fa-cogs"></i> Actions
                                 </th>
                             </tr>
                         </thead>
@@ -4364,195 +4362,6 @@
                 font-weight: 500;
             }
             
-            /* Medical Records Table Specific Styling */
-            .medical-records-table {
-                width: 100%;
-                border-collapse: collapse;
-                background: white;
-                border-radius: 12px;
-                overflow: hidden;
-                box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
-            
-            /* Colored Headers */
-            .checkbox-header {
-                background: #f8f9fa;
-                color: #495057;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 0.5rem;
-                border-bottom: 3px solid #dee2e6;
-                width: 60px;
-            }
-            
-            .date-header {
-                background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #1e40af;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .diagnosis-header {
-                background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #5b21b6;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .treatment-header {
-                background: linear-gradient(135deg, #059669 0%, #10b981 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #047857;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .medication-header {
-                background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #b91c1c;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .doctor-header {
-                background: linear-gradient(135deg, #ea580c 0%, #f97316 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #c2410c;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .hospital-header {
-                background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #0e7490;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            .actions-header {
-                background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.9rem;
-                text-align: center;
-                padding: 1rem 1.5rem;
-                border-bottom: 3px solid #4b5563;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
-            
-            /* Header Icons */
-            .date-header i, .diagnosis-header i, .treatment-header i, .medication-header i, 
-            .doctor-header i, .hospital-header i, .actions-header i {
-                margin-right: 0.5rem;
-                font-size: 1rem;
-                opacity: 0.9;
-            }
-            
-            /* Table Body Styling */
-            .medical-records-table tbody tr {
-                border-bottom: 1px solid #e2e8f0;
-                transition: background-color 0.3s ease;
-            }
-            
-            .medical-records-table tbody tr:hover {
-                background-color: #f8fafc;
-            }
-            
-            .medical-records-table tbody tr:nth-child(even) {
-                background-color: #fafbfc;
-            }
-            
-            .medical-records-table tbody tr:nth-child(even):hover {
-                background-color: #f1f5f9;
-            }
-            
-            /* Cell Styling */
-            .medical-records-table td {
-                padding: 1rem 1.5rem;
-                vertical-align: top;
-                border-right: 1px solid #e2e8f0;
-            }
-            
-            .medical-records-table td:last-child {
-                border-right: none;
-            }
-            
-            /* Checkbox Column */
-            .medical-records-table td:first-child {
-                text-align: center;
-                width: 60px;
-                background-color: #f8f9fa;
-                border-right: 2px solid #dee2e6;
-            }
-            
-            /* Date Column Styling */
-            .medical-records-table td:nth-child(2) {
-                font-weight: 600;
-                color: #1e40af;
-                background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%);
-            }
-            
-            /* Doctor Column Styling */
-            .medical-records-table td:nth-child(6) {
-                font-weight: 600;
-                color: #ea580c;
-                background: linear-gradient(135deg, rgba(234, 88, 12, 0.05) 0%, rgba(234, 88, 12, 0.02) 100%);
-            }
-            
-            /* Hospital Column Styling */
-            .medical-records-table td:nth-child(7) {
-                font-weight: 600;
-                color: #0891b2;
-                background: linear-gradient(135deg, rgba(8, 145, 178, 0.05) 0%, rgba(8, 145, 178, 0.02) 100%);
-            }
-            
-            /* Actions Column Styling */
-            .medical-records-table td:nth-child(8) {
-                text-align: center;
-                background-color: #f8f9fa;
-                border-right: none;
-            }
-            
-            /* PIN Description Styling */
-            .pin-description {
-                font-size: 0.8rem;
-                color: #6b7280;
-                font-style: italic;
-                margin-top: 0.25rem;
-                display: block;
-            }
-            
             /* Mobile-optimized table styles */
             .table-container {
                 overflow-x: auto;
@@ -5512,7 +5321,7 @@
             // Sample data for testing
             {
                 id: 1,
-                date: '2025-03-07',
+                date: '2024-01-15',
                 diagnosis: 'Hypertension',
                 treatment: 'Lifestyle modification and medication',
                 medication: 'Amlodipine 5mg daily',
@@ -5521,7 +5330,7 @@
             },
             {
                 id: 2,
-                date: '2025-02-20',
+                date: '2024-02-20',
                 diagnosis: 'Type 2 Diabetes',
                 treatment: 'Diet control and exercise',
                 medication: 'Metformin 500mg twice daily',
@@ -5530,21 +5339,12 @@
             },
             {
                 id: 3,
-                date: '2025-01-15',
+                date: '2024-03-10',
                 diagnosis: 'Upper Respiratory Infection',
                 treatment: 'Rest and fluids',
                 medication: 'Acetaminophen as needed',
                 doctor: 'Dr. Emily Davis',
                 hospital: 'Urgent Care Clinic'
-            },
-            {
-                id: 4,
-                date: '2024-12-10',
-                diagnosis: 'Migraine',
-                treatment: 'Pain management and stress reduction',
-                medication: 'Sumatriptan 50mg as needed',
-                doctor: 'Dr. Robert Wilson',
-                hospital: 'Neurology Specialists'
             }
         ]; // Store all records for searching
 
@@ -5596,15 +5396,9 @@
             filteredRecords.forEach(record => {
                 // Create table row
                 const row = document.createElement('tr');
-                const formattedDate = new Date(record.date).toLocaleDateString();
-                const pinDescription = `PIN: ${record.id.toString().padStart(6, '0')}`;
-                
                 row.innerHTML = `
                     <td><input type="checkbox" class="record-checkbox" data-record-id="${record.id}" onchange="updateBulkDownloadButton()"></td>
-                    <td data-label="Date">
-                        ${formattedDate}
-                        <span class="pin-description">${pinDescription}</span>
-                    </td>
+                    <td data-label="Date">${new Date(record.date).toLocaleDateString()}</td>
                     <td data-label="Diagnosis">${record.diagnosis || 'N/A'}</td>
                     <td data-label="Treatment">${record.treatment || 'N/A'}</td>
                     <td data-label="Medication">${record.medication || 'N/A'}</td>
