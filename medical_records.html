@@ -784,12 +784,12 @@
                         </div>
                             <div class="info-item">
                             <label>Estimated Due Date</label>
-                            <span id="patientDueDateDisplay" onclick="enableIndividualPregnancyFieldEdit('patientDueDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="patientDueDateDisplay" onclick="confirmPregnancyFieldEdit('patientDueDate')" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-weight: 600;" title="Click to edit"></span>
                             <input type="date" id="patientDueDateInput" style="display: none;" class="input-field" />
                         </div>
                             <div class="info-item">
                             <label>Gestational Age (weeks)</label>
-                            <span id="patientGestationalAgeDisplay" onclick="enableIndividualPregnancyFieldEdit('patientGestationalAge')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="patientGestationalAgeDisplay" onclick="confirmPregnancyFieldEdit('patientGestationalAge')" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-weight: 600;" title="Click to edit"></span>
                             <input type="number" id="patientGestationalAgeInput" min="0" max="40" step="1" style="display: none;" class="input-field" />
                         </div>
                             <div class="info-item full-width">
@@ -821,19 +821,19 @@
 
                         <div class="info-item">
                             <label>Last Menstrual Period</label>
-                            <span id="lmpDateDisplay" onclick="enableIndividualPregnancyFieldEdit('lmpDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="lmpDateDisplay" onclick="confirmPregnancyFieldEdit('lmpDate')" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-weight: 600;" title="Click to edit"></span>
                             <input type="date" id="lmpDateInput" style="display: none;" class="input-field" />
                         </div>
 
                         <div class="info-item">
                             <label>Estimated Due Date</label>
-                            <span id="dueDateDisplay" onclick="enableIndividualPregnancyFieldEdit('dueDate')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="dueDateDisplay" onclick="confirmPregnancyFieldEdit('dueDate')" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-weight: 600;" title="Click to edit"></span>
                             <input type="date" id="dueDateInput" style="display: none;" class="input-field" />
                         </div>
 
                         <div class="info-item">
                             <label>Gestational Age (weeks)</label>
-                            <span id="gestationalAgeDisplay" onclick="enableIndividualPregnancyFieldEdit('gestationalAge')" style="cursor: pointer; color: #007bff; text-decoration: underline;" title="Click to edit"></span>
+                            <span id="gestationalAgeDisplay" onclick="confirmPregnancyFieldEdit('gestationalAge')" style="cursor: pointer; color: #dc3545; text-decoration: underline; font-weight: 600;" title="Click to edit"></span>
                             <input type="number" id="gestationalAgeInput" style="display: none;" class="input-field" min="0" max="45" />
                         </div>
 
@@ -1258,6 +1258,20 @@
         /* Ensure form sections are also white */
         .form-section {
             background: #ffffff !important;
+        }
+        
+        /* Critical pregnancy fields styling */
+        .critical-pregnancy-field {
+            color: #dc3545 !important;
+            font-weight: 600 !important;
+            text-decoration: underline !important;
+        }
+        
+        .critical-pregnancy-field:hover {
+            color: #c82333 !important;
+            background-color: #fff5f5 !important;
+            padding: 2px 4px !important;
+            border-radius: 4px !important;
         }
         
         .info-item label {
@@ -7321,6 +7335,25 @@
         });
 
 
+
+        // Confirmation function for critical pregnancy fields
+        function confirmPregnancyFieldEdit(fieldName) {
+            const fieldLabels = {
+                'patientDueDate': 'Estimated Due Date',
+                'patientGestationalAge': 'Gestational Age',
+                'lmpDate': 'Last Menstrual Period',
+                'dueDate': 'Estimated Due Date',
+                'gestationalAge': 'Gestational Age'
+            };
+            
+            const fieldLabel = fieldLabels[fieldName] || fieldName;
+            
+            const confirmed = confirm(`Do you want to edit the ${fieldLabel}?\n\nThis is a critical pregnancy field. Please ensure the information is accurate.`);
+            
+            if (confirmed) {
+                enableIndividualPregnancyFieldEdit(fieldName);
+            }
+        }
 
         // Individual edit functions for critical pregnancy fields
         function enableIndividualPregnancyFieldEdit(fieldName) {
