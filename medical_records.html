@@ -3520,9 +3520,9 @@
                     overflow: visible;
                 }
                 
-                /* Hide desktop table on mobile */
+                /* Show table on mobile with responsive design */
                 table {
-                    display: none;
+                    display: table;
                 }
                 
 
@@ -3728,12 +3728,9 @@
                     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
                 }
                 
-                /* Force mobile cards to show on small screens */
-                .records-cards-mobile {
-                    display: block !important;
-                }
+                /* Ensure table is always visible on mobile */
                 .table-container {
-                    display: none !important;
+                    display: block !important;
                 }
             }
         }
@@ -4294,13 +4291,13 @@
             }
         }
         
-        /* Global override to ensure mobile cards show on small screens */
+        /* Global override to ensure table is always visible on small screens */
         @media (max-width: 768px) {
-            .records-cards-mobile {
-                display: none !important;
-            }
             .table-container {
                 display: block !important;
+            }
+            table {
+                display: table !important;
             }
             
             /* Mobile-optimized table styles */
