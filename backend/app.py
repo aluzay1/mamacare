@@ -56,6 +56,7 @@ app = Flask(__name__)
 CORS(app, 
      origins=[
          "http://localhost", "http://localhost:80", "http://localhost:5000", "http://localhost:5001", "http://localhost:3000",
+         "https://verdant-gumdrop-61281b.netlify.app",  # Specific Netlify domain
          "https://*.netlify.app", "https://*.netlify.com",  # Allow Netlify domains
          "https://mamacare.netlify.app", "https://mamacare.netlify.com",  # Specific Netlify domains
          "*"  # Allow all origins for development
@@ -159,9 +160,34 @@ def check_db_connection():
             pass
         return jsonify({'error': 'Database connection error'}), 500
 
-# CORS preflight handler
+# CORS preflight handlers
 @app.route('/api/patient/register', methods=['OPTIONS'])
 def handle_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
+
+@app.route('/api/patient/profile', methods=['OPTIONS'])
+def handle_profile_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
+
+@app.route('/api/patient/medical-records', methods=['OPTIONS'])
+def handle_medical_records_preflight():
+    response = jsonify({'status': 'ok'})
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
+
+# General CORS handler for all API routes
+@app.route('/api/<path:subpath>', methods=['OPTIONS'])
+def handle_api_preflight(subpath):
     response = jsonify({'status': 'ok'})
     response.headers.add('Access-Control-Allow-Origin', '*')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,Accept')
