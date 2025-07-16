@@ -953,7 +953,9 @@
                     <table class="records-table">
                         <thead>
                             <tr>
-                                <th><input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()" title="Select All Records"></th>
+                                <th class="checkbox-header" title="Select All Records">
+                                    <input type="checkbox" id="selectAllRecords" onchange="toggleAllRecords()">
+                                </th>
                                 <th class="sortable" onclick="sortTable(1, 'date')" title="Click to sort by date">
                                     <i class="fas fa-calendar-alt"></i> Date
                                 </th>
@@ -1644,6 +1646,24 @@
             -webkit-overflow-scrolling: touch;
         }
 
+        @media (max-width: 768px) {
+            .table-container {
+                margin-top: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .table-container {
+                margin-top: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .table-container {
+                margin-top: 0.5rem;
+            }
+        }
+
         /* Custom scrollbar for better visibility */
         .table-container::-webkit-scrollbar {
             height: 8px;
@@ -1703,7 +1723,7 @@
 
         @media (max-width: 992px) {
             table {
-                min-width: 600px;
+                min-width: 700px;
             }
             
             th, td {
@@ -1711,10 +1731,16 @@
                 font-size: 0.8rem;
             }
 
+            .records-table th:last-child,
+            .records-table td:last-child {
+                width: 140px;
+                min-width: 140px;
+            }
+
             .btn-download-single, .btn-delete {
                 padding: 0.4rem 0.6rem;
                 font-size: 0.75rem;
-                min-width: 70px;
+                min-width: 60px;
             }
         }
 
@@ -1733,9 +1759,9 @@
             font-weight: 600;
             }
 
-        /* Enhanced Table Layout with Consistent Alignment */
+                /* Enhanced Table Layout with Consistent Alignment */
         table {
-                width: 100%;
+            width: 100%;
             border-collapse: separate;
             border-spacing: 0;
             min-width: 800px;
@@ -1744,7 +1770,32 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            }
+        }
+
+        /* Table column widths for better alignment */
+        .records-table th:first-child,
+        .records-table td:first-child {
+            width: 50px;
+            min-width: 50px;
+            max-width: 50px;
+            text-align: center;
+        }
+
+        .records-table th:last-child,
+        .records-table td:last-child {
+            width: 150px;
+            min-width: 150px;
+            text-align: center;
+        }
+
+        .checkbox-header {
+            text-align: center;
+            padding: 0.75rem 0.5rem;
+        }
+
+        .checkbox-header input[type="checkbox"] {
+            margin: 0;
+        }
 
         /* Table Header Styling */
         thead {
@@ -3668,8 +3719,10 @@
             }
 
             /* Enhanced table action buttons for mobile */
+            .records-table th:last-child,
             .records-table td:last-child {
-                min-width: 120px;
+                width: 130px;
+                min-width: 130px;
                 white-space: nowrap;
             }
 
@@ -3677,7 +3730,7 @@
             .records-table .btn-delete {
                 padding: 0.5rem 0.75rem;
                 font-size: 0.8rem;
-                min-width: 60px;
+                min-width: 55px;
                 margin: 0.1rem;
                 display: inline-flex;
                 align-items: center;
@@ -3692,7 +3745,8 @@
 
             /* Responsive actions header */
             .records-table .actions-header {
-                min-width: 120px;
+                width: 130px;
+                min-width: 130px;
                 padding: 0.75rem 0.5rem;
                 font-size: 0.85rem;
             }
@@ -3704,8 +3758,10 @@
 
         @media (max-width: 576px) {
             /* Further optimize action buttons for small screens */
+            .records-table th:last-child,
             .records-table td:last-child {
-                min-width: 100px;
+                width: 110px;
+                min-width: 110px;
                 padding: 0.5rem 0.25rem;
             }
 
@@ -3713,7 +3769,7 @@
             .records-table .btn-delete {
                 padding: 0.4rem 0.6rem;
                 font-size: 0.75rem;
-                min-width: 50px;
+                min-width: 45px;
                 margin: 0.05rem;
             }
 
@@ -3724,7 +3780,8 @@
 
             /* Small screen actions header */
             .records-table .actions-header {
-                min-width: 100px;
+                width: 110px;
+                min-width: 110px;
                 padding: 0.6rem 0.25rem;
                 font-size: 0.8rem;
             }
@@ -3736,8 +3793,10 @@
 
         @media (max-width: 480px) {
             /* Ultra-compact action buttons */
+            .records-table th:last-child,
             .records-table td:last-child {
-                min-width: 90px;
+                width: 100px;
+                min-width: 100px;
                 padding: 0.4rem 0.2rem;
             }
 
@@ -3745,7 +3804,7 @@
             .records-table .btn-delete {
                 padding: 0.35rem 0.5rem;
                 font-size: 0.7rem;
-                min-width: 45px;
+                min-width: 40px;
                 margin: 0.02rem;
             }
 
@@ -3756,7 +3815,8 @@
 
             /* Compact actions header */
             .records-table .actions-header {
-                min-width: 90px;
+                width: 100px;
+                min-width: 100px;
                 padding: 0.5rem 0.2rem;
                 font-size: 0.75rem;
             }
