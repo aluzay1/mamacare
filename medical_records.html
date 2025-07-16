@@ -6468,24 +6468,62 @@
                     console.warn('Error reloading patient data:', error);
                 }
                 
-                // Show detailed success message
-                const updatedFields = [];
-                if (data.pregnancy_status) updatedFields.push('Pregnancy Status');
-                if (data.previous_pregnancies) updatedFields.push('Previous Pregnancies');
-                if (data.lmp_date) updatedFields.push('LMP Date');
-                if (data.due_date) updatedFields.push('Due Date');
-                if (data.gestational_age) updatedFields.push('Gestational Age');
-                if (data.blood_pressure) updatedFields.push('Blood Pressure');
-                if (data.weight) updatedFields.push('Weight');
-                if (data.pregnancy_complications) updatedFields.push('Pregnancy Complications');
-                if (data.allergies) updatedFields.push('Allergies');
-                if (data.medications) updatedFields.push('Medications');
+                // Show detailed success message with only actually edited fields
+                const editedFields = [];
                 
-                const message = updatedFields.length > 0 
-                    ? `Profile changes saved successfully!\n\nUpdated fields:\n${updatedFields.join('\n')}\n\nPlease scroll down to see the updated information.`
-                    : 'Profile changes saved successfully!';
+                // Check which fields were actually being edited (had visible inputs)
+                const fieldMappings = {
+                    'pregnancy_status': 'Pregnancy Status',
+                    'previous_pregnancies': 'Previous Pregnancies', 
+                    'lmp_date': 'LMP Date',
+                    'due_date': 'Due Date',
+                    'gestational_age': 'Gestational Age',
+                    'multiple_pregnancy': 'Multiple Pregnancy',
+                    'risk_level': 'Risk Level',
+                    'risk_factors': 'Risk Factors',
+                    'blood_pressure': 'Blood Pressure',
+                    'hemoglobin': 'Hemoglobin',
+                    'blood_sugar': 'Blood Sugar',
+                    'weight': 'Weight',
+                    'prenatal_vitamins': 'Prenatal Vitamins',
+                    'pregnancy_complications': 'Pregnancy Complications',
+                    'emergency_hospital': 'Emergency Hospital',
+                    'birth_plan': 'Birth Plan',
+                    'name': 'Patient Name',
+                    'date_of_birth': 'Date of Birth',
+                    'gender': 'Gender',
+                    'blood_type': 'Blood Type',
+                    'marital_status': 'Marital Status',
+                    'language': 'Language',
+                    'nationality': 'Nationality',
+                    'email': 'Email',
+                    'phone': 'Phone',
+                    'address_line': 'Address',
+                    'allergies': 'Allergies',
+                    'medications': 'Medications',
+                    'emergency_contact_name': 'Emergency Contact Name',
+                    'emergency_contact_phone': 'Emergency Contact Phone',
+                    'emergency_contact_relationship': 'Emergency Contact Relationship'
+                };
                 
-                alert(message);
+                // Check which fields were actually edited
+                Object.keys(data).forEach(field => {
+                    if (field !== 'pin' && data[field] !== undefined && data[field] !== null && data[field] !== '') {
+                        const input = document.getElementById(fieldMappings[field]?.replace(/\s+/g, '') + 'Input');
+                        const indicator = document.getElementById(fieldMappings[field]?.replace(/\s+/g, '') + 'EditIndicator');
+                        
+                        if ((input && input.style.display !== 'none') || indicator) {
+                            editedFields.push(fieldMappings[field] || field);
+                        }
+                    }
+                });
+                
+                // Create custom success message with better UI
+                if (editedFields.length > 0) {
+                    showCustomSuccessMessage(editedFields);
+                } else {
+                    showCustomSuccessMessage(['Profile information']);
+                }
                 } else {
                     const errorData = await response.json();
                     console.error('Error response:', errorData);
@@ -6985,6 +7023,124 @@
                 });
             }
         });
+
+        // Custom success message function with better UI
+        function showCustomSuccessMessage(editedFields) {
+            // Remove any existing success message
+            const existingMessage = document.getElementById('customSuccessMessage');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+            
+            // Create success message container
+            const successContainer = document.createElement('div');
+            successContainer.id = 'customSuccessMessage';
+            successContainer.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: linear-gradient(135deg, #4CAF50, #45a049);
+                color: white;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+                z-index: 10000;
+                max-width: 400px;
+                font-family: 'Poppins', sans-serif;
+                animation: slideInRight 0.5s ease-out;
+                border-left: 5px solid #2E7D32;
+            `;
+            
+            // Create header
+            const header = document.createElement('div');
+            header.style.cssText = `
+                display: flex;
+                align-items: center;
+                margin-bottom: 15px;
+                font-weight: 600;
+                font-size: 16px;
+            `;
+            header.innerHTML = `
+                <i class="fas fa-check-circle" style="margin-right: 10px; font-size: 20px;"></i>
+                Changes Saved Successfully!
+            `;
+            
+            // Create content
+            const content = document.createElement('div');
+            content.style.cssText = `
+                margin-bottom: 15px;
+                line-height: 1.5;
+            `;
+            
+            if (editedFields.length === 1) {
+                content.innerHTML = `<strong>${editedFields[0]}</strong> has been updated.`;
+            } else {
+                content.innerHTML = `
+                    <strong>${editedFields.length} fields</strong> have been updated:<br>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        ${editedFields.map(field => `<li>${field}</li>`).join('')}
+                    </ul>
+                `;
+            }
+            
+            // Create close button
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '✓ Got it';
+            closeBtn.style.cssText = `
+                background: rgba(255,255,255,0.2);
+                border: 1px solid rgba(255,255,255,0.3);
+                color: white;
+                padding: 8px 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                width: 100%;
+            `;
+            
+            closeBtn.onmouseover = () => {
+                closeBtn.style.background = 'rgba(255,255,255,0.3)';
+            };
+            
+            closeBtn.onmouseout = () => {
+                closeBtn.style.background = 'rgba(255,255,255,0.2)';
+            };
+            
+            closeBtn.onclick = () => {
+                successContainer.style.animation = 'slideOutRight 0.5s ease-in';
+                setTimeout(() => successContainer.remove(), 500);
+            };
+            
+            // Add CSS animations
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideInRight {
+                    from { transform: translateX(100%); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOutRight {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(100%); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Assemble the message
+            successContainer.appendChild(header);
+            successContainer.appendChild(content);
+            successContainer.appendChild(closeBtn);
+            
+            // Add to page
+            document.body.appendChild(successContainer);
+            
+            // Auto-remove after 8 seconds
+            setTimeout(() => {
+                if (successContainer.parentNode) {
+                    successContainer.style.animation = 'slideOutRight 0.5s ease-in';
+                    setTimeout(() => successContainer.remove(), 500);
+                }
+            }, 8000);
+        }
 
         // Individual edit functions for critical pregnancy fields
         function enableIndividualPregnancyFieldEdit(fieldName) {
