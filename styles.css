@@ -1446,6 +1446,53 @@ table tr:nth-child(even) {
         height: 300px;
         width: 100;
     }
+    
+    /* Ensure table text is visible on mobile */
+    table thead {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+    
+    table th {
+        color: white !important;
+        background-color: #007bff !important;
+    }
+    
+    table td {
+        color: #333 !important;
+        background-color: transparent !important;
+    }
+    
+    table tr:nth-child(even) td {
+        background-color: #f9f9f9 !important;
+        color: #333 !important;
+    }
+    
+    table tr:nth-child(odd) td {
+        background-color: white !important;
+        color: #333 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Additional mobile fixes for very small screens */
+    table thead {
+        background-color: #007bff !important;
+        color: white !important;
+    }
+    
+    table th {
+        color: white !important;
+        background-color: #007bff !important;
+        font-size: 12px;
+        padding: 6px 4px;
+    }
+    
+    table td {
+        color: #333 !important;
+        font-size: 12px;
+        padding: 6px 4px;
+    }
 }
 
 .search-container {
