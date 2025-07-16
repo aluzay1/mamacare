@@ -3525,16 +3525,7 @@
                     display: none;
                 }
                 
-                /* Show mobile cards container */
-                .records-cards-mobile {
-                    padding: 0.5rem;
-                }
-                
-                .cards-container {
-                    display: flex;
-                    flex-direction: column;
-                    gap: 1rem;
-                }
+
                 
                 .record-card {
                     background: white;
@@ -4306,10 +4297,77 @@
         /* Global override to ensure mobile cards show on small screens */
         @media (max-width: 768px) {
             .records-cards-mobile {
-                display: block !important;
+                display: none !important;
             }
             .table-container {
-                display: none !important;
+                display: block !important;
+            }
+            
+            /* Mobile-optimized table styles */
+            .table-container {
+                overflow-x: auto;
+                margin: 0 -1rem;
+                padding: 0 1rem;
+            }
+            
+            table {
+                min-width: 600px;
+                font-size: 0.85rem;
+            }
+            
+            th, td {
+                padding: 0.5rem 0.3rem;
+                white-space: nowrap;
+                vertical-align: top;
+            }
+            
+            /* Make action buttons more touch-friendly */
+            .btn-download-single, .btn-delete {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.75rem;
+                min-width: 60px;
+                margin: 0.1rem;
+            }
+            
+            /* Optimize column widths for mobile */
+            th:nth-child(1), td:nth-child(1) { /* Checkbox */
+                width: 30px;
+                min-width: 30px;
+            }
+            
+            th:nth-child(2), td:nth-child(2) { /* Date */
+                width: 80px;
+                min-width: 80px;
+            }
+            
+            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+                width: 120px;
+                min-width: 120px;
+            }
+            
+            th:nth-child(4), td:nth-child(4) { /* Treatment */
+                width: 120px;
+                min-width: 120px;
+            }
+            
+            th:nth-child(5), td:nth-child(5) { /* Medication */
+                width: 120px;
+                min-width: 120px;
+            }
+            
+            th:nth-child(6), td:nth-child(6) { /* Doctor */
+                width: 100px;
+                min-width: 100px;
+            }
+            
+            th:nth-child(7), td:nth-child(7) { /* Hospital */
+                width: 100px;
+                min-width: 100px;
+            }
+            
+            th:nth-child(8), td:nth-child(8) { /* Actions */
+                width: 120px;
+                min-width: 120px;
             }
         }
     </style>
@@ -4921,16 +4979,12 @@
             console.log('Filtered records:', filteredRecords);
 
             const tableBody = document.getElementById("recordsTableBody");
-            const cardsContainer = document.getElementById("cardsContainer");
             tableBody.innerHTML = "";
-            cardsContainer.innerHTML = "";
             
-            console.log('Cards container found:', cardsContainer);
             console.log('Table body found:', tableBody);
             
             if (!filteredRecords || filteredRecords.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No records found</td></tr>';
-                cardsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666; font-style: italic;">No records found</div>';
                 document.getElementById('bulkDownloadBtn').style.display = 'none';
                 return;
             }
@@ -4958,46 +5012,7 @@
                 `;
                 tableBody.appendChild(row);
 
-                // Create mobile card
-                const card = document.createElement('div');
-                card.className = 'record-card';
-                console.log('Creating mobile card for record:', record.id);
-                card.innerHTML = `
-                    <div class="record-card-header">
-                        <div class="record-date">${new Date(record.date).toLocaleDateString()}</div>
-                        <div class="record-actions">
-                            <button onclick="downloadSingleRecord(${record.id})" class="btn-download-single">
-                                <i class="fas fa-download"></i> Download
-                            </button>
-                            <button onclick="deleteRecord(${record.id})" class="btn-delete">
-                                <i class="fas fa-trash"></i> Delete
-                            </button>
-                        </div>
-                    </div>
-                    <div class="record-card-content">
-                        <div class="record-field diagnosis">
-                            <div class="record-field-label">Diagnosis</div>
-                            <div class="record-field-value">${record.diagnosis || 'Not specified'}</div>
-                        </div>
-                        <div class="record-field treatment">
-                            <div class="record-field-label">Treatment</div>
-                            <div class="record-field-value">${record.treatment || 'Not specified'}</div>
-                        </div>
-                        <div class="record-field medication">
-                            <div class="record-field-label">Medication</div>
-                            <div class="record-field-value">${record.medication || 'Not specified'}</div>
-                        </div>
-                        <div class="record-field doctor">
-                            <div class="record-field-label">Doctor</div>
-                            <div class="record-field-value">${record.doctor || 'Not specified'}</div>
-                        </div>
-                        <div class="record-field hospital">
-                            <div class="record-field-label">Hospital</div>
-                            <div class="record-field-value">${record.hospital || 'Not specified'}</div>
-                        </div>
-                    </div>
-                `;
-                cardsContainer.appendChild(card);
+
             });
 
             // Update bulk download button visibility
@@ -5015,16 +5030,14 @@
             console.log('Table container:', tableContainer);
             console.log('Mobile cards container:', mobileCardsContainer);
             
-            if (window.innerWidth <= 768) {
-                // Mobile view - show cards, hide desktop table
-                tableContainer.style.display = 'none';
-                mobileCardsContainer.style.display = 'block';
-                console.log('Showing mobile cards');
-            } else {
-                // Desktop view - show desktop table, hide cards
+            // Always show table format, regardless of screen size
+            if (tableContainer) {
                 tableContainer.style.display = 'block';
+                console.log('Showing table format');
+            }
+            if (mobileCardsContainer) {
                 mobileCardsContainer.style.display = 'none';
-                console.log('Showing desktop table');
+                console.log('Hiding mobile cards');
             }
         }
 
@@ -5036,20 +5049,6 @@
             console.log('DOM loaded, initializing tables...');
             filterAndDisplayRecords();
             updateTableDisplay();
-            
-            // Force mobile cards to be visible on small screens
-            if (window.innerWidth <= 768) {
-                const mobileCardsContainer = document.getElementById('recordsCardsMobile');
-                const tableContainer = document.querySelector('.table-container');
-                if (mobileCardsContainer) {
-                    mobileCardsContainer.style.display = 'block';
-                    console.log('Forced mobile cards to show');
-                }
-                if (tableContainer) {
-                    tableContainer.style.display = 'none';
-                    console.log('Forced table to hide');
-                }
-            }
         });
 
         function toggleAllRecords() {
