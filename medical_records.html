@@ -1245,6 +1245,47 @@
             }
         }
 
+        /* Enhanced Contrast Improvements */
+        .info-item span, .info-item label, .tab-section h3, .section-header h3 {
+            color: #1a202c !important;
+        }
+        
+        .info-item label {
+            font-weight: 700 !important;
+        }
+        
+        .info-item span {
+            font-weight: 500 !important;
+        }
+        
+        .tab-btn {
+            color: #1a202c !important;
+            font-weight: 600 !important;
+        }
+        
+        .search-input, .search-field, .input-field {
+            color: #1a202c !important;
+        }
+        
+        .clear-search-btn {
+            color: #1a202c !important;
+        }
+        
+        .clear-search-btn:hover {
+            color: #000000 !important;
+        }
+        
+        /* Table content contrast */
+        .records-table td {
+            color: #1a202c !important;
+            font-weight: 500 !important;
+        }
+        
+        .records-table th {
+            color: #ffffff !important;
+            font-weight: 700 !important;
+        }
+
         @media (max-width: 480px) {
             .profile-header {
                 padding: 1rem 0.75rem;
@@ -1481,9 +1522,9 @@
             padding: 1rem 1.5rem;
             border: none;
             background: #ffffff;
-            color: #6c757d;
+            color: #2c3e50;
             cursor: pointer;
-            font-weight: 500;
+            font-weight: 600;
             transition: all 0.3s ease;
             white-space: nowrap;
             display: flex;
@@ -1539,10 +1580,10 @@
         }
 
         .tab-section h3 {
-            color: #2c3e50;
+            color: #1a202c;
             margin-bottom: 1.5rem;
             font-size: 1.3rem;
-            font-weight: 600;
+            font-weight: 700;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -1585,9 +1626,9 @@
 
         .section-header h3 {
             margin: 0;
-            color: #2c3e50;
+            color: #1a202c;
             font-size: 1.3rem;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .info-grid {
@@ -1615,15 +1656,16 @@
 
         .info-item label {
             display: block;
-            font-weight: 600;
-            color: #495057;
+            font-weight: 700;
+            color: #1a202c;
             margin-bottom: 0.5rem;
             font-size: 0.9rem;
         }
 
         .info-item span {
-            color: #2c3e50;
+            color: #1a202c;
             font-size: 1rem;
+            font-weight: 500;
         }
 
         .input-field {
@@ -1632,6 +1674,7 @@
             border: 1px solid #ddd;
             border-radius: 6px;
             font-size: 1rem;
+            color: #1a202c;
             transition: border-color 0.3s ease;
             box-sizing: border-box;
         }
@@ -1677,6 +1720,7 @@
             border: 2px solid #e9ecef;
             border-radius: 8px;
             font-size: 1rem;
+            color: #1a202c;
             transition: border-color 0.3s ease;
             box-sizing: border-box;
         }
@@ -1694,7 +1738,7 @@
             transform: translateY(-50%);
             background: none;
             border: none;
-            color: #6c757d;
+            color: #2c3e50;
             cursor: pointer;
             padding: 4px;
             border-radius: 50%;
@@ -1708,7 +1752,7 @@
 
         .clear-search-btn:hover {
             background: #e9ecef;
-            color: #495057;
+            color: #1a202c;
         }
 
         .clear-search-btn:active {
@@ -1721,6 +1765,7 @@
             border-radius: 8px;
             font-size: 1rem;
             background: white;
+            color: #1a202c;
             min-width: 150px;
             transition: border-color 0.3s ease;
             flex-shrink: 0;
@@ -5276,12 +5321,12 @@
                         element.textContent = displayValue;
                         
                         // Ensure text is visible
-                        element.style.color = '#2c3e50';
+                        element.style.color = '#1a202c';
                         element.style.display = 'block';
                         
                         // Add visual feedback for updated elements
                         element.style.backgroundColor = '#ffffff';
-                        element.style.border = '1px solid #2c3e50';
+                        element.style.border = '1px solid #1a202c';
                         element.style.padding = '2px 4px';
                         element.style.borderRadius = '3px';
                         element.style.color = '#000000';
@@ -5293,7 +5338,7 @@
                             element.style.padding = '';
                             element.style.borderRadius = '';
                             // Keep the text color and visibility
-                            element.style.color = '#2c3e50';
+                            element.style.color = '#1a202c';
                             element.style.display = 'block';
                         }, 3000);
                         
