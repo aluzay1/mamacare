@@ -5027,6 +5027,18 @@
                 document.querySelector('.auth-section').style.display = 'none';
                 
                 // Update the profile display
+                console.log('Initial patient data loaded:', responseData);
+                console.log('Initial pregnancy data:', {
+                    pregnancy_status: responseData.pregnancy_status,
+                    lmp_date: responseData.lmp_date,
+                    due_date: responseData.due_date,
+                    gestational_age: responseData.gestational_age,
+                    pregnancy_complications: responseData.pregnancy_complications
+                });
+                console.log('Initial medical data:', {
+                    allergies: responseData.allergies,
+                    medications: responseData.medications
+                });
                 updateProfileDisplay(responseData);
                 
                 // Fetch and display medical records
@@ -5075,7 +5087,18 @@
                 function updateElement(id, value, defaultValue = 'Not available') {
                     const element = document.getElementById(id);
                     if (element) {
-                        const displayValue = value || defaultValue;
+                        let displayValue;
+                        
+                        // Handle different types of values
+                        if (value === null || value === undefined || value === '') {
+                            displayValue = defaultValue;
+                        } else if (Array.isArray(value)) {
+                            // Handle array values (like allergies and medications)
+                            displayValue = value.length > 0 ? value.join(', ') : defaultValue;
+                        } else {
+                            displayValue = value.toString();
+                        }
+                        
                         element.textContent = displayValue;
                         
                         // Add visual feedback for updated elements
@@ -5177,8 +5200,8 @@
                         updateElement('patientDueDateDisplay', dueDate.toLocaleDateString());
                         updateElement('patientGestationalAgeDisplay', gestationalAgeText);
                     } else {
-                        updateElement('patientDueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
-                        updateElement('patientGestationalAgeDisplay', profile.gestational_age ? `${profile.gestational_age} weeks` : null);
+                        updateElement('patientDueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : 'Not available');
+                        updateElement('patientGestationalAgeDisplay', profile.gestational_age ? `${profile.gestational_age} weeks` : 'Not available');
                     }
                     
                     updateElement('patientPregnancyComplicationsDisplay', profile.pregnancy_complications, 'None reported');
@@ -5203,6 +5226,11 @@
                         birth_plan: profile.birth_plan
                     });
                     
+                    console.log('Medical info fields:', {
+                        allergies: profile.allergies,
+                        medications: profile.medications
+                    });
+                    
                     updateElement('pregnancyStatusDisplay', profile.pregnancy_status);
                     updateElement('previousPregnanciesDisplay', profile.previous_pregnancies);
                     
@@ -5225,9 +5253,9 @@
                         dueDate.setDate(dueDate.getDate() + 280);
                         updateElement('dueDateDisplay', dueDate.toLocaleDateString());
                     } else {
-                        updateElement('lmpDateDisplay', null);
-                        updateElement('gestationalAgeDisplay', null);
-                        updateElement('dueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : null);
+                        updateElement('lmpDateDisplay', 'Not available');
+                        updateElement('gestationalAgeDisplay', 'Not available');
+                        updateElement('dueDateDisplay', profile.due_date ? new Date(profile.due_date).toLocaleDateString() : 'Not available');
                     }
                     
                     updateElement('multiplePregnancyDisplay', profile.multiple_pregnancy);
@@ -6455,16 +6483,27 @@
                         }
                     });
                     
-                    if (reloadResponse.ok) {
-                        const reloadedData = await reloadResponse.json();
-                        console.log('Reloaded data from server:', reloadedData);
-                        updateProfileDisplay(reloadedData);
-                        console.log('Patient data reloaded successfully');
-                    } else {
-                        console.warn('Failed to reload patient data, but save was successful');
-                        const errorText = await reloadResponse.text();
-                        console.error('Reload error response:', errorText);
-                    }
+                                    if (reloadResponse.ok) {
+                    const reloadedData = await reloadResponse.json();
+                    console.log('Reloaded data from server:', reloadedData);
+                    console.log('Pregnancy data in reloaded data:', {
+                        pregnancy_status: reloadedData.pregnancy_status,
+                        lmp_date: reloadedData.lmp_date,
+                        due_date: reloadedData.due_date,
+                        gestational_age: reloadedData.gestational_age,
+                        pregnancy_complications: reloadedData.pregnancy_complications
+                    });
+                    console.log('Medical data in reloaded data:', {
+                        allergies: reloadedData.allergies,
+                        medications: reloadedData.medications
+                    });
+                    updateProfileDisplay(reloadedData);
+                    console.log('Patient data reloaded successfully');
+                } else {
+                    console.warn('Failed to reload patient data, but save was successful');
+                    const errorText = await reloadResponse.text();
+                    console.error('Reload error response:', errorText);
+                }
                 } catch (error) {
                     console.warn('Error reloading patient data:', error);
                 }
