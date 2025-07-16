@@ -580,7 +580,10 @@
     </style>
 
     <section class="medical-records" id="medicalRecords" style="display: none;">
-        <h1>Patient Medical Records</h1>
+        <div class="records-header-pro">
+            <i class="fas fa-file-medical"></i>
+            <h1>Patient Medical Records</h1>
+        </div>
 
         <!-- Patient Overview -->
         <div class="patient-profile">
@@ -5060,6 +5063,47 @@
                 padding: 0.4rem 0.5rem;
             }
         }
+        .records-header-pro {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.2rem;
+            background: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            box-shadow: 0 4px 24px rgba(65, 88, 208, 0.10);
+            border-radius: 18px;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            margin: 2.5rem auto 2rem auto;
+            max-width: 700px;
+            width: 100%;
+            position: relative;
+        }
+        .records-header-pro i {
+            font-size: 2.5rem;
+            color: #fff;
+            filter: drop-shadow(0 2px 8px rgba(65, 88, 208, 0.15));
+        }
+        .records-header-pro h1 {
+            margin: 0;
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(65, 88, 208, 0.10);
+        }
+        @media (max-width: 768px) {
+            .records-header-pro {
+                flex-direction: column;
+                gap: 0.7rem;
+                padding: 1.2rem 0.5rem 1rem 0.5rem;
+                margin: 1.2rem auto 1rem auto;
+            }
+            .records-header-pro h1 {
+                font-size: 1.3rem;
+            }
+            .records-header-pro i {
+                font-size: 1.7rem;
+            }
+        }
     </style>
 
     <script>
@@ -7364,26 +7408,4 @@
 
                 <div id="feedbackSuccess" class="feedback-success" style="display: none;">
                     <div class="success-content">
-                        <i class="fas fa-check-circle"></i>
-                        <h3>Feedback Submitted Successfully!</h3>
-                        <p>Your referral feedback has been sent to Prestrack via SMS and logged in our system.</p>
-                        <div class="success-details">
-                            <span id="feedbackTimestamp"></span>
-                            <span id="smsStatus"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="feedbackError" class="feedback-error" style="display: none;">
-                    <div class="error-content">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Error Submitting Feedback</h3>
-                        <p id="errorMessage"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-</body>
-</html>
+                        <i class="fas fa-check-circle"></
