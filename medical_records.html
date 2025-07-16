@@ -945,10 +945,6 @@
                     </button>
                 </div>
                 <div class="table-container">
-                    <div class="table-header">
-                        <h3><i class="fas fa-table"></i> Medical Records Table</h3>
-                        <p>View and manage your medical records in an organized table format</p>
-                    </div>
                     <table class="records-table">
                         <thead>
                             <tr>
@@ -979,22 +975,7 @@
                         <tbody id="recordsTableBody">
                             <!-- Medical records will be dynamically populated here -->
                         </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="8" class="table-footer">
-                                    <div class="footer-content">
-                                        <span class="record-count">
-                                            <i class="fas fa-list"></i>
-                                            <span id="totalRecordsCount">0</span> records found
-                                        </span>
-                                        <span class="last-updated">
-                                            <i class="fas fa-clock"></i>
-                                            Last updated: <span id="lastUpdatedTime"></span>
-                                        </span>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tfoot>
+
                     </table>
                 </div>
 
@@ -2883,7 +2864,7 @@
                 border-collapse: collapse;
                 width: 100%;
                 background: white;
-                border-radius: 8px;
+                border-radius: 12px;
                 overflow: hidden;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
@@ -4163,6 +4144,112 @@
             .last-updated span {
                 font-weight: 600;
                 color: #059669;
+            }
+        }
+
+        /* --- Enhanced Mobile Table Usability --- */
+        @media (max-width: 768px) {
+            .table-container {
+                box-shadow: 0 2px 12px rgba(30, 64, 175, 0.08);
+                border-radius: 12px;
+                background: #fff;
+                margin: 0 -0.5rem 1.5rem -0.5rem;
+                overflow-x: auto;
+                position: relative;
+            }
+            .table-container::after {
+                content: '';
+                position: absolute;
+                top: 0; right: 0; bottom: 0;
+                width: 16px;
+                pointer-events: none;
+                background: linear-gradient(to left, #fff 60%, transparent 100%);
+                z-index: 2;
+                display: block;
+            }
+            .records-table {
+                min-width: 700px;
+                font-size: 0.85rem;
+                border-radius: 12px;
+                background: #fff;
+            }
+            .records-table th, .records-table td {
+                padding: 0.65rem 0.5rem;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                text-align: left;
+                vertical-align: middle;
+            }
+            .records-table th {
+                font-size: 0.8rem;
+            }
+            .records-table th:nth-child(1), .records-table td:nth-child(1) { min-width: 80px; max-width: 90px; }
+            .records-table th:nth-child(2), .records-table td:nth-child(2) { min-width: 120px; max-width: 140px; }
+            .records-table th:nth-child(3), .records-table td:nth-child(3) { min-width: 120px; max-width: 140px; }
+            .records-table th:nth-child(4), .records-table td:nth-child(4) { min-width: 120px; max-width: 140px; }
+            .records-table th:nth-child(5), .records-table td:nth-child(5) { min-width: 120px; max-width: 140px; }
+            .records-table th:nth-child(6), .records-table td:nth-child(6) { min-width: 120px; max-width: 140px; }
+            .records-table th:nth-child(7), .records-table td:nth-child(7) { min-width: 120px; max-width: 140px; }
+            .records-table th:last-child, .records-table td:last-child { min-width: 110px; max-width: 120px; text-align: center; }
+            .records-table td {
+                border-bottom: 1px solid #e2e8f0;
+            }
+            .records-table tr:last-child td {
+                border-bottom: none;
+            }
+            /* Touch-friendly action buttons */
+            .btn-download-single, .btn-delete {
+                min-width: 48px;
+                min-height: 44px;
+                font-size: 0.95rem;
+                padding: 0.5rem 0.7rem;
+                margin: 0 0.15rem;
+                border-radius: 8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 0.4rem;
+                box-shadow: 0 1px 4px rgba(30, 64, 175, 0.08);
+            }
+            .btn-download-single {
+                background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+                color: #fff;
+                border: none;
+            }
+            .btn-delete {
+                background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+                color: #fff;
+                border: none;
+            }
+            .btn-download-single:active, .btn-delete:active {
+                transform: scale(0.97);
+            }
+            /* Checkbox column: keep small */
+            .records-table th:first-child, .records-table td:first-child {
+                min-width: 40px;
+                max-width: 50px;
+                text-align: center;
+            }
+            /* Subtle border for table */
+            .records-table {
+                border: 1px solid #e2e8f0;
+            }
+        }
+        /* Extra small screens */
+        @media (max-width: 480px) {
+            .records-table {
+                min-width: 600px;
+                font-size: 0.8rem;
+            }
+            .records-table th, .records-table td {
+                padding: 0.5rem 0.3rem;
+                font-size: 0.8rem;
+            }
+            .btn-download-single, .btn-delete {
+                min-width: 44px;
+                min-height: 40px;
+                font-size: 0.85rem;
+                padding: 0.4rem 0.5rem;
             }
         }
     </style>
