@@ -1906,60 +1906,68 @@
             }
 
             .records-table {
-                min-width: 1000px; /* Keep consistent minimum width */
+                min-width: 1000px !important; /* Keep consistent minimum width */
                 font-size: 0.8rem;
-                table-layout: fixed; /* Maintain fixed layout */
+                table-layout: fixed !important; /* Maintain fixed layout */
             }
 
             .records-table th,
             .records-table td {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.8rem;
-                white-space: normal; /* Allow text wrapping */
+                white-space: normal;
             }
 
             /* Maintain exact column widths to prevent misalignment */
             .records-table th:nth-child(1), .records-table td:nth-child(1) { 
-                width: 60px; 
-                min-width: 60px; 
-                max-width: 60px; 
-                text-align: center;
+                width: 60px !important; 
+                min-width: 60px !important; 
+                max-width: 60px !important; 
+                text-align: center !important;
+                padding: 0.75rem 0.25rem !important;
             }
             .records-table th:nth-child(2), .records-table td:nth-child(2) { 
-                width: 120px; 
-                min-width: 120px; 
-                max-width: 120px; 
+                width: 120px !important; 
+                min-width: 120px !important; 
+                max-width: 120px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(3), .records-table td:nth-child(3) { 
-                width: 180px; 
-                min-width: 180px; 
-                max-width: 180px; 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(4), .records-table td:nth-child(4) { 
-                width: 180px; 
-                min-width: 180px; 
-                max-width: 180px; 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(5), .records-table td:nth-child(5) { 
-                width: 180px; 
-                min-width: 180px; 
-                max-width: 180px; 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(6), .records-table td:nth-child(6) { 
-                width: 140px; 
-                min-width: 140px; 
-                max-width: 140px; 
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(7), .records-table td:nth-child(7) { 
-                width: 140px; 
-                min-width: 140px; 
-                max-width: 140px; 
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                padding: 0.75rem 0.5rem !important;
             }
             .records-table th:nth-child(8), .records-table td:nth-child(8) { 
-                width: 140px; 
-                min-width: 140px; 
-                max-width: 140px; 
-                text-align: center;
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                text-align: center !important;
+                padding: 0.75rem 0.25rem !important;
             }
 
             .btn-download-single, .btn-delete {
@@ -1976,8 +1984,9 @@
             }
 
             .records-table {
-                min-width: 1000px; /* Keep consistent minimum width */
+                min-width: 1000px !important; /* Keep consistent minimum width */
                 font-size: 0.75rem;
+                table-layout: fixed !important;
             }
 
             .records-table th,
@@ -1993,13 +2002,56 @@
                 margin: 0.05rem;
             }
 
-            /* Ensure action buttons are visible */
+            /* Maintain exact column widths to prevent misalignment */
+            .records-table th:nth-child(1), .records-table td:nth-child(1) { 
+                width: 60px !important; 
+                min-width: 60px !important; 
+                max-width: 60px !important; 
+                text-align: center !important;
+                padding: 0.5rem 0.2rem !important;
+            }
+            .records-table th:nth-child(2), .records-table td:nth-child(2) { 
+                width: 120px !important; 
+                min-width: 120px !important; 
+                max-width: 120px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
+            .records-table th:nth-child(3), .records-table td:nth-child(3) { 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
+            .records-table th:nth-child(4), .records-table td:nth-child(4) { 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
+            .records-table th:nth-child(5), .records-table td:nth-child(5) { 
+                width: 180px !important; 
+                min-width: 180px !important; 
+                max-width: 180px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
+            .records-table th:nth-child(6), .records-table td:nth-child(6) { 
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
+            .records-table th:nth-child(7), .records-table td:nth-child(7) { 
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                padding: 0.5rem 0.3rem !important;
+            }
             .records-table th:nth-child(8), .records-table td:nth-child(8) { 
-                width: 140px; 
-                min-width: 140px; 
-                max-width: 140px; 
-                text-align: center;
-                padding: 0.5rem 0.25rem;
+                width: 140px !important; 
+                min-width: 140px !important; 
+                max-width: 140px !important; 
+                text-align: center !important;
+                padding: 0.5rem 0.2rem !important;
             }
         }
 
@@ -3861,17 +3913,17 @@
             border: 1px solid #e2e8f0;
         }
 
-        /* Records table styles */
+        /* Records table styles - Fixed alignment */
         .records-table {
             width: 100%;
-            border-collapse: separate;
-            border-spacing: 0;
+            border-collapse: collapse;
             background: white;
             table-layout: fixed;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            min-width: 1000px; /* Ensure minimum width to prevent squashing */
+            min-width: 1000px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .records-table th,
@@ -3882,7 +3934,8 @@
             vertical-align: middle;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            white-space: normal; /* Allow text wrapping */
+            white-space: normal;
+            box-sizing: border-box;
         }
 
         .records-table th {
@@ -3895,7 +3948,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
-            white-space: nowrap; /* Keep headers on one line */
+            white-space: nowrap;
         }
 
         .records-table tr:hover {
@@ -3906,48 +3959,71 @@
             border-bottom: none;
         }
 
-        /* Column width specifications to prevent misalignment */
-        .records-table th:nth-child(1), .records-table td:nth-child(1) { 
-            width: 60px; 
-            min-width: 60px; 
-            max-width: 60px; 
-            text-align: center; 
+        /* Fixed column widths - CRITICAL for alignment */
+        .records-table th:nth-child(1), 
+        .records-table td:nth-child(1) { 
+            width: 60px !important; 
+            min-width: 60px !important; 
+            max-width: 60px !important; 
+            text-align: center !important; 
+            padding: 1rem 0.5rem !important;
         }
-        .records-table th:nth-child(2), .records-table td:nth-child(2) { 
-            width: 120px; 
-            min-width: 120px; 
-            max-width: 120px; 
+
+        .records-table th:nth-child(2), 
+        .records-table td:nth-child(2) { 
+            width: 120px !important; 
+            min-width: 120px !important; 
+            max-width: 120px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(3), .records-table td:nth-child(3) { 
-            width: 180px; 
-            min-width: 180px; 
-            max-width: 180px; 
+
+        .records-table th:nth-child(3), 
+        .records-table td:nth-child(3) { 
+            width: 180px !important; 
+            min-width: 180px !important; 
+            max-width: 180px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(4), .records-table td:nth-child(4) { 
-            width: 180px; 
-            min-width: 180px; 
-            max-width: 180px; 
+
+        .records-table th:nth-child(4), 
+        .records-table td:nth-child(4) { 
+            width: 180px !important; 
+            min-width: 180px !important; 
+            max-width: 180px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(5), .records-table td:nth-child(5) { 
-            width: 180px; 
-            min-width: 180px; 
-            max-width: 180px; 
+
+        .records-table th:nth-child(5), 
+        .records-table td:nth-child(5) { 
+            width: 180px !important; 
+            min-width: 180px !important; 
+            max-width: 180px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(6), .records-table td:nth-child(6) { 
-            width: 140px; 
-            min-width: 140px; 
-            max-width: 140px; 
+
+        .records-table th:nth-child(6), 
+        .records-table td:nth-child(6) { 
+            width: 140px !important; 
+            min-width: 140px !important; 
+            max-width: 140px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(7), .records-table td:nth-child(7) { 
-            width: 140px; 
-            min-width: 140px; 
-            max-width: 140px; 
+
+        .records-table th:nth-child(7), 
+        .records-table td:nth-child(7) { 
+            width: 140px !important; 
+            min-width: 140px !important; 
+            max-width: 140px !important; 
+            padding: 1rem 0.75rem !important;
         }
-        .records-table th:nth-child(8), .records-table td:nth-child(8) { 
-            width: 140px; 
-            min-width: 140px; 
-            max-width: 140px; 
-            text-align: center; 
+
+        .records-table th:nth-child(8), 
+        .records-table td:nth-child(8) { 
+            width: 140px !important; 
+            min-width: 140px !important; 
+            max-width: 140px !important; 
+            text-align: center !important; 
+            padding: 1rem 0.5rem !important;
         }
 
         /* Table container for proper scrolling */
