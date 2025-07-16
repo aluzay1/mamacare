@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="styles.css?v=2.2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="feedback-ui.js"></script>
     <!-- Add jsPDF library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
@@ -6520,9 +6521,9 @@
                 
                 // Create custom success message with better UI
                 if (editedFields.length > 0) {
-                    showCustomSuccessMessage(editedFields);
+                    showSuccessMessage('Changes Saved Successfully!', editedFields);
                 } else {
-                    showCustomSuccessMessage(['Profile information']);
+                    showSuccessMessage('Profile information updated successfully!');
                 }
                 } else {
                     const errorData = await response.json();
@@ -7024,123 +7025,7 @@
             }
         });
 
-        // Custom success message function with better UI
-        function showCustomSuccessMessage(editedFields) {
-            // Remove any existing success message
-            const existingMessage = document.getElementById('customSuccessMessage');
-            if (existingMessage) {
-                existingMessage.remove();
-            }
-            
-            // Create success message container
-            const successContainer = document.createElement('div');
-            successContainer.id = 'customSuccessMessage';
-            successContainer.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: linear-gradient(135deg, #4CAF50, #45a049);
-                color: white;
-                padding: 20px;
-                border-radius: 10px;
-                box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-                z-index: 10000;
-                max-width: 400px;
-                font-family: 'Poppins', sans-serif;
-                animation: slideInRight 0.5s ease-out;
-                border-left: 5px solid #2E7D32;
-            `;
-            
-            // Create header
-            const header = document.createElement('div');
-            header.style.cssText = `
-                display: flex;
-                align-items: center;
-                margin-bottom: 15px;
-                font-weight: 600;
-                font-size: 16px;
-            `;
-            header.innerHTML = `
-                <i class="fas fa-check-circle" style="margin-right: 10px; font-size: 20px;"></i>
-                Changes Saved Successfully!
-            `;
-            
-            // Create content
-            const content = document.createElement('div');
-            content.style.cssText = `
-                margin-bottom: 15px;
-                line-height: 1.5;
-            `;
-            
-            if (editedFields.length === 1) {
-                content.innerHTML = `<strong>${editedFields[0]}</strong> has been updated.`;
-            } else {
-                content.innerHTML = `
-                    <strong>${editedFields.length} fields</strong> have been updated:<br>
-                    <ul style="margin: 10px 0; padding-left: 20px;">
-                        ${editedFields.map(field => `<li>${field}</li>`).join('')}
-                    </ul>
-                `;
-            }
-            
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.innerHTML = '✓ Got it';
-            closeBtn.style.cssText = `
-                background: rgba(255,255,255,0.2);
-                border: 1px solid rgba(255,255,255,0.3);
-                color: white;
-                padding: 8px 16px;
-                border-radius: 5px;
-                cursor: pointer;
-                font-size: 14px;
-                transition: all 0.3s ease;
-                width: 100%;
-            `;
-            
-            closeBtn.onmouseover = () => {
-                closeBtn.style.background = 'rgba(255,255,255,0.3)';
-            };
-            
-            closeBtn.onmouseout = () => {
-                closeBtn.style.background = 'rgba(255,255,255,0.2)';
-            };
-            
-            closeBtn.onclick = () => {
-                successContainer.style.animation = 'slideOutRight 0.5s ease-in';
-                setTimeout(() => successContainer.remove(), 500);
-            };
-            
-            // Add CSS animations
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideInRight {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOutRight {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            // Assemble the message
-            successContainer.appendChild(header);
-            successContainer.appendChild(content);
-            successContainer.appendChild(closeBtn);
-            
-            // Add to page
-            document.body.appendChild(successContainer);
-            
-            // Auto-remove after 8 seconds
-            setTimeout(() => {
-                if (successContainer.parentNode) {
-                    successContainer.style.animation = 'slideOutRight 0.5s ease-in';
-                    setTimeout(() => successContainer.remove(), 500);
-                }
-            }, 8000);
-        }
+
 
         // Individual edit functions for critical pregnancy fields
         function enableIndividualPregnancyFieldEdit(fieldName) {
