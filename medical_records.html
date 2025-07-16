@@ -5068,11 +5068,17 @@
         // Update the profile display function
         function updateProfileDisplay(profile) {
             try {
+                console.log('Updating profile display with data:', profile);
+                
                 // Helper function to safely update element text
                 function updateElement(id, value, defaultValue = 'Not available') {
                     const element = document.getElementById(id);
                     if (element) {
-                        element.textContent = value || defaultValue;
+                        const displayValue = value || defaultValue;
+                        element.textContent = displayValue;
+                        console.log(`Updated element ${id} with value: ${displayValue}`);
+                    } else {
+                        console.warn(`Element with id ${id} not found`);
                     }
                 }
 
@@ -5162,6 +5168,25 @@
                     updateElement('patientPregnancyComplicationsDisplay', profile.pregnancy_complications, 'None reported');
                     
                     // Update detailed pregnancy fields
+                    console.log('Updating pregnancy fields:', {
+                        pregnancy_status: profile.pregnancy_status,
+                        previous_pregnancies: profile.previous_pregnancies,
+                        lmp_date: profile.lmp_date,
+                        due_date: profile.due_date,
+                        gestational_age: profile.gestational_age,
+                        multiple_pregnancy: profile.multiple_pregnancy,
+                        risk_level: profile.risk_level,
+                        risk_factors: profile.risk_factors,
+                        blood_pressure: profile.blood_pressure,
+                        hemoglobin: profile.hemoglobin,
+                        blood_sugar: profile.blood_sugar,
+                        weight: profile.weight,
+                        prenatal_vitamins: profile.prenatal_vitamins,
+                        pregnancy_complications: profile.pregnancy_complications,
+                        emergency_hospital: profile.emergency_hospital,
+                        birth_plan: profile.birth_plan
+                    });
+                    
                     updateElement('pregnancyStatusDisplay', profile.pregnancy_status);
                     updateElement('previousPregnanciesDisplay', profile.previous_pregnancies);
                     
@@ -6406,10 +6431,13 @@
                     
                     if (reloadResponse.ok) {
                         const reloadedData = await reloadResponse.json();
+                        console.log('Reloaded data from server:', reloadedData);
                         updateProfileDisplay(reloadedData);
                         console.log('Patient data reloaded successfully');
                     } else {
                         console.warn('Failed to reload patient data, but save was successful');
+                        const errorText = await reloadResponse.text();
+                        console.error('Reload error response:', errorText);
                     }
                 } catch (error) {
                     console.warn('Error reloading patient data:', error);
