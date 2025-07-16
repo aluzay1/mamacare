@@ -1393,7 +1393,7 @@
         .tab-btn {
             padding: 1rem 1.5rem;
             border: none;
-            background: transparent;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
             color: #6c757d;
             cursor: pointer;
             font-weight: 500;
@@ -1404,17 +1404,23 @@
             gap: 0.5rem;
             border-bottom: 3px solid transparent;
             position: relative;
+            border-radius: 8px 8px 0 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .tab-btn:hover {
-            color: #495057;
-            background: #f8f9fa;
+            color: #4158D0;
+            background: linear-gradient(135deg, #f0f4ff 0%, #ffffff 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(65, 88, 208, 0.1);
         }
 
         .tab-btn.active {
             color: #4158D0;
             border-bottom-color: #4158D0;
-            background: #f8f9fa;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            box-shadow: 0 4px 12px rgba(65, 88, 208, 0.15);
+            transform: translateY(-1px);
         }
 
         .tab-btn i {
@@ -1423,7 +1429,9 @@
 
         /* Tab Content */
         .tab-content {
-            background: white;
+            background: #ffffff;
+            border-radius: 0 12px 12px 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .tab-pane {
@@ -1504,12 +1512,14 @@
         }
 
         .info-item {
-            background: white;
+            background: #ffffff;
             padding: 1.2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: 1px solid rgba(65, 88, 208, 0.1);
             width: 100%;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         .info-item.full-width {
@@ -2758,17 +2768,19 @@
         }
 
         .info-item {
-            background: #f8f9fa;
+            background: #ffffff;
             padding: 1.2rem;
             border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.03);
+            border: 1px solid rgba(65, 88, 208, 0.1);
         }
 
         .info-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(65, 88, 208, 0.15);
+            border-color: rgba(65, 88, 208, 0.3);
+            background: #ffffff;
         }
 
         .info-item label {
