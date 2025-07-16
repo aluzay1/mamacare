@@ -1886,70 +1886,97 @@
                 border-radius: 12px;
                 overflow-x: auto;
                 -webkit-overflow-scrolling: touch;
+                position: relative;
+            }
+
+            /* Add visual indicator for horizontal scroll */
+            .table-container::after {
+                content: '← Scroll →';
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(59, 130, 246, 0.9);
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                z-index: 5;
             }
 
             .records-table {
-                min-width: 800px;
+                min-width: 1000px; /* Keep consistent minimum width */
                 font-size: 0.8rem;
+                table-layout: fixed; /* Maintain fixed layout */
             }
 
             .records-table th,
             .records-table td {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.8rem;
+                white-space: normal; /* Allow text wrapping */
             }
 
+            /* Maintain exact column widths to prevent misalignment */
             .records-table th:nth-child(1), .records-table td:nth-child(1) { 
-                width: 50px; 
-                min-width: 50px; 
-                max-width: 50px; 
+                width: 60px; 
+                min-width: 60px; 
+                max-width: 60px; 
+                text-align: center;
             }
             .records-table th:nth-child(2), .records-table td:nth-child(2) { 
-                width: 100px; 
-                min-width: 100px; 
-                max-width: 100px; 
+                width: 120px; 
+                min-width: 120px; 
+                max-width: 120px; 
             }
             .records-table th:nth-child(3), .records-table td:nth-child(3) { 
-                width: 150px; 
-                min-width: 150px; 
-                max-width: 150px; 
+                width: 180px; 
+                min-width: 180px; 
+                max-width: 180px; 
             }
             .records-table th:nth-child(4), .records-table td:nth-child(4) { 
-                width: 150px; 
-                min-width: 150px; 
-                max-width: 150px; 
+                width: 180px; 
+                min-width: 180px; 
+                max-width: 180px; 
             }
             .records-table th:nth-child(5), .records-table td:nth-child(5) { 
-                width: 150px; 
-                min-width: 150px; 
-                max-width: 150px; 
+                width: 180px; 
+                min-width: 180px; 
+                max-width: 180px; 
             }
             .records-table th:nth-child(6), .records-table td:nth-child(6) { 
-                width: 120px; 
-                min-width: 120px; 
-                max-width: 120px; 
+                width: 140px; 
+                min-width: 140px; 
+                max-width: 140px; 
             }
             .records-table th:nth-child(7), .records-table td:nth-child(7) { 
-                width: 120px; 
-                min-width: 120px; 
-                max-width: 120px; 
+                width: 140px; 
+                min-width: 140px; 
+                max-width: 140px; 
             }
             .records-table th:nth-child(8), .records-table td:nth-child(8) { 
-                width: 120px; 
-                min-width: 120px; 
-                max-width: 120px; 
+                width: 140px; 
+                min-width: 140px; 
+                max-width: 140px; 
+                text-align: center;
             }
 
             .btn-download-single, .btn-delete {
                 padding: 0.5rem 0.75rem;
                 font-size: 0.7rem;
                 min-width: 60px;
+                margin: 0.1rem;
             }
         }
 
         @media (max-width: 480px) {
+            .table-container {
+                margin: 0 -0.75rem;
+            }
+
             .records-table {
-                min-width: 700px;
+                min-width: 1000px; /* Keep consistent minimum width */
                 font-size: 0.75rem;
             }
 
@@ -1963,6 +1990,16 @@
                 padding: 0.4rem 0.6rem;
                 font-size: 0.65rem;
                 min-width: 50px;
+                margin: 0.05rem;
+            }
+
+            /* Ensure action buttons are visible */
+            .records-table th:nth-child(8), .records-table td:nth-child(8) { 
+                width: 140px; 
+                min-width: 140px; 
+                max-width: 140px; 
+                text-align: center;
+                padding: 0.5rem 0.25rem;
             }
         }
 
@@ -3834,6 +3871,7 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: 1000px; /* Ensure minimum width to prevent squashing */
         }
 
         .records-table th,
@@ -3844,6 +3882,7 @@
             vertical-align: middle;
             word-wrap: break-word;
             overflow-wrap: break-word;
+            white-space: normal; /* Allow text wrapping */
         }
 
         .records-table th {
@@ -3856,6 +3895,7 @@
             position: sticky;
             top: 0;
             z-index: 10;
+            white-space: nowrap; /* Keep headers on one line */
         }
 
         .records-table tr:hover {
@@ -3909,103 +3949,78 @@
             max-width: 140px; 
             text-align: center; 
         }
+
+        /* Table container for proper scrolling */
+        .table-container {
+            overflow-x: auto;
+            width: 100%;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: white;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        /* Custom scrollbar styling */
+        .table-container::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
             
-            table {
-                min-width: 600px;
-                font-size: 0.85rem;
-                border-collapse: collapse;
-                width: 100%;
-                background: white;
-                border-radius: 12px;
-                overflow: hidden;
-            }
+            /* Remove conflicting table styles - using .records-table specific styles instead */
             
-            th, td {
-                padding: 1rem 0.75rem;
-                white-space: nowrap;
-                vertical-align: middle;
-                border-bottom: 1px solid #f1f5f9;
-                text-align: left;
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            }
+            /* Remove conflicting styles - using .records-table specific styles instead */
             
-            th {
-                background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
-                color: white;
-                font-weight: 700;
-                font-size: 0.85rem;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                position: sticky;
-                top: 0;
-                z-index: 10;
-                box-shadow: 0 2px 8px rgba(30, 64, 175, 0.2);
-                border-bottom: 2px solid #1e40af;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-            
-            th:hover {
-                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
-                transform: translateY(-1px);
-                box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
-            }
-            
-            th i {
-                margin-right: 0.5rem;
-                font-size: 0.9rem;
-                opacity: 0.9;
-            }
-            
-            th.sortable {
-                cursor: pointer;
-            }
-            
-            th.sortable:hover {
-                background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 50%, #3b82f6 100%);
-            }
-            
-            tr {
-                transition: all 0.3s ease;
-                border-left: 3px solid transparent;
-            }
-            
-            tr:hover {
-                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-                border-left-color: #3b82f6;
-                transform: translateX(2px);
-                box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-            }
-            
-            tr:nth-child(even) {
-                background-color: #fafbfc;
-            }
-            
-            tr:nth-child(even):hover {
-                background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            }
-            
-            /* Enhanced action buttons with better organization */
-            .btn-download-single, .btn-delete {
-                padding: 0.7rem 1rem;
-                font-size: 0.75rem;
-                min-width: 70px;
-                margin: 0.2rem;
-                border-radius: 10px;
-                border: none;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.4rem;
-                font-weight: 700;
-                box-shadow: 0 3px 6px rgba(0,0,0,0.15);
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-                position: relative;
-                overflow: hidden;
-            }
+                    /* Enhanced action buttons with better organization */
+        .btn-download-single, .btn-delete {
+            padding: 0.7rem 1rem;
+            font-size: 0.75rem;
+            min-width: 70px;
+            margin: 0.2rem;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+            font-weight: 700;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ensure table headers and content stay aligned */
+        .records-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .records-table tbody {
+            position: relative;
+        }
+
+        /* Add subtle borders to help with alignment */
+        .records-table th:not(:last-child),
+        .records-table td:not(:last-child) {
+            border-right: 1px solid #e2e8f0;
+        }
             
             .btn-download-single {
                 background: linear-gradient(135deg, #059669 0%, #10b981 50%, #34d399 100%);
