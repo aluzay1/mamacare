@@ -1,119 +1,82 @@
-# MamaCare - FHIR-Compliant Maternal Healthcare Platform
+# MamaCare - Comprehensive Healthcare Management Platform
 
-MamaCare is a comprehensive maternal healthcare platform built with Flask and PostgreSQL, designed to provide secure, FHIR-compliant patient record management with a focus on maternal care and pregnancy tracking.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
+[![FHIR](https://img.shields.io/badge/FHIR-R4-orange.svg)](https://www.hl7.org/fhir/)
 
-## 🚀 Recent Updates - FHIR Compliance Enhancement
+**MamaCare** is a comprehensive healthcare management platform designed to provide secure, FHIR-compliant patient record management with a focus on maternal care, hospital management, and healthcare provider coordination.
 
-### ✅ FHIR-Compliant Patient Registration
+## 🌟 Key Features
 
-The patient registration system has been completely updated to ensure full compliance with the FHIR (Fast Healthcare Interoperability Resources) standard:
+### **🏥 Patient Management**
+- **FHIR-Compliant Registration**: Full compliance with FHIR R4 standards
+- **Secure PIN Access**: 6-digit PIN-based authentication system
+- **Comprehensive Profiles**: Detailed patient information with pregnancy tracking
+- **Medical Records**: Complete medical history management with FHIR Observation resources
+- **Responsive Interface**: Mobile-first design for all devices
 
-#### **Enhanced Form Features:**
-- **Full Gender Support**: Now supports male, female, other, and unknown (FHIR-compliant)
-- **Optional Postal Code**: Made optional for regions where it's not applicable
-- **Structured Inputs**: Replaced free-text fields with structured dropdowns for:
-  - Allergies (multi-select with common options)
-  - Medications (multi-select with common medications)
-  - Pregnancy complications (multi-select with medical conditions)
-- **Real-time Validation**: Client-side validation for:
-  - Phone numbers (Sierra Leone format: +232XXXXXXXX)
-  - Email addresses
-  - Blood pressure format (systolic/diastolic)
-- **Conditional Display**: JavaScript logic to show/hide pregnancy fields based on gender and pregnancy status
+### **🏨 Healthcare Provider Management**
+- **Hospital Directory**: Comprehensive hospital database with services and contact information
+- **Pharmacy Network**: Extensive pharmacy listings with 24/7 availability tracking
+- **Healthcare Professionals**: Doctor and medical personnel directory with specializations
+- **Provider Verification**: Secure verification system for healthcare providers
 
-#### **FHIR Resource Creation:**
-The system now creates multiple FHIR resources for each patient:
+### **🤱 Maternal Care Focus**
+- **Pregnancy Tracking**: Gestational age calculation and due date management
+- **Risk Assessment**: Comprehensive risk factor evaluation
+- **Birth Planning**: Customizable birth plans and emergency contacts
+- **Prenatal Care**: Medication tracking and prenatal vitamin management
 
-1. **Patient Resource** with custom extensions:
-   - Blood type, nationality, pregnancy status
-   - LMP date, due date, gestational age
-   - Multiple pregnancy, risk level, previous pregnancies
-   - Prenatal vitamins, emergency hospital
+### **📱 User Experience**
+- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
+- **Active Navigation**: Visual indicators for current page location
+- **Image Management**: Cache-busting for reliable image loading
+- **Search & Filter**: Advanced search capabilities across all data types
 
-2. **Observation Resources** for clinical measurements:
-   - Blood pressure (LOINC 55284-4)
-   - Hemoglobin (LOINC 718-7)
-   - Blood sugar (LOINC 2339-0)
-   - Weight (LOINC 29463-7)
+## 🏗️ System Architecture
 
-3. **AllergyIntolerance Resources** for patient allergies
+### **Backend Stack**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Flask App     │    │   PostgreSQL    │    │   FHIR Server   │
+│   (Python)      │◄──►│   Database      │◄──►│   (HAPI FHIR)   │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │
+         ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Email Service │    │   SMS Service   │    │   File Storage  │
+│   (Gmail SMTP)  │    │   (Twilio)      │    │   (Local/Cloud) │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
-4. **MedicationStatement Resources** for current medications
-
-5. **Condition Resources** for pregnancy complications and risk factors
-
-6. **CarePlan Resources** for birth plans
-
-#### **Backend Enhancements:**
-- **Enhanced Validation**: Server-side validation for all FHIR-compliant fields
-- **FHIR Extensions**: Custom extensions for pregnancy-specific data
-- **Resource Mapping**: Proper mapping of form fields to FHIR resources
-- **Error Handling**: Comprehensive error handling and validation feedback
-
-## 📋 System Overview
-
-MamaCare provides a comprehensive healthcare management system with the following key features:
-
-### **Patient Management**
-- FHIR-compliant patient registration
-- Secure PIN-based access to medical records
-- Comprehensive patient profiles with pregnancy tracking
-- Medical record management with FHIR Observation resources
-
-### **Healthcare Provider Access**
-- Hospital and pharmacy registration
-- Healthcare professional management
-- Referral feedback system with SMS notifications
-- Provider verification system
-
-### **Maternal Care Focus**
-- Pregnancy status tracking
-- Gestational age calculation
-- Risk factor assessment
-- Birth plan management
-- Emergency contact management
-
-### **Data Interoperability**
-- Full FHIR R4 compliance
-- Standard coding systems (LOINC, SNOMED CT, RxNorm)
-- Custom extensions for maternal care data
-- Export/import capabilities
-
-## 🏗️ Architecture
-
-### **Backend (Flask)**
-- **Framework**: Flask with SQLAlchemy ORM
-- **Database**: PostgreSQL with Alembic migrations
-- **FHIR Integration**: fhirclient library for FHIR R4 resources
-- **Authentication**: PIN-based system with email verification
-- **API**: RESTful endpoints with JSON responses
-
-### **Frontend (HTML/CSS/JavaScript)**
-- **Responsive Design**: Mobile-first approach
-- **Form Validation**: Real-time client-side validation
-- **Conditional Logic**: Dynamic form field display
-- **User Experience**: Intuitive interface for healthcare providers
-
-### **FHIR Resources**
-- **Patient**: Core patient information with custom extensions
-- **Observation**: Clinical measurements and vital signs
-- **AllergyIntolerance**: Patient allergies and intolerances
-- **MedicationStatement**: Current medications
-- **Condition**: Medical conditions and complications
-- **CarePlan**: Treatment plans and birth plans
+### **Frontend Stack**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   HTML5         │    │   CSS3          │    │   JavaScript    │
+│   (Semantic)    │    │   (Responsive)  │    │   (ES6+)        │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │
+         ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Font Awesome  │    │   Google Fonts  │    │   jsPDF         │
+│   (Icons)       │    │   (Typography)  │    │   (PDF Export)  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
 
 ## 🚀 Quick Start
 
 ### **Prerequisites**
-- Python 3.8+
-- PostgreSQL 12+
-- Docker (optional)
+- **Python**: 3.8 or higher
+- **PostgreSQL**: 12 or higher
+- **Node.js**: 14 or higher (for development)
+- **Git**: Latest version
 
 ### **Installation**
 
 1. **Clone the repository**
 ```bash
-   git clone <repository-url>
+git clone https://github.com/aluzay1/mamacare.git
 cd mamacare
 ```
 
@@ -125,164 +88,316 @@ pip install -r requirements.txt
 
 3. **Configure environment variables**
 ```bash
-   cp .env.example .env
-   # Edit .env with your database and email settings
-   ```
+cp .env.example .env
+# Edit .env with your configuration
+```
 
 4. **Initialize the database**
 ```bash
 python init_db.py
+python create_default_admin.py
 ```
 
 5. **Run the application**
 ```bash
-   python app.py
-   ```
-
-### **Testing the FHIR Registration**
-
-Use the provided test script to verify FHIR compliance:
-
-```bash
-python test_fhir_registration.py
+python app.py
 ```
 
-Or use curl:
-
-```bash
-curl -X POST http://localhost:5000/api/patient/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "jane.doe@example.com",
-    "name": "Jane Marie Doe",
-    "given_name": "Jane",
-    "middle_name": "Marie",
-    "family_name": "Doe",
-    "gender": "female",
-    "date_of_birth": "1990-05-15",
-    "phone": "+232123456789",
-    "address_line": "123 Main Street",
-    "city": "Freetown",
-    "state": "Western Area",
-    "country": "Sierra Leone",
-    "blood_type": "O+",
-    "allergies": ["penicillin"],
-    "medications": ["folic_acid"],
-    "pregnancy_status": "pregnant",
-    "lmp_date": "2024-01-15"
-  }'
+6. **Access the application**
+```
+Frontend: http://localhost:5000
+Backend API: http://localhost:5000/api
 ```
 
-## 📚 API Documentation
+## 📱 Pages & Features
 
-### **Patient Registration**
-- **Endpoint**: `POST /api/patient/register`
-- **Content-Type**: `application/json`
-- **Response**: Patient ID, FHIR ID, PIN, and created FHIR resources
+### **🏠 Home Page (`index.html`)**
+- **Hero Section**: Welcome message with call-to-action buttons
+- **Features Overview**: Key system capabilities
+- **Services Section**: Healthcare services offered
+- **Emergency Care**: 24/7 emergency information
+- **Community Support**: Health education and outreach
 
-### **Patient Profile Access**
-- **Endpoint**: `GET /api/patient/profile?pin=<PIN>`
-- **Response**: Complete patient profile with FHIR-compliant data
+### **🏥 Hospitals (`hospitals.html`)**
+- **Search & Filter**: By location, services, and name
+- **Hospital Cards**: Detailed information with images
+- **Contact Information**: Phone, email, website, address
+- **Services Offered**: Comprehensive service listings
+- **Interactive Features**: Call, directions, and verification badges
 
-### **Medical Records**
-- **Add Record**: `POST /api/patient/medical-records`
-- **Get Records**: `GET /api/patient/medical-records?pin=<PIN>`
+### **💊 Pharmacy (`pharmacy.html`)**
+- **Pharmacy Directory**: Complete pharmacy listings
+- **24/7 Availability**: Filter by availability
+- **Type Classification**: Community, hospital, chain, independent
+- **Contact Details**: Phone, email, website
+- **Location Services**: Google Maps integration
+
+### **👨‍⚕️ Healthcare Professionals (`medical_personnel.html`)**
+- **Professional Directory**: Doctors, nurses, specialists
+- **Specialization Filter**: By medical specialty
+- **Location Search**: Find professionals by city
+- **Contact Options**: WhatsApp and phone integration
+- **Professional Details**: Experience, qualifications, affiliations
+
+### **📋 Medical Records (`medical_records.html`)**
+- **PIN Authentication**: Secure 6-digit PIN access
+- **Patient Registration**: FHIR-compliant registration form
+- **Medical Records Table**: Comprehensive record management
+- **Search & Filter**: Advanced search capabilities
+- **Export Features**: PDF download and bulk operations
+- **Responsive Design**: Mobile-optimized table layout
+
+### **🔐 Provider Access (`provider_access.html`)**
+- **Secure Login**: Healthcare provider authentication
+- **Patient Records Access**: Authorized access to patient data
+- **Referral Management**: Send and track referrals
+- **SMS Notifications**: Automated feedback system
 
 ## 🔧 Configuration
 
 ### **Environment Variables**
 ```bash
-# Database
+# Database Configuration
 SQLALCHEMY_DATABASE_URI=postgresql://user:password@localhost/mamacare
+DATABASE_URL=postgresql://user:password@localhost/mamacare
 
-# Email (for PIN delivery)
+# Email Configuration (for PIN delivery)
 EMAIL_USER=your-email@gmail.com
 EMAIL_PASSWORD=your-app-password
+EMAIL_SERVER=smtp.gmail.com
+EMAIL_PORT=587
 
-# FHIR Server
+# FHIR Server Configuration
 FHIR_SERVER_URL=http://hapi.fhir.org/baseR4
 
-# SMS (optional)
+# SMS Configuration (Twilio)
 TWILIO_ACCOUNT_SID=your-account-sid
 TWILIO_AUTH_TOKEN=your-auth-token
 TWILIO_PHONE_NUMBER=your-twilio-number
+
+# Application Configuration
+SECRET_KEY=your-secret-key
+DEBUG=True
+FLASK_ENV=development
 ```
 
-## 📖 FHIR Extensions Documentation
+### **Database Schema**
+The system uses PostgreSQL with the following main tables:
+- `patients`: Patient information and FHIR IDs
+- `medical_records`: Patient medical records
+- `hospitals`: Hospital information and services
+- `pharmacies`: Pharmacy details and availability
+- `doctors`: Healthcare professional information
+- `admins`: Administrator accounts
+- `referral_feedback`: Referral management system
 
-Custom FHIR extensions are documented in `docs/fhir_extensions.md`:
+## 📚 API Documentation
 
-- **Blood Type Extension**: `http://mamacare.com/fhir/StructureDefinition/patient-bloodType`
-- **Pregnancy Status Extension**: `http://mamacare.com/fhir/StructureDefinition/patient-pregnancyStatus`
-- **LMP Date Extension**: `http://mamacare.com/fhir/StructureDefinition/patient-lmpDate`
-- **And more...**
+### **Patient Management**
+```http
+POST /api/patient/register
+Content-Type: application/json
 
-## 🧪 Testing
-
-### **Unit Tests**
-```bash
-cd backend
-python -m pytest tests/
+{
+  "email": "patient@example.com",
+  "first_name": "Jane",
+  "middle_name": "Marie",
+  "last_name": "Doe",
+  "date_of_birth": "1990-05-15",
+  "gender": "female",
+  "phone": "+232123456789",
+  "address_line": "123 Main Street",
+  "city": "Freetown",
+  "state": "Western Area",
+  "country": "Sierra Leone"
+}
 ```
 
-### **Integration Tests**
-```bash
-python test_fhir_registration.py
+### **Medical Records**
+```http
+GET /api/patient/medical-records?pin=123456
+POST /api/patient/medical-records
+DELETE /api/patient/medical-records/<record_id>
 ```
 
-### **Manual Testing**
-1. Open `medical_records.html` in a browser
-2. Test the registration form with various inputs
-3. Verify FHIR resource creation in the response
+### **Healthcare Providers**
+```http
+GET /api/hospitals
+GET /api/pharmacies
+GET /api/doctors
+POST /api/referral/feedback
+```
+
+## 🎨 Frontend Features
+
+### **Responsive Design**
+- **Mobile-First**: Optimized for mobile devices
+- **Breakpoints**: 480px, 768px, 992px, 1200px
+- **Flexible Layouts**: CSS Grid and Flexbox
+- **Touch-Friendly**: Optimized for touch interactions
+
+### **Navigation System**
+- **Active State Highlighting**: Visual indicators for current page
+- **Mobile Menu**: Hamburger menu for mobile devices
+- **Smooth Transitions**: CSS animations and transitions
+- **Accessibility**: ARIA labels and keyboard navigation
+
+### **Image Management**
+- **Cache Busting**: Automatic cache refresh for images
+- **Fallback Images**: Default images for missing content
+- **Optimized Loading**: Lazy loading and error handling
+- **Responsive Images**: Different sizes for different devices
+
+### **Interactive Features**
+- **Search & Filter**: Real-time search with multiple filters
+- **Form Validation**: Client-side and server-side validation
+- **PDF Export**: Medical records export functionality
+- **SMS Integration**: WhatsApp and phone integration
 
 ## 🔒 Security Features
 
-- **PIN-based Authentication**: Secure 6-digit PIN system
+### **Authentication & Authorization**
+- **PIN-Based Access**: Secure 6-digit PIN system
 - **Email Verification**: PIN delivery via email
-- **Input Validation**: Comprehensive client and server-side validation
+- **Session Management**: Secure session handling
+- **Input Validation**: Comprehensive validation on all inputs
+
+### **Data Protection**
 - **FHIR Compliance**: Standard healthcare data formats
-- **Data Encryption**: Secure storage and transmission
+- **Encryption**: Secure data transmission and storage
+- **Access Control**: Role-based access control
+- **Audit Logging**: Comprehensive activity logging
 
-## 🌟 Key Features
+## 🚀 Deployment
 
-### **For Patients**
-- Easy registration with structured forms
-- Secure access to medical records
-- Pregnancy tracking and management
-- Emergency contact management
+### **Local Development**
+```bash
+# Backend
+cd backend
+python app.py
 
-### **For Healthcare Providers**
-- FHIR-compliant data exchange
-- Comprehensive patient profiles
-- Referral management system
-- SMS notifications for feedback
+# Frontend (if using a local server)
+python -m http.server 8000
+```
 
-### **For Administrators**
-- User management and verification
-- Hospital and pharmacy registration
-- System monitoring and maintenance
-- Data export and reporting
+### **Production Deployment**
+The system is configured for deployment on:
+- **Render**: Automatic deployment from GitHub
+- **Heroku**: Cloud platform deployment
+- **Docker**: Containerized deployment
+
+### **Environment Setup**
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export FLASK_ENV=production
+export DATABASE_URL=your-production-database-url
+
+# Run migrations
+python -m flask db upgrade
+
+# Start the application
+gunicorn app:app
+```
+
+## 🧪 Testing
+
+### **Backend Testing**
+```bash
+cd backend
+python -m pytest tests/
+python test_fhir_registration.py
+```
+
+### **Frontend Testing**
+- **Manual Testing**: Test all pages and features
+- **Responsive Testing**: Test on different screen sizes
+- **Browser Testing**: Test on Chrome, Firefox, Safari, Edge
+
+### **API Testing**
+```bash
+# Test patient registration
+curl -X POST http://localhost:5000/api/patient/register \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@example.com", "first_name": "Test", ...}'
+
+# Test medical records access
+curl "http://localhost:5000/api/patient/medical-records?pin=123456"
+```
+
+## 📊 Performance Optimization
+
+### **Frontend Optimization**
+- **CSS Minification**: Compressed stylesheets
+- **JavaScript Optimization**: Minified and bundled scripts
+- **Image Optimization**: Compressed and responsive images
+- **Caching**: Browser and CDN caching strategies
+
+### **Backend Optimization**
+- **Database Indexing**: Optimized database queries
+- **Connection Pooling**: Efficient database connections
+- **Caching**: Redis caching for frequently accessed data
+- **Load Balancing**: Horizontal scaling capabilities
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests for new functionality
-5. Submit a pull request
+We welcome contributions! Please follow these steps:
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes**: Follow the coding standards
+4. **Add tests**: Ensure all new features are tested
+5. **Commit your changes**: `git commit -m 'Add amazing feature'`
+6. **Push to the branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request**: Provide detailed description
+
+### **Coding Standards**
+- **Python**: PEP 8 style guide
+- **JavaScript**: ESLint configuration
+- **CSS**: BEM methodology
+- **HTML**: Semantic markup
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 🆘 Support
 
-For support and questions:
-- Check the documentation in `docs/`
-- Review the API documentation
-- Open an issue on GitHub
+### **Documentation**
+- **API Docs**: Complete API documentation
+- **FHIR Extensions**: Custom FHIR extensions documentation
+- **Deployment Guide**: Step-by-step deployment instructions
+- **User Manual**: End-user documentation
+
+### **Getting Help**
+- **GitHub Issues**: Report bugs and request features
+- **Email Support**: Contact the development team
+- **Community Forum**: Join our community discussions
 
 ## 🔄 Changelog
+
+### **v2.3.0 - Navigation & Image Improvements**
+- ✅ Active navigation highlighting on all pages
+- ✅ Cache-busting for reliable image loading
+- ✅ Improved responsive table design
+- ✅ Enhanced mobile user experience
+- ✅ Better error handling for images
+
+### **v2.2.0 - Responsive Design Enhancement**
+- ✅ Mobile-optimized table layouts
+- ✅ Touch-friendly interface elements
+- ✅ Progressive column width adjustments
+- ✅ Horizontal scroll indicators
+- ✅ Improved button visibility on small screens
+
+### **v2.1.0 - Search & Filter Improvements**
+- ✅ Advanced search functionality
+- ✅ Real-time search with debouncing
+- ✅ Multiple filter options
+- ✅ Clear search functionality
+- ✅ Search result highlighting
 
 ### **v2.0.0 - FHIR Compliance Update**
 - ✅ Full FHIR R4 compliance
@@ -291,14 +406,22 @@ For support and questions:
 - ✅ Structured data inputs
 - ✅ Real-time validation
 - ✅ Custom FHIR extensions
-- ✅ Comprehensive documentation
 
 ### **v1.0.0 - Initial Release**
-- Basic patient management
-- Medical records system
-- Healthcare provider access
-- SMS integration
+- ✅ Basic patient management
+- ✅ Medical records system
+- ✅ Healthcare provider access
+- ✅ SMS integration
+
+## 🌟 Acknowledgments
+
+- **FHIR Community**: For healthcare interoperability standards
+- **Flask Community**: For the excellent web framework
+- **Open Source Contributors**: For various libraries and tools
+- **Healthcare Professionals**: For domain expertise and feedback
 
 ---
 
-**MamaCare** - Empowering maternal healthcare through FHIR-compliant technology. 
+**MamaCare** - Empowering healthcare through technology and innovation. 
+
+*Built with ❤️ for better healthcare outcomes.* 
