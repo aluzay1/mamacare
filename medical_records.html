@@ -1144,31 +1144,25 @@
             display: flex;
             gap: 1rem;
             flex-shrink: 0;
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
         }
 
-        .btn-edit, .btn-primary {
+        .btn-edit, .btn-logout {
             padding: 0.75rem 1.5rem;
             border: none;
             border-radius: 8px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .btn-edit {
             background: rgba(255,255,255,0.2);
             color: white;
-            backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
         }
 
         .btn-edit:hover {
@@ -1176,44 +1170,87 @@
             transform: translateY(-2px);
         }
 
-        .btn-edit:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #218838;
-            transform: translateY(-2px);
-        }
-
         .btn-logout {
-            background: #dc3545;
+            background: rgba(220, 53, 69, 0.8);
             color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            position: relative;
-            z-index: 10;
-            pointer-events: auto;
         }
 
         .btn-logout:hover {
-            background: #c82333;
+            background: rgba(220, 53, 69, 1);
             transform: translateY(-2px);
         }
 
-        .btn-logout:active {
-            transform: translateY(0);
+        /* Mobile responsive improvements for profile section */
+        @media (max-width: 768px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 1.5rem 1rem;
+                gap: 1rem;
+            }
+
+            .profile-avatar i {
+                font-size: 3rem;
+            }
+
+            .profile-info h2 {
+                font-size: 1.5rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .profile-subtitle {
+                font-size: 0.9rem;
+                margin-bottom: 0.75rem;
+            }
+
+            .profile-ids {
+                justify-content: center;
+                gap: 0.5rem;
+            }
+
+            .id-badge {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.8rem;
+            }
+
+            .profile-actions {
+                width: 100%;
+                justify-content: center;
+                gap: 0.75rem;
+                flex-wrap: wrap;
+            }
+
+            .btn-edit, .btn-logout {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.85rem;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header {
+                padding: 1rem 0.75rem;
+            }
+
+            .profile-info h2 {
+                font-size: 1.3rem;
+            }
+
+            .profile-subtitle {
+                font-size: 0.85rem;
+            }
+
+            .profile-actions {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .btn-edit, .btn-logout {
+                width: 100%;
+                justify-content: center;
+                padding: 0.75rem 1rem;
+            }
         }
 
         /* Overview Stats */
@@ -1569,7 +1606,7 @@
                 padding: 0.75rem 0.5rem;
                 font-size: 0.8rem;
             }
-            
+
             .btn-download-single, .btn-delete {
                 padding: 0.4rem 0.6rem;
                 font-size: 0.75rem;
@@ -1584,17 +1621,17 @@
             padding: 1rem;
             border-radius: 8px 8px 0 0;
             margin-bottom: 0;
-        }
+            }
 
         .table-header h3 {
             margin: 0;
             font-size: 1.2rem;
             font-weight: 600;
-        }
+            }
 
         /* Enhanced Table Layout with Consistent Alignment */
         table {
-            width: 100%;
+                width: 100%;
             border-collapse: separate;
             border-spacing: 0;
             min-width: 800px;
@@ -1603,7 +1640,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
+            }
 
         /* Table Header Styling */
         thead {
@@ -1627,7 +1664,7 @@
             text-overflow: ellipsis;
             cursor: pointer;
             transition: background-color 0.3s ease;
-        }
+            }
 
         th:hover {
             background: rgba(255, 255, 255, 0.1);
@@ -1636,7 +1673,7 @@
         th.sortable {
             position: relative;
             padding-right: 2rem;
-        }
+            }
 
         th.sortable::after {
             content: '↕';
@@ -1646,12 +1683,12 @@
             transform: translateY(-50%);
             font-size: 0.8rem;
             opacity: 0.7;
-        }
+            }
 
         th.sort-asc::after {
             content: '↑';
             opacity: 1;
-        }
+            }
 
         th.sort-desc::after {
             content: '↓';
@@ -1662,13 +1699,13 @@
         tbody tr {
             transition: all 0.3s ease;
             border-bottom: 1px solid #f0f0f0;
-        }
+            }
 
         tbody tr:hover {
             background-color: #f8f9fa;
             transform: translateY(-1px);
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
+            }
 
         tbody tr:last-child {
             border-bottom: none;
@@ -1681,11 +1718,11 @@
             vertical-align: middle;
             line-height: 1.5;
             color: #2c3e50;
-            font-size: 0.9rem;
+                font-size: 0.9rem;
             word-wrap: break-word;
             overflow-wrap: break-word;
             hyphens: auto;
-        }
+            }
 
         /* Column-specific styling */
         th:nth-child(1), td:nth-child(1) { /* Checkbox */
@@ -1698,27 +1735,27 @@
 
         th:nth-child(2), td:nth-child(2) { /* Date */
             width: 120px;
-            min-width: 120px;
-            max-width: 120px;
+                min-width: 120px;
+                max-width: 120px;
             font-weight: 600;
             color: #4158D0;
-        }
+            }
 
-        th:nth-child(3), td:nth-child(3) { /* Diagnosis */
+            th:nth-child(3), td:nth-child(3) { /* Diagnosis */
             width: 180px;
             min-width: 180px;
             max-width: 180px;
             text-align: left;
             padding-left: 1.5rem;
-        }
+            }
 
-        th:nth-child(4), td:nth-child(4) { /* Treatment */
+            th:nth-child(4), td:nth-child(4) { /* Treatment */
             width: 180px;
             min-width: 180px;
             max-width: 180px;
             text-align: left;
             padding-left: 1.5rem;
-        }
+            }
 
         th:nth-child(5), td:nth-child(5) { /* Medication */
             width: 180px;
@@ -1747,7 +1784,7 @@
             min-width: 140px;
             max-width: 140px;
             text-align: center;
-        }
+            }
 
         /* Standardized Button Styling */
         .btn-download-single, .btn-delete {
@@ -1764,29 +1801,29 @@
             align-items: center;
             justify-content: center;
             gap: 0.25rem;
-        }
+            }
 
         .btn-download-single {
             background: linear-gradient(135deg, #17a2b8 0%, #6f42c1 100%);
             color: white;
-        }
+            }
 
         .btn-download-single:hover {
             background: linear-gradient(135deg, #138496 0%, #5a32a3 100%);
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
-        }
+            }
 
         .btn-delete {
             background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
             color: white;
-        }
+            }
 
         .btn-delete:hover {
             background: linear-gradient(135deg, #c82333 0%, #a71e2a 100%);
             transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
-        }
+            }
 
         /* Checkbox styling */
         .record-checkbox {
@@ -1794,7 +1831,7 @@
             height: 18px;
             cursor: pointer;
             accent-color: #4158D0;
-        }
+            }
 
         /* Empty state styling */
         tbody tr td[colspan] {
@@ -1803,13 +1840,13 @@
             color: #6c757d;
             font-style: italic;
             background: #f8f9fa;
-        }
+            }
 
         /* Improve text visibility and contrast */
         td {
             color: #2c3e50;
             font-weight: 400;
-        }
+            }
 
         /* Hover effect for better row visibility */
         tbody tr:hover {
@@ -1847,12 +1884,85 @@
             .table-container {
                 margin: 0 -0.5rem;
                 border-radius: 12px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .records-table {
+                min-width: 800px;
+                font-size: 0.8rem;
             }
 
             .records-table th,
             .records-table td {
-                padding: 0.75rem;
-                font-size: 0.875rem;
+                padding: 0.75rem 0.5rem;
+                font-size: 0.8rem;
+            }
+
+            .records-table th:nth-child(1), .records-table td:nth-child(1) { 
+                width: 50px; 
+                min-width: 50px; 
+                max-width: 50px; 
+            }
+            .records-table th:nth-child(2), .records-table td:nth-child(2) { 
+                width: 100px; 
+                min-width: 100px; 
+                max-width: 100px; 
+            }
+            .records-table th:nth-child(3), .records-table td:nth-child(3) { 
+                width: 150px; 
+                min-width: 150px; 
+                max-width: 150px; 
+            }
+            .records-table th:nth-child(4), .records-table td:nth-child(4) { 
+                width: 150px; 
+                min-width: 150px; 
+                max-width: 150px; 
+            }
+            .records-table th:nth-child(5), .records-table td:nth-child(5) { 
+                width: 150px; 
+                min-width: 150px; 
+                max-width: 150px; 
+            }
+            .records-table th:nth-child(6), .records-table td:nth-child(6) { 
+                width: 120px; 
+                min-width: 120px; 
+                max-width: 120px; 
+            }
+            .records-table th:nth-child(7), .records-table td:nth-child(7) { 
+                width: 120px; 
+                min-width: 120px; 
+                max-width: 120px; 
+            }
+            .records-table th:nth-child(8), .records-table td:nth-child(8) { 
+                width: 120px; 
+                min-width: 120px; 
+                max-width: 120px; 
+            }
+
+            .btn-download-single, .btn-delete {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.7rem;
+                min-width: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .records-table {
+                min-width: 700px;
+                font-size: 0.75rem;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 0.5rem 0.4rem;
+                font-size: 0.75rem;
+            }
+
+            .btn-download-single, .btn-delete {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.65rem;
+                min-width: 50px;
             }
         }
 
@@ -2922,13 +3032,13 @@
                     right: 0;
                     height: 4px;
                     background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
-                }
-                
+            }
+            
                 .record-card:hover {
                     transform: translateY(-4px);
                     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                }
-                
+            }
+            
                 .record-card-header {
                     display: flex;
                     justify-content: space-between;
@@ -2936,8 +3046,8 @@
                     margin-bottom: 1rem;
                     padding-bottom: 0.75rem;
                     border-bottom: 1px solid #f1f5f9;
-                }
-                
+            }
+            
                 .record-date {
                     font-weight: 700;
                     color: #2c3e50;
@@ -2956,13 +3066,13 @@
                     display: flex;
                 gap: 0.5rem;
                     flex-wrap: wrap;
-                }
-                
+            }
+            
                 .record-card-content {
                     display: grid;
                     gap: 1rem;
-                }
-                
+            }
+            
                 .record-field {
                     display: flex;
                     flex-direction: column;
@@ -2971,8 +3081,8 @@
                 border-radius: 8px;
                     background: #f8fafc;
                     border-left: 4px solid transparent;
-                }
-                
+            }
+            
                 .record-field-label {
                     font-size: 0.75rem;
                     font-weight: 700;
@@ -2990,46 +3100,46 @@
                     line-height: 1.4;
                     word-wrap: break-word;
                     font-weight: 500;
-                }
-                
+            }
+            
                 .record-field-value:empty::before {
                     content: "Not specified";
                     color: #94a3b8;
                     font-style: italic;
                     font-weight: normal;
-                }
-                
+            }
+            
                 /* Color-coded fields with icons */
                 .record-field.diagnosis {
                     border-left-color: #dc2626;
                     background: linear-gradient(135deg, rgba(220, 38, 38, 0.05) 0%, rgba(220, 38, 38, 0.02) 100%);
-                }
-                
+            }
+            
                 .record-field.diagnosis .record-field-label::before {
                     content: '🔴';
                 }
                 
                 .record-field.diagnosis .record-field-value {
                     color: #dc2626;
-                }
-                
+            }
+            
                 .record-field.treatment {
                     border-left-color: #059669;
                     background: linear-gradient(135deg, rgba(5, 150, 105, 0.05) 0%, rgba(5, 150, 105, 0.02) 100%);
-                }
-                
+            }
+            
                 .record-field.treatment .record-field-label::before {
                     content: '🟢';
                 }
                 
                 .record-field.treatment .record-field-value {
                     color: #059669;
-                }
-                
+            }
+            
                 .record-field.medication {
                     border-left-color: #7c3aed;
                     background: linear-gradient(135deg, rgba(124, 58, 237, 0.05) 0%, rgba(124, 58, 237, 0.02) 100%);
-                }
+            }
                 
                 .record-field.medication .record-field-label::before {
                     content: '🟣';
@@ -3037,34 +3147,34 @@
                 
                 .record-field.medication .record-field-value {
                     color: #7c3aed;
-                }
-                
+            }
+            
                 .record-field.doctor {
                     border-left-color: #2563eb;
                     background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%);
-                }
-                
+            }
+            
                 .record-field.doctor .record-field-label::before {
                     content: '👨‍⚕️';
                 }
                 
                 .record-field.doctor .record-field-value {
                     color: #2563eb;
-                }
-                
+            }
+            
                 .record-field.hospital {
                     border-left-color: #ea580c;
                     background: linear-gradient(135deg, rgba(234, 88, 12, 0.05) 0%, rgba(234, 88, 12, 0.02) 100%);
-                }
-                
+            }
+            
                 .record-field.hospital .record-field-label::before {
                     content: '🏥';
                 }
                 
                 .record-field.hospital .record-field-value {
                     color: #ea580c;
-                }
-                
+            }
+            
                 /* Action buttons */
                 .record-actions .btn-download-single,
                 .record-actions .btn-delete {
@@ -3080,30 +3190,30 @@
                     font-weight: 600;
                     min-width: 80px;
                     justify-content: center;
-                }
-                
+            }
+            
                 .record-actions .btn-download-single {
                     background: linear-gradient(135deg, #3b82f6, #1d4ed8);
                     color: white;
-                }
-                
+            }
+            
                 .record-actions .btn-download-single:hover {
                     background: linear-gradient(135deg, #2563eb, #1e40af);
                     transform: translateY(-2px);
                     box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-                }
-                
+            }
+            
                 .record-actions .btn-delete {
                     background: linear-gradient(135deg, #ef4444, #dc2626);
                     color: white;
-                }
-                
+            }
+            
                 .record-actions .btn-delete:hover {
                     background: linear-gradient(135deg, #dc2626, #b91c1c);
                     transform: translateY(-2px);
                     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-                }
-                
+            }
+            
                 /* Ensure table is always visible on mobile */
             .table-container {
                     display: block !important;
@@ -3717,8 +3827,13 @@
         /* Records table styles */
         .records-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             background: white;
+            table-layout: fixed;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .records-table th,
@@ -3726,6 +3841,9 @@
             padding: 1rem;
             text-align: left;
             border-bottom: 1px solid #e2e8f0;
+            vertical-align: middle;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         .records-table th {
@@ -3746,6 +3864,50 @@
 
         .records-table tr:last-child td {
             border-bottom: none;
+        }
+
+        /* Column width specifications to prevent misalignment */
+        .records-table th:nth-child(1), .records-table td:nth-child(1) { 
+            width: 60px; 
+            min-width: 60px; 
+            max-width: 60px; 
+            text-align: center; 
+        }
+        .records-table th:nth-child(2), .records-table td:nth-child(2) { 
+            width: 120px; 
+            min-width: 120px; 
+            max-width: 120px; 
+        }
+        .records-table th:nth-child(3), .records-table td:nth-child(3) { 
+            width: 180px; 
+            min-width: 180px; 
+            max-width: 180px; 
+        }
+        .records-table th:nth-child(4), .records-table td:nth-child(4) { 
+            width: 180px; 
+            min-width: 180px; 
+            max-width: 180px; 
+        }
+        .records-table th:nth-child(5), .records-table td:nth-child(5) { 
+            width: 180px; 
+            min-width: 180px; 
+            max-width: 180px; 
+        }
+        .records-table th:nth-child(6), .records-table td:nth-child(6) { 
+            width: 140px; 
+            min-width: 140px; 
+            max-width: 140px; 
+        }
+        .records-table th:nth-child(7), .records-table td:nth-child(7) { 
+            width: 140px; 
+            min-width: 140px; 
+            max-width: 140px; 
+        }
+        .records-table th:nth-child(8), .records-table td:nth-child(8) { 
+            width: 140px; 
+            min-width: 140px; 
+            max-width: 140px; 
+            text-align: center; 
         }
             
             table {
