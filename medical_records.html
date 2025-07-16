@@ -596,9 +596,9 @@
                     </div>
                 </div>
                 <div class="profile-actions">
-                    <button onclick="console.log('Edit button clicked'); enableProfileEdit()" class="btn-edit" type="button"><i class="fas fa-edit"></i> Edit</button>
-                    <button onclick="console.log('Save button clicked'); saveProfileChanges()" id="saveProfileBtn" class="btn-primary" style="display: none;" type="button"><i class="fas fa-save"></i> Save</button>
-                    <button onclick="console.log('Logout button clicked'); logout()" class="btn-logout" type="button"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    <button class="btn-edit" type="button"><i class="fas fa-edit"></i> Edit</button>
+                    <button id="saveProfileBtn" class="btn-primary" style="display: none;" type="button"><i class="fas fa-save"></i> Save</button>
+                    <button class="btn-logout" type="button"><i class="fas fa-sign-out-alt"></i> Logout</button>
                 </div>
             </div>
 
@@ -6249,6 +6249,18 @@
                         console.log(`Field ${fieldName} is being edited with value: "${value}"`);
                         return value;
                     }
+                    
+                    // Check if there's an edit indicator (for pregnancy fields)
+                    const indicator = document.getElementById(fieldName + 'EditIndicator');
+                    if (indicator) {
+                        const input = document.getElementById(fieldName + "Input");
+                        if (input) {
+                            const value = input.value;
+                            console.log(`Field ${fieldName} has edit indicator with value: "${value}"`);
+                            return value;
+                        }
+                    }
+                    
                     console.log(`Field ${fieldName} is not being edited (input hidden or not found)`);
                     return undefined; // Not being edited
                 }
@@ -6305,7 +6317,13 @@
                 // This prevents unwanted updates to gestational age, LMP, and due date
                 pregnancyFields.forEach(([apiField, domField, formatter]) => {
                     const editedValue = getEditedValue(domField);
-                    if (editedValue !== undefined && editedValue !== null && editedValue !== '') {
+                    const input = document.getElementById(domField + "Input");
+                    
+                    // Check if field is being edited (visible input or has edit indicator)
+                    const isBeingEdited = (input && input.style.display !== 'none' && input.style.display !== '') ||
+                                         document.getElementById(domField + 'EditIndicator');
+                    
+                    if (isBeingEdited && editedValue !== undefined && editedValue !== null && editedValue !== '') {
                         data[apiField] = formatter(editedValue);
                         console.log(`Including pregnancy field ${apiField} with value: ${editedValue}`);
                     } else {
