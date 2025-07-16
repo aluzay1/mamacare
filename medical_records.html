@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css?v=2.2">
+    <link rel="stylesheet" href="styles.css?v=2.3">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="feedback-ui.js"></script>
@@ -6556,20 +6556,33 @@
 
         // Function to set active navigation link based on current page
         function setActiveNavLink() {
-            let currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            currentPage = currentPage.replace('.html', '');
+            const pathname = window.location.pathname;
+            let currentPage = pathname.split('/').pop() || 'index';
+            
+            // Handle various URL patterns
+            if (currentPage === '' || currentPage === 'index' || currentPage === 'index.html') {
+                currentPage = 'index';
+            } else {
+                currentPage = currentPage.replace('.html', '');
+            }
+            
+            console.log('Current page detected:', currentPage);
+            
             const navLinks = document.querySelectorAll('.nav-links a');
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 let linkPage = link.getAttribute('href').replace('.html', '');
+                console.log('Checking link:', linkPage, 'against current:', currentPage);
                 if (linkPage === currentPage) {
                     link.classList.add('active');
+                    console.log('Setting active for:', linkPage);
                 }
             });
         }
 
         // Initialize the page
         document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM loaded, setting active nav link...');
             setActiveNavLink();
         });
 

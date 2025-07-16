@@ -904,16 +904,22 @@
             }
         }
 
-        // Function to get hospital image
+        // Function to get hospital image with cache busting
         function getHospitalImageUrl(hospital) {
+            let imageUrl = '';
             if (hospital.image_url) {
                 // If the image_url is a relative path, prepend the base URL
                 if (hospital.image_url.startsWith('/')) {
-                    return `${API_CONFIG.getBaseUrl()}${hospital.image_url}`;
+                    imageUrl = `${API_CONFIG.getBaseUrl()}${hospital.image_url}`;
+                } else {
+                    imageUrl = hospital.image_url;
                 }
-                return hospital.image_url;
+                // Add cache busting parameter
+                const separator = imageUrl.includes('?') ? '&' : '?';
+                imageUrl += `${separator}v=${Date.now()}`;
+                return imageUrl;
             }
-            return 'images/default-hospital.jpg';
+            return 'images/default-hospital.jpg?v=' + Date.now();
         }
 
         // Function to display hospitals

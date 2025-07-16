@@ -659,16 +659,22 @@
             }
         }
 
-        // Function to get doctor image
+        // Function to get doctor image with cache busting
         function getDoctorImageUrl(doctor) {
+            let imageUrl = '';
             if (doctor.image_url) {
                 // If the image_url is a relative path, prepend the base URL
                 if (doctor.image_url.startsWith('/')) {
-                    return `${API_CONFIG.getBaseUrl()}${doctor.image_url}`;
+                    imageUrl = `${API_CONFIG.getBaseUrl()}${doctor.image_url}`;
+                } else {
+                    imageUrl = doctor.image_url;
                 }
-                return doctor.image_url;
+                // Add cache busting parameter
+                const separator = imageUrl.includes('?') ? '&' : '?';
+                imageUrl += `${separator}v=${Date.now()}`;
+                return imageUrl;
             }
-            return 'images/default-doctor.jpg';
+            return 'images/default-doctor.jpg?v=' + Date.now();
         }
 
         // Function to display doctors
@@ -682,7 +688,7 @@
             doctorsGrid.innerHTML = doctors.map(doctor => `
                 <div class="doctor-card">
                     <div class="doctor-image-container">
-                    <img src="${getDoctorImageUrl(doctor)}" alt="${doctor.name}" class="doctor-image" onerror="this.onerror=null;this.src='images/default-doctor.jpg';">
+                    <img src="${getDoctorImageUrl(doctor)}" alt="${doctor.name}" class="doctor-image" onerror="this.onerror=null;this.src='images/default-doctor.jpg?v=' + Date.now();">
                     </div>
                     <div class="doctor-info">
                         <h3 class="doctor-name">${doctor.name}</h3>
