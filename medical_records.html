@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medical Coner</title>
-    <link rel="stylesheet" href="styles.css?v=1.7">
+    <link rel="stylesheet" href="styles.css?v=1.8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Add jsPDF library -->
@@ -1857,7 +1857,6 @@
             overflow: hidden;
             text-overflow: ellipsis;
             box-sizing: border-box;
-            text-align: left;
         }
 
         /* Fixed table layout for perfect alignment */
@@ -1869,15 +1868,15 @@
         /* Ensure checkbox column is always properly aligned */
         .records-table th:nth-child(1),
         .records-table td:nth-child(1) {
-            text-align: center !important;
-            vertical-align: middle !important;
+            text-align: center;
+            vertical-align: middle;
         }
 
         /* Ensure action buttons are always visible */
         .records-table th:nth-child(8),
         .records-table td:nth-child(8) {
-            text-align: center !important;
-            vertical-align: middle !important;
+            text-align: center;
+            vertical-align: middle;
         }
 
         /* Table Header Styling */
@@ -5537,11 +5536,21 @@
                         const dataCells = firstRow.querySelectorAll('td');
                         headers.forEach((header, index) => {
                             if (dataCells[index]) {
-                                // Ensure same padding and alignment
+                                // Ensure same padding and box-sizing
                                 header.style.padding = dataCells[index].style.padding || '0.75rem 0.5rem';
-                                header.style.textAlign = 'center';
                                 header.style.verticalAlign = 'middle';
                                 header.style.boxSizing = 'border-box';
+                                
+                                // Apply column-specific text alignment
+                                if (index === 0 || index === 1 || index === 5 || index === 6 || index === 7) {
+                                    // Center align: checkbox, date, doctor, hospital, actions
+                                    header.style.textAlign = 'center';
+                                    dataCells[index].style.textAlign = 'center';
+                                } else {
+                                    // Left align: diagnosis, treatment, medication
+                                    header.style.textAlign = 'left';
+                                    dataCells[index].style.textAlign = 'left';
+                                }
                             }
                         });
                     }
