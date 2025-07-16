@@ -930,7 +930,12 @@
                         <h3><i class="fas fa-file-medical"></i> Medical Records</h3>
             <div class="records-list">
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search records..." class="search-input">
+                    <div class="search-input-group">
+                        <input type="text" id="searchInput" placeholder="Search records..." class="search-input">
+                        <button type="button" id="clearSearchBtn" class="clear-search-btn" style="display: none;" onclick="clearSearch()">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     <select id="searchField" class="search-field">
                         <option value="all">All Fields</option>
                         <option value="date">Date</option>
@@ -1558,20 +1563,55 @@
             border: 1px solid #e9ecef;
         }
 
-        .search-input {
+        .search-input-group {
+            position: relative;
             flex: 1;
+            min-width: 200px;
+        }
+
+        .search-input {
+            width: 100%;
             padding: 0.75rem;
+            padding-right: 2.5rem;
             border: 2px solid #e9ecef;
             border-radius: 8px;
             font-size: 1rem;
-            min-width: 200px;
             transition: border-color 0.3s ease;
+            box-sizing: border-box;
         }
 
         .search-input:focus {
             outline: none;
             border-color: #4158D0;
             box-shadow: 0 0 0 3px rgba(65, 88, 208, 0.1);
+        }
+
+        .clear-search-btn {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6c757d;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+        }
+
+        .clear-search-btn:hover {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .clear-search-btn:active {
+            transform: translateY(-50%) scale(0.95);
         }
 
         .search-field {
@@ -5166,6 +5206,11 @@
                     return Object.values(record).some(value => 
                         String(value).toLowerCase().includes(searchTerm)
                     );
+                } else if (searchField === 'date') {
+                    // Special handling for date search
+                    const recordDate = new Date(record.date).toLocaleDateString().toLowerCase();
+                    const searchDate = searchTerm.toLowerCase();
+                    return recordDate.includes(searchDate);
                 } else {
                     // Search in specific field
                     const fieldValue = String(record[searchField] || '').toLowerCase();
@@ -5235,6 +5280,35 @@
             console.log('DOM loaded, initializing tables...');
             filterAndDisplayRecords();
             updateTableDisplay();
+            
+            // Add event listeners for search functionality
+            const searchInput = document.getElementById('searchInput');
+            const searchField = document.getElementById('searchField');
+            
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    console.log('Search input changed:', this.value);
+                    updateClearSearchButton();
+                    filterAndDisplayRecords();
+                });
+                
+                searchInput.addEventListener('keyup', function(e) {
+                    if (e.key === 'Enter') {
+                        filterAndDisplayRecords();
+                    }
+                });
+                
+                searchInput.addEventListener('focus', function() {
+                    updateClearSearchButton();
+                });
+            }
+            
+            if (searchField) {
+                searchField.addEventListener('change', function() {
+                    console.log('Search field changed:', this.value);
+                    filterAndDisplayRecords();
+                });
+            }
         });
 
         function toggleAllRecords() {
@@ -5264,6 +5338,30 @@
             if (lastUpdatedElement) {
                 const now = new Date();
                 lastUpdatedElement.textContent = now.toLocaleString();
+            }
+        }
+
+        function clearSearch() {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            
+            if (searchInput) {
+                searchInput.value = '';
+                clearSearchBtn.style.display = 'none';
+                filterAndDisplayRecords();
+            }
+        }
+
+        function updateClearSearchButton() {
+            const searchInput = document.getElementById('searchInput');
+            const clearSearchBtn = document.getElementById('clearSearchBtn');
+            
+            if (searchInput && clearSearchBtn) {
+                if (searchInput.value.trim() !== '') {
+                    clearSearchBtn.style.display = 'inline-block';
+                } else {
+                    clearSearchBtn.style.display = 'none';
+                }
             }
         }
 
