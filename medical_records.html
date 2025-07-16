@@ -3736,6 +3736,14 @@
                     transform: translateY(-2px);
                     box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
                 }
+                
+                /* Force mobile cards to show on small screens */
+                .records-cards-mobile {
+                    display: block !important;
+                }
+                .table-container {
+                    display: none !important;
+                }
             }
         }
 
@@ -4292,6 +4300,16 @@
             .success-details {
                 flex-direction: column;
                 gap: 0.5rem;
+            }
+        }
+        
+        /* Global override to ensure mobile cards show on small screens */
+        @media (max-width: 768px) {
+            .records-cards-mobile {
+                display: block !important;
+            }
+            .table-container {
+                display: none !important;
             }
         }
     </style>
@@ -4907,6 +4925,9 @@
             tableBody.innerHTML = "";
             cardsContainer.innerHTML = "";
             
+            console.log('Cards container found:', cardsContainer);
+            console.log('Table body found:', tableBody);
+            
             if (!filteredRecords || filteredRecords.length === 0) {
                 tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center;">No records found</td></tr>';
                 cardsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: #666; font-style: italic;">No records found</div>';
@@ -4940,6 +4961,7 @@
                 // Create mobile card
                 const card = document.createElement('div');
                 card.className = 'record-card';
+                console.log('Creating mobile card for record:', record.id);
                 card.innerHTML = `
                     <div class="record-card-header">
                         <div class="record-date">${new Date(record.date).toLocaleDateString()}</div>
@@ -5014,6 +5036,20 @@
             console.log('DOM loaded, initializing tables...');
             filterAndDisplayRecords();
             updateTableDisplay();
+            
+            // Force mobile cards to be visible on small screens
+            if (window.innerWidth <= 768) {
+                const mobileCardsContainer = document.getElementById('recordsCardsMobile');
+                const tableContainer = document.querySelector('.table-container');
+                if (mobileCardsContainer) {
+                    mobileCardsContainer.style.display = 'block';
+                    console.log('Forced mobile cards to show');
+                }
+                if (tableContainer) {
+                    tableContainer.style.display = 'none';
+                    console.log('Forced table to hide');
+                }
+            }
         });
 
         function toggleAllRecords() {
