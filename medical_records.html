@@ -963,7 +963,7 @@
                     </table>
                 </div>
                 <!-- Mobile table container -->
-                <div class="records-table-mobile" id="recordsTableMobile" style="display: none;">
+                <div class="records-table-mobile" id="recordsTableMobile">
                     <table class="mobile-table">
                         <thead>
                             <tr>
@@ -3497,11 +3497,31 @@
             table {
                 min-width: 600px;
                 font-size: 0.85rem;
+                border-collapse: collapse;
+                width: 100%;
+                background: white;
+                border-radius: 8px;
+                overflow: hidden;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             }
             
             th, td {
                 padding: 0.75rem 0.5rem;
                 white-space: nowrap;
+                border-bottom: 1px solid #e2e8f0;
+                text-align: left;
+            }
+            
+            th {
+                background: linear-gradient(135deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+                color: white;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            
+            tbody tr:hover {
+                background-color: #f8fafc;
             }
             
             /* Responsive table for small screens */
@@ -4672,7 +4692,36 @@
         });
 
         // Add search functionality
-        let allRecords = []; // Store all records for searching
+        let allRecords = [
+            // Sample data for testing
+            {
+                id: 1,
+                date: '2024-01-15',
+                diagnosis: 'Hypertension',
+                treatment: 'Lifestyle modification and medication',
+                medication: 'Amlodipine 5mg daily',
+                doctor: 'Dr. Sarah Johnson',
+                hospital: 'City General Hospital'
+            },
+            {
+                id: 2,
+                date: '2024-02-20',
+                diagnosis: 'Type 2 Diabetes',
+                treatment: 'Diet control and exercise',
+                medication: 'Metformin 500mg twice daily',
+                doctor: 'Dr. Michael Chen',
+                hospital: 'Community Health Center'
+            },
+            {
+                id: 3,
+                date: '2024-03-10',
+                diagnosis: 'Upper Respiratory Infection',
+                treatment: 'Rest and fluids',
+                medication: 'Acetaminophen as needed',
+                doctor: 'Dr. Emily Davis',
+                hospital: 'Urgent Care Clinic'
+            }
+        ]; // Store all records for searching
 
         function displayRecords(records) {
             allRecords = records; // Store all records
@@ -4683,6 +4732,10 @@
         function filterAndDisplayRecords() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const searchField = document.getElementById('searchField').value;
+            
+            console.log('All records:', allRecords);
+            console.log('Search term:', searchTerm);
+            console.log('Search field:', searchField);
             
             const filteredRecords = allRecords.filter(record => {
                 if (!searchTerm) return true; // Show all records if no search term
@@ -4698,6 +4751,8 @@
                     return fieldValue.includes(searchTerm);
                 }
             });
+            
+            console.log('Filtered records:', filteredRecords);
 
             const tableBody = document.getElementById("recordsTableBody");
             const mobileTableBody = document.getElementById("recordsTableMobileBody");
@@ -4766,19 +4821,32 @@
             const tableContainer = document.querySelector('.table-container');
             const mobileTableContainer = document.getElementById('recordsTableMobile');
             
+            console.log('Window width:', window.innerWidth);
+            console.log('Table container:', tableContainer);
+            console.log('Mobile table container:', mobileTableContainer);
+            
             if (window.innerWidth <= 768) {
                 // Mobile view - show mobile table, hide desktop table
                 tableContainer.style.display = 'none';
                 mobileTableContainer.style.display = 'block';
+                console.log('Showing mobile table');
             } else {
                 // Desktop view - show desktop table, hide mobile table
                 tableContainer.style.display = 'block';
                 mobileTableContainer.style.display = 'none';
+                console.log('Showing desktop table');
             }
         }
 
         // Add event listener for window resize
         window.addEventListener('resize', updateTableDisplay);
+        
+        // Initialize table display on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing tables...');
+            filterAndDisplayRecords();
+            updateTableDisplay();
+        });
 
         function toggleAllRecords() {
             const selectAll = document.getElementById('selectAllRecords');
