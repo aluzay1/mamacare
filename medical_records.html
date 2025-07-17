@@ -999,6 +999,65 @@
             </div>
         </div>
 
+        <!-- Birth Records Tab -->
+        <div class="tab-pane" id="birth-records-tab">
+            <div class="tab-section">
+                <h3><i class="fas fa-baby"></i> Birth Records</h3>
+                <div class="birth-records-content">
+                    <div class="birth-records-list">
+                        <div class="search-container">
+                            <div class="search-input-group">
+                                <input type="text" id="birthSearchInput" placeholder="Search birth records..." class="search-input">
+                                <button type="button" id="clearBirthSearchBtn" class="clear-search-btn" style="display: none;" onclick="clearBirthSearch()">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <select id="birthSearchField" class="search-field">
+                                <option value="all">All Fields</option>
+                                <option value="baby_gender">Baby Gender</option>
+                                <option value="date_of_birth">Date of Birth</option>
+                                <option value="birth_type">Birth Type</option>
+                                <option value="birth_location">Birth Location</option>
+                            </select>
+                            <button onclick="showAddBirthForm()" class="btn-add-birth">
+                                <i class="fas fa-plus"></i> Add Birth Record
+                            </button>
+                        </div>
+                        
+                        <div class="table-container">
+                            <table class="birth-records-table">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" onclick="sortBirthTable(0, 'date_of_birth')" title="Click to sort by date">
+                                            <i class="fas fa-calendar-alt"></i> Date of Birth
+                                        </th>
+                                        <th class="sortable" onclick="sortBirthTable(1, 'baby_gender')" title="Click to sort by gender">
+                                            <i class="fas fa-venus-mars"></i> Baby Gender
+                                        </th>
+                                        <th class="sortable" onclick="sortBirthTable(2, 'birth_type')" title="Click to sort by birth type">
+                                            <i class="fas fa-baby-carriage"></i> Birth Type
+                                        </th>
+                                        <th class="sortable" onclick="sortBirthTable(3, 'birth_location')" title="Click to sort by location">
+                                            <i class="fas fa-hospital"></i> Birth Location
+                                        </th>
+                                        <th title="Notes">
+                                            <i class="fas fa-notes-medical"></i> Notes
+                                        </th>
+                                        <th title="Birth Record Actions" class="actions-header">
+                                            <i class="fas fa-cogs"></i> Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="birthRecordsTableBody">
+                                    <!-- Birth records will be dynamically populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Add New Record Section -->
         <div class="record-container">
             <div class="add-record">
@@ -7105,6 +7164,11 @@
                     // Add active class to clicked tab and corresponding pane
                     this.classList.add('active');
                     document.getElementById(targetTab + '-tab').classList.add('active');
+                    
+                    // Load birth records when birth-records tab is clicked
+                    if (targetTab === 'birth-records' && currentPatientId) {
+                        fetchBirthRecords();
+                    }
                 });
             });
 
@@ -7620,7 +7684,6 @@
 
         // Show birth records section
         function showBirthRecordsSection() {
-            document.getElementById('birthRecordsSection').style.display = 'block';
             fetchBirthRecords();
         }
 
@@ -7884,73 +7947,13 @@
             await originalFetchProfile();
             currentPatientId = localStorage.getItem('patient_id');
             if (currentPatientId) {
-                showBirthRecordsSection();
+                // Initialize birth records when profile is loaded
+                fetchBirthRecords();
             }
         };
     </script>
 
-    <!-- Birth Records Section -->
-    <section class="birth-records-section" id="birthRecordsSection" style="display: none;">
-        <div class="birth-records-container">
-            <div class="section-header">
-                <i class="fas fa-baby"></i>
-                <h2>Birth Records</h2>
-                <button class="btn-add-birth" onclick="showAddBirthForm()">
-                    <i class="fas fa-plus"></i> Add Birth Record
-                </button>
-            </div>
-            
-            <div class="birth-records-content">
-                <div class="birth-records-list">
-                    <div class="search-container">
-                        <div class="search-input-group">
-                            <input type="text" id="birthSearchInput" placeholder="Search birth records..." class="search-input">
-                            <button type="button" id="clearBirthSearchBtn" class="clear-search-btn" style="display: none;" onclick="clearBirthSearch()">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                        <select id="birthSearchField" class="search-field">
-                            <option value="all">All Fields</option>
-                            <option value="baby_gender">Baby Gender</option>
-                            <option value="date_of_birth">Date of Birth</option>
-                            <option value="birth_type">Birth Type</option>
-                            <option value="birth_location">Birth Location</option>
-                        </select>
-                    </div>
-                    
-                    <div class="table-container">
-                        <table class="birth-records-table">
-                            <thead>
-                                <tr>
-                                    <th class="sortable" onclick="sortBirthTable(0, 'date_of_birth')" title="Click to sort by date">
-                                        <i class="fas fa-calendar-alt"></i> Date of Birth
-                                    </th>
-                                    <th class="sortable" onclick="sortBirthTable(1, 'baby_gender')" title="Click to sort by gender">
-                                        <i class="fas fa-venus-mars"></i> Baby Gender
-                                    </th>
-                                    <th class="sortable" onclick="sortBirthTable(2, 'birth_type')" title="Click to sort by birth type">
-                                        <i class="fas fa-baby-carriage"></i> Birth Type
-                                    </th>
-                                    <th class="sortable" onclick="sortBirthTable(3, 'birth_location')" title="Click to sort by location">
-                                        <i class="fas fa-hospital"></i> Birth Location
-                                    </th>
-                                    <th title="Notes">
-                                        <i class="fas fa-notes-medical"></i> Notes
-                                    </th>
-                                    <th title="Birth Record Actions" class="actions-header">
-                                        <i class="fas fa-cogs"></i> Actions
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody id="birthRecordsTableBody">
-                                <!-- Birth records will be dynamically populated here -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Add Birth Record Modal -->
     <div class="modal" id="addBirthModal" style="display: none;">
