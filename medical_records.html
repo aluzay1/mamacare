@@ -5485,6 +5485,61 @@
             await fetchProfile();
         });
 
+        // Function to restore session from localStorage
+        async function restoreSession(pin) {
+            try {
+                // First check if the backend is available
+                const healthResponse = await apiCall('/health');
+                if (!healthResponse.ok) {
+                    throw new Error('Backend service is not available');
+                }
+
+                // Then fetch the profile
+                const response = await apiCall(`/api/patient/profile?pin=${encodeURIComponent(pin)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
+                let responseData;
+                try {
+                    responseData = await response.json();
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                    throw new Error('Invalid response from server');
+                }
+
+                if (!response.ok) {
+                    throw new Error(responseData.error || 'Failed to fetch profile');
+                }
+
+                // Show the medical records section and hide the auth section
+                document.getElementById('medicalRecords').style.display = 'block';
+                document.querySelector('.auth-section').style.display = 'none';
+                
+                // Update the profile display
+                console.log('Session restored with data:', responseData);
+                updateProfileDisplay(responseData);
+                
+                // Fetch and display medical records
+                try {
+                    const recordsResponse = await apiCall(`/api/patient/medical-records?pin=${encodeURIComponent(pin)}`);
+                    if (recordsResponse.ok) {
+                        const records = await recordsResponse.json();
+                        displayRecords(records);
+                    }
+                } catch (error) {
+                    console.warn('Could not fetch medical records:', error);
+                }
+            } catch (error) {
+                console.error('Error restoring session:', error);
+                // Clear invalid session
+                localStorage.removeItem('mamacare_patient_pin');
+                window.currentPatientPIN = null;
+            }
+        }
+
         // Add this function to handle profile fetching
         async function fetchProfile() {
             const pin = document.getElementById('patientPin').value;
@@ -5530,6 +5585,8 @@
 
                 // Store the PIN for future use
                 window.currentPatientPIN = pin;
+                // Store PIN in localStorage for persistence
+                localStorage.setItem('mamacare_patient_pin', pin);
                 
                 // Show the medical records section and hide the auth section
                 document.getElementById('medicalRecords').style.display = 'block';
@@ -6278,6 +6335,16 @@
         // Initialize table display on page load
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM loaded, initializing tables...');
+            
+            // Check for existing authentication
+            const savedPin = localStorage.getItem('mamacare_patient_pin');
+            if (savedPin) {
+                console.log('Found saved PIN, attempting to restore session...');
+                window.currentPatientPIN = savedPin;
+                // Attempt to restore the session
+                restoreSession(savedPin);
+            }
+            
             filterAndDisplayRecords();
             updateTableDisplay();
             
@@ -7512,6 +7579,9 @@
             if (confirm('Are you sure you want to logout? You will need to enter your PIN again to access your records.')) {
                 // Clear the stored PIN
                 window.currentPatientPIN = null;
+                
+                // Clear localStorage
+                localStorage.removeItem('mamacare_patient_pin');
                 
                 // Hide the medical records section
                 document.getElementById('medicalRecords').style.display = 'none';
