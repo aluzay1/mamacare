@@ -752,6 +752,8 @@
             padding: 50px 20px 30px 20px;
             position: relative;
             z-index: 1;
+            display: flex;
+            flex-direction: column;
         }
 
         .footer-main {
@@ -864,7 +866,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
-            margin-top: 0; /* Ensure it's right after the footer */
+            margin-top: auto; /* Push to bottom of footer */
         }
 
         .copyright-content {
@@ -883,9 +885,15 @@
 
         /* Tablet Layout */
         @media (max-width: 768px) {
+            .footer-content {
+                display: flex;
+                flex-direction: column;
+            }
+
             .footer-main {
                 grid-template-columns: 1fr 1fr;
                 gap: 25px;
+                flex: 1;
             }
 
             .company-section {
@@ -901,18 +909,26 @@
             .social-links {
                 justify-content: center;
             }
+
+            .copyright-section {
+                order: 999; /* Ensure it appears last */
+            }
         }
 
         /* Mobile Layout */
         @media (max-width: 480px) {
             .footer-content {
                 padding: 40px 15px 25px 15px;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
             }
 
             .footer-main {
                 grid-template-columns: 1fr;
                 gap: 20px;
                 text-align: center;
+                flex: 1;
             }
 
             .company-section {
@@ -930,6 +946,7 @@
 
             .copyright-section {
                 padding: 12px 0;
+                order: 999; /* Ensure it appears last */
             }
 
             .copyright-content p {
@@ -1402,15 +1419,15 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Copyright Section -->
+            <div class="copyright-section">
+                <div class="copyright-content">
+                    <p>&copy; 2025 MamaCare. All rights reserved.</p>
+                </div>
+            </div>
         </div>
     </footer>
-    
-    <!-- Copyright - Separate from footer to ensure it's always last -->
-    <div class="copyright-section">
-        <div class="copyright-content">
-            <p>&copy; 2025 MamaCare. All rights reserved.</p>
-        </div>
-    </div>
 
     <script>
         // Function to set active navigation link based on current page
