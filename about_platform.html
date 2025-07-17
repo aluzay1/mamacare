@@ -306,6 +306,57 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* FAQ Accordion Styles */
+        .faq-accordion {
+            max-width: 800px;
+            margin: 2rem auto 0 auto;
+        }
+        .faq-item {
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            text-align: left;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            padding: 1.2rem 0;
+            cursor: pointer;
+            transition: color 0.2s;
+            position: relative;
+        }
+        .faq-question::after {
+            content: '+';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #667eea;
+            transition: transform 0.2s;
+        }
+        .faq-item.active .faq-question {
+            color: #667eea;
+        }
+        .faq-item.active .faq-question::after {
+            content: '-';
+            transform: translateY(-50%) rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background: #f8fafc;
+            padding: 0 1rem;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -586,6 +637,62 @@
                 </div>
             </div>
         </section>
+
+        <!-- FAQs Section -->
+        <section class="section" id="faqs">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <button class="faq-question">What is MamaCare and who can use it?</button>
+                    <div class="faq-answer">
+                        <p>MamaCare is a digital healthcare platform for all Sierra Leoneans. Patients, mothers, families, and healthcare providers can use it to manage health records, find care, and access services.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">How do I register and access my medical records?</button>
+                    <div class="faq-answer">
+                        <p>Go to the Medical Records page, register with your details, and receive a secure 6-digit PIN. Use this PIN to log in and view your records anytime.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Is my health information safe and private?</button>
+                    <div class="faq-answer">
+                        <p>Yes. Your data is encrypted and protected. Only you and authorized healthcare providers can access your records using your PIN.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I update my information after registration?</button>
+                    <div class="faq-answer">
+                        <p>Yes, you can update your profile, medical history, and emergency contacts at any time after logging in with your PIN.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">What if I forget my PIN?</button>
+                    <div class="faq-answer">
+                        <p>If you forget your PIN, use the recovery option on the login page or contact support for assistance.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">How do I find hospitals, pharmacies, or doctors?</button>
+                    <div class="faq-answer">
+                        <p>Use the Hospitals, Pharmacy, or Healthcare Professionals pages to search, filter, and contact providers near you.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">Can I access MamaCare on my phone?</button>
+                    <div class="faq-answer">
+                        <p>Yes! MamaCare is mobile-friendly and works on all smartphones, tablets, and computers.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">How do I get help if I have a problem?</button>
+                    <div class="faq-answer">
+                        <p>Contact our support team by phone, email, live chat, or visit the Help Center for assistance.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- End FAQs Section -->
     </div>
 
     <!-- Footer -->
@@ -604,6 +711,22 @@
                 if (link.getAttribute('href') === currentPage) {
                     link.classList.add('active');
                 }
+            });
+        });
+
+        // FAQ Accordion Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const faqItems = document.querySelectorAll('.faq-item');
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+                question.addEventListener('click', function() {
+                    // Close all other items
+                    faqItems.forEach(i => {
+                        if (i !== item) i.classList.remove('active');
+                    });
+                    // Toggle current item
+                    item.classList.toggle('active');
+                });
             });
         });
     </script>
