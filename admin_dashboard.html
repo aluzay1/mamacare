@@ -493,7 +493,8 @@
             /* Enhanced table responsiveness for mobile */
             .table-responsive {
                 border-radius: 12px;
-                overflow: hidden;
+                overflow-x: auto;
+                overflow-y: visible;
                 border: 1px solid var(--border-color);
                 box-shadow: var(--shadow-sm);
             }
@@ -802,11 +803,12 @@
         /* Table scroll indicator */
         .table-responsive {
             position: relative;
+            margin-bottom: 40px; /* Add space for the indicator */
         }
         
         .table-scroll-indicator {
             position: absolute;
-            bottom: -30px;
+            bottom: -35px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--primary-color);
@@ -815,9 +817,11 @@
             border-radius: 20px;
             font-size: 0.75rem;
             font-weight: 600;
-            opacity: 0.9;
-            z-index: 10;
+            opacity: 1;
+            z-index: 1000;
             box-shadow: var(--shadow-md);
+            white-space: nowrap;
+            pointer-events: none;
         }
 
         /* Filter controls styling */
@@ -3846,6 +3850,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (isScrollable) {
                 scrollIndicator.style.display = 'block';
+                scrollIndicator.style.opacity = '1';
                 if (isAtStart) {
                     scrollIndicator.textContent = '→ Scroll right →';
                 } else if (isAtEnd) {
@@ -3861,8 +3866,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Check initial scroll state
         setTimeout(() => {
             const isScrollable = table.scrollWidth > table.clientWidth;
+            console.log('Table scrollable:', isScrollable, 'scrollWidth:', table.scrollWidth, 'clientWidth:', table.clientWidth);
             if (isScrollable) {
                 scrollIndicator.style.display = 'block';
+                scrollIndicator.style.opacity = '1';
+                console.log('Scroll indicator should be visible');
             }
         }, 100);
     });
