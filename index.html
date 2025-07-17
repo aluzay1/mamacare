@@ -749,49 +749,41 @@
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 60px 20px 40px 20px;
+            padding: 50px 20px 30px 20px;
             position: relative;
             z-index: 1;
         }
 
         .footer-main {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
+            grid-template-columns: 2fr 1fr 1fr;
             gap: 40px;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .footer-section h4 {
             color: #3498db;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             position: relative;
         }
 
         .footer-section h4::after {
             content: '';
             position: absolute;
-            bottom: -8px;
+            bottom: -5px;
             left: 0;
-            width: 30px;
+            width: 25px;
             height: 2px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            background: #3498db;
             border-radius: 1px;
         }
 
-        .company-section {
-            grid-column: 1;
-        }
-
-        .contact-section {
-            grid-column: 5;
-        }
-
         .footer-logo h3 {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -800,21 +792,22 @@
 
         .footer-logo p {
             color: #bdc3c7;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
         }
 
         .social-links {
             display: flex;
-            gap: 15px;
+            gap: 12px;
         }
 
         .social-link {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 40px;
-            height: 40px;
+            width: 35px;
+            height: 35px;
             background: rgba(52, 152, 219, 0.1);
             border: 1px solid rgba(52, 152, 219, 0.3);
             border-radius: 50%;
@@ -827,7 +820,6 @@
             background: #3498db;
             color: white;
             transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
         }
 
         .footer-links {
@@ -837,91 +829,39 @@
         }
 
         .footer-links li {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
         }
 
         .footer-links a {
             color: #bdc3c7;
             text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-block;
-            position: relative;
-        }
-
-        .footer-links a::before {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: #3498db;
-            transition: width 0.3s ease;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .footer-links a:hover {
             color: #3498db;
-            transform: translateX(5px);
-        }
-
-        .footer-links a:hover::before {
-            width: 100%;
         }
 
         .contact-info p {
             color: #bdc3c7;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            font-size: 0.9rem;
         }
 
         .contact-info i {
             color: #3498db;
-            width: 16px;
-        }
-
-        .footer-bottom {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            z-index: 1;
-        }
-
-        .footer-bottom-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-        }
-
-        .footer-bottom-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .footer-bottom-links a {
-            color: #95a5a6;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.3s ease;
-        }
-
-        .footer-bottom-links a:hover {
-            color: #3498db;
+            width: 14px;
         }
 
         /* Copyright Section */
         .copyright-section {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.2);
             padding: 15px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
         }
@@ -936,24 +876,21 @@
         .copyright-content p {
             color: #95a5a6;
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: 400;
         }
 
         /* Tablet Layout */
-        @media (max-width: 1024px) {
+        @media (max-width: 768px) {
             .footer-main {
-                grid-template-columns: 1fr 1fr;
-                gap: 30px;
-            }
-
-            .company-section {
-                grid-column: 1 / -1;
+                grid-template-columns: 1fr;
+                gap: 25px;
                 text-align: center;
             }
 
-            .contact-section {
-                grid-column: 2;
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
             }
 
             .social-links {
@@ -962,51 +899,13 @@
         }
 
         /* Mobile Layout */
-        @media (max-width: 768px) {
-            .footer-content {
-                padding: 40px 20px 30px 20px;
-            }
-
-            .footer-main {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                text-align: center;
-            }
-
-            .company-section,
-            .contact-section {
-                grid-column: 1;
-            }
-
-            .footer-section h4::after {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .footer-bottom-content {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
-            }
-
-            .footer-bottom-links {
-                justify-content: center;
-                gap: 15px;
-            }
-
-            .copyright-content p {
-                font-size: 0.85rem;
-            }
-        }
-
-        /* Small Mobile */
         @media (max-width: 480px) {
             .footer-content {
-                padding: 30px 15px 20px 15px;
+                padding: 40px 15px 25px 15px;
             }
 
             .footer-main {
-                gap: 25px;
+                gap: 20px;
             }
 
             .social-links {
@@ -1014,13 +913,8 @@
             }
 
             .social-link {
-                width: 35px;
-                height: 35px;
-            }
-
-            .footer-bottom-links {
-                flex-direction: column;
-                gap: 10px;
+                width: 32px;
+                height: 32px;
             }
 
             .copyright-section {
@@ -1450,9 +1344,9 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <!-- Main Footer Sections -->
+            <!-- Main Footer -->
             <div class="footer-main">
-                <!-- Company Info Section -->
+                <!-- Company Info -->
                 <div class="footer-section company-section">
                     <div class="footer-logo">
                         <h3>MamaCare</h3>
@@ -1462,46 +1356,24 @@
                         <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
                         <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
 
-                <!-- Quick Links Section -->
+                <!-- Quick Links -->
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul class="footer-links">
-                        <li><a href="hospitals.html">Find Hospitals</a></li>
-                        <li><a href="pharmacy.html">Locate Pharmacies</a></li>
+                        <li><a href="hospitals.html">Hospitals</a></li>
+                        <li><a href="pharmacy.html">Pharmacy</a></li>
                         <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
                         <li><a href="medical_records_view.html">Medical Records</a></li>
-                    </ul>
-                </div>
-
-                <!-- Services Section -->
-                <div class="footer-section">
-                    <h4>Services</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Emergency Care</a></li>
-                        <li><a href="#">Maternal Health</a></li>
-                        <li><a href="#">Digital Records</a></li>
-                        <li><a href="#">Health Education</a></li>
-                    </ul>
-                </div>
-
-                <!-- Support Section -->
-                <div class="footer-section">
-                    <h4>Support</h4>
-                    <ul class="footer-links">
                         <li><a href="about_platform.html">About Platform</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Help Center</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
 
-                <!-- Contact Info Section -->
-                <div class="footer-section contact-section">
-                    <h4>Contact Info</h4>
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h4>Contact</h4>
                     <div class="contact-info">
                         <p><i class="fas fa-phone"></i> +232 123 456 78</p>
                         <p><i class="fas fa-envelope"></i> info@mamacare.sl</p>
@@ -1511,18 +1383,7 @@
             </div>
         </div>
         
-        <!-- Footer Bottom -->
-        <div class="footer-bottom">
-            <div class="footer-bottom-content">
-                <div class="footer-bottom-links">
-                    <a href="#">Terms of Service</a>
-                    <a href="#">Privacy Policy</a>
-                    <a href="#">Cookie Policy</a>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Copyright Section -->
+        <!-- Copyright -->
         <div class="copyright-section">
             <div class="copyright-content">
                 <p>&copy; 2025 MamaCare. All rights reserved.</p>
