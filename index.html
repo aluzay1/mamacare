@@ -751,7 +751,7 @@
             margin: 0 auto;
             padding: 60px 20px 40px 20px;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
             gap: 40px;
             position: relative;
             z-index: 1;
@@ -908,6 +908,13 @@
 
         .footer-bottom-links a:hover {
             color: #3498db;
+        }
+
+        @media (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
         }
 
         @media (max-width: 768px) {
