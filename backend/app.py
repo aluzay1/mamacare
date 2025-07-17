@@ -3472,6 +3472,163 @@ def get_referral_feedback_detail(feedback_id):
         logger.error(f"Error getting referral feedback detail: {str(e)}")
         return jsonify({'error': 'Failed to get referral feedback detail'}), 500
 
+# Birth Records API Endpoints
+@app.route('/api/patient/birth-records', methods=['GET'])
+def get_birth_records():
+    try:
+        # Get patient token from header
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({'error': 'Authorization token required'}), 401
+        
+        token = auth_header.split(' ')[1]
+        
+        # Find patient by token
+        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        if not patient:
+            return jsonify({'error': 'Invalid token or patient not found'}), 401
+        
+        # Get birth records for this patient
+        birth_records = BirthRecord.query.filter_by(patient_id=patient.id).order_by(BirthRecord.date_of_birth.desc()).all()
+        
+        return jsonify([{
+            'id': record.id,
+            'patient_id': record.patient_id,
+            'baby_gender': record.baby_gender,
+            'date_of_birth': record.date_of_birth.isoformat(),
+            'birth_type': record.birth_type,
+            'birth_location': record.birth_location,
+            'notes': record.notes,
+            'created_at': record.created_at.isoformat()
+        } for record in birth_records]), 200
+        
+    except Exception as e:
+        logger.error(f'Error getting birth records: {str(e)}')
+        return jsonify({'error': 'Failed to get birth records'}), 500
+
+@app.route('/api/patient/birth-records', methods=['POST'])
+def add_birth_record():
+    try:
+        # Get patient token from header
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({'error': 'Authorization token required'}), 401
+        
+        token = auth_header.split(' ')[1]
+        
+        # Find patient by token
+        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        if not patient:
+            return jsonify({'error': 'Invalid token or patient not found'}), 401
+        
+        data = request.get_json()
+        
+        # Validate required fields
+        required_fields = ['date_of_birth', 'baby_gender', 'birth_type', 'birth_location']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return jsonify({'error': f'Missing required field: {field}'}), 400
+        
+        # Create new birth record
+        birth_record = BirthRecord(
+            patient_id=patient.id,
+            baby_gender=data['baby_gender'],
+            date_of_birth=datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date(),
+            birth_type=data['birth_type'],
+            birth_location=data['birth_location'],
+            notes=data.get('notes', '')
+        )
+        
+        db.session.add(birth_record)
+        db.session.commit()
+        
+        return jsonify({
+            'message': 'Birth record added successfully',
+            'birth_record_id': birth_record.id
+        }), 201
+        
+    except ValueError as e:
+        return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f'Error adding birth record: {str(e)}')
+        return jsonify({'error': 'Failed to add birth record'}), 500
+
+@app.route('/api/patient/birth-records/<int:record_id>', methods=['PUT'])
+def update_birth_record(record_id):
+    try:
+        # Get patient token from header
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({'error': 'Authorization token required'}), 401
+        
+        token = auth_header.split(' ')[1]
+        
+        # Find patient by token
+        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        if not patient:
+            return jsonify({'error': 'Invalid token or patient not found'}), 401
+        
+        # Get birth record
+        birth_record = BirthRecord.query.filter_by(id=record_id, patient_id=patient.id).first()
+        if not birth_record:
+            return jsonify({'error': 'Birth record not found'}), 404
+        
+        data = request.get_json()
+        
+        # Update fields
+        if 'date_of_birth' in data:
+            birth_record.date_of_birth = datetime.strptime(data['date_of_birth'], '%Y-%m-%d').date()
+        if 'baby_gender' in data:
+            birth_record.baby_gender = data['baby_gender']
+        if 'birth_type' in data:
+            birth_record.birth_type = data['birth_type']
+        if 'birth_location' in data:
+            birth_record.birth_location = data['birth_location']
+        if 'notes' in data:
+            birth_record.notes = data['notes']
+        
+        db.session.commit()
+        
+        return jsonify({'message': 'Birth record updated successfully'}), 200
+        
+    except ValueError as e:
+        return jsonify({'error': 'Invalid date format. Use YYYY-MM-DD'}), 400
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f'Error updating birth record: {str(e)}')
+        return jsonify({'error': 'Failed to update birth record'}), 500
+
+@app.route('/api/patient/birth-records/<int:record_id>', methods=['DELETE'])
+def delete_birth_record(record_id):
+    try:
+        # Get patient token from header
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith('Bearer '):
+            return jsonify({'error': 'Authorization token required'}), 401
+        
+        token = auth_header.split(' ')[1]
+        
+        # Find patient by token
+        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        if not patient:
+            return jsonify({'error': 'Invalid token or patient not found'}), 401
+        
+        # Get birth record
+        birth_record = BirthRecord.query.filter_by(id=record_id, patient_id=patient.id).first()
+        if not birth_record:
+            return jsonify({'error': 'Birth record not found'}), 404
+        
+        db.session.delete(birth_record)
+        db.session.commit()
+        
+        return jsonify({'message': 'Birth record deleted successfully'}), 200
+        
+    except Exception as e:
+        db.session.rollback()
+        logger.error(f'Error deleting birth record: {str(e)}')
+        return jsonify({'error': 'Failed to delete birth record'}), 500
+
 if __name__ == '__main__':
     try:
         logger.info("Starting Flask application...")
