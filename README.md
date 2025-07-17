@@ -8,6 +8,21 @@
 
 **MamaCare** is a comprehensive healthcare management platform designed specifically for Sierra Leone's healthcare infrastructure. The system provides a centralized platform for managing hospitals, pharmacies, healthcare professionals, and patient records, with a strong emphasis on maternal and child healthcare services.
 
+## 🌐 Live Demo
+
+### **Main Application**
+- **🌍 Live Site**: [https://verdant-gumdrop-61281b.netlify.app/](https://verdant-gumdrop-61281b.netlify.app/)
+- **📊 Admin Dashboard**: [https://verdant-gumdrop-61281b.netlify.app/admin_dashboard](https://verdant-gumdrop-61281b.netlify.app/admin_dashboard)
+
+### **⚠️ Important Note About Backend Performance**
+The backend is hosted on **Render's free tier**, which means:
+- **Sleep Mode**: When the site is not actively being used, the backend server goes into sleep mode to conserve resources
+- **Cold Start**: The first request after inactivity may take 10-30 seconds to wake up the server
+- **Subsequent Requests**: Once awake, all subsequent requests will be fast and responsive
+- **Auto-Sleep**: After 15 minutes of inactivity, the server will sleep again
+
+**💡 Pro Tip**: If you experience a delay on your first interaction, simply wait a moment and try again. The server will wake up and respond quickly!
+
 ## 🌟 Mission & Vision
 
 **Mission**: To improve healthcare accessibility and quality in Sierra Leone by providing a comprehensive digital platform that connects patients with healthcare providers, streamlines medical record management, and enhances healthcare service delivery.
