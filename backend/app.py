@@ -408,6 +408,19 @@ class ReferralFeedback(db.Model):
     doctor = db.relationship('User', foreign_keys=[doctor_id], backref='referral_feedbacks_sent')
     patient = db.relationship('User', foreign_keys=[patient_id], backref='referral_feedbacks_received')
 
+class BirthRecord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    patient_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    baby_gender = db.Column(db.String(10), nullable=False)  # 'Male', 'Female', 'Other'
+    date_of_birth = db.Column(db.Date, nullable=False)
+    birth_type = db.Column(db.String(50), nullable=False)  # e.g., 'Vaginal', 'Cesarean', 'Assisted'
+    birth_location = db.Column(db.String(200), nullable=False)  # Hospital name or location
+    notes = db.Column(db.Text)  # Additional notes about the birth
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationship
+    patient = db.relationship('User', backref='birth_records')
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -2789,6 +2802,14 @@ def init_db():
         with app.app_context():
             db.create_all()
             logger.info("Database tables created successfully")
+            
+            # Run birth records table migration
+            try:
+                from migrations.create_birth_records_table import create_birth_records_table
+                create_birth_records_table()
+                logger.info("Birth records table migration completed")
+            except Exception as migration_error:
+                logger.warning(f"Birth records migration warning: {str(migration_error)}")
             
             # Check if admin user exists
             admin = User.query.filter_by(email='admin@mamacare.com').first()
