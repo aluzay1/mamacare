@@ -600,10 +600,11 @@
         }
 
         .nav-links li a.active {
-            background-color: #3498db;
-            color: #fff;
-            font-weight: 600;
-}
+            background-color: #3498db !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3) !important;
+        }
 
 .menu-toggle {
   display: none;
@@ -724,9 +725,11 @@
             }
 
             .nav-links a.active {
-                background: #3498db;
-                border-color: #3498db;
-                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+                background: #3498db !important;
+                border-color: #3498db !important;
+                box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3) !important;
+                color: white !important;
+                font-weight: 600 !important;
             }
 
             /* Overlay when menu is open */
@@ -1763,6 +1766,14 @@
         // Function to set active navigation link based on current page
         function setActiveNavLink() {
             const pathname = window.location.pathname;
+            const searchParams = window.location.search;
+            const hash = window.location.hash;
+            
+            console.log('Full URL:', window.location.href);
+            console.log('Pathname:', pathname);
+            console.log('Search params:', searchParams);
+            console.log('Hash:', hash);
+            
             let currentPage = pathname.split('/').pop() || 'index';
             
             // Handle various URL patterns
@@ -1778,11 +1789,17 @@
             navLinks.forEach(link => {
                 link.classList.remove('active');
                 let linkPage = link.getAttribute('href').replace('.html', '');
-                console.log('Checking link:', linkPage, 'against current:', currentPage);
-                if (linkPage === currentPage) {
+                
+                // Handle special cases
+                if (linkPage === 'index' && currentPage === 'index') {
+                    link.classList.add('active');
+                    console.log('Set active: Home page');
+                } else if (linkPage === currentPage) {
                     link.classList.add('active');
                     console.log('Set active:', linkPage);
                 }
+                
+                console.log('Link href:', link.getAttribute('href'), 'Link page:', linkPage, 'Current:', currentPage, 'Active:', link.classList.contains('active'));
             });
         }
 
