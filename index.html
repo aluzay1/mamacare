@@ -864,7 +864,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
-            order: 999; /* Ensures it appears last */
+            margin-top: 0; /* Ensure it's right after the footer */
         }
 
         .copyright-content {
@@ -930,7 +930,6 @@
 
             .copyright-section {
                 padding: 12px 0;
-                order: 999; /* Ensures copyright appears last on mobile */
             }
 
             .copyright-content p {
@@ -1404,14 +1403,14 @@
                 </div>
             </div>
         </div>
-        
-        <!-- Copyright -->
-        <div class="copyright-section">
-            <div class="copyright-content">
-                <p>&copy; 2025 MamaCare. All rights reserved.</p>
-            </div>
-        </div>
     </footer>
+    
+    <!-- Copyright - Separate from footer to ensure it's always last -->
+    <div class="copyright-section">
+        <div class="copyright-content">
+            <p>&copy; 2025 MamaCare. All rights reserved.</p>
+        </div>
+    </div>
 
     <script>
         // Function to set active navigation link based on current page
