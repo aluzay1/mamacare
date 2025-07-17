@@ -871,12 +871,31 @@
         }
 
         .records-table th {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            background: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
             font-weight: 600;
-            color: #2c3e50;
+            color: white;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            border: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .records-table th::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .records-table th:hover::before {
+            left: 100%;
         }
 
         .records-table tr:hover {
