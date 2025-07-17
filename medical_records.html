@@ -582,7 +582,7 @@
     <section class="medical-records" id="medicalRecords" style="display: none;">
         <div class="records-header-pro">
             <i class="fas fa-file-medical"></i>
-            <h1>Patient Medical Records</h1>
+        <h1>Patient Medical Records</h1>
         </div>
 
         <!-- Patient Overview -->
@@ -7006,9 +7006,9 @@
                         }
                     });
                     
-                                    if (reloadResponse.ok) {
-                    const reloadedData = await reloadResponse.json();
-                    console.log('Reloaded data from server:', reloadedData);
+                    if (reloadResponse.ok) {
+                        const reloadedData = await reloadResponse.json();
+                        console.log('Reloaded data from server:', reloadedData);
                     console.log('Pregnancy data in reloaded data:', {
                         pregnancy_status: reloadedData.pregnancy_status,
                         lmp_date: reloadedData.lmp_date,
@@ -7020,13 +7020,13 @@
                         allergies: reloadedData.allergies,
                         medications: reloadedData.medications
                     });
-                    updateProfileDisplay(reloadedData);
-                    console.log('Patient data reloaded successfully');
-                } else {
-                    console.warn('Failed to reload patient data, but save was successful');
-                    const errorText = await reloadResponse.text();
-                    console.error('Reload error response:', errorText);
-                }
+                        updateProfileDisplay(reloadedData);
+                        console.log('Patient data reloaded successfully');
+                    } else {
+                        console.warn('Failed to reload patient data, but save was successful');
+                        const errorText = await reloadResponse.text();
+                        console.error('Reload error response:', errorText);
+                    }
                 } catch (error) {
                     console.warn('Error reloading patient data:', error);
                 }

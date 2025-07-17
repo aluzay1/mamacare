@@ -2046,6 +2046,9 @@
 
                 const profile = await response.json();
                 
+                // Store the patient PIN for use in birth records
+                window.currentPatientPIN = pin;
+                
                 // Show the medical records section and hide the auth section
                 document.getElementById('medicalRecords').style.display = 'block';
                 document.querySelector('.auth-section').style.display = 'none';
@@ -2062,6 +2065,13 @@
                     }
                 } catch (error) {
                     console.warn('Could not fetch medical records:', error);
+                }
+                
+                // Pre-load birth records for immediate access
+                try {
+                    await loadBirthRecords();
+                } catch (error) {
+                    console.warn('Could not pre-load birth records:', error);
                 }
             } catch (error) {
                 console.error('Error:', error);
@@ -2666,6 +2676,7 @@
             
             if (!window.currentPatientPIN) {
                 console.error('No patient PIN available');
+                console.log('Available window properties:', Object.keys(window).filter(key => key.includes('PIN')));
                 return;
             }
 

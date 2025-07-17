@@ -481,7 +481,7 @@
 
             /* Adjust form sections for mobile */
             .form-section {
-                padding: 1.5rem;
+            padding: 1.5rem;
                 margin-bottom: 1.5rem;
             }
 
@@ -531,8 +531,8 @@
 
             /* Adjust table section padding */
             .table-section {
-                padding: 1.5rem;
-            }
+            padding: 1.5rem;
+        }
 
             .table-section h4 {
                 font-size: 1.25rem;
@@ -605,8 +605,8 @@
             }
 
             .modal-body {
-                padding: 1.5rem;
-            }
+            padding: 1.5rem;
+        }
 
             /* Make action buttons in tables more mobile-friendly */
             .btn-sm {
@@ -759,7 +759,7 @@
                 top: 0;
                 right: 0;
                 bottom: 0;
-                width: 20px;
+            width: 20px;
                 background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1));
                 pointer-events: none;
                 z-index: 1;
@@ -1491,18 +1491,18 @@
                             <div class="filter-controls">
                                 <div class="row">
                                     <div class="col-md-3 mb-2">
-                                        <label class="form-label">Filter by Professional Type</label>
-                                        <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
-                                            <option value="">All Professionals</option>
-                                            <option value="Medical Doctor">Medical Doctor</option>
-                                            <option value="Nurse">Nurse</option>
-                                            <option value="Midwife">Midwife</option>
-                                            <option value="Pharmacist">Pharmacist</option>
-                                            <option value="Laboratory Technician">Laboratory Technician</option>
-                                            <option value="Radiology Technician">Radiology Technician</option>
-                                            <option value="Physiotherapist">Physiotherapist</option>
-                                            <option value="Nutritionist">Nutritionist</option>
-                                        </select>
+                                <label class="form-label">Filter by Professional Type</label>
+                                <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
+                                    <option value="">All Professionals</option>
+                                    <option value="Medical Doctor">Medical Doctor</option>
+                                    <option value="Nurse">Nurse</option>
+                                    <option value="Midwife">Midwife</option>
+                                    <option value="Pharmacist">Pharmacist</option>
+                                    <option value="Laboratory Technician">Laboratory Technician</option>
+                                    <option value="Radiology Technician">Radiology Technician</option>
+                                    <option value="Physiotherapist">Physiotherapist</option>
+                                    <option value="Nutritionist">Nutritionist</option>
+                                </select>
                                     </div>
                                     <div class="col-md-3 mb-2">
                                         <label class="form-label">Filter by Hospital</label>
@@ -1616,7 +1616,7 @@
                                     <div class="filter-controls mt-3">
                                         <input type="text" class="form-control" id="admin-search" 
                                                placeholder="Search administrators...">
-                                        <select class="form-select" id="admin-role-filter">
+                    <select class="form-select" id="admin-role-filter">
                                             <option value="">All Roles</option>
                                             <option value="admin">Admin</option>
                                             <option value="super_admin">Super Admin</option>
@@ -3116,19 +3116,19 @@ function toggleAuthForm() {
 
     // Load Hospitals
     async function loadHospitals() {
-        try {
-            const token = localStorage.getItem('admin_token');
-            if (!token) {
-                throw new Error('No authentication token found');
-            }
-            
+                    try {
+                        const token = localStorage.getItem('admin_token');
+                        if (!token) {
+                            throw new Error('No authentication token found');
+                        }
+                        
             const response = await apiCall('/api/admin/hospitals', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-            if (!response.ok) {
+                        if (!response.ok) {
                 throw new Error('Failed to load hospitals');
             }
 
@@ -3168,7 +3168,7 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
-        } catch (error) {
+                    } catch (error) {
             console.error('Error loading hospitals:', error);
             if (error.message === 'No authentication token found') {
                 const loginSection = document.getElementById('login-section');
@@ -3251,7 +3251,7 @@ function toggleAuthForm() {
                     loginSection.style.display = 'block';
                     dashboardSection.style.display = 'none';
                 }
-            } else {
+                        } else {
                 alert('Failed to load pharmacies');
             }
         }
@@ -3259,19 +3259,19 @@ function toggleAuthForm() {
 
     // Load Healthcare Professionals
     async function loadDoctors() {
-        try {
-            const token = localStorage.getItem('admin_token');
+                    try {
+                        const token = localStorage.getItem('admin_token');
             if (!token) {
                 throw new Error('No authentication token found');
             }
 
             const response = await apiCall('/api/admin/doctors', {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+                            headers: {
+                                'Authorization': `Bearer ${token}`
+                            }
+                        });
 
-            if (!response.ok) {
+                        if (!response.ok) {
                 throw new Error('Failed to load doctors');
             }
 
@@ -3306,7 +3306,7 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
-        } catch (error) {
+                    } catch (error) {
             console.error('Error loading doctors:', error);
             if (error.message === 'No authentication token found') {
                 const loginSection = document.getElementById('login-section');
