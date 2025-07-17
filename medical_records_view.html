@@ -1711,7 +1711,12 @@
             margin: 0;
             font-size: 2.2rem;
             font-weight: 800;
-            color: #fff;
+            /* Gradient text effect */
+            background: linear-gradient(90deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
             letter-spacing: 1px;
             text-shadow: 0 2px 8px rgba(65, 88, 208, 0.10);
         }
