@@ -756,7 +756,7 @@
 
         .footer-main {
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
             gap: 40px;
             margin-bottom: 30px;
         }
@@ -864,6 +864,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             z-index: 1;
+            order: 999; /* Ensures it appears last */
         }
 
         .copyright-content {
@@ -883,8 +884,12 @@
         /* Tablet Layout */
         @media (max-width: 768px) {
             .footer-main {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr 1fr;
                 gap: 25px;
+            }
+
+            .company-section {
+                grid-column: 1 / -1;
                 text-align: center;
             }
 
@@ -905,7 +910,13 @@
             }
 
             .footer-main {
+                grid-template-columns: 1fr;
                 gap: 20px;
+                text-align: center;
+            }
+
+            .company-section {
+                grid-column: 1;
             }
 
             .social-links {
@@ -919,6 +930,7 @@
 
             .copyright-section {
                 padding: 12px 0;
+                order: 999; /* Ensures copyright appears last on mobile */
             }
 
             .copyright-content p {
@@ -1367,7 +1379,17 @@
                         <li><a href="pharmacy.html">Pharmacy</a></li>
                         <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
                         <li><a href="medical_records_view.html">Medical Records</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
                         <li><a href="about_platform.html">About Platform</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
                     </ul>
                 </div>
 
