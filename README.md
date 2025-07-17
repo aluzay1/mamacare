@@ -581,9 +581,9 @@ pip install -r requirements.txt
 
 3. **Configure environment variables**
 ```bash
-cp .env.example .env
+   cp .env.example .env
 # Edit .env with your configuration
-```
+   ```
 
 4. **Initialize the database**
 ```bash
@@ -593,8 +593,8 @@ python create_default_admin.py
 
 5. **Run the application**
 ```bash
-python app.py
-```
+   python app.py
+   ```
 
 6. **Access the application**
 ```

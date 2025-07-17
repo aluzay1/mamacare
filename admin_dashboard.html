@@ -35,6 +35,56 @@
             min-height: 100vh;
         }
 
+        /* Mobile Navigation */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            padding: 1rem;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .mobile-nav .navbar-brand {
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .mobile-nav .navbar-toggler {
+            border: none;
+            color: white;
+            padding: 0.5rem;
+        }
+
+        .mobile-nav .navbar-toggler:focus {
+            box-shadow: none;
+        }
+
+        .mobile-nav .navbar-nav {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            margin-top: 1rem;
+            padding: 1rem;
+        }
+
+        .mobile-nav .nav-link {
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            margin: 0.25rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-nav .nav-link:hover,
+        .mobile-nav .nav-link.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
         .sidebar {
             min-height: 100vh;
             background: linear-gradient(180deg, var(--primary-color) 0%, var(--primary-dark) 100%);
@@ -398,83 +448,274 @@
             transition: all 0.3s ease;
         }
 
-        .password-strength.weak {
-            background-color: #dc3545;
-            width: 25%;
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            /* Hide desktop sidebar on mobile */
+            .sidebar {
+                display: none;
+            }
+
+            /* Show mobile navigation */
+            .mobile-nav {
+                display: block;
+            }
+
+            /* Adjust content padding for mobile */
+            .content {
+                padding: 1rem;
+                margin-top: 80px; /* Space for mobile nav */
+            }
+
+            /* Make stats cards stack on mobile */
+            .stats-card {
+                margin-bottom: 1rem;
+            }
+
+            .stats-card .card-body {
+                padding: 1.5rem;
+            }
+
+            .stats-card .display-4 {
+                font-size: 2rem;
+            }
+
+            /* Adjust form sections for mobile */
+            .form-section {
+                padding: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .form-section h4 {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Make table responsive */
+            .table-responsive {
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.75rem 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            /* Adjust table section padding */
+            .table-section {
+                padding: 1.5rem;
+            }
+
+            .table-section h4 {
+                font-size: 1.25rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Make buttons more touch-friendly */
+            .btn {
+                padding: 0.875rem 1.25rem;
+                font-size: 1rem;
+                min-height: 44px; /* Touch target size */
+            }
+
+            /* Adjust form controls for mobile */
+            .form-control {
+                padding: 0.875rem 1rem;
+                font-size: 1rem;
+                min-height: 44px;
+            }
+
+            /* Make login container responsive */
+            .login-container {
+                margin: 20px auto;
+                padding: 2rem;
+                max-width: 100%;
+                margin-left: 1rem;
+                margin-right: 1rem;
+            }
+
+            /* Adjust modal for mobile */
+            .modal-dialog {
+                margin: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            /* Make action buttons in tables more mobile-friendly */
+            .btn-sm {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+                min-height: 36px;
+            }
+
+            /* Stack form rows on mobile */
+            .row .col-md-6,
+            .row .col-md-4,
+            .row .col-md-3 {
+                margin-bottom: 1rem;
+            }
+
+            /* Adjust page titles */
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+
+            /* Make logout button more prominent on mobile */
+            .sidebar .nav-link[href="#"] {
+                background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                transition: all 0.3s ease;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
         }
 
-        .password-strength.medium {
-            background-color: #ffc107;
-            width: 50%;
+        @media (max-width: 576px) {
+            /* Further adjustments for very small screens */
+            .content {
+                padding: 0.75rem;
+            }
+
+            .form-section,
+            .table-section {
+                padding: 1rem;
+            }
+
+            .stats-card .card-body {
+                padding: 1rem;
+            }
+
+            .stats-card .display-4 {
+                font-size: 1.75rem;
+            }
+
+            .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .table th,
+            .table td {
+                padding: 0.5rem 0.25rem;
+                font-size: 0.8rem;
+            }
+
+            /* Hide less important table columns on very small screens */
+            .table th:nth-child(4),
+            .table td:nth-child(4),
+            .table th:nth-child(5),
+            .table td:nth-child(5) {
+                display: none;
+            }
         }
 
-        .password-strength.strong {
-            background-color: #28a745;
-            width: 75%;
+        /* Mobile navigation overlay */
+        .mobile-nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1040;
         }
 
-        .password-strength.very-strong {
-            background-color: #20c997;
-            width: 100%;
+        .mobile-nav-overlay.show {
+            display: block;
         }
 
-        .form-section .card {
-            border: none;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        /* Mobile menu animation */
+        .mobile-nav .navbar-collapse {
+            transition: all 0.3s ease;
         }
 
-        .form-section .card-header {
-            border-bottom: none;
-            padding: 1.5rem;
+        .mobile-nav .navbar-collapse.collapsing {
+            transition: all 0.3s ease;
         }
 
-        .table-section .card {
-            border: none;
-            box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+        /* Improve touch targets */
+        .nav-link,
+        .btn,
+        .form-control,
+        .form-check-input {
+            min-height: 44px;
+            display: flex;
+            align-items: center;
         }
 
-        .table-section .card-header {
-            border-bottom: none;
-            padding: 1.5rem;
+        /* Better spacing for mobile forms */
+        .mb-3 {
+            margin-bottom: 1rem !important;
         }
 
-        .table-section .card-body {
-            padding: 1.5rem;
+        .row {
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
         }
 
-        #admin-search, #admin-role-filter {
-            max-width: 200px;
-        }
-
-        /* Ensure Bootstrap Icons load properly */
-        @import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css');
-        
-        /* Fallback for icons */
-        .bi {
-            font-family: "bootstrap-icons" !important;
-            font-style: normal;
-            font-weight: normal !important;
-            font-variant: normal;
-            text-transform: none;
-            line-height: 1;
-            vertical-align: middle;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
-
-        /* Ensure sidebar icons are visible */
-        .sidebar .nav-link .bi {
-            font-size: 1.2rem;
-            width: 20px;
-            text-align: center;
-            display: inline-block;
-            margin-right: 0.5rem;
-            opacity: 1;
-            color: inherit;
+        .col-md-6,
+        .col-md-4,
+        .col-md-3 {
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
         }
     </style>
 </head>
 <body>
+    <!-- Mobile Navigation -->
+    <nav class="navbar navbar-expand-lg mobile-nav">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">MamaCare Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
+                <i class="bi bi-list"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="mobileNavbar">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#" data-section="hospitals">
+                            <i class="bi bi-building"></i> Hospitals
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="pharmacies">
+                            <i class="bi bi-circle"></i> Pharmacies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="doctors">
+                            <i class="bi bi-person-badge"></i> Healthcare Professionals
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-section="admins">
+                            <i class="bi bi-shield-lock"></i> Admins
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="mobile-logout-btn">
+                            <i class="bi bi-box-arrow-right"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
+
     <!-- Login Form -->
     <div id="login-section" class="container">
         <div class="login-container">
@@ -539,8 +780,8 @@
     <div id="dashboard-section" style="display: none;">
         <div class="container-fluid">
             <div class="row">
-                <!-- Sidebar -->
-                <div class="col-md-3 col-lg-2 sidebar">
+                <!-- Sidebar (Desktop Only) -->
+                <div class="col-md-3 col-lg-2 sidebar d-none d-md-block">
                     <h4 class="text-center mb-4">MamaCare Admin</h4>
                     <ul class="nav flex-column">
                         <li class="nav-item">
@@ -572,10 +813,10 @@
                 </div>
 
                 <!-- Main Content -->
-                <div class="col-md-9 col-lg-10 content">
+                <div class="col-12 col-md-9 col-lg-10 content">
                     <!-- Stats Overview -->
                     <div class="row mb-4" id="stats-section">
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <div class="card-title">Total Hospitals</div>
@@ -583,7 +824,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <div class="card-title">Total Pharmacies</div>
@@ -591,7 +832,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <div class="card-title">Total Healthcare Professionals</div>
@@ -599,7 +840,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-6 col-md-3 mb-3">
                             <div class="card stats-card">
                                 <div class="card-body">
                                     <div class="card-title">Total Patients</div>
@@ -3117,5 +3358,140 @@ function handleSpecializationChange(selectElement) {
         customInput.required = false;
     }
 }
+
+// Mobile Navigation Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile navigation section switching
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav .nav-link[data-section]');
+    const desktopNavLinks = document.querySelectorAll('.sidebar .nav-link[data-section]');
+    
+    function switchSection(sectionName) {
+        // Hide all sections
+        const sections = ['hospitals', 'pharmacies', 'doctors', 'admins'];
+        sections.forEach(s => {
+            const element = document.getElementById(`${s}-section`);
+            if (element) {
+                element.style.display = 'none';
+            }
+        });
+        
+        // Show selected section
+        const selectedSection = document.getElementById(`${sectionName}-section`);
+        if (selectedSection) {
+            selectedSection.style.display = 'block';
+        }
+        
+        // Update active states for both mobile and desktop
+        [...mobileNavLinks, ...desktopNavLinks].forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('data-section') === sectionName) {
+                link.classList.add('active');
+            }
+        });
+        
+        // Close mobile menu on section change
+        const mobileNavbar = document.getElementById('mobileNavbar');
+        if (mobileNavbar && mobileNavbar.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(mobileNavbar, {toggle: false});
+        }
+    }
+    
+    // Add click handlers for mobile navigation
+    mobileNavLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = link.getAttribute('data-section');
+            switchSection(section);
+        });
+    });
+    
+    // Add click handlers for desktop navigation
+    desktopNavLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const section = link.getAttribute('data-section');
+            switchSection(section);
+        });
+    });
+    
+    // Mobile logout functionality
+    const mobileLogoutBtn = document.getElementById('mobile-logout-btn');
+    if (mobileLogoutBtn) {
+        mobileLogoutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            localStorage.removeItem('admin_token');
+            const loginSection = document.getElementById('login-section');
+            const dashboardSection = document.getElementById('dashboard-section');
+            if (loginSection && dashboardSection) {
+                loginSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+            }
+        });
+    }
+    
+    // Handle mobile menu collapse
+    const mobileNavbar = document.getElementById('mobileNavbar');
+    if (mobileNavbar) {
+        mobileNavbar.addEventListener('hidden.bs.collapse', function () {
+            // Optional: Add any cleanup when mobile menu closes
+        });
+    }
+    
+    // Auto-hide mobile menu when clicking outside
+    document.addEventListener('click', function(event) {
+        const mobileNav = document.querySelector('.mobile-nav');
+        const mobileNavbar = document.getElementById('mobileNavbar');
+        
+        if (mobileNav && mobileNavbar && !mobileNav.contains(event.target) && mobileNavbar.classList.contains('show')) {
+            const bsCollapse = new bootstrap.Collapse(mobileNavbar, {toggle: false});
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            // On desktop, ensure mobile menu is closed
+            const mobileNavbar = document.getElementById('mobileNavbar');
+            if (mobileNavbar && mobileNavbar.classList.contains('show')) {
+                const bsCollapse = new bootstrap.Collapse(mobileNavbar, {toggle: false});
+            }
+        }
+    });
+    
+    // Initialize first section as active
+    if (mobileNavLinks.length > 0) {
+        const firstSection = mobileNavLinks[0].getAttribute('data-section');
+        switchSection(firstSection);
+    }
+});
+
+// Enhanced touch support for mobile
+document.addEventListener('DOMContentLoaded', function() {
+    // Add touch feedback to buttons
+    const buttons = document.querySelectorAll('.btn, .nav-link');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        });
+        
+        button.addEventListener('touchend', function() {
+            this.style.transform = '';
+        });
+    });
+    
+    // Improve form input experience on mobile
+    const formInputs = document.querySelectorAll('.form-control');
+    formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            // Scroll to input on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            }
+        });
+    });
+});
     </script>
 </body>
+</html>
