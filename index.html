@@ -894,17 +894,10 @@
             margin: 0 auto;
             padding: 0 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-        }
-
-        .copyright p {
-            color: #95a5a6;
-            margin: 0;
-            font-size: 0.95rem;
-            font-weight: 500;
         }
 
         .footer-bottom-links {
@@ -922,6 +915,29 @@
 
         .footer-bottom-links a:hover {
             color: #3498db;
+        }
+
+        /* Copyright Section */
+        .copyright-section {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+
+        .copyright-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .copyright-content p {
+            color: #95a5a6;
+            margin: 0;
+            font-size: 0.9rem;
+            font-weight: 400;
         }
 
         /* Tablet Layout */
@@ -978,8 +994,8 @@
                 gap: 15px;
             }
 
-            .copyright p {
-                font-size: 0.9rem;
+            .copyright-content p {
+                font-size: 0.85rem;
             }
         }
 
@@ -1005,6 +1021,14 @@
             .footer-bottom-links {
                 flex-direction: column;
                 gap: 10px;
+            }
+
+            .copyright-section {
+                padding: 12px 0;
+            }
+
+            .copyright-content p {
+                font-size: 0.8rem;
             }
         }
 
@@ -1490,14 +1514,18 @@
         <!-- Footer Bottom -->
         <div class="footer-bottom">
             <div class="footer-bottom-content">
-                <div class="copyright">
-                    <p>&copy; 2025 MamaCare. All rights reserved.</p>
-                </div>
                 <div class="footer-bottom-links">
                     <a href="#">Terms of Service</a>
                     <a href="#">Privacy Policy</a>
                     <a href="#">Cookie Policy</a>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Copyright Section -->
+        <div class="copyright-section">
+            <div class="copyright-content">
+                <p>&copy; 2025 MamaCare. All rights reserved.</p>
             </div>
         </div>
     </footer>
