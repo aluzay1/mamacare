@@ -3476,17 +3476,15 @@ def get_referral_feedback_detail(feedback_id):
 @app.route('/api/patient/birth-records', methods=['GET'])
 def get_birth_records():
     try:
-        # Get patient token from header
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization token required'}), 401
+        # Get patient PIN from query parameters
+        patient_pin = request.args.get('pin')
+        if not patient_pin:
+            return jsonify({'error': 'Patient PIN required'}), 400
         
-        token = auth_header.split(' ')[1]
-        
-        # Find patient by token
-        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        # Find patient by PIN
+        patient = User.query.filter_by(pin=patient_pin, role='individual').first()
         if not patient:
-            return jsonify({'error': 'Invalid token or patient not found'}), 401
+            return jsonify({'error': 'Invalid PIN or patient not found'}), 401
         
         # Get birth records for this patient
         birth_records = BirthRecord.query.filter_by(patient_id=patient.id).order_by(BirthRecord.date_of_birth.desc()).all()
@@ -3509,19 +3507,17 @@ def get_birth_records():
 @app.route('/api/patient/birth-records', methods=['POST'])
 def add_birth_record():
     try:
-        # Get patient token from header
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization token required'}), 401
-        
-        token = auth_header.split(' ')[1]
-        
-        # Find patient by token
-        patient = User.query.filter_by(auth_token=token, role='individual').first()
-        if not patient:
-            return jsonify({'error': 'Invalid token or patient not found'}), 401
-        
         data = request.get_json()
+        
+        # Get patient PIN from request data
+        patient_pin = data.get('pin')
+        if not patient_pin:
+            return jsonify({'error': 'Patient PIN required'}), 400
+        
+        # Find patient by PIN
+        patient = User.query.filter_by(pin=patient_pin, role='individual').first()
+        if not patient:
+            return jsonify({'error': 'Invalid PIN or patient not found'}), 401
         
         # Validate required fields
         required_fields = ['date_of_birth', 'baby_gender', 'birth_type', 'birth_location']
@@ -3557,24 +3553,22 @@ def add_birth_record():
 @app.route('/api/patient/birth-records/<int:record_id>', methods=['PUT'])
 def update_birth_record(record_id):
     try:
-        # Get patient token from header
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization token required'}), 401
+        data = request.get_json()
         
-        token = auth_header.split(' ')[1]
+        # Get patient PIN from request data
+        patient_pin = data.get('pin')
+        if not patient_pin:
+            return jsonify({'error': 'Patient PIN required'}), 400
         
-        # Find patient by token
-        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        # Find patient by PIN
+        patient = User.query.filter_by(pin=patient_pin, role='individual').first()
         if not patient:
-            return jsonify({'error': 'Invalid token or patient not found'}), 401
+            return jsonify({'error': 'Invalid PIN or patient not found'}), 401
         
         # Get birth record
         birth_record = BirthRecord.query.filter_by(id=record_id, patient_id=patient.id).first()
         if not birth_record:
             return jsonify({'error': 'Birth record not found'}), 404
-        
-        data = request.get_json()
         
         # Update fields
         if 'date_of_birth' in data:
@@ -3602,17 +3596,15 @@ def update_birth_record(record_id):
 @app.route('/api/patient/birth-records/<int:record_id>', methods=['DELETE'])
 def delete_birth_record(record_id):
     try:
-        # Get patient token from header
-        auth_header = request.headers.get('Authorization')
-        if not auth_header or not auth_header.startswith('Bearer '):
-            return jsonify({'error': 'Authorization token required'}), 401
+        # Get patient PIN from query parameters
+        patient_pin = request.args.get('pin')
+        if not patient_pin:
+            return jsonify({'error': 'Patient PIN required'}), 400
         
-        token = auth_header.split(' ')[1]
-        
-        # Find patient by token
-        patient = User.query.filter_by(auth_token=token, role='individual').first()
+        # Find patient by PIN
+        patient = User.query.filter_by(pin=patient_pin, role='individual').first()
         if not patient:
-            return jsonify({'error': 'Invalid token or patient not found'}), 401
+            return jsonify({'error': 'Invalid PIN or patient not found'}), 401
         
         # Get birth record
         birth_record = BirthRecord.query.filter_by(id=record_id, patient_id=patient.id).first()

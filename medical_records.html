@@ -7689,32 +7689,19 @@
 
         // Fetch birth records from backend
         async function fetchBirthRecords() {
-            if (!currentPatientId) {
-                console.error('No patient ID available');
-                return;
-            }
-
-            const token = localStorage.getItem('patient_token');
-            if (!token) {
-                console.error('No authentication token available');
+            if (!window.currentPatientPIN) {
+                console.error('No patient PIN available');
                 return;
             }
 
             try {
-                const response = await apiCall('/api/patient/birth-records', {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
+                const response = await apiCall(`/api/patient/birth-records?pin=${encodeURIComponent(window.currentPatientPIN)}`, {
+                    method: 'GET'
                 });
 
                 if (response.ok) {
                     birthRecords = await response.json();
                     displayBirthRecords(birthRecords);
-                } else if (response.status === 401) {
-                    console.error('Authentication failed');
-                    alert('Authentication failed. Please log in again.');
-                    window.location.href = 'index.html';
                 } else {
                     console.error('Failed to fetch birth records');
                     displayBirthRecords([]);
@@ -7801,12 +7788,15 @@
                 return;
             }
 
+            if (!window.currentPatientPIN) {
+                alert('Authentication required. Please log in again.');
+                window.location.href = 'index.html';
+                return;
+            }
+
             try {
-                const response = await apiCall(`/api/patient/birth-records/${recordId}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
-                    }
+                const response = await apiCall(`/api/patient/birth-records/${recordId}?pin=${encodeURIComponent(window.currentPatientPIN)}`, {
+                    method: 'DELETE'
                 });
 
                 if (response.ok) {
@@ -7864,9 +7854,7 @@
         document.getElementById('addBirthForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Check if user is authenticated
-            const token = localStorage.getItem('patient_token');
-            if (!token) {
+            if (!window.currentPatientPIN) {
                 alert('Authentication required. Please log in again.');
                 window.location.href = 'index.html';
                 return;
@@ -7874,14 +7862,11 @@
             
             const formData = new FormData(this);
             const birthData = Object.fromEntries(formData.entries());
-            birthData.patient_id = currentPatientId;
+            birthData.pin = window.currentPatientPIN;
 
             try {
                 const response = await apiCall('/api/patient/birth-records', {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`
-                    },
                     body: JSON.stringify(birthData)
                 });
 
@@ -7889,9 +7874,6 @@
                     alert('Birth record added successfully');
                     hideAddBirthForm();
                     fetchBirthRecords();
-                } else if (response.status === 401) {
-                    alert('Authentication failed. Please log in again.');
-                    window.location.href = 'index.html';
                 } else {
                     const errorData = await response.json();
                     alert('Failed to add birth record: ' + (errorData.error || 'Unknown error'));
@@ -7906,16 +7888,20 @@
         document.getElementById('editBirthForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            if (!window.currentPatientPIN) {
+                alert('Authentication required. Please log in again.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
             const formData = new FormData(this);
             const birthData = Object.fromEntries(formData.entries());
             const recordId = birthData.id;
+            birthData.pin = window.currentPatientPIN;
 
             try {
                 const response = await apiCall(`/api/patient/birth-records/${recordId}`, {
                     method: 'PUT',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
-                    },
                     body: JSON.stringify(birthData)
                 });
 
