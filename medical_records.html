@@ -7166,7 +7166,7 @@
                     document.getElementById(targetTab + '-tab').classList.add('active');
                     
                     // Load birth records when birth-records tab is clicked
-                    if (targetTab === 'birth-records' && currentPatientId) {
+                    if (targetTab === 'birth-records' && window.currentPatientPIN) {
                         fetchBirthRecords();
                     }
                 });
@@ -7790,21 +7790,32 @@
 
         // Fetch birth records from backend
         async function fetchBirthRecords() {
+            console.log('Fetching birth records...');
+            console.log('Current patient PIN:', window.currentPatientPIN);
+            
             if (!window.currentPatientPIN) {
                 console.error('No patient PIN available');
                 return;
             }
 
             try {
-                const response = await apiCall(`/api/patient/birth-records?pin=${encodeURIComponent(window.currentPatientPIN)}`, {
+                const url = `/api/patient/birth-records?pin=${encodeURIComponent(window.currentPatientPIN)}`;
+                console.log('Making API call to:', url);
+                
+                const response = await apiCall(url, {
                     method: 'GET'
                 });
 
+                console.log('Birth records response status:', response.status);
+                
                 if (response.ok) {
                     birthRecords = await response.json();
+                    console.log('Birth records fetched:', birthRecords);
                     displayBirthRecords(birthRecords);
                 } else {
-                    console.error('Failed to fetch birth records');
+                    console.error('Failed to fetch birth records, status:', response.status);
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
                     displayBirthRecords([]);
                 }
             } catch (error) {
@@ -7957,8 +7968,7 @@
         const originalFetchProfile = window.fetchProfile;
         window.fetchProfile = async function() {
             await originalFetchProfile();
-            currentPatientId = localStorage.getItem('patient_id');
-            if (currentPatientId) {
+            if (window.currentPatientPIN) {
                 // Initialize birth records when profile is loaded
                 fetchBirthRecords();
             }
