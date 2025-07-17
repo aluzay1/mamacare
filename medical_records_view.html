@@ -1637,6 +1637,9 @@
                 <button class="profile-tab" onclick="showTab('records')">
                     <i class="fas fa-file-medical"></i> Records
                 </button>
+                <button class="profile-tab" onclick="showTab('birth-records')">
+                    <i class="fas fa-baby"></i> Birth Records
+                </button>
             </div>
 
             <div class="profile-content">
@@ -1960,6 +1963,44 @@
                     <tbody id="recordsTableBody">
                     </tbody>
                 </table>
+                    </div>
+                </div>
+
+                <!-- Birth Records Tab -->
+                <div id="birth-records" class="tab-content">
+                    <div class="records-header">
+                        <h2>Birth Records</h2>
+                        <div class="records-actions">
+                            <div class="search-filters">
+                                <input type="text" id="birthSearchRecords" class="search-box" placeholder="Search birth records...">
+                                <select id="birthFilterField" class="filter-select">
+                                    <option value="all">All Fields</option>
+                                    <option value="date_of_birth">Date of Birth</option>
+                                    <option value="baby_gender">Gender</option>
+                                    <option value="birth_type">Birth Type</option>
+                                    <option value="birth_location">Location</option>
+                                    <option value="notes">Notes</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="records-table-container">
+                        <div class="scroll-instruction" id="birthScrollInstruction"></div>
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>Date of Birth</th>
+                                    <th>Baby Gender</th>
+                                    <th>Birth Type</th>
+                                    <th>Birth Location</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="birthRecordsTableBody">
+                                <!-- Birth records will be loaded here -->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -2431,6 +2472,11 @@
 
             // Add active class to clicked tab
             event.target.classList.add('active');
+
+            // Load birth records when birth-records tab is clicked
+            if (tabName === 'birth-records' && window.currentPatientPIN) {
+                loadBirthRecords();
+            }
         }
 
         // Update stats when records are loaded
@@ -2546,6 +2592,15 @@
                 recordsTableBody.innerHTML = '';
             }
             
+            // Clear the birth records table
+            const birthRecordsTableBody = document.getElementById('birthRecordsTableBody');
+            if (birthRecordsTableBody) {
+                birthRecordsTableBody.innerHTML = '';
+            }
+            
+            // Clear birth records array
+            birthRecords = [];
+            
             // Reset overview stats
             const statsElements = ['totalRecords', 'lastVisit', 'healthScore', 'activeMedications'];
             statsElements.forEach(id => {
@@ -2600,6 +2655,119 @@
             checkAndShowScrollInstruction();
             window.addEventListener('resize', checkAndShowScrollInstruction);
         }
+
+        // Birth Records Functionality
+        let birthRecords = [];
+
+        // Load birth records from backend
+        async function loadBirthRecords() {
+            console.log('Loading birth records...');
+            console.log('Current patient PIN:', window.currentPatientPIN);
+            
+            if (!window.currentPatientPIN) {
+                console.error('No patient PIN available');
+                return;
+            }
+
+            try {
+                const url = `/api/patient/birth-records?pin=${encodeURIComponent(window.currentPatientPIN)}`;
+                console.log('Making API call to:', url);
+                
+                const response = await apiCall(url, {
+                    method: 'GET'
+                });
+
+                console.log('Birth records response status:', response.status);
+                
+                if (response.ok) {
+                    birthRecords = await response.json();
+                    console.log('Birth records loaded:', birthRecords);
+                    displayBirthRecords(birthRecords);
+                } else {
+                    console.error('Failed to load birth records, status:', response.status);
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    displayBirthRecords([]);
+                }
+            } catch (error) {
+                console.error('Error loading birth records:', error);
+                displayBirthRecords([]);
+            }
+        }
+
+        // Display birth records in table
+        function displayBirthRecords(records) {
+            const tbody = document.getElementById('birthRecordsTableBody');
+            if (!tbody) {
+                console.error('Birth records table body not found');
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No birth records found</td></tr>';
+                return;
+            }
+
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(record.date_of_birth).toLocaleDateString()}</td>
+                    <td>${record.baby_gender}</td>
+                    <td>${record.birth_type}</td>
+                    <td>${record.birth_location}</td>
+                    <td>${record.notes || 'No notes'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Birth records search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const birthSearchInput = document.getElementById('birthSearchRecords');
+            if (birthSearchInput) {
+                birthSearchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const searchField = document.getElementById('birthFilterField').value;
+                    
+                    const filteredRecords = birthRecords.filter(record => {
+                        if (searchField === 'all') {
+                            return Object.values(record).some(value => 
+                                value && value.toString().toLowerCase().includes(searchTerm)
+                            );
+                        } else {
+                            const fieldValue = record[searchField];
+                            return fieldValue && fieldValue.toString().toLowerCase().includes(searchTerm);
+                        }
+                    });
+
+                    displayBirthRecords(filteredRecords);
+                });
+            }
+
+            // Birth records filter functionality
+            const birthFilterField = document.getElementById('birthFilterField');
+            if (birthFilterField) {
+                birthFilterField.addEventListener('change', function() {
+                    const searchTerm = document.getElementById('birthSearchRecords').value.toLowerCase();
+                    const searchField = this.value;
+                    
+                    const filteredRecords = birthRecords.filter(record => {
+                        if (searchField === 'all') {
+                            return Object.values(record).some(value => 
+                                value && value.toString().toLowerCase().includes(searchTerm)
+                            );
+                        } else {
+                            const fieldValue = record[searchField];
+                            return fieldValue && fieldValue.toString().toLowerCase().includes(searchTerm);
+                        }
+                    });
+
+                    displayBirthRecords(filteredRecords);
+                });
+            }
+        });
 
 
     </script>
