@@ -2050,7 +2050,9 @@ function toggleAuthForm() {
                 showSuccessMessage('Healthcare Professional Updated Successfully!', ['Professional information has been updated']);
                 const modal = bootstrap.Modal.getInstance(document.getElementById('editDoctorModal'));
                 modal.hide();
-                loadDoctors();
+                console.log('Reloading doctors after update...');
+                await loadDoctors();
+                console.log('Doctors reloaded successfully');
             } catch (error) {
                     console.error('Error updating doctor:', error);
                     alert('Failed to update doctor: ' + error.message);

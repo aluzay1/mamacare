@@ -2731,52 +2731,7 @@ def get_doctors():
         logger.error(f'Error getting public doctors: {str(e)}')
         return jsonify({'error': 'Failed to get doctors'}), 500
 
-@app.route('/api/admin/doctors/<int:doctor_id>', methods=['PUT'])
-@admin_required
-def update_doctor(doctor_id):
-    try:
-        doctor = Doctor.query.get_or_404(doctor_id)
-        data = request.form.to_dict()
-        image = request.files.get('image')
-
-        # Handle image upload
-        if image:
-            # Create uploads directory if it doesn't exist
-            upload_dir = os.path.join('static', 'uploads', 'doctors')
-            os.makedirs(upload_dir, exist_ok=True)
-            
-            # Generate unique filename
-            filename = secure_filename(f"{doctor.license_number}_{image.filename}")
-            image_path = os.path.join(upload_dir, filename)
-            
-            # Save the image
-            image.save(image_path)
-            doctor.image_url = f"/static/uploads/doctors/{filename}"
-
-        # Update other fields
-        doctor.name = data.get('name', doctor.name)
-        doctor.license_number = data.get('license_number', doctor.license_number)
-        doctor.email = data.get('email', doctor.email)
-        doctor.phone = data.get('phone', doctor.phone)
-        doctor.specialization = data.get('specialization', doctor.specialization)
-        doctor.hospital_affiliation = data.get('hospital_affiliation', doctor.hospital_affiliation)
-        doctor.address = data.get('address', doctor.address)
-        doctor.city = data.get('city', doctor.city)
-        doctor.state = data.get('state', doctor.state)
-        doctor.postal_code = data.get('postal_code', doctor.postal_code)
-        doctor.country = data.get('country', doctor.country)
-        doctor.website = data.get('website', doctor.website)
-        doctor.qualifications = data.get('qualifications', doctor.qualifications)
-        doctor.experience = data.get('experience', doctor.experience)
-        doctor.is_verified = data.get('is_verified') == 'on'
-
-        db.session.commit()
-        return jsonify({'message': 'Doctor updated successfully'}), 200
-
-    except Exception as e:
-        db.session.rollback()
-        logger.error(f"Error updating doctor: {str(e)}")
-        return jsonify({'error': str(e)}), 500
+# Removed duplicate endpoint - using the one below that handles JSON data properly
 
 @app.route('/api/admin/doctors/<int:doctor_id>', methods=['DELETE'])
 @admin_required
@@ -3085,20 +3040,39 @@ def doctor_detail(doctor_id):
     
     elif request.method == 'PUT':
         data = request.get_json()
+        logger.info(f"Updating doctor {doctor_id} with data: {data}")
         
         # Update doctor fields
         for field in ['name', 'license_number', 'professional_type', 'specialization', 
                      'email', 'phone', 'hospital_affiliation', 'address', 'city', 
                      'state', 'postal_code', 'country', 'website', 'image_url', 
-                     'is_verified', 'qualifications', 'experience', 'pin']:
+                     'qualifications', 'experience', 'pin']:
             if field in data:
+                old_value = getattr(doctor, field)
                 setattr(doctor, field, data[field])
+                logger.info(f"Updated {field}: {old_value} -> {data[field]}")
+        
+        # Handle is_verified field separately to ensure proper boolean conversion
+        if 'is_verified' in data:
+            old_verified = doctor.is_verified
+            # Convert to boolean properly
+            if isinstance(data['is_verified'], bool):
+                doctor.is_verified = data['is_verified']
+            elif isinstance(data['is_verified'], str):
+                doctor.is_verified = data['is_verified'].lower() in ['true', '1', 'on', 'yes']
+            elif isinstance(data['is_verified'], int):
+                doctor.is_verified = bool(data['is_verified'])
+            else:
+                doctor.is_verified = False
+            logger.info(f"Updated is_verified: {old_verified} -> {doctor.is_verified}")
         
         try:
             db.session.commit()
+            logger.info(f"Successfully updated doctor {doctor_id}")
             return jsonify({'message': 'Doctor updated successfully'})
         except Exception as e:
             db.session.rollback()
+            logger.error(f"Error updating doctor {doctor_id}: {str(e)}")
             return jsonify({'error': str(e)}), 500
     
     elif request.method == 'DELETE':
