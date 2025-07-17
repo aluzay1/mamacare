@@ -881,110 +881,47 @@
     </style>
 </head>
 <body>
-    <!-- Mobile Navigation -->
-    <nav class="navbar navbar-expand-lg mobile-nav">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">MamaCare Admin</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
-                <i class="bi bi-list"></i>
-            </button>
-            <div class="collapse navbar-collapse" id="mobileNavbar">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#" data-section="hospitals">
-                            <i class="bi bi-building"></i> Hospitals
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="pharmacies">
-                            <i class="bi bi-circle"></i> Pharmacies
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="doctors">
-                            <i class="bi bi-person-badge"></i> Healthcare Professionals
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" data-section="admins">
-                            <i class="bi bi-shield-lock"></i> Admins
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#" id="mobile-logout-btn">
-                            <i class="bi bi-box-arrow-right"></i> Logout
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Mobile Navigation Overlay -->
-    <div class="mobile-nav-overlay" id="mobileNavOverlay"></div>
-
-    <!-- Login Form -->
-    <div id="login-section" class="container">
-        <div class="login-container">
-            <h2 class="text-center mb-4">Admin Login</h2>
-            <form id="login-form">
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </form>
-            <div class="text-center mt-3">
-                <p class="mb-0">Don't have an account?</p>
-                <button type="button" class="btn btn-link" onclick="toggleAuthForm()">Sign Up</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Signup Form -->
-    <div id="signup-section" class="container" style="display: none;">
-        <div class="login-container">
-            <h2 class="text-center mb-4">Admin Signup</h2>
-            <form id="signup-form">
-                <div class="mb-3">
-                    <label class="form-label">Full Name</label>
-                    <input type="text" class="form-control" name="name" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" name="phone" required 
-                        pattern="\+232[0-9]{8}" 
-                        placeholder="e.g., +23271000000"
-                        title="Please enter a valid Sierra Leone phone number starting with +232 followed by 8 digits">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input type="password" class="form-control" name="password" id="signup-password" required>
-                    <div class="password-strength mt-2" id="password-strength"></div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" name="confirm_password" required>
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Sign Up</button>
-            </form>
-            <div class="text-center mt-3">
-                <p class="mb-0">Already have an account?</p>
-                <button type="button" class="btn btn-link" onclick="toggleAuthForm()">Login</button>
-            </div>
-        </div>
-    </div>
-
     <!-- Admin Dashboard -->
     <div id="dashboard-section" style="display: none;">
+        <!-- Mobile Navigation (moved here so it only shows when dashboard is visible) -->
+        <nav class="navbar navbar-expand-lg mobile-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">MamaCare Admin</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar">
+                    <i class="bi bi-list"></i>
+                </button>
+                <div class="collapse navbar-collapse" id="mobileNavbar">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="hospitals">
+                                <i class="bi bi-building"></i> Hospitals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="pharmacies">
+                                <i class="bi bi-circle"></i> Pharmacies
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="doctors">
+                                <i class="bi bi-person-badge"></i> Healthcare Professionals
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="admins">
+                                <i class="bi bi-shield-lock"></i> Admins
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="mobile-logout-btn">
+                                <i class="bi bi-box-arrow-right"></i> Logout
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
         <div class="container-fluid">
             <div class="row">
                 <!-- Sidebar (Desktop Only) -->
