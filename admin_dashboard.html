@@ -811,17 +811,30 @@
             top: -40px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--primary-color);
+            background: #ff6b6b;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
             opacity: 1;
             z-index: 1000;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
             white-space: nowrap;
             pointer-events: none;
+            border: 2px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: translateX(-50%) scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.05);
+                opacity: 0.9;
+            }
         }
 
         /* Filter controls styling */
@@ -3834,13 +3847,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Enhanced table scrolling for mobile
     const tableResponsive = document.querySelectorAll('.table-responsive');
-    tableResponsive.forEach(table => {
+    console.log('Found table-responsive elements:', tableResponsive.length);
+    
+    tableResponsive.forEach((table, index) => {
+        console.log(`Processing table ${index + 1}:`, table);
+        
         // Add scroll indicator
         const scrollIndicator = document.createElement('div');
         scrollIndicator.className = 'table-scroll-indicator';
         scrollIndicator.textContent = '← Scroll horizontally →';
         scrollIndicator.style.display = 'none';
         table.appendChild(scrollIndicator);
+        console.log(`Added scroll indicator to table ${index + 1}`);
 
         // Show/hide scroll indicator based on scroll position
         table.addEventListener('scroll', function() {
@@ -3863,14 +3881,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Check initial scroll state
+        // Check initial scroll state and force show on mobile
         setTimeout(() => {
             const isScrollable = table.scrollWidth > table.clientWidth;
-            console.log('Table scrollable:', isScrollable, 'scrollWidth:', table.scrollWidth, 'clientWidth:', table.clientWidth);
-            if (isScrollable) {
+            const isMobile = window.innerWidth <= 768;
+            console.log(`Table ${index + 1} - scrollable:`, isScrollable, 'mobile:', isMobile, 'scrollWidth:', table.scrollWidth, 'clientWidth:', table.clientWidth);
+            
+            // Show indicator on mobile regardless of scroll state for testing
+            if (isMobile) {
                 scrollIndicator.style.display = 'block';
                 scrollIndicator.style.opacity = '1';
-                console.log('Scroll indicator should be visible');
+                scrollIndicator.textContent = '← Scroll horizontally →';
+                console.log(`Forced scroll indicator visible for table ${index + 1} on mobile`);
+            } else if (isScrollable) {
+                scrollIndicator.style.display = 'block';
+                scrollIndicator.style.opacity = '1';
+                console.log(`Scroll indicator visible for table ${index + 1}`);
             }
         }, 100);
     });
