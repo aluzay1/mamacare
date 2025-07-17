@@ -2658,6 +2658,7 @@
             
             setActiveNavLink();
             initScrollInstruction();
+            initBirthScrollInstruction();
         });
 
         // Tab functionality
@@ -2683,6 +2684,12 @@
             // Load birth records when birth-records tab is clicked
             if (tabName === 'birth-records' && window.currentPatientPIN) {
                 loadBirthRecords();
+                // Check scroll instruction after loading records
+                setTimeout(() => {
+                    if (typeof checkAndShowBirthScrollInstruction === 'function') {
+                        checkAndShowBirthScrollInstruction();
+                    }
+                }, 100);
             }
         }
 
@@ -2828,23 +2835,31 @@
             
             if (!scrollInstruction || !tableContainer) return;
             
-            // Show scroll instruction on mobile devices
+            // Show scroll instruction only when table needs horizontal scrolling
             function checkAndShowScrollInstruction() {
                 if (window.innerWidth <= 768) {
-                    scrollInstruction.style.display = 'block';
-                    
-                    // Hide instruction after 5 seconds
-                    setTimeout(() => {
-                        if (scrollInstruction) {
-                            scrollInstruction.style.opacity = '0';
-                            scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
-                            setTimeout(() => {
-                                if (scrollInstruction) {
-                                    scrollInstruction.style.display = 'none';
-                                }
-                            }, 300);
-                        }
-                    }, 5000);
+                    // Check if table content overflows horizontally
+                    const table = tableContainer.querySelector('.records-table');
+                    if (table && table.scrollWidth > tableContainer.clientWidth) {
+                        scrollInstruction.style.display = 'block';
+                        
+                        // Hide instruction after 5 seconds
+                        setTimeout(() => {
+                            if (scrollInstruction) {
+                                scrollInstruction.style.opacity = '0';
+                                scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                                setTimeout(() => {
+                                    if (scrollInstruction) {
+                                        scrollInstruction.style.display = 'none';
+                                    }
+                                }, 300);
+                            }
+                        }, 5000);
+                    } else {
+                        scrollInstruction.style.display = 'none';
+                    }
+                } else {
+                    scrollInstruction.style.display = 'none';
                 }
             }
             
@@ -2868,6 +2883,59 @@
 
         // Birth Records Functionality
         let birthRecords = [];
+
+        // Birth records scroll instruction functionality
+        function initBirthScrollInstruction() {
+            const birthScrollInstruction = document.getElementById('birthScrollInstruction');
+            const birthTableContainer = document.querySelector('#birth-records .records-table-container');
+            
+            if (!birthScrollInstruction || !birthTableContainer) return;
+            
+            // Show scroll instruction only when table needs horizontal scrolling
+            window.checkAndShowBirthScrollInstruction = function() {
+                if (window.innerWidth <= 768) {
+                    // Check if table content overflows horizontally
+                    const table = birthTableContainer.querySelector('.records-table');
+                    if (table && table.scrollWidth > birthTableContainer.clientWidth) {
+                        birthScrollInstruction.style.display = 'block';
+                        
+                        // Hide instruction after 5 seconds
+                        setTimeout(() => {
+                            if (birthScrollInstruction) {
+                                birthScrollInstruction.style.opacity = '0';
+                                birthScrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                                setTimeout(() => {
+                                    if (birthScrollInstruction) {
+                                        birthScrollInstruction.style.display = 'none';
+                                    }
+                                }, 300);
+                            }
+                        }, 5000);
+                    } else {
+                        birthScrollInstruction.style.display = 'none';
+                    }
+                } else {
+                    birthScrollInstruction.style.display = 'none';
+                }
+            };
+            
+            // Hide instruction when user scrolls horizontally
+            birthTableContainer.addEventListener('scroll', () => {
+                if (birthScrollInstruction.style.display === 'block') {
+                    birthScrollInstruction.style.opacity = '0';
+                    birthScrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                    setTimeout(() => {
+                        if (birthScrollInstruction) {
+                            birthScrollInstruction.style.display = 'none';
+                        }
+                    }, 300);
+                }
+            });
+            
+            // Check on page load and resize
+            window.checkAndShowBirthScrollInstruction();
+            window.addEventListener('resize', window.checkAndShowBirthScrollInstruction);
+        }
 
         // Load birth records from backend
         async function loadBirthRecords() {
@@ -2932,6 +3000,13 @@
                 `;
                 tbody.appendChild(row);
             });
+
+            // Check scroll instruction after displaying records
+            setTimeout(() => {
+                if (window.checkAndShowBirthScrollInstruction) {
+                    window.checkAndShowBirthScrollInstruction();
+                }
+            }, 100);
         }
 
         // Birth records search functionality
