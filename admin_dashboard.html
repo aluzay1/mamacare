@@ -863,6 +863,14 @@
             padding-left: 0.5rem;
             padding-right: 0.5rem;
         }
+
+        /* Hide mobile navigation on login/signup pages */
+        #login-section[style*="display: block"],
+        #signup-section[style*="display: block"] {
+            ~ .mobile-nav {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
