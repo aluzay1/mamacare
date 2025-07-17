@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About MamaCare Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* About Platform Specific Styles */
+        .about-hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .about-hero h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-hero p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section h2 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .section h3 {
+            color: #34495e;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            margin-top: 2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .feature-card h4 {
+            color: #2c3e50;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .how-to-use {
+            background: #f8fafc;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .step-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+
+        .info-box h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .info-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-box li {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .contact-section {
+            background: #f1f5f9;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-item i {
+            font-size: 2rem;
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .contact-item h4 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item p {
+            color: #64748b;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            padding: 1rem 2rem;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            text-decoration: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .about-hero h1 {
+                font-size: 2rem;
+            }
+
+            .about-hero p {
+                font-size: 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.8rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step-list li {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                margin: 0 auto 1rem auto;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="index.html" style="color: #ffffff; text-decoration: none; font-family: 'Poppins', sans-serif;">MamaCare</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="hospitals.html">Hospitals</a></li>
+            <li><a href="pharmacy.html">Pharmacy</a></li>
+            <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
+            <li><a href="medical_records_view.html">Medical Records</a></li>
+            <li><a href="provider_access.html">Healthcare Provider Access</a></li>
+            <li><a href="about_platform.html" class="active">About Platform</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="about-hero">
+        <h1>About MamaCare Platform</h1>
+        <p>Your comprehensive healthcare companion designed specifically for Sierra Leone's healthcare infrastructure</p>
+    </section>
+
+    <!-- Main Content -->
+    <div class="about-content">
+        <!-- What is MamaCare -->
+        <section class="section">
+            <h2>What is MamaCare?</h2>
+            <p style="text-align: center; font-size: 1.1rem; color: #64748b; max-width: 800px; margin: 0 auto 2rem auto;">
+                MamaCare is a revolutionary healthcare management platform that connects patients with healthcare providers, 
+                streamlines medical record management, and enhances healthcare service delivery across Sierra Leone. 
+                Our mission is to improve healthcare accessibility and quality for every citizen.
+            </p>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h4>Comprehensive Healthcare</h4>
+                    <p>Access to hospitals, pharmacies, and healthcare professionals all in one place. Find the care you need quickly and efficiently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Secure & Private</h4>
+                    <p>Your health information is protected with state-of-the-art security measures and FHIR-compliant data standards.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-baby"></i>
+                    </div>
+                    <h4>Maternal Care Focus</h4>
+                    <p>Specialized features for pregnancy tracking, maternal care, and birth record management to support mothers and families.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h4>Mobile Optimized</h4>
+                    <p>Access your healthcare information anywhere, anytime with our mobile-responsive design that works on all devices.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h4>Digital Records</h4>
+                    <p>Keep all your medical records, prescriptions, and health history in one secure, easily accessible digital location.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>24/7 Access</h4>
+                    <p>Round-the-clock access to your health information, emergency contacts, and healthcare provider directory.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How to Use -->
+        <section class="section">
+            <h2>How to Use MamaCare</h2>
+            <div class="how-to-use">
+                <h3>Getting Started with Your Healthcare Journey</h3>
+                
+                <ol class="step-list">
+                    <li>
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Create Your Account</h4>
+                            <p>Visit the Medical Records page and register with your personal information. You'll receive a secure 6-digit PIN for accessing your records.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Complete Your Profile</h4>
+                            <p>Fill in your complete medical history, including allergies, current medications, emergency contacts, and pregnancy information if applicable.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Find Healthcare Providers</h4>
+                            <p>Browse our directory of verified hospitals, pharmacies, and healthcare professionals. Filter by location, specialty, or services needed.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Access Your Records</h4>
+                            <p>Use your PIN to securely access your medical records, view your health history, and manage your healthcare information.</p>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="step-number">5</div>
+                        <div class="step-content">
+                            <h4>Stay Connected</h4>
+                            <p>Keep your information updated, track your health progress, and maintain communication with your healthcare providers.</p>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Key Features -->
+        <section class="section">
+            <h2>Key Features for Patients</h2>
+            
+            <div class="info-box">
+                <h3>🏥 Hospital Directory</h3>
+                <ul>
+                    <li>Find hospitals by location, specialty, and available services</li>
+                    <li>View hospital details, contact information, and operating hours</li>
+                    <li>Get directions and contact hospitals directly</li>
+                    <li>Access emergency care information 24/7</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>💊 Pharmacy Services</h3>
+                <ul>
+                    <li>Locate pharmacies near you, including 24/7 options</li>
+                    <li>Find pharmacies by type (community, hospital, chain)</li>
+                    <li>Check medication availability and services</li>
+                    <li>Direct contact with pharmacy staff</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>👨‍⚕️ Healthcare Professionals</h3>
+                <ul>
+                    <li>Browse verified doctors, nurses, specialists, and midwives</li>
+                    <li>Filter by specialization, location, and hospital affiliation</li>
+                    <li>View professional credentials and experience</li>
+                    <li>Direct contact options including WhatsApp</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>📋 Medical Records Management</h3>
+                <ul>
+                    <li>Secure 6-digit PIN access to your records</li>
+                    <li>Complete medical history tracking</li>
+                    <li>Pregnancy and maternal care information</li>
+                    <li>Birth records and newborn information</li>
+                    <li>Export records as PDF for sharing with providers</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>🤱 Maternal Care Specialization</h3>
+                <ul>
+                    <li>Pregnancy status tracking and due date calculation</li>
+                    <li>Gestational age monitoring from LMP date</li>
+                    <li>Risk assessment and complication tracking</li>
+                    <li>Birth planning and emergency hospital designation</li>
+                    <li>Comprehensive birth record management</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Security & Privacy -->
+        <section class="section">
+            <h2>Security & Privacy</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h4>Secure Authentication</h4>
+                    <p>Your account is protected with a unique 6-digit PIN that only you know. No passwords to remember or lose.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h4>Data Protection</h4>
+                    <p>All your health information is encrypted and stored securely using international healthcare data standards (FHIR).</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-eye-slash"></i>
+                    </div>
+                    <h4>Privacy Control</h4>
+                    <p>You have complete control over your health information. Only you and authorized healthcare providers can access your records.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benefits -->
+        <section class="section">
+            <h2>Benefits of Using MamaCare</h2>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <h4>🚀 Improved Healthcare Access</h4>
+                    <p>Find healthcare providers quickly and easily, reducing wait times and improving your healthcare experience.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📱 Convenience</h4>
+                    <p>Access your health information anywhere, anytime. No more carrying paper records or forgetting important medical details.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>🏥 Better Care Coordination</h4>
+                    <p>Share your complete medical history with healthcare providers to ensure better diagnosis and treatment.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>👶 Enhanced Maternal Care</h4>
+                    <p>Specialized features for pregnancy tracking and maternal care help ensure the best outcomes for mothers and babies.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>⚡ Emergency Preparedness</h4>
+                    <p>Quick access to emergency contacts, medical history, and healthcare provider information when you need it most.</p>
+                </div>
+                <div class="feature-card">
+                    <h4>📊 Health Tracking</h4>
+                    <p>Monitor your health progress, track medications, and maintain a complete health history for better long-term care.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Support -->
+        <section class="section">
+            <h2>Contact & Support</h2>
+            <div class="contact-section">
+                <h3>Need Help? We're Here for You</h3>
+                <p>Our support team is available to help you with any questions about using MamaCare platform.</p>
+                
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <h4>Phone Support</h4>
+                        <p>Call us for immediate assistance with platform usage and technical support.</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <h4>Email Support</h4>
+                        <p>Send us detailed questions and we'll respond within 24 hours.</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-comments"></i>
+                        <h4>Live Chat</h4>
+                        <p>Chat with our support team in real-time for quick answers to your questions.</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-book"></i>
+                        <h4>Help Center</h4>
+                        <p>Access our comprehensive help documentation and frequently asked questions.</p>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <a href="index.html" class="btn-primary">Get Started Today</a>
+                    <a href="medical_records_view.html" class="btn-secondary">Access Your Records</a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 MamaCare. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Add active navigation highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set active nav link
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('.nav-links a');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,5 @@
+[33mfabe1ae[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update medical_records.html to use consistent gradient color throughout
+[33mb148a1f[m Update all table headings and page header to use patient name gradient color
+[33me15dbcd[m Update medical records table headings to use same gradient as birth records table
+[33m3978025[m Update medical records view header and birth records table to match main page styling
+[33m62ee682[m Update birth records table headings to use consistent blue gradient
