@@ -497,6 +497,7 @@
                 overflow-y: visible;
                 border: 1px solid var(--border-color);
                 box-shadow: var(--shadow-sm);
+                margin-top: 50px; /* Add space above for the indicator */
             }
 
             .table-responsive::-webkit-scrollbar {
@@ -803,12 +804,11 @@
         /* Table scroll indicator */
         .table-responsive {
             position: relative;
-            margin-bottom: 40px; /* Add space for the indicator */
         }
         
         .table-scroll-indicator {
             position: absolute;
-            bottom: -35px;
+            top: -40px;
             left: 50%;
             transform: translateX(-50%);
             background: var(--primary-color);
