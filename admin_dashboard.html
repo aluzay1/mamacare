@@ -800,6 +800,10 @@
         }
 
         /* Table scroll indicator */
+        .table-responsive {
+            position: relative;
+        }
+        
         .table-scroll-indicator {
             position: absolute;
             bottom: -30px;
@@ -3832,7 +3836,7 @@ document.addEventListener('DOMContentLoaded', function() {
         scrollIndicator.className = 'table-scroll-indicator';
         scrollIndicator.textContent = '← Scroll horizontally →';
         scrollIndicator.style.display = 'none';
-        table.parentNode.appendChild(scrollIndicator);
+        table.appendChild(scrollIndicator);
 
         // Show/hide scroll indicator based on scroll position
         table.addEventListener('scroll', function() {
