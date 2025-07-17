@@ -660,6 +660,9 @@
                 <button class="tab-btn" data-tab="records">
                     <i class="fas fa-file-medical"></i> Records
                 </button>
+                <button class="tab-btn" data-tab="birth-records">
+                    <i class="fas fa-baby"></i> Birth Records
+                </button>
             </div>
 
             <!-- Tab Content -->
@@ -1297,6 +1300,210 @@
         
         .clear-search-btn:hover {
             color: #000000 !important;
+        }
+
+        /* Birth Records Section Styles */
+        .birth-records-section {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+            margin: 2rem auto;
+            max-width: 1400px;
+            overflow: hidden;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .birth-records-container {
+            padding: 2rem;
+        }
+
+        .btn-add-birth {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-add-birth:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .birth-records-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .birth-records-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .birth-records-table th:hover {
+            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+        }
+
+        .birth-records-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            vertical-align: top;
+        }
+
+        .birth-records-table tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .birth-records-table .actions-cell {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-edit-birth, .btn-delete-birth {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .btn-edit-birth {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-edit-birth:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .btn-delete-birth {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-delete-birth:hover {
+            background: #e53e3e;
+            transform: translateY(-1px);
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 0;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background-color 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal form {
+            padding: 2rem;
+        }
+
+        /* Mobile Responsive for Birth Records */
+        @media (max-width: 768px) {
+            .birth-records-container {
+                padding: 1rem;
+            }
+
+            .birth-records-table {
+                font-size: 0.9rem;
+            }
+
+            .birth-records-table th,
+            .birth-records-table td {
+                padding: 0.75rem 0.5rem;
+            }
+
+            .birth-records-table .actions-cell {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .btn-edit-birth, .btn-delete-birth {
+                padding: 0.4rem 0.8rem;
+                font-size: 0.75rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal form {
+                padding: 1.5rem;
+            }
         }
         
         /* Table content contrast */
@@ -7406,7 +7613,507 @@
                 console.log(`Field not found for individual edit: ${fieldName}`);
             }
         }
+
+        // Birth Records Functionality
+        let birthRecords = [];
+        let currentPatientId = null;
+
+        // Show birth records section
+        function showBirthRecordsSection() {
+            document.getElementById('birthRecordsSection').style.display = 'block';
+            fetchBirthRecords();
+        }
+
+        // Fetch birth records from backend
+        async function fetchBirthRecords() {
+            if (!currentPatientId) {
+                console.error('No patient ID available');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    birthRecords = await response.json();
+                    displayBirthRecords(birthRecords);
+                } else {
+                    console.error('Failed to fetch birth records');
+                    displayBirthRecords([]);
+                }
+            } catch (error) {
+                console.error('Error fetching birth records:', error);
+                displayBirthRecords([]);
+            }
+        }
+
+        // Display birth records in table
+        function displayBirthRecords(records) {
+            const tbody = document.getElementById('birthRecordsTableBody');
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center">No birth records found</td></tr>';
+                return;
+            }
+
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${new Date(record.date_of_birth).toLocaleDateString()}</td>
+                    <td>${record.baby_gender}</td>
+                    <td>${record.birth_type}</td>
+                    <td>${record.birth_location}</td>
+                    <td>${record.notes || 'No notes'}</td>
+                    <td class="actions-cell">
+                        <button class="btn-edit-birth" onclick="editBirthRecord(${record.id})">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn-delete-birth" onclick="deleteBirthRecord(${record.id})">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Show add birth form modal
+        function showAddBirthForm() {
+            document.getElementById('addBirthModal').style.display = 'flex';
+            document.getElementById('addBirthForm').reset();
+        }
+
+        // Hide add birth form modal
+        function hideAddBirthForm() {
+            document.getElementById('addBirthModal').style.display = 'none';
+        }
+
+        // Show edit birth form modal
+        function showEditBirthForm() {
+            document.getElementById('editBirthModal').style.display = 'flex';
+        }
+
+        // Hide edit birth form modal
+        function hideEditBirthForm() {
+            document.getElementById('editBirthModal').style.display = 'none';
+        }
+
+        // Edit birth record
+        function editBirthRecord(recordId) {
+            const record = birthRecords.find(r => r.id === recordId);
+            if (!record) {
+                alert('Record not found');
+                return;
+            }
+
+            document.getElementById('editBirthId').value = record.id;
+            document.getElementById('editBirthDate').value = record.date_of_birth;
+            document.getElementById('editBabyGender').value = record.baby_gender;
+            document.getElementById('editBirthType').value = record.birth_type;
+            document.getElementById('editBirthLocation').value = record.birth_location;
+            document.getElementById('editBirthNotes').value = record.notes || '';
+
+            showEditBirthForm();
+        }
+
+        // Delete birth record
+        async function deleteBirthRecord(recordId) {
+            if (!confirm('Are you sure you want to delete this birth record?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records/${recordId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Birth record deleted successfully');
+                    fetchBirthRecords();
+                } else {
+                    const errorData = await response.json();
+                    alert('Failed to delete birth record: ' + (errorData.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error deleting birth record:', error);
+                alert('Error deleting birth record');
+            }
+        }
+
+        // Clear birth search
+        function clearBirthSearch() {
+            document.getElementById('birthSearchInput').value = '';
+            document.getElementById('clearBirthSearchBtn').style.display = 'none';
+            displayBirthRecords(birthRecords);
+        }
+
+        // Sort birth table
+        function sortBirthTable(columnIndex, fieldName) {
+            const tbody = document.getElementById('birthRecordsTableBody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+
+            rows.sort((a, b) => {
+                const aValue = getBirthCellValue(a, columnIndex, fieldName);
+                const bValue = getBirthCellValue(b, columnIndex, fieldName);
+
+                if (fieldName === 'date_of_birth') {
+                    return new Date(aValue) - new Date(bValue);
+                }
+                return aValue.localeCompare(bValue);
+            });
+
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+        }
+
+        // Get birth cell value
+        function getBirthCellValue(row, columnIndex, fieldName) {
+            const cell = row.cells[columnIndex];
+            if (!cell) return '';
+            
+            if (fieldName === 'date_of_birth') {
+                const dateText = cell.textContent;
+                return new Date(dateText);
+            }
+            return cell.textContent.trim();
+        }
+
+        // Add birth record form submission
+        document.getElementById('addBirthForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const birthData = Object.fromEntries(formData.entries());
+            birthData.patient_id = currentPatientId;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                    },
+                    body: JSON.stringify(birthData)
+                });
+
+                if (response.ok) {
+                    alert('Birth record added successfully');
+                    hideAddBirthForm();
+                    fetchBirthRecords();
+                } else {
+                    const errorData = await response.json();
+                    alert('Failed to add birth record: ' + (errorData.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error adding birth record:', error);
+                alert('Error adding birth record');
+            }
+        });
+
+        // Edit birth record form submission
+        document.getElementById('editBirthForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const birthData = Object.fromEntries(formData.entries());
+            const recordId = birthData.id;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records/${recordId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                    },
+                    body: JSON.stringify(birthData)
+                });
+
+                if (response.ok) {
+                    alert('Birth record updated successfully');
+                    hideEditBirthForm();
+                    fetchBirthRecords();
+                } else {
+                    const errorData = await response.json();
+                    alert('Failed to update birth record: ' + (errorData.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error updating birth record:', error);
+                alert('Error updating birth record');
+            }
+        });
+
+        // Birth search functionality
+        document.getElementById('birthSearchInput').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const searchField = document.getElementById('birthSearchField').value;
+            
+            if (searchTerm) {
+                document.getElementById('clearBirthSearchBtn').style.display = 'block';
+            } else {
+                document.getElementById('clearBirthSearchBtn').style.display = 'none';
+            }
+
+            const filteredRecords = birthRecords.filter(record => {
+                if (searchField === 'all') {
+                    return Object.values(record).some(value => 
+                        value && value.toString().toLowerCase().includes(searchTerm)
+                    );
+                } else {
+                    const fieldValue = record[searchField];
+                    return fieldValue && fieldValue.toString().toLowerCase().includes(searchTerm);
+                }
+            });
+
+            displayBirthRecords(filteredRecords);
+        });
+
+        // Update the existing fetchProfile function to also fetch birth records
+        const originalFetchProfile = window.fetchProfile;
+        window.fetchProfile = async function() {
+            await originalFetchProfile();
+            currentPatientId = localStorage.getItem('patient_id');
+            if (currentPatientId) {
+                showBirthRecordsSection();
+            }
+        };
     </script>
+
+    <!-- Birth Records Section -->
+    <section class="birth-records-section" id="birthRecordsSection" style="display: none;">
+        <div class="birth-records-container">
+            <div class="section-header">
+                <i class="fas fa-baby"></i>
+                <h2>Birth Records</h2>
+                <button class="btn-add-birth" onclick="showAddBirthForm()">
+                    <i class="fas fa-plus"></i> Add Birth Record
+                </button>
+            </div>
+            
+            <div class="birth-records-content">
+                <div class="birth-records-list">
+                    <div class="search-container">
+                        <div class="search-input-group">
+                            <input type="text" id="birthSearchInput" placeholder="Search birth records..." class="search-input">
+                            <button type="button" id="clearBirthSearchBtn" class="clear-search-btn" style="display: none;" onclick="clearBirthSearch()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <select id="birthSearchField" class="search-field">
+                            <option value="all">All Fields</option>
+                            <option value="baby_gender">Baby Gender</option>
+                            <option value="date_of_birth">Date of Birth</option>
+                            <option value="birth_type">Birth Type</option>
+                            <option value="birth_location">Birth Location</option>
+                        </select>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="birth-records-table">
+                            <thead>
+                                <tr>
+                                    <th class="sortable" onclick="sortBirthTable(0, 'date_of_birth')" title="Click to sort by date">
+                                        <i class="fas fa-calendar-alt"></i> Date of Birth
+                                    </th>
+                                    <th class="sortable" onclick="sortBirthTable(1, 'baby_gender')" title="Click to sort by gender">
+                                        <i class="fas fa-venus-mars"></i> Baby Gender
+                                    </th>
+                                    <th class="sortable" onclick="sortBirthTable(2, 'birth_type')" title="Click to sort by birth type">
+                                        <i class="fas fa-baby-carriage"></i> Birth Type
+                                    </th>
+                                    <th class="sortable" onclick="sortBirthTable(3, 'birth_location')" title="Click to sort by location">
+                                        <i class="fas fa-hospital"></i> Birth Location
+                                    </th>
+                                    <th title="Notes">
+                                        <i class="fas fa-notes-medical"></i> Notes
+                                    </th>
+                                    <th title="Birth Record Actions" class="actions-header">
+                                        <i class="fas fa-cogs"></i> Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody id="birthRecordsTableBody">
+                                <!-- Birth records will be dynamically populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Add Birth Record Modal -->
+    <div class="modal" id="addBirthModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-baby"></i> Add New Birth Record</h3>
+                <button class="modal-close" onclick="hideAddBirthForm()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addBirthForm" class="modern-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="birthDate">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date of Birth
+                        </label>
+                        <input type="date" id="birthDate" name="date_of_birth" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="babyGender">
+                            <i class="fas fa-venus-mars"></i>
+                            Baby Gender
+                        </label>
+                        <select id="babyGender" name="baby_gender" class="form-control" required>
+                            <option value="" disabled selected>Select gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birthType">
+                            <i class="fas fa-baby-carriage"></i>
+                            Birth Type
+                        </label>
+                        <select id="birthType" name="birth_type" class="form-control" required>
+                            <option value="" disabled selected>Select birth type</option>
+                            <option value="Vaginal">Vaginal</option>
+                            <option value="Cesarean">Cesarean</option>
+                            <option value="Assisted Vaginal">Assisted Vaginal</option>
+                            <option value="Forceps">Forceps</option>
+                            <option value="Vacuum">Vacuum</option>
+                            <option value="Breech">Breech</option>
+                            <option value="Multiple">Multiple</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birthLocation">
+                            <i class="fas fa-hospital"></i>
+                            Birth Location
+                        </label>
+                        <input type="text" id="birthLocation" name="birth_location" class="form-control" 
+                               placeholder="Enter hospital or location name" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="birthNotes">
+                            <i class="fas fa-notes-medical"></i>
+                            Notes
+                        </label>
+                        <textarea id="birthNotes" name="notes" class="form-control" 
+                                  placeholder="Enter any additional notes about the birth..." rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add Birth Record
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="hideAddBirthForm()">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Birth Record Modal -->
+    <div class="modal" id="editBirthModal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Birth Record</h3>
+                <button class="modal-close" onclick="hideEditBirthForm()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="editBirthForm" class="modern-form">
+                <input type="hidden" id="editBirthId" name="id">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="editBirthDate">
+                            <i class="fas fa-calendar-alt"></i>
+                            Date of Birth
+                        </label>
+                        <input type="date" id="editBirthDate" name="date_of_birth" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editBabyGender">
+                            <i class="fas fa-venus-mars"></i>
+                            Baby Gender
+                        </label>
+                        <select id="editBabyGender" name="baby_gender" class="form-control" required>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editBirthType">
+                            <i class="fas fa-baby-carriage"></i>
+                            Birth Type
+                        </label>
+                        <select id="editBirthType" name="birth_type" class="form-control" required>
+                            <option value="Vaginal">Vaginal</option>
+                            <option value="Cesarean">Cesarean</option>
+                            <option value="Assisted Vaginal">Assisted Vaginal</option>
+                            <option value="Forceps">Forceps</option>
+                            <option value="Vacuum">Vacuum</option>
+                            <option value="Breech">Breech</option>
+                            <option value="Multiple">Multiple</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editBirthLocation">
+                            <i class="fas fa-hospital"></i>
+                            Birth Location
+                        </label>
+                        <input type="text" id="editBirthLocation" name="birth_location" class="form-control" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="editBirthNotes">
+                            <i class="fas fa-notes-medical"></i>
+                            Notes
+                        </label>
+                        <textarea id="editBirthNotes" name="notes" class="form-control" rows="4"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i>
+                        Save Changes
+                    </button>
+                    <button type="button" class="btn-secondary" onclick="hideEditBirthForm()">
+                        <i class="fas fa-times"></i>
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Referral Feedback Section -->
     <section class="referral-feedback-section" id="referralFeedbackSection" style="display: none;">
