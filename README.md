@@ -4,154 +4,438 @@
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![Flask](https://img.shields.io/badge/Flask-2.0+-green.svg)](https://flask.palletsprojects.com/)
 [![FHIR](https://img.shields.io/badge/FHIR-R4-orange.svg)](https://www.hl7.org/fhir/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-12+-blue.svg)](https://www.postgresql.org/)
 
-**MamaCare** is a comprehensive healthcare management platform designed to provide secure, FHIR-compliant patient record management with a focus on maternal care, hospital management, and healthcare provider coordination.
+**MamaCare** is a comprehensive healthcare management platform designed specifically for Sierra Leone's healthcare infrastructure. The system provides a centralized platform for managing hospitals, pharmacies, healthcare professionals, and patient records, with a strong emphasis on maternal and child healthcare services.
 
-## 🌟 Key Features
+## 🌟 Mission & Vision
 
-### **🏥 Patient Management**
-- **FHIR-Compliant Registration**: Full compliance with FHIR R4 standards
-- **Secure PIN Access**: 6-digit PIN-based authentication system
-- **Comprehensive Profiles**: Detailed patient information with pregnancy tracking
-- **Medical Records**: Complete medical history management with FHIR Observation resources
-- **Responsive Interface**: Mobile-first design for all devices
+**Mission**: To improve healthcare accessibility and quality in Sierra Leone by providing a comprehensive digital platform that connects patients with healthcare providers, streamlines medical record management, and enhances healthcare service delivery.
 
-### **🏨 Healthcare Provider Management**
-- **Hospital Directory**: Comprehensive hospital database with services and contact information
-- **Pharmacy Network**: Extensive pharmacy listings with 24/7 availability tracking
-- **Healthcare Professionals**: Doctor and medical personnel directory with specializations
-- **Provider Verification**: Secure verification system for healthcare providers
+**Vision**: To become the leading healthcare management platform in Sierra Leone, ensuring every citizen has access to quality healthcare services through innovative technology solutions.
 
-### **🤱 Maternal Care Focus**
-- **Pregnancy Tracking**: Gestational age calculation and due date management
-- **Risk Assessment**: Comprehensive risk factor evaluation
-- **Birth Planning**: Customizable birth plans and emergency contacts
-- **Prenatal Care**: Medication tracking and prenatal vitamin management
-
-### **📱 User Experience**
-- **Responsive Design**: Optimized for desktop, tablet, and mobile devices
-- **Active Navigation**: Visual indicators for current page location
-- **Image Management**: Cache-busting for reliable image loading
-- **Search & Filter**: Advanced search capabilities across all data types
+---
 
 ## 🏗️ System Architecture
 
-### **Backend Stack**
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Flask App     │    │   PostgreSQL    │    │   FHIR Server   │
-│   (Python)      │◄──►│   Database      │◄──►│   (HAPI FHIR)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │
-         ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Email Service │    │   SMS Service   │    │   File Storage  │
-│   (Gmail SMTP)  │    │   (Twilio)      │    │   (Local/Cloud) │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
+### **Technology Stack**
 
-### **Frontend Stack**
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   HTML5         │    │   CSS3          │    │   JavaScript    │
-│   (Semantic)    │    │   (Responsive)  │    │   (ES6+)        │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │
-         ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Font Awesome  │    │   Google Fonts  │    │   jsPDF         │
-│   (Icons)       │    │   (Typography)  │    │   (PDF Export)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
+#### **Frontend**
+- **HTML5**: Semantic markup and structure
+- **CSS3**: Modern styling with gradients, animations, and responsive design
+- **JavaScript (ES6+)**: Interactive functionality and dynamic content
+- **Bootstrap 5.3.0**: Responsive framework for mobile-first design
+- **Bootstrap Icons 1.7.2**: Comprehensive icon library
+- **Chart.js & ApexCharts**: Data visualization and analytics
+- **Moment.js**: Date and time handling
+- **jsPDF**: PDF generation for medical records
 
-## 🚀 Quick Start
+#### **Backend**
+- **Python 3.x**: Core programming language
+- **Flask**: Lightweight web framework
+- **SQLAlchemy**: Object-relational mapping and database abstraction
+- **JWT (JSON Web Tokens)**: Secure authentication system
+- **Flask-Migrate**: Database migration management
+- **FHIR Client**: Healthcare interoperability standards
+- **Email Integration**: SMTP for automated notifications
+- **Twilio Integration**: SMS functionality for notifications
 
-### **Prerequisites**
-- **Python**: 3.8 or higher
-- **PostgreSQL**: 12 or higher
-- **Node.js**: 14 or higher (for development)
-- **Git**: Latest version
+#### **Database**
+- **PostgreSQL**: Primary relational database
+- **SQLAlchemy ORM**: Database abstraction layer
+- **Flask-Migrate**: Database schema management
+- **Connection Pooling**: Optimized database connections
 
-### **Installation**
+#### **DevOps & Infrastructure**
+- **Docker**: Containerization for consistent deployment
+- **Docker Compose**: Multi-container orchestration
+- **Nginx**: Web server and reverse proxy
+- **Git**: Version control system
+- **GitHub**: Code repository and collaboration platform
 
-1. **Clone the repository**
-```bash
-git clone https://github.com/aluzay1/mamacare.git
-cd mamacare
-```
+---
 
-2. **Set up the backend**
-```bash
-cd backend
-pip install -r requirements.txt
-```
+## 🚀 Key Features
 
-3. **Configure environment variables**
-```bash
-   cp .env.example .env
-# Edit .env with your configuration
-   ```
+### **🏥 Patient Management System**
 
-4. **Initialize the database**
-```bash
-python init_db.py
-python create_default_admin.py
-```
+#### **FHIR-Compliant Registration**
+- **Complete Patient Profiles**: Comprehensive patient information with FHIR R4 standards
+- **Secure PIN Authentication**: 6-digit PIN-based access system with email verification
+- **Multi-language Support**: Support for multiple languages and nationalities
+- **Emergency Contacts**: Comprehensive emergency contact management
+- **Medical History**: Complete medical background tracking
 
-5. **Run the application**
-```bash
-   python app.py
-   ```
+#### **Pregnancy & Maternal Care**
+- **Pregnancy Status Tracking**: Real-time pregnancy status monitoring
+- **Gestational Age Calculation**: Automatic calculation based on LMP date
+- **Due Date Management**: Estimated due date calculation and tracking
+- **Risk Assessment**: Comprehensive risk factor evaluation and categorization
+- **Prenatal Care**: Medication tracking and prenatal vitamin management
+- **Birth Planning**: Customizable birth plans and emergency hospital designation
+- **Multiple Pregnancy Support**: Twins, triplets, and multiple pregnancy tracking
+- **Pregnancy Complications**: Detailed complication tracking and management
 
-6. **Access the application**
-```
-Frontend: http://localhost:5000
-Backend API: http://localhost:5000/api
-```
+#### **Medical Records Management**
+- **Comprehensive Records**: Complete medical history with diagnosis, treatment, and medications
+- **Search & Filter**: Advanced search capabilities across all medical data
+- **Data Export**: PDF generation and CSV export functionality
+- **Responsive Design**: Mobile-optimized table layouts and touch-friendly interface
+- **Real-time Updates**: Instant data synchronization and updates
 
-## 📱 Pages & Features
+### **🏨 Healthcare Provider Management**
+
+#### **Hospital Directory System**
+- **Comprehensive Listings**: Detailed hospital information with services and contact details
+- **Service Categorization**: Filter hospitals by specialty and available services
+- **Real-time Status**: Availability indicators and operational hours
+- **Interactive Maps**: Location services with directions and contact integration
+- **Verification System**: Admin-verified hospital profiles for reliability
+- **Image Management**: Hospital photos with cache-busting for reliable loading
+
+#### **Pharmacy Management System**
+- **24/7 Locator**: Find pharmacies with round-the-clock availability
+- **Inventory Tracking**: Medication availability and prescription processing
+- **Service Status**: Real-time operational status indicators
+- **Contact Management**: Direct phone and email integration
+- **Geographic Filtering**: Location-based pharmacy search
+- **Type Classification**: Community, hospital, chain, and independent pharmacies
+
+#### **Healthcare Professional Directory**
+- **Professional Profiles**: Comprehensive profiles with specializations and qualifications
+- **Hospital Affiliations**: Professional relationships with healthcare facilities
+- **Verification System**: Admin-verified professional credentials
+- **Categorization**: Professional type classification (Doctors, Nurses, Midwives, etc.)
+- **Contact Integration**: Direct communication channels including WhatsApp
+- **Experience Tracking**: Professional experience and qualification management
+
+### **🔐 Security & Authentication**
+
+#### **Multi-level Authentication**
+- **Patient Authentication**: 6-digit PIN system with email verification
+- **Provider Authentication**: JWT-based authentication for healthcare providers
+- **Admin Authentication**: Secure admin login with role-based access control
+- **Session Management**: Secure session handling with timeout controls
+
+#### **Data Protection**
+- **FHIR Compliance**: International healthcare data standards compliance
+- **Data Encryption**: Secure data transmission and storage
+- **Access Control**: Role-based access control for different user types
+- **Audit Logging**: Comprehensive activity tracking and logging
+- **Input Validation**: Comprehensive validation on all user inputs
+
+### **📊 Administrative Dashboard**
+
+#### **System Management**
+- **Complete Administrative Control**: Full system management capabilities
+- **Real-time Analytics**: System statistics and usage metrics
+- **User Management**: Admin, provider, and patient account management
+- **Content Verification**: Hospital, pharmacy, and professional verification
+- **System Monitoring**: Performance and health monitoring tools
+
+#### **Data Management**
+- **CSV Import/Export**: Bulk data import and export functionality
+- **User Verification**: Manual verification of healthcare providers
+- **Content Moderation**: System content management and moderation
+- **Backup & Recovery**: Data backup and recovery capabilities
+
+### **📱 User Experience Features**
+
+#### **Responsive Design**
+- **Mobile-First Approach**: Optimized for mobile devices
+- **Breakpoint System**: 480px, 768px, 992px, 1200px responsive breakpoints
+- **Flexible Layouts**: CSS Grid and Flexbox for adaptive layouts
+- **Touch-Friendly Interface**: Optimized for touch interactions
+- **Progressive Enhancement**: Enhanced experience on capable devices
+
+#### **Navigation System**
+- **Active State Highlighting**: Visual indicators for current page location
+- **Mobile Menu**: Hamburger menu for mobile devices
+- **Smooth Transitions**: CSS animations and transitions
+- **Accessibility**: ARIA labels and keyboard navigation support
+
+#### **Interactive Features**
+- **Advanced Search**: Real-time search with multiple filters and debouncing
+- **Form Validation**: Client-side and server-side validation
+- **PDF Export**: Medical records export functionality
+- **SMS Integration**: WhatsApp and phone integration
+- **Image Management**: Cache-busting for reliable image loading
+
+### **🤱 Maternal Care Specialization**
+
+#### **Pregnancy Tracking**
+- **Gestational Age Calculation**: Automatic calculation from LMP date
+- **Due Date Management**: Estimated due date tracking
+- **Risk Level Assessment**: Low, medium, high risk categorization
+- **Multiple Pregnancy Support**: Twins, triplets tracking
+- **Pregnancy Complications**: Detailed complication management
+
+#### **Prenatal Care**
+- **Blood Pressure Monitoring**: Blood pressure tracking
+- **Hemoglobin Levels**: Anemia monitoring and management
+- **Blood Sugar Monitoring**: Gestational diabetes tracking
+- **Weight Management**: Pregnancy weight tracking
+- **Prenatal Vitamins**: Vitamin and supplement tracking
+
+#### **Birth Planning**
+- **Emergency Hospital Designation**: Emergency facility selection
+- **Birth Plan Management**: Customizable birth plans
+- **Risk Factor Documentation**: Comprehensive risk factor tracking
+- **Emergency Contact Management**: Emergency contact information
+
+---
+
+## 📋 Pages & Features
 
 ### **🏠 Home Page (`index.html`)**
 - **Hero Section**: Welcome message with call-to-action buttons
-- **Features Overview**: Key system capabilities
+- **Features Overview**: Key system capabilities and benefits
 - **Services Section**: Healthcare services offered
-- **Emergency Care**: 24/7 emergency information
-- **Community Support**: Health education and outreach
+- **Emergency Care**: 24/7 emergency information and contacts
+- **Community Support**: Health education and outreach programs
 
 ### **🏥 Hospitals (`hospitals.html`)**
-- **Search & Filter**: By location, services, and name
-- **Hospital Cards**: Detailed information with images
-- **Contact Information**: Phone, email, website, address
+- **Advanced Search & Filter**: By location, services, and hospital name
+- **Hospital Cards**: Detailed information with images and services
+- **Contact Information**: Phone, email, website, and address
 - **Services Offered**: Comprehensive service listings
 - **Interactive Features**: Call, directions, and verification badges
+- **Real-time Status**: Operational status and availability
 
 ### **💊 Pharmacy (`pharmacy.html`)**
-- **Pharmacy Directory**: Complete pharmacy listings
-- **24/7 Availability**: Filter by availability
+- **Pharmacy Directory**: Complete pharmacy listings with details
+- **24/7 Availability**: Filter by 24/7 availability
 - **Type Classification**: Community, hospital, chain, independent
-- **Contact Details**: Phone, email, website
+- **Contact Details**: Phone, email, website integration
 - **Location Services**: Google Maps integration
+- **Service Status**: Real-time operational status
 
 ### **👨‍⚕️ Healthcare Professionals (`medical_personnel.html`)**
-- **Professional Directory**: Doctors, nurses, specialists
-- **Specialization Filter**: By medical specialty
-- **Location Search**: Find professionals by city
+- **Professional Directory**: Doctors, nurses, specialists, midwives
+- **Specialization Filter**: By medical specialty and type
+- **Location Search**: Find professionals by city and region
 - **Contact Options**: WhatsApp and phone integration
 - **Professional Details**: Experience, qualifications, affiliations
+- **Verification Status**: Admin-verified professional credentials
 
 ### **📋 Medical Records (`medical_records.html`)**
-- **PIN Authentication**: Secure 6-digit PIN access
+- **PIN Authentication**: Secure 6-digit PIN access system
 - **Patient Registration**: FHIR-compliant registration form
 - **Medical Records Table**: Comprehensive record management
-- **Search & Filter**: Advanced search capabilities
+- **Advanced Search & Filter**: Search capabilities across all data
 - **Export Features**: PDF download and bulk operations
 - **Responsive Design**: Mobile-optimized table layout
+- **Pregnancy Data**: Specialized pregnancy information display
+- **Confirmation Dialogs**: Edit confirmation for sensitive data
 
 ### **🔐 Provider Access (`provider_access.html`)**
 - **Secure Login**: Healthcare provider authentication
 - **Patient Records Access**: Authorized access to patient data
 - **Referral Management**: Send and track referrals
 - **SMS Notifications**: Automated feedback system
+- **Professional Verification**: Admin verification system
+
+### **📊 Admin Dashboard (`admin_dashboard.html`)**
+- **System Overview**: Comprehensive system statistics
+- **User Management**: Admin, provider, and patient management
+- **Content Verification**: Hospital, pharmacy, and professional verification
+- **Data Import/Export**: CSV import and export functionality
+- **System Monitoring**: Performance and health monitoring
+- **Analytics Dashboard**: Usage statistics and reporting
+
+### **📚 Education (`education.html`)**
+- **Health Education**: Educational content and resources
+- **Maternal Care Information**: Pregnancy and childbirth education
+- **Community Outreach**: Health awareness programs
+- **Resource Library**: Educational materials and guides
+
+---
+
+## 🗄️ Database Schema
+
+### **Core Database Models**
+
+#### **User Management**
+```sql
+-- Admin Users (Separate table for enhanced security)
+CREATE TABLE admin (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    address VARCHAR(200),
+    is_verified BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- General Users (Patients, Healthcare Providers)
+CREATE TABLE user (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL, -- 'hospital', 'individual', 'admin'
+    is_verified BOOLEAN DEFAULT FALSE,
+    pin VARCHAR(6) UNIQUE, -- 6-digit PIN for patient access
+    auth_token VARCHAR(255) UNIQUE, -- Token for API authentication
+    token_expiry TIMESTAMP,
+    
+    -- FHIR-compliant fields
+    given_name VARCHAR(100),
+    middle_name VARCHAR(100),
+    family_name VARCHAR(100),
+    gender VARCHAR(10),
+    date_of_birth DATE,
+    
+    -- Contact information
+    name VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    address_line VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    
+    -- Medical information
+    blood_type VARCHAR(5),
+    allergies TEXT,
+    medications TEXT,
+    
+    -- Emergency contact
+    emergency_contact_name VARCHAR(100),
+    emergency_contact_phone VARCHAR(20),
+    emergency_contact_relationship VARCHAR(50),
+    
+    -- Pregnancy-related fields
+    pregnancy_status VARCHAR(20), -- 'not_pregnant', 'pregnant', 'postpartum'
+    previous_pregnancies INTEGER,
+    lmp_date DATE,
+    due_date DATE,
+    gestational_age INTEGER,
+    multiple_pregnancy VARCHAR(20), -- 'no', 'twins', 'triplets'
+    risk_level VARCHAR(20), -- 'low', 'medium', 'high'
+    risk_factors TEXT, -- Store as JSON string
+    blood_pressure VARCHAR(20),
+    hemoglobin FLOAT,
+    blood_sugar FLOAT,
+    weight FLOAT,
+    prenatal_vitamins TEXT,
+    pregnancy_complications TEXT,
+    emergency_hospital VARCHAR(200),
+    birth_plan TEXT,
+    
+    fhir_id VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Healthcare Providers**
+```sql
+-- Hospitals
+CREATE TABLE hospital (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    website VARCHAR(200),
+    services TEXT, -- JSON string
+    image_url VARCHAR(500),
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Pharmacies
+CREATE TABLE pharmacy (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    state VARCHAR(100) NOT NULL,
+    postal_code VARCHAR(20) NOT NULL,
+    country VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    website VARCHAR(200),
+    is_24_hours BOOLEAN DEFAULT FALSE,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Healthcare Professionals
+CREATE TABLE healthcare_professional (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    license_number VARCHAR(50) UNIQUE NOT NULL,
+    email VARCHAR(120) UNIQUE NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    professional_type VARCHAR(50) NOT NULL,
+    specialization VARCHAR(100) NOT NULL,
+    hospital_affiliation VARCHAR(200) NOT NULL,
+    address VARCHAR(200),
+    city VARCHAR(100),
+    state VARCHAR(100),
+    postal_code VARCHAR(20),
+    country VARCHAR(100),
+    website VARCHAR(200),
+    image_url VARCHAR(255),
+    is_verified BOOLEAN DEFAULT FALSE,
+    qualifications TEXT,
+    experience VARCHAR(100),
+    pin VARCHAR(6) UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+#### **Medical Records**
+```sql
+-- Medical Records
+CREATE TABLE medical_record (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER REFERENCES user(id),
+    date DATE NOT NULL,
+    diagnosis VARCHAR(200) NOT NULL,
+    treatment TEXT NOT NULL,
+    medication TEXT,
+    doctor VARCHAR(100) NOT NULL,
+    hospital VARCHAR(200) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Referral Feedback
+CREATE TABLE referral_feedback (
+    id SERIAL PRIMARY KEY,
+    patient_name VARCHAR(200) NOT NULL,
+    referral_source VARCHAR(100) NOT NULL DEFAULT 'PresTrack',
+    feedback_notes TEXT NOT NULL,
+    doctor_id INTEGER REFERENCES user(id),
+    patient_id INTEGER REFERENCES user(id),
+    doctor_name VARCHAR(200),
+    doctor_phone VARCHAR(20),
+    doctor_affiliation VARCHAR(200),
+    sms_sent BOOLEAN DEFAULT FALSE,
+    sms_sent_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+### **Database Relationships**
+- **One-to-Many**: User to Medical Records
+- **One-to-Many**: User to Referral Feedback (as doctor)
+- **One-to-Many**: User to Referral Feedback (as patient)
+- **Independent**: Hospitals, Pharmacies, Healthcare Professionals
+
+---
 
 ## 🔧 Configuration
 
@@ -181,46 +465,89 @@ DEBUG=True
 FLASK_ENV=development
 ```
 
-### **Database Schema**
-The system uses PostgreSQL with the following main tables:
-- `patients`: Patient information and FHIR IDs
-- `medical_records`: Patient medical records
-- `hospitals`: Hospital information and services
-- `pharmacies`: Pharmacy details and availability
-- `doctors`: Healthcare professional information
-- `admins`: Administrator accounts
-- `referral_feedback`: Referral management system
+---
 
 ## 📚 API Documentation
 
-### **Patient Management**
+### **Authentication Endpoints**
+
+#### **Patient Authentication**
 ```http
 POST /api/patient/register
 Content-Type: application/json
 
 {
-  "email": "patient@example.com",
-  "first_name": "Jane",
-  "middle_name": "Marie",
-  "last_name": "Doe",
-  "date_of_birth": "1990-05-15",
-  "gender": "female",
-  "phone": "+232123456789",
-  "address_line": "123 Main Street",
-  "city": "Freetown",
-  "state": "Western Area",
-  "country": "Sierra Leone"
+    "email": "patient@example.com",
+    "name": "John Doe",
+    "given_name": "John",
+    "middle_name": "Michael",
+    "family_name": "Doe",
+    "gender": "male",
+    "date_of_birth": "1990-01-01",
+    "phone": "+23212345678",
+    "address_line": "123 Main Street",
+    "city": "Freetown",
+    "state": "Western Area",
+    "country": "Sierra Leone",
+    "blood_type": "O+",
+    "allergies": "None",
+    "medications": "None",
+    "emergency_contact_name": "Jane Doe",
+    "emergency_contact_phone": "+23212345679",
+    "emergency_contact_relationship": "Spouse"
+}
+
+Response:
+{
+    "message": "Registration successful",
+    "pin": "123456",
+    "fhir_id": "patient-12345"
 }
 ```
 
-### **Medical Records**
+```http
+GET /api/patient/profile?pin=123456
+
+Response:
+{
+    "id": 1,
+    "name": "John Doe",
+    "email": "patient@example.com",
+    "gender": "male",
+    "date_of_birth": "1990-01-01",
+    "blood_type": "O+",
+    "allergies": "None",
+    "medications": "None",
+    "fhir_id": "patient-12345"
+}
+```
+
+#### **Provider Authentication**
+```http
+POST /api/register/hospital
+Content-Type: application/json
+
+{
+    "name": "General Hospital",
+    "license_number": "HOSP001",
+    "email": "hospital@example.com",
+    "phone": "+23212345678",
+    "address": "123 Hospital Street",
+    "city": "Freetown",
+    "state": "Western Area",
+    "country": "Sierra Leone",
+    "services": ["Emergency Care", "Maternity", "Surgery"]
+}
+```
+
+### **Medical Records Endpoints**
 ```http
 GET /api/patient/medical-records?pin=123456
 POST /api/patient/medical-records
 DELETE /api/patient/medical-records/<record_id>
 ```
 
-### **Healthcare Providers**
+### **Healthcare Provider Endpoints**
 ```http
 GET /api/hospitals
 GET /api/pharmacies
@@ -228,79 +555,59 @@ GET /api/doctors
 POST /api/referral/feedback
 ```
 
-## 🎨 Frontend Features
+---
 
-### **Responsive Design**
-- **Mobile-First**: Optimized for mobile devices
-- **Breakpoints**: 480px, 768px, 992px, 1200px
-- **Flexible Layouts**: CSS Grid and Flexbox
-- **Touch-Friendly**: Optimized for touch interactions
+## 🚀 Quick Start
 
-### **Navigation System**
-- **Active State Highlighting**: Visual indicators for current page
-- **Mobile Menu**: Hamburger menu for mobile devices
-- **Smooth Transitions**: CSS animations and transitions
-- **Accessibility**: ARIA labels and keyboard navigation
+### **Prerequisites**
+- **Python**: 3.8 or higher
+- **PostgreSQL**: 12 or higher
+- **Node.js**: 14 or higher (for development)
+- **Git**: Latest version
 
-### **Image Management**
-- **Cache Busting**: Automatic cache refresh for images
-- **Fallback Images**: Default images for missing content
-- **Optimized Loading**: Lazy loading and error handling
-- **Responsive Images**: Different sizes for different devices
+### **Installation**
 
-### **Interactive Features**
-- **Search & Filter**: Real-time search with multiple filters
-- **Form Validation**: Client-side and server-side validation
-- **PDF Export**: Medical records export functionality
-- **SMS Integration**: WhatsApp and phone integration
-
-## 🔒 Security Features
-
-### **Authentication & Authorization**
-- **PIN-Based Access**: Secure 6-digit PIN system
-- **Email Verification**: PIN delivery via email
-- **Session Management**: Secure session handling
-- **Input Validation**: Comprehensive validation on all inputs
-
-### **Data Protection**
-- **FHIR Compliance**: Standard healthcare data formats
-- **Encryption**: Secure data transmission and storage
-- **Access Control**: Role-based access control
-- **Audit Logging**: Comprehensive activity logging
-
-## 🚀 Deployment
-
-### **Local Development**
+1. **Clone the repository**
 ```bash
-# Backend
+git clone https://github.com/aluzay1/mamacare.git
+cd mamacare
+```
+
+2. **Set up the backend**
+```bash
 cd backend
-python app.py
-
-# Frontend (if using a local server)
-python -m http.server 8000
-```
-
-### **Production Deployment**
-The system is configured for deployment on:
-- **Render**: Automatic deployment from GitHub
-- **Heroku**: Cloud platform deployment
-- **Docker**: Containerized deployment
-
-### **Environment Setup**
-```bash
-# Install dependencies
 pip install -r requirements.txt
-
-# Set environment variables
-export FLASK_ENV=production
-export DATABASE_URL=your-production-database-url
-
-# Run migrations
-python -m flask db upgrade
-
-# Start the application
-gunicorn app:app
 ```
+
+3. **Configure environment variables**
+```bash
+cp .env.example .env
+# Edit .env with your configuration
+```
+
+4. **Initialize the database**
+```bash
+python init_db.py
+python create_default_admin.py
+```
+
+5. **Run the application**
+```bash
+python app.py
+```
+
+6. **Access the application**
+```
+Local Development:
+Frontend: http://localhost:5000
+Backend API: http://localhost:5000/api
+
+Production:
+Frontend: https://mamacare.netlify.app
+Backend API: https://mamacare-backend.onrender.com
+```
+
+---
 
 ## 🧪 Testing
 
@@ -327,6 +634,101 @@ curl -X POST http://localhost:5000/api/patient/register \
 curl "http://localhost:5000/api/patient/medical-records?pin=123456"
 ```
 
+---
+
+## 🚀 Deployment
+
+### **Local Development**
+```bash
+# Backend
+cd backend
+python app.py
+
+# Frontend (if using a local server)
+python -m http.server 8000
+```
+
+### **Production Deployment**
+
+#### **Frontend Deployment (Netlify)**
+The frontend is deployed on **Netlify** for optimal performance and reliability:
+
+- **Automatic Deployment**: Connected to GitHub repository for automatic updates
+- **Global CDN**: Fast loading times worldwide
+- **SSL Certificate**: Automatic HTTPS encryption
+- **Custom Domain**: Support for custom domain configuration
+- **Build Optimization**: Automatic build optimization and caching
+
+**Deployment URL**: [https://mamacare.netlify.app](https://mamacare.netlify.app)
+
+#### **Backend Deployment (Render)**
+The backend API is hosted on **Render** for scalable cloud hosting:
+
+- **Automatic Deployment**: Connected to GitHub repository for automatic updates
+- **Auto-scaling**: Automatic scaling based on traffic
+- **Database Integration**: PostgreSQL database hosting
+- **Environment Variables**: Secure environment variable management
+- **Health Monitoring**: Built-in health checks and monitoring
+
+**API Base URL**: [https://mamacare-backend.onrender.com](https://mamacare-backend.onrender.com)
+
+#### **Deployment Architecture**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend API   │    │   Database      │
+│   (Netlify)     │◄──►│   (Render)      │◄──►│   (PostgreSQL)  │
+│   Static Hosting│    │   Cloud Hosting │    │   Managed DB    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### **Production Deployment**
+The system is configured for deployment on:
+- **Frontend (Netlify)**: Static site hosting with automatic deployment from GitHub
+- **Backend (Render)**: Cloud platform hosting with automatic deployment from GitHub
+- **Docker**: Containerized deployment option
+
+### **Environment Setup**
+
+#### **Local Development**
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables
+export FLASK_ENV=development
+export DATABASE_URL=postgresql://user:password@localhost/mamacare
+
+# Run migrations
+python -m flask db upgrade
+
+# Start the application
+python app.py
+```
+
+#### **Production Deployment (Render)**
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Set environment variables (configured in Render dashboard)
+export FLASK_ENV=production
+export DATABASE_URL=your-production-database-url
+
+# Run migrations
+python -m flask db upgrade
+
+# Start the application
+gunicorn app:app
+```
+
+#### **Frontend Deployment (Netlify)**
+The frontend is automatically deployed from the GitHub repository:
+- **Build Command**: Not required (static files)
+- **Publish Directory**: `/` (root directory)
+- **Environment Variables**: Configured in Netlify dashboard
+
+---
+
 ## 📊 Performance Optimization
 
 ### **Frontend Optimization**
@@ -340,6 +742,8 @@ curl "http://localhost:5000/api/patient/medical-records?pin=123456"
 - **Connection Pooling**: Efficient database connections
 - **Caching**: Redis caching for frequently accessed data
 - **Load Balancing**: Horizontal scaling capabilities
+
+---
 
 ## 🤝 Contributing
 
@@ -359,9 +763,13 @@ We welcome contributions! Please follow these steps:
 - **CSS**: BEM methodology
 - **HTML**: Semantic markup
 
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
 
 ## 🆘 Support
 
@@ -376,7 +784,24 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Email Support**: Contact the development team
 - **Community Forum**: Join our community discussions
 
+---
+
 ## 🔄 Changelog
+
+### **v2.4.0 - Birth Records Integration**
+- ✅ Birth records table schema design
+- ✅ Birth records tab integration planning
+- ✅ CRUD operations for birth records
+- ✅ Search and filter functionality
+- ✅ Responsive design for birth records
+
+### **v2.5.0 - Production Deployment**
+- ✅ Frontend deployment on Netlify
+- ✅ Backend deployment on Render
+- ✅ Automatic deployment from GitHub
+- ✅ SSL certificates and HTTPS
+- ✅ Global CDN for frontend
+- ✅ Auto-scaling for backend
 
 ### **v2.3.0 - Navigation & Image Improvements**
 - ✅ Active navigation highlighting on all pages
@@ -413,6 +838,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - ✅ Healthcare provider access
 - ✅ SMS integration
 
+---
+
 ## 🌟 Acknowledgments
 
 - **FHIR Community**: For healthcare interoperability standards
@@ -424,4 +851,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **MamaCare** - Empowering healthcare through technology and innovation. 
 
-*Built with ❤️ for better healthcare outcomes.* 
+*Built with ❤️ for better healthcare outcomes in Sierra Leone.* 
