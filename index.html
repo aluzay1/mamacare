@@ -750,11 +750,15 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 60px 20px 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-main {
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr 1.5fr;
             gap: 40px;
-            position: relative;
-            z-index: 1;
+            margin-bottom: 40px;
         }
 
         .footer-section h4 {
@@ -774,6 +778,14 @@
             height: 2px;
             background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
             border-radius: 1px;
+        }
+
+        .company-section {
+            grid-column: 1;
+        }
+
+        .contact-section {
+            grid-column: 5;
         }
 
         .footer-logo h3 {
@@ -888,9 +900,11 @@
             gap: 20px;
         }
 
-        .footer-bottom p {
+        .copyright p {
             color: #95a5a6;
             margin: 0;
+            font-size: 0.95rem;
+            font-weight: 500;
         }
 
         .footer-bottom-links {
@@ -910,27 +924,87 @@
             color: #3498db;
         }
 
+        /* Tablet Layout */
         @media (max-width: 1024px) {
-            .footer-content {
+            .footer-main {
                 grid-template-columns: 1fr 1fr;
                 gap: 30px;
             }
+
+            .company-section {
+                grid-column: 1 / -1;
+                text-align: center;
+            }
+
+            .contact-section {
+                grid-column: 2;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
         }
 
+        /* Mobile Layout */
         @media (max-width: 768px) {
             .footer-content {
+                padding: 40px 20px 30px 20px;
+            }
+
+            .footer-main {
                 grid-template-columns: 1fr;
                 gap: 30px;
-                padding: 40px 20px 30px 20px;
+                text-align: center;
+            }
+
+            .company-section,
+            .contact-section {
+                grid-column: 1;
+            }
+
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
             }
 
             .footer-bottom-content {
                 flex-direction: column;
                 text-align: center;
+                gap: 15px;
             }
 
             .footer-bottom-links {
                 justify-content: center;
+                gap: 15px;
+            }
+
+            .copyright p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .footer-content {
+                padding: 30px 15px 20px 15px;
+            }
+
+            .footer-main {
+                gap: 25px;
+            }
+
+            .social-links {
+                gap: 10px;
+            }
+
+            .social-link {
+                width: 35px;
+                height: 35px;
+            }
+
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: 10px;
             }
         }
 
@@ -1352,62 +1426,73 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-section">
-                <div class="footer-logo">
-                    <h3>MamaCare</h3>
-                    <p>Your trusted partner in healthcare across Sierra Leone</p>
+            <!-- Main Footer Sections -->
+            <div class="footer-main">
+                <!-- Company Info Section -->
+                <div class="footer-section company-section">
+                    <div class="footer-logo">
+                        <h3>MamaCare</h3>
+                        <p>Your trusted partner in healthcare across Sierra Leone</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
                 </div>
-                <div class="social-links">
-                    <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+
+                <!-- Quick Links Section -->
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="hospitals.html">Find Hospitals</a></li>
+                        <li><a href="pharmacy.html">Locate Pharmacies</a></li>
+                        <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
+                        <li><a href="medical_records_view.html">Medical Records</a></li>
+                    </ul>
                 </div>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Quick Links</h4>
-                <ul class="footer-links">
-                    <li><a href="hospitals.html">Find Hospitals</a></li>
-                    <li><a href="pharmacy.html">Locate Pharmacies</a></li>
-                    <li><a href="medical_personnel.html">Healthcare Professionals</a></li>
-                    <li><a href="medical_records_view.html">Medical Records</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Services</h4>
-                <ul class="footer-links">
-                    <li><a href="#">Emergency Care</a></li>
-                    <li><a href="#">Maternal Health</a></li>
-                    <li><a href="#">Digital Records</a></li>
-                    <li><a href="#">Health Education</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Support</h4>
-                <ul class="footer-links">
-                    <li><a href="about_platform.html">About Platform</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-section">
-                <h4>Contact Info</h4>
-                <div class="contact-info">
-                    <p><i class="fas fa-phone"></i> +232 123 456 78</p>
-                    <p><i class="fas fa-envelope"></i> info@mamacare.sl</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Freetown, Sierra Leone</p>
+
+                <!-- Services Section -->
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Emergency Care</a></li>
+                        <li><a href="#">Maternal Health</a></li>
+                        <li><a href="#">Digital Records</a></li>
+                        <li><a href="#">Health Education</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support Section -->
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul class="footer-links">
+                        <li><a href="about_platform.html">About Platform</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info Section -->
+                <div class="footer-section contact-section">
+                    <h4>Contact Info</h4>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> +232 123 456 78</p>
+                        <p><i class="fas fa-envelope"></i> info@mamacare.sl</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Freetown, Sierra Leone</p>
+                    </div>
                 </div>
             </div>
         </div>
         
+        <!-- Footer Bottom -->
         <div class="footer-bottom">
             <div class="footer-bottom-content">
-                <p>&copy; 2024 MamaCare. All rights reserved.</p>
+                <div class="copyright">
+                    <p>&copy; 2025 MamaCare. All rights reserved.</p>
+                </div>
                 <div class="footer-bottom-links">
                     <a href="#">Terms of Service</a>
                     <a href="#">Privacy Policy</a>
