@@ -7694,18 +7694,27 @@
                 return;
             }
 
+            const token = localStorage.getItem('patient_token');
+            if (!token) {
+                console.error('No authentication token available');
+                return;
+            }
+
             try {
-                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records`, {
+                const response = await apiCall('/api/patient/birth-records', {
                     method: 'GET',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                        'Authorization': `Bearer ${token}`
                     }
                 });
 
                 if (response.ok) {
                     birthRecords = await response.json();
                     displayBirthRecords(birthRecords);
+                } else if (response.status === 401) {
+                    console.error('Authentication failed');
+                    alert('Authentication failed. Please log in again.');
+                    window.location.href = 'index.html';
                 } else {
                     console.error('Failed to fetch birth records');
                     displayBirthRecords([]);
@@ -7793,10 +7802,9 @@
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records/${recordId}`, {
+                const response = await apiCall(`/api/patient/birth-records/${recordId}`, {
                     method: 'DELETE',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
                     }
                 });
@@ -7856,16 +7864,23 @@
         document.getElementById('addBirthForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
+            // Check if user is authenticated
+            const token = localStorage.getItem('patient_token');
+            if (!token) {
+                alert('Authentication required. Please log in again.');
+                window.location.href = 'index.html';
+                return;
+            }
+            
             const formData = new FormData(this);
             const birthData = Object.fromEntries(formData.entries());
             birthData.patient_id = currentPatientId;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records`, {
+                const response = await apiCall('/api/patient/birth-records', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(birthData)
                 });
@@ -7874,13 +7889,16 @@
                     alert('Birth record added successfully');
                     hideAddBirthForm();
                     fetchBirthRecords();
+                } else if (response.status === 401) {
+                    alert('Authentication failed. Please log in again.');
+                    window.location.href = 'index.html';
                 } else {
                     const errorData = await response.json();
                     alert('Failed to add birth record: ' + (errorData.error || 'Unknown error'));
                 }
             } catch (error) {
                 console.error('Error adding birth record:', error);
-                alert('Error adding birth record');
+                alert('Error adding birth record. Please try again.');
             }
         });
 
@@ -7893,10 +7911,9 @@
             const recordId = birthData.id;
 
             try {
-                const response = await fetch(`${API_BASE_URL}/api/patient/birth-records/${recordId}`, {
+                const response = await apiCall(`/api/patient/birth-records/${recordId}`, {
                     method: 'PUT',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${localStorage.getItem('patient_token')}`
                     },
                     body: JSON.stringify(birthData)
