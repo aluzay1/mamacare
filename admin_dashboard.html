@@ -490,16 +490,43 @@
                 margin-bottom: 1rem;
             }
 
-            /* Make table responsive */
+            /* Enhanced table responsiveness for mobile */
             .table-responsive {
                 border-radius: 12px;
                 overflow: hidden;
+                border: 1px solid var(--border-color);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .table-responsive::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .table-responsive::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 3px;
+            }
+
+            .table-responsive::-webkit-scrollbar-thumb {
+                background: var(--primary-color);
+                border-radius: 3px;
+            }
+
+            .table-responsive::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-dark);
+            }
+
+            .table {
+                min-width: 600px; /* Ensure table has minimum width for scrolling */
+                margin-bottom: 0;
             }
 
             .table th,
             .table td {
                 padding: 0.75rem 0.5rem;
                 font-size: 0.875rem;
+                white-space: nowrap;
+                min-width: 100px; /* Minimum column width */
             }
 
             /* Adjust table section padding */
@@ -510,6 +537,42 @@
             .table-section h4 {
                 font-size: 1.25rem;
                 margin-bottom: 1rem;
+            }
+
+            /* Mobile filter controls */
+            .filter-controls {
+                display: flex;
+                flex-direction: column;
+                gap: 0.75rem;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                background: rgba(99, 102, 241, 0.05);
+                border-radius: 12px;
+                border: 1px solid rgba(99, 102, 241, 0.1);
+            }
+
+            .filter-controls .form-control,
+            .filter-controls .form-select {
+                width: 100%;
+                margin-bottom: 0.5rem;
+            }
+
+            .filter-controls .btn {
+                width: 100%;
+                margin-top: 0.5rem;
+            }
+
+            /* Admin table header mobile layout */
+            .card-header .d-flex {
+                flex-direction: column;
+                gap: 0.75rem;
+                align-items: stretch !important;
+            }
+
+            .card-header .d-flex .form-control,
+            .card-header .d-flex .form-select {
+                width: 100%;
+                margin-bottom: 0.5rem;
             }
 
             /* Make buttons more touch-friendly */
@@ -579,6 +642,37 @@
                 transition: all 0.3s ease;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
+
+            /* Table action buttons mobile optimization */
+            .table .btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8rem;
+                margin: 0.25rem;
+                min-width: 60px;
+            }
+
+            /* Table cell content optimization */
+            .table td {
+                max-width: 120px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            /* Add horizontal scroll indicator */
+            .table-responsive::after {
+                content: '← Scroll →';
+                position: absolute;
+                bottom: -25px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: var(--primary-color);
+                color: white;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                opacity: 0.8;
+            }
         }
 
         @media (max-width: 576px) {
@@ -611,12 +705,64 @@
                 font-size: 0.8rem;
             }
 
+            /* Enhanced table scrolling for very small screens */
+            .table-responsive {
+                position: relative;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .table {
+                min-width: 700px; /* Wider minimum for better readability */
+            }
+
             /* Hide less important table columns on very small screens */
             .table th:nth-child(4),
             .table td:nth-child(4),
             .table th:nth-child(5),
             .table td:nth-child(5) {
                 display: none;
+            }
+
+            /* Filter controls for very small screens */
+            .filter-controls {
+                padding: 0.75rem;
+            }
+
+            .filter-controls .form-control,
+            .filter-controls .form-select {
+                font-size: 0.9rem;
+                padding: 0.75rem;
+            }
+
+            /* Table action buttons for very small screens */
+            .table .btn {
+                padding: 0.4rem 0.6rem;
+                font-size: 0.75rem;
+                min-width: 50px;
+            }
+
+            /* Improve table readability */
+            .table th {
+                background: var(--primary-color);
+                color: white;
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.7rem;
+                letter-spacing: 0.05em;
+            }
+
+            /* Add visual scroll indicator */
+            .table-responsive::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 20px;
+                background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1));
+                pointer-events: none;
+                z-index: 1;
             }
         }
 
@@ -630,6 +776,66 @@
             bottom: 0;
             background: rgba(0, 0, 0, 0.5);
             z-index: 1040;
+        }
+
+        /* Enhanced table scrolling styles */
+        .table-responsive {
+            position: relative;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #f1f1f1;
+        }
+
+        /* Custom scrollbar for Firefox */
+        .table-responsive::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-responsive::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb {
+            background: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .table-responsive::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Table scroll indicator */
+        .table-scroll-indicator {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            opacity: 0.9;
+            z-index: 10;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Filter controls styling */
+        .filter-controls {
+            background: rgba(99, 102, 241, 0.05);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .filter-controls .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
         .mobile-nav-overlay.show {
@@ -1206,7 +1412,7 @@
                         </div>
                         <div class="table-section">
                             <h4>Healthcare Professionals List</h4>
-                            <div class="mb-3">
+                            <div class="filter-controls">
                                 <label class="form-label">Filter by Professional Type</label>
                                 <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
                                     <option value="">All Professionals</option>
@@ -1307,12 +1513,12 @@
                         <!-- Admins Table -->
                         <div class="table-section">
                             <div class="card">
-                                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <div class="card-header bg-primary text-white">
                                     <h4 class="mb-0">Administrators List</h4>
-                                    <div class="d-flex gap-2">
+                                    <div class="filter-controls mt-3">
                                         <input type="text" class="form-control" id="admin-search" 
                                                placeholder="Search administrators...">
-                    <select class="form-select" id="admin-role-filter">
+                                        <select class="form-select" id="admin-role-filter">
                                             <option value="">All Roles</option>
                                             <option value="admin">Admin</option>
                                             <option value="super_admin">Super Admin</option>
@@ -3489,6 +3695,70 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 300);
             }
+        });
+    });
+
+    // Enhanced table scrolling for mobile
+    const tableResponsive = document.querySelectorAll('.table-responsive');
+    tableResponsive.forEach(table => {
+        // Add scroll indicator
+        const scrollIndicator = document.createElement('div');
+        scrollIndicator.className = 'table-scroll-indicator';
+        scrollIndicator.textContent = '← Scroll horizontally →';
+        scrollIndicator.style.display = 'none';
+        table.parentNode.appendChild(scrollIndicator);
+
+        // Show/hide scroll indicator based on scroll position
+        table.addEventListener('scroll', function() {
+            const isScrollable = this.scrollWidth > this.clientWidth;
+            const isAtStart = this.scrollLeft === 0;
+            const isAtEnd = this.scrollLeft + this.clientWidth >= this.scrollWidth;
+
+            if (isScrollable) {
+                scrollIndicator.style.display = 'block';
+                if (isAtStart) {
+                    scrollIndicator.textContent = '→ Scroll right →';
+                } else if (isAtEnd) {
+                    scrollIndicator.textContent = '← Scroll left ←';
+                } else {
+                    scrollIndicator.textContent = '← Scroll →';
+                }
+            } else {
+                scrollIndicator.style.display = 'none';
+            }
+        });
+
+        // Check initial scroll state
+        setTimeout(() => {
+            const isScrollable = table.scrollWidth > table.clientWidth;
+            if (isScrollable) {
+                scrollIndicator.style.display = 'block';
+            }
+        }, 100);
+    });
+
+    // Add smooth scrolling to tables
+    tableResponsive.forEach(table => {
+        let isScrolling = false;
+        let startX = 0;
+        let scrollLeft = 0;
+
+        table.addEventListener('touchstart', function(e) {
+            isScrolling = true;
+            startX = e.touches[0].pageX - table.offsetLeft;
+            scrollLeft = table.scrollLeft;
+        });
+
+        table.addEventListener('touchmove', function(e) {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.touches[0].pageX - table.offsetLeft;
+            const walk = (x - startX) * 2;
+            table.scrollLeft = scrollLeft - walk;
+        });
+
+        table.addEventListener('touchend', function() {
+            isScrolling = false;
         });
     });
 });
