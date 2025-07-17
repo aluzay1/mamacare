@@ -658,6 +658,13 @@
                 text-overflow: ellipsis;
             }
 
+            /* Hide mobile navigation on login/signup pages (more reliable) */
+            @media (max-width: 768px) {
+              #dashboard-section[style*="display: none"] ~ .mobile-nav,
+              #dashboard-section[style*="display: none"] + .mobile-nav {
+                display: none !important;
+              }
+            }
 
         }
 
