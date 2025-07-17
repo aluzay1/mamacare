@@ -1054,6 +1054,30 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Total Newborns</div>
+                                    <div class="display-4" id="total-births">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Male Babies</div>
+                                    <div class="display-4" id="male-births">0</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6 col-md-3 mb-3">
+                            <div class="card stats-card">
+                                <div class="card-body">
+                                    <div class="card-title">Female Babies</div>
+                                    <div class="display-4" id="female-births">0</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Hospitals Section -->
@@ -3429,6 +3453,24 @@ async function updateStats() {
             document.getElementById('patient-count').textContent = '0';
         }
 
+        // Get birth records stats
+        const birthStatsResponse = await apiCall('/api/admin/birth-records/stats', {
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (birthStatsResponse.ok) {
+            const birthStats = await birthStatsResponse.json();
+            document.getElementById('total-births').textContent = birthStats.total_births || 0;
+            document.getElementById('male-births').textContent = birthStats.male_births || 0;
+            document.getElementById('female-births').textContent = birthStats.female_births || 0;
+        } else {
+            console.error('Failed to fetch birth records stats:', birthStatsResponse.status);
+            document.getElementById('total-births').textContent = '0';
+            document.getElementById('male-births').textContent = '0';
+            document.getElementById('female-births').textContent = '0';
+        }
+
                 } catch (error) {
         console.error('Error updating stats:', error);
         // Set default values on error
@@ -3436,6 +3478,9 @@ async function updateStats() {
         document.getElementById('pharmacy-count').textContent = '0';
         document.getElementById('doctor-count').textContent = '0';
         document.getElementById('patient-count').textContent = '0';
+        document.getElementById('total-births').textContent = '0';
+        document.getElementById('male-births').textContent = '0';
+        document.getElementById('female-births').textContent = '0';
     }
 }
 

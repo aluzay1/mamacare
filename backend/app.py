@@ -2797,6 +2797,28 @@ def get_patient_count():
         logger.error(f'Error getting patient count: {str(e)}')
         return jsonify({'error': 'Failed to get patient count'}), 500
 
+@app.route('/api/admin/birth-records/stats', methods=['GET'])
+@admin_required
+def get_birth_records_stats():
+    try:
+        # Get total birth records count
+        total_births = BirthRecord.query.count()
+        
+        # Get count by gender
+        male_births = BirthRecord.query.filter_by(baby_gender='Male').count()
+        female_births = BirthRecord.query.filter_by(baby_gender='Female').count()
+        other_births = BirthRecord.query.filter_by(baby_gender='Other').count()
+        
+        return jsonify({
+            'total_births': total_births,
+            'male_births': male_births,
+            'female_births': female_births,
+            'other_births': other_births
+        }), 200
+    except Exception as e:
+        logger.error(f'Error getting birth records stats: {str(e)}')
+        return jsonify({'error': 'Failed to get birth records stats'}), 500
+
 def init_db():
     try:
         with app.app_context():
