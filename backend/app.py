@@ -3042,13 +3042,32 @@ def doctor_detail(doctor_id):
         data = request.get_json()
         logger.info(f"Updating doctor {doctor_id} with data: {data}")
         
-        # Update doctor fields
+        # Define required fields that cannot be null
+        required_fields = ['name', 'license_number', 'professional_type', 'specialization', 
+                          'email', 'phone', 'hospital_affiliation']
+        
+        # Validate required fields
+        for field in required_fields:
+            if field in data and (data[field] is None or str(data[field]).strip() == ''):
+                logger.error(f"Required field '{field}' cannot be null or empty")
+                return jsonify({'error': f'Required field "{field}" cannot be empty'}), 400
+        
+        # Update doctor fields with validation
         for field in ['name', 'license_number', 'professional_type', 'specialization', 
                      'email', 'phone', 'hospital_affiliation', 'address', 'city', 
                      'state', 'postal_code', 'country', 'website', 'image_url', 
                      'qualifications', 'experience', 'pin']:
             if field in data:
                 old_value = getattr(doctor, field)
+                # For required fields, ensure they're not null
+                if field in required_fields and (data[field] is None or str(data[field]).strip() == ''):
+                    logger.error(f"Attempting to set required field '{field}' to null/empty")
+                    return jsonify({'error': f'Required field "{field}" cannot be empty'}), 400
+                
+                # For optional fields, allow empty strings but not null
+                if data[field] is None:
+                    data[field] = ''
+                
                 setattr(doctor, field, data[field])
                 logger.info(f"Updated {field}: {old_value} -> {data[field]}")
         

@@ -2015,14 +2015,35 @@ function toggleAuthForm() {
             }
 
             try {
-                    const doctorData = {
-                        id: parseInt(doctorId),
+                    // Validate required fields before sending
+                    const requiredFields = {
                         name: formData.get('name'),
                         license_number: formData.get('license_number'),
                         email: formData.get('email'),
                         phone: formData.get('phone'),
                         specialization: formData.get('specialization'),
-                        hospital_affiliation: formData.get('hospital_affiliation'),
+                        hospital_affiliation: formData.get('hospital_affiliation')
+                    };
+
+                    console.log('Form data for required fields:', requiredFields);
+
+                    // Check for empty required fields
+                    for (const [field, value] of Object.entries(requiredFields)) {
+                        if (!value || value.trim() === '') {
+                            console.error(`Empty required field: ${field} = "${value}"`);
+                            alert(`Please fill in the ${field.replace('_', ' ')} field`);
+                            return;
+                        }
+                    }
+
+                    const doctorData = {
+                        id: parseInt(doctorId),
+                        name: requiredFields.name.trim(),
+                        license_number: requiredFields.license_number.trim(),
+                        email: requiredFields.email.trim(),
+                        phone: requiredFields.phone.trim(),
+                        specialization: requiredFields.specialization.trim(),
+                        hospital_affiliation: requiredFields.hospital_affiliation.trim(),
                         address: formData.get('address') || '',
                         city: formData.get('city') || '',
                         state: formData.get('state') || '',
