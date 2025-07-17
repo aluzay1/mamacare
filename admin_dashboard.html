@@ -1141,6 +1141,28 @@
                         <!-- Hospitals Table -->
                         <div class="table-section">
                             <h4>Hospitals List</h4>
+                            <div class="filter-controls">
+                                <div class="row">
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label">Filter by City</label>
+                                        <select class="form-control" id="hospitalCityFilter" onchange="filterHospitals()">
+                                            <option value="">All Cities</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label">Filter by Status</label>
+                                        <select class="form-control" id="hospitalStatusFilter" onchange="filterHospitals()">
+                                            <option value="">All Status</option>
+                                            <option value="verified">Verified</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-4 mb-2">
+                                        <label class="form-label">Search by Name</label>
+                                        <input type="text" class="form-control" id="hospitalSearchFilter" placeholder="Search hospitals..." onkeyup="filterHospitals()">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -1246,6 +1268,36 @@
                         <!-- Pharmacies Table -->
                         <div class="table-section">
                             <h4>Pharmacies List</h4>
+                            <div class="filter-controls">
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Filter by City</label>
+                                        <select class="form-control" id="pharmacyCityFilter" onchange="filterPharmacies()">
+                                            <option value="">All Cities</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Filter by Status</label>
+                                        <select class="form-control" id="pharmacyStatusFilter" onchange="filterPharmacies()">
+                                            <option value="">All Status</option>
+                                            <option value="verified">Verified</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">24 Hours Service</label>
+                                        <select class="form-control" id="pharmacy24HoursFilter" onchange="filterPharmacies()">
+                                            <option value="">All</option>
+                                            <option value="true">24 Hours</option>
+                                            <option value="false">Regular Hours</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Search by Name</label>
+                                        <input type="text" class="form-control" id="pharmacySearchFilter" placeholder="Search pharmacies..." onkeyup="filterPharmacies()">
+                                    </div>
+                                </div>
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
@@ -1413,18 +1465,40 @@
                         <div class="table-section">
                             <h4>Healthcare Professionals List</h4>
                             <div class="filter-controls">
-                                <label class="form-label">Filter by Professional Type</label>
-                                <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
-                                    <option value="">All Professionals</option>
-                                    <option value="Medical Doctor">Medical Doctor</option>
-                                    <option value="Nurse">Nurse</option>
-                                    <option value="Midwife">Midwife</option>
-                                    <option value="Pharmacist">Pharmacist</option>
-                                    <option value="Laboratory Technician">Laboratory Technician</option>
-                                    <option value="Radiology Technician">Radiology Technician</option>
-                                    <option value="Physiotherapist">Physiotherapist</option>
-                                    <option value="Nutritionist">Nutritionist</option>
-                                </select>
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Filter by Professional Type</label>
+                                        <select class="form-control" id="professionalTypeFilter" onchange="filterDoctors()">
+                                            <option value="">All Professionals</option>
+                                            <option value="Medical Doctor">Medical Doctor</option>
+                                            <option value="Nurse">Nurse</option>
+                                            <option value="Midwife">Midwife</option>
+                                            <option value="Pharmacist">Pharmacist</option>
+                                            <option value="Laboratory Technician">Laboratory Technician</option>
+                                            <option value="Radiology Technician">Radiology Technician</option>
+                                            <option value="Physiotherapist">Physiotherapist</option>
+                                            <option value="Nutritionist">Nutritionist</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Filter by Hospital</label>
+                                        <select class="form-control" id="doctorHospitalFilter" onchange="filterDoctors()">
+                                            <option value="">All Hospitals</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Filter by Status</label>
+                                        <select class="form-control" id="doctorStatusFilter" onchange="filterDoctors()">
+                                            <option value="">All Status</option>
+                                            <option value="verified">Verified</option>
+                                            <option value="pending">Pending</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <label class="form-label">Search by Name</label>
+                                        <input type="text" class="form-control" id="doctorSearchFilter" placeholder="Search professionals..." onkeyup="filterDoctors()">
+                                    </div>
+                                </div>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-striped">
@@ -3018,23 +3092,25 @@ function toggleAuthForm() {
 
     // Load Hospitals
     async function loadHospitals() {
-                    try {
-                        const token = localStorage.getItem('admin_token');
-                        if (!token) {
-                            throw new Error('No authentication token found');
-                        }
-                        
+        try {
+            const token = localStorage.getItem('admin_token');
+            if (!token) {
+                throw new Error('No authentication token found');
+            }
+            
             const response = await apiCall('/api/admin/hospitals', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             });
 
-                        if (!response.ok) {
+            if (!response.ok) {
                 throw new Error('Failed to load hospitals');
             }
 
             const hospitals = await response.json();
+            allHospitals = hospitals; // Store in global variable for filtering
+            
             const tbody = document.getElementById('hospitals-table-body');
             if (tbody) {
                 tbody.innerHTML = '';
@@ -3065,7 +3141,10 @@ function toggleAuthForm() {
             if (hospitalCount) {
                 hospitalCount.textContent = hospitals.length;
             }
-                    } catch (error) {
+
+            // Populate filter dropdowns after loading data
+            populateFilterDropdowns();
+        } catch (error) {
             console.error('Error loading hospitals:', error);
             if (error.message === 'No authentication token found') {
                 const loginSection = document.getElementById('login-section');
@@ -3099,6 +3178,8 @@ function toggleAuthForm() {
             }
 
             const pharmacies = await response.json();
+            allPharmacies = pharmacies; // Store in global variable for filtering
+            
             const tbody = document.getElementById('pharmacies-table-body');
             if (tbody) {
                 tbody.innerHTML = '';
@@ -3134,6 +3215,9 @@ function toggleAuthForm() {
             if (pharmacyCount) {
                 pharmacyCount.textContent = pharmacies.length;
             }
+
+            // Populate filter dropdowns after loading data
+            populateFilterDropdowns();
         } catch (error) {
             console.error('Error loading pharmacies:', error);
             if (error.message === 'No authentication token found') {
@@ -3143,7 +3227,7 @@ function toggleAuthForm() {
                     loginSection.style.display = 'block';
                     dashboardSection.style.display = 'none';
                 }
-                        } else {
+            } else {
                 alert('Failed to load pharmacies');
             }
         }
@@ -3151,23 +3235,25 @@ function toggleAuthForm() {
 
     // Load Healthcare Professionals
     async function loadDoctors() {
-                    try {
-                        const token = localStorage.getItem('admin_token');
+        try {
+            const token = localStorage.getItem('admin_token');
             if (!token) {
                 throw new Error('No authentication token found');
             }
 
             const response = await apiCall('/api/admin/doctors', {
-                            headers: {
-                                'Authorization': `Bearer ${token}`
-                            }
-                        });
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
 
-                        if (!response.ok) {
+            if (!response.ok) {
                 throw new Error('Failed to load doctors');
             }
 
             const doctors = await response.json();
+            allDoctors = doctors; // Store in global variable for filtering
+            
             const tbody = document.getElementById('doctors-table-body');
             if (tbody) {
                 tbody.innerHTML = '';
@@ -3176,16 +3262,10 @@ function toggleAuthForm() {
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
                         <td>${doctor.name}</td>
-                        <td>${doctor.license_number}</td>
+                        <td>${doctor.specialization}</td>
                         <td>${doctor.email}</td>
                         <td>${doctor.phone}</td>
-                        <td>${doctor.specialization}</td>
                         <td>${doctor.hospital_affiliation}</td>
-                        <td>
-                            <span class="badge ${doctor.is_verified ? 'bg-success' : 'bg-warning'}">
-                                ${doctor.is_verified ? 'Verified' : 'Pending'}
-                            </span>
-                        </td>
                         <td>
                             <button class="btn btn-sm btn-primary edit-doctor" data-id="${doctor.id}">Edit</button>
                             <button class="btn btn-sm btn-danger delete-doctor" data-id="${doctor.id}">Delete</button>
@@ -3199,7 +3279,10 @@ function toggleAuthForm() {
             if (doctorCount) {
                 doctorCount.textContent = doctors.length;
             }
-                    } catch (error) {
+
+            // Populate filter dropdowns after loading data
+            populateFilterDropdowns();
+        } catch (error) {
             console.error('Error loading doctors:', error);
             if (error.message === 'No authentication token found') {
                 const loginSection = document.getElementById('login-section');
@@ -3762,6 +3845,192 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Global variables to store data for filtering
+let allDoctors = [];
+let allHospitals = [];
+let allPharmacies = [];
+
+// Filter Functions
+function filterDoctors() {
+    const professionalType = document.getElementById('professionalTypeFilter').value;
+    const hospital = document.getElementById('doctorHospitalFilter').value;
+    const status = document.getElementById('doctorStatusFilter').value;
+    const searchTerm = document.getElementById('doctorSearchFilter').value.toLowerCase();
+
+    const tbody = document.getElementById('doctors-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    const filteredDoctors = allDoctors.filter(doctor => {
+        const matchesType = !professionalType || doctor.professional_type === professionalType;
+        const matchesHospital = !hospital || doctor.hospital_affiliation === hospital;
+        const matchesStatus = !status || 
+            (status === 'verified' && doctor.is_verified) || 
+            (status === 'pending' && !doctor.is_verified);
+        const matchesSearch = !searchTerm || 
+            doctor.name.toLowerCase().includes(searchTerm) ||
+            doctor.specialization.toLowerCase().includes(searchTerm) ||
+            doctor.email.toLowerCase().includes(searchTerm);
+
+        return matchesType && matchesHospital && matchesStatus && matchesSearch;
+    });
+
+    filteredDoctors.forEach(doctor => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${doctor.name}</td>
+            <td>${doctor.specialization}</td>
+            <td>${doctor.email}</td>
+            <td>${doctor.phone}</td>
+            <td>${doctor.hospital_affiliation}</td>
+            <td>
+                <button class="btn btn-sm btn-primary edit-doctor" data-id="${doctor.id}">Edit</button>
+                <button class="btn btn-sm btn-danger delete-doctor" data-id="${doctor.id}">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function filterHospitals() {
+    const city = document.getElementById('hospitalCityFilter').value;
+    const status = document.getElementById('hospitalStatusFilter').value;
+    const searchTerm = document.getElementById('hospitalSearchFilter').value.toLowerCase();
+
+    const tbody = document.getElementById('hospitals-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    const filteredHospitals = allHospitals.filter(hospital => {
+        const matchesCity = !city || hospital.city === city;
+        const matchesStatus = !status || 
+            (status === 'verified' && hospital.is_verified) || 
+            (status === 'pending' && !hospital.is_verified);
+        const matchesSearch = !searchTerm || 
+            hospital.name.toLowerCase().includes(searchTerm) ||
+            hospital.email.toLowerCase().includes(searchTerm) ||
+            hospital.address.toLowerCase().includes(searchTerm);
+
+        return matchesCity && matchesStatus && matchesSearch;
+    });
+
+    filteredHospitals.forEach(hospital => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${hospital.name}</td>
+            <td>${hospital.license_number}</td>
+            <td>${hospital.email}</td>
+            <td>${hospital.phone}</td>
+            <td>${hospital.address}</td>
+            <td>
+                <span class="badge ${hospital.is_verified ? 'bg-success' : 'bg-warning'}">
+                    ${hospital.is_verified ? 'Verified' : 'Pending'}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-primary edit-hospital" data-id="${hospital.id}">Edit</button>
+                <button class="btn btn-sm btn-danger delete-hospital" data-id="${hospital.id}">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function filterPharmacies() {
+    const city = document.getElementById('pharmacyCityFilter').value;
+    const status = document.getElementById('pharmacyStatusFilter').value;
+    const is24Hours = document.getElementById('pharmacy24HoursFilter').value;
+    const searchTerm = document.getElementById('pharmacySearchFilter').value.toLowerCase();
+
+    const tbody = document.getElementById('pharmacies-table-body');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    const filteredPharmacies = allPharmacies.filter(pharmacy => {
+        const matchesCity = !city || pharmacy.city === city;
+        const matchesStatus = !status || 
+            (status === 'verified' && pharmacy.is_verified) || 
+            (status === 'pending' && !pharmacy.is_verified);
+        const matches24Hours = !is24Hours || 
+            (is24Hours === 'true' && pharmacy.is_24_hours) || 
+            (is24Hours === 'false' && !pharmacy.is_24_hours);
+        const matchesSearch = !searchTerm || 
+            pharmacy.name.toLowerCase().includes(searchTerm) ||
+            pharmacy.email.toLowerCase().includes(searchTerm) ||
+            pharmacy.address.toLowerCase().includes(searchTerm);
+
+        return matchesCity && matchesStatus && matches24Hours && matchesSearch;
+    });
+
+    filteredPharmacies.forEach(pharmacy => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${pharmacy.name}</td>
+            <td>${pharmacy.license_number}</td>
+            <td>${pharmacy.email}</td>
+            <td>${pharmacy.phone}</td>
+            <td>${pharmacy.address}</td>
+            <td>
+                <span class="badge ${pharmacy.is_24_hours ? 'bg-success' : 'bg-secondary'}">
+                    ${pharmacy.is_24_hours ? 'Yes' : 'No'}
+                </span>
+            </td>
+            <td>
+                <span class="badge ${pharmacy.is_verified ? 'bg-success' : 'bg-warning'}">
+                    ${pharmacy.is_verified ? 'Verified' : 'Pending'}
+                </span>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-primary edit-pharmacy" data-id="${pharmacy.id}">Edit</button>
+                <button class="btn btn-sm btn-danger delete-pharmacy" data-id="${pharmacy.id}">Delete</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Populate filter dropdowns
+function populateFilterDropdowns() {
+    // Populate hospital filter for doctors
+    const doctorHospitalFilter = document.getElementById('doctorHospitalFilter');
+    if (doctorHospitalFilter && allHospitals.length > 0) {
+        const hospitals = [...new Set(allHospitals.map(h => h.name))];
+        hospitals.forEach(hospital => {
+            const option = document.createElement('option');
+            option.value = hospital;
+            option.textContent = hospital;
+            doctorHospitalFilter.appendChild(option);
+        });
+    }
+
+    // Populate city filters for hospitals
+    const hospitalCityFilter = document.getElementById('hospitalCityFilter');
+    if (hospitalCityFilter && allHospitals.length > 0) {
+        const cities = [...new Set(allHospitals.map(h => h.city))];
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            hospitalCityFilter.appendChild(option);
+        });
+    }
+
+    // Populate city filters for pharmacies
+    const pharmacyCityFilter = document.getElementById('pharmacyCityFilter');
+    if (pharmacyCityFilter && allPharmacies.length > 0) {
+        const cities = [...new Set(allPharmacies.map(p => p.city))];
+        cities.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            pharmacyCityFilter.appendChild(option);
+        });
+    }
+}
     </script>
 </body>
 </html>
