@@ -1766,8 +1766,6 @@
     <script>
         // Function to set active navigation link based on current page
         function setActiveNavLink() {
-            alert('setActiveNavLink function is running!');
-            
             const pathname = window.location.pathname;
             const searchParams = window.location.search;
             const hash = window.location.hash;
@@ -1792,7 +1790,15 @@
             const navLinks = document.querySelectorAll('.nav-links a');
             console.log('Found nav links:', navLinks.length);
             
+            // TEST: Manually set active on first link to test CSS
+            if (navLinks.length > 0) {
+                navLinks[0].classList.add('active');
+                console.log('TEST: Manually set active on first link');
+                console.log('First link classes:', navLinks[0].className);
+            }
+            
             navLinks.forEach((link, index) => {
+                // Remove the test active class from all links first
                 link.classList.remove('active');
                 let linkPage = link.getAttribute('href').replace('.html', '');
                 
