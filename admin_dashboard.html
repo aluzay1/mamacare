@@ -801,68 +801,7 @@
             background: var(--primary-dark);
         }
 
-        /* Global scroll instruction banner */
-        .scroll-instruction-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-            color: white;
-            padding: 0.75rem 1rem;
-            text-align: center;
-            font-weight: 600;
-            font-size: 0.95rem;
-            z-index: 1050;
-            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-            display: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
 
-        .scroll-instruction-banner .btn-close {
-            opacity: 0.8;
-            transition: opacity 0.2s ease;
-        }
-
-        .scroll-instruction-banner .btn-close:hover {
-            opacity: 1;
-        }
-
-
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes gentlePulse {
-            0%, 100% {
-                box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
-            }
-            50% {
-                box-shadow: 0 2px 15px rgba(255, 107, 107, 0.5);
-            }
-        }
-
-        .scroll-instruction-banner.show {
-            display: flex;
-            animation: slideDown 0.3s ease-out, gentlePulse 2s ease-in-out 0.3s infinite;
-        }
-
-        /* Adjust content padding when banner is shown */
-        body.banner-visible .content {
-            padding-top: 4rem;
-        }
 
         /* Table responsive styling */
         .table-responsive {
@@ -996,11 +935,6 @@
 
     <!-- Admin Dashboard -->
     <div id="dashboard-section" style="display: none;">
-        <!-- Global Scroll Instruction Banner -->
-        <div class="scroll-instruction-banner" id="scroll-instruction-banner">
-            📱 <strong>Mobile Tip:</strong> Swipe left/right on tables to view all columns
-            <button type="button" class="btn-close btn-close-white ms-2" onclick="dismissScrollBanner()" aria-label="Close"></button>
-        </div>
         
         <!-- Mobile Navigation (moved here so it only shows when dashboard is visible) -->
         <nav class="navbar navbar-expand-lg mobile-nav">
@@ -3225,9 +3159,6 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
-            
-            // Update scroll banner after data is loaded
-            setTimeout(updateScrollBanner, 100);
                     } catch (error) {
             console.error('Error loading hospitals:', error);
             if (error.message === 'No authentication token found') {
@@ -3302,9 +3233,6 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
-            
-            // Update scroll banner after data is loaded
-            setTimeout(updateScrollBanner, 100);
         } catch (error) {
             console.error('Error loading pharmacies:', error);
             if (error.message === 'No authentication token found') {
@@ -3369,9 +3297,6 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
-            
-            // Update scroll banner after data is loaded
-            setTimeout(updateScrollBanner, 100);
                     } catch (error) {
             console.error('Error loading doctors:', error);
             if (error.message === 'No authentication token found') {
@@ -3892,53 +3817,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced table scrolling for mobile with global banner
-    const tableResponsive = document.querySelectorAll('.table-responsive');
-    const scrollBanner = document.getElementById('scroll-instruction-banner');
-    let bannerShown = false;
-    
-    console.log('Found table-responsive elements:', tableResponsive.length);
-    
-    // Function to show/hide scroll banner
-    function updateScrollBanner() {
-        const isMobile = window.innerWidth <= 768;
-        let hasScrollableTables = false;
-        
-        tableResponsive.forEach((table, index) => {
-            const isScrollable = table.scrollWidth > table.clientWidth;
-            if (isScrollable) {
-                hasScrollableTables = true;
-            }
-        });
-        
-        // Show banner on mobile if there are scrollable tables
-        if (isMobile && hasScrollableTables && !bannerShown) {
-            scrollBanner.classList.add('show');
-            document.body.classList.add('banner-visible');
-            bannerShown = true;
-            console.log('Showing scroll instruction banner');
-        } else if ((!isMobile || !hasScrollableTables) && bannerShown) {
-            scrollBanner.classList.remove('show');
-            document.body.classList.remove('banner-visible');
-            bannerShown = false;
-            console.log('Hiding scroll instruction banner');
-        }
-    }
-    
-    // Check tables after a short delay to ensure they're rendered
-    setTimeout(updateScrollBanner, 500);
-    
-    // Update banner on window resize
-    window.addEventListener('resize', updateScrollBanner);
-    
-    // Function to dismiss the scroll banner
-    window.dismissScrollBanner = function() {
-        const scrollBanner = document.getElementById('scroll-instruction-banner');
-        scrollBanner.classList.remove('show');
-        document.body.classList.remove('banner-visible');
-        bannerShown = false;
-        console.log('Scroll banner dismissed by user');
-    };
+
 
     // Add smooth scrolling to tables
     tableResponsive.forEach(table => {
