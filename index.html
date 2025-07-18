@@ -1770,6 +1770,7 @@
             const searchParams = window.location.search;
             const hash = window.location.hash;
             
+            console.log('=== NAVIGATION DEBUG ===');
             console.log('Full URL:', window.location.href);
             console.log('Pathname:', pathname);
             console.log('Search params:', searchParams);
@@ -1787,21 +1788,30 @@
             console.log('Current page detected:', currentPage);
             
             const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
+            console.log('Found nav links:', navLinks.length);
+            
+            navLinks.forEach((link, index) => {
                 link.classList.remove('active');
                 let linkPage = link.getAttribute('href').replace('.html', '');
+                
+                console.log(`Link ${index}:`, link.getAttribute('href'), '->', linkPage);
                 
                 // Handle special cases
                 if (linkPage === 'index' && currentPage === 'index') {
                     link.classList.add('active');
-                    console.log('Set active: Home page');
+                    console.log('✅ Set active: Home page');
                 } else if (linkPage === currentPage) {
                     link.classList.add('active');
-                    console.log('Set active:', linkPage);
+                    console.log('✅ Set active:', linkPage);
                 }
                 
-                console.log('Link href:', link.getAttribute('href'), 'Link page:', linkPage, 'Current:', currentPage, 'Active:', link.classList.contains('active'));
+                console.log(`Link ${index} active state:`, link.classList.contains('active'));
+                console.log(`Link ${index} classes:`, link.className);
             });
+            
+            // Force a repaint to ensure styles are applied
+            document.body.offsetHeight;
+            console.log('=== END NAVIGATION DEBUG ===');
         }
 
         // Initialize the page

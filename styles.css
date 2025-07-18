@@ -66,6 +66,16 @@ nav .nav-links a.active {
     box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3) !important;
 }
 
+/* Additional specific selectors to ensure active state works */
+.nav-links a.active,
+.navbar .nav-links a.active,
+header nav .nav-links a.active {
+    background: #3498db !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3) !important;
+}
+
 /* Modern Toggle Menu */
 .menu-toggle {
     display: none;
@@ -151,6 +161,17 @@ nav .nav-links a.active {
     }
 
     nav .nav-links a.active {
+        background: #3498db !important;
+        border-color: #3498db !important;
+        box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3) !important;
+        color: white !important;
+        font-weight: 600 !important;
+    }
+    
+    /* Additional mobile-specific active selectors */
+    .nav-links a.active,
+    .navbar .nav-links a.active,
+    header nav .nav-links a.active {
         background: #3498db !important;
         border-color: #3498db !important;
         box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3) !important;
