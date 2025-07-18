@@ -2257,7 +2257,7 @@ def pin_recovery():
 
         # Send recovery email
         try:
-            recovery_url = f"https://mamacare.netlify.app/medical_records_view.html?token={token}"
+            recovery_url = f"https://mamacare.onrender.com/medical_records_view.html?token={token}"
             
             msg = Message(
                 'MamaCare PIN Recovery',
@@ -2392,7 +2392,7 @@ def reset_pin():
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
+                        <a href="https://mamacare.onrender.com/medical_records_view.html" 
                            style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
                                   color: white; 
                                   padding: 15px 30px; 
