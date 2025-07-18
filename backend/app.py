@@ -2257,7 +2257,8 @@ def pin_recovery():
 
         # Send recovery email
         try:
-            recovery_url = f"https://mamacare.onrender.com/medical_records_view.html?token={token}"
+            # Simple recovery URL that goes to the main site
+            recovery_url = f"https://mamacare.netlify.app/medical_records_view.html?recovery=true&email={email}"
             
             msg = Message(
                 'MamaCare PIN Recovery',
@@ -2281,7 +2282,7 @@ def pin_recovery():
                     <div style="background: #f8f9fa; border-left: 4px solid #3498db; padding: 20px; margin: 20px 0; border-radius: 4px;">
                         <p style="margin: 0; color: #2c3e50; font-weight: 600;">🔐 Security:</p>
                         <p style="margin: 10px 0 0 0; color: #555;">
-                            This recovery link will remain valid indefinitely for your convenience.
+                            Click the button below to go to the PIN recovery page. You'll need to enter your email again for security.
                         </p>
                     </div>
                     
@@ -2392,7 +2393,7 @@ def reset_pin():
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="https://mamacare.onrender.com/medical_records_view.html" 
+                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
                            style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
                                   color: white; 
                                   padding: 15px 30px; 
@@ -2463,6 +2464,108 @@ def verify_recovery_token():
 
     except Exception as e:
         logger.error(f"Error in verify_recovery_token: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/patient/simple-pin-reset', methods=['POST'])
+def simple_pin_reset():
+    """Simple PIN reset with email verification"""
+    try:
+        data = request.get_json()
+        if not data or 'email' not in data or 'new_pin' not in data:
+            return jsonify({'error': 'Email and new PIN are required'}), 400
+
+        email = data['email'].strip().lower()
+        new_pin = data['new_pin'].strip()
+        
+        # Validate email format
+        if not validate_email(email):
+            return jsonify({'error': 'Invalid email format'}), 400
+
+        # Validate PIN format
+        if not new_pin.isdigit() or len(new_pin) != 6:
+            return jsonify({'error': 'PIN must be exactly 6 digits'}), 400
+
+        # Find user by email
+        user = User.query.filter_by(email=email, role='individual').first()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        # Check if new PIN is already in use by another user
+        existing_user = User.query.filter_by(pin=new_pin).first()
+        if existing_user and existing_user.id != user.id:
+            return jsonify({'error': 'This PIN is already in use. Please choose a different PIN.'}), 400
+
+        # Update user's PIN
+        user.pin = new_pin
+        user.updated_at = datetime.utcnow()
+        
+        # Mark all recovery tokens for this user as used
+        PinRecoveryToken.query.filter_by(user_id=user.id).update({'used': True})
+        
+        db.session.commit()
+
+        # Send confirmation email
+        try:
+            msg = Message(
+                'MamaCare PIN Reset Confirmation',
+                recipients=[email]
+            )
+            
+            msg.html = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                    <h1 style="margin: 0; font-size: 24px;">✅ PIN Reset Successful</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">MamaCare Medical Records</p>
+                </div>
+                
+                <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px;">Hello {user.name},</h2>
+                    
+                    <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">
+                        Your PIN has been successfully reset. You can now use your new PIN to access your medical records.
+                    </p>
+                    
+                    <div style="background: #f8f9fa; border-left: 4px solid #27ae60; padding: 20px; margin: 20px 0; border-radius: 4px;">
+                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">🔐 Security Notice:</p>
+                        <p style="margin: 10px 0 0 0; color: #555;">
+                            For your security, please keep your PIN confidential and do not share it with anyone.
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
+                           style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
+                                  color: white; 
+                                  padding: 15px 30px; 
+                                  text-decoration: none; 
+                                  border-radius: 8px; 
+                                  font-weight: 600; 
+                                  display: inline-block;
+                                  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);">
+                            📋 Access My Records
+                        </a>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    
+                    <p style="color: #999; font-size: 12px; text-align: center;">
+                        If you didn't request this PIN reset, please contact support immediately.
+                    </p>
+                </div>
+            </div>
+            """
+            
+            mail.send(msg)
+            logger.info(f"PIN reset confirmation email sent to {email}")
+            
+        except Exception as e:
+            logger.error(f"Failed to send PIN reset confirmation email to {email}: {str(e)}")
+            # Don't fail the reset if email fails
+
+        return jsonify({'message': 'PIN reset successfully'}), 200
+
+    except Exception as e:
+        logger.error(f"Error in simple_pin_reset: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 # New endpoint for mobile app authentication

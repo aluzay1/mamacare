@@ -3536,8 +3536,8 @@
                 button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
                 button.disabled = true;
 
-                // Make API call to reset PIN
-                const response = await apiCall('/api/patient/reset-pin', {
+                // Make API call to reset PIN using the simple endpoint
+                const response = await apiCall('/api/patient/simple-pin-reset', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -3613,14 +3613,24 @@
             }
         });
 
-        // Check for recovery token in URL on page load
+        // Check for recovery parameters in URL on page load
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const recoveryToken = urlParams.get('token');
+            const recoveryMode = urlParams.get('recovery');
+            const recoveryEmail = urlParams.get('email');
             
             if (recoveryToken) {
                 // Verify the token and show recovery modal
                 verifyRecoveryToken(recoveryToken);
+            } else if (recoveryMode === 'true' && recoveryEmail) {
+                // Simple recovery mode - pre-fill email and show recovery modal
+                document.getElementById('recoveryEmail').value = recoveryEmail;
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+                showPinRecovery();
+                // Remove recovery parameters from URL
+                window.history.replaceState({}, document.title, window.location.pathname);
             }
         });
 
