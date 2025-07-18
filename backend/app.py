@@ -2235,7 +2235,8 @@ def pin_recovery():
 
         # Generate recovery token
         token = secrets.token_urlsafe(32)
-        expires_at = datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
+        # Set expiration to a very far future date (effectively indefinite)
+        expires_at = datetime.utcnow() + timedelta(days=36500)  # 100 years
 
         # Create or update recovery token
         existing_token = PinRecoveryToken.query.filter_by(user_id=user.id, used=False).first()
@@ -2278,9 +2279,9 @@ def pin_recovery():
                     </p>
                     
                     <div style="background: #f8f9fa; border-left: 4px solid #3498db; padding: 20px; margin: 20px 0; border-radius: 4px;">
-                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">⚠️ Important:</p>
+                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">🔐 Security:</p>
                         <p style="margin: 10px 0 0 0; color: #555;">
-                            This link will expire in <strong>1 hour</strong> for your security.
+                            This recovery link will remain valid indefinitely for your convenience.
                         </p>
                     </div>
                     
@@ -2445,7 +2446,7 @@ def verify_recovery_token():
         if not recovery_token:
             return jsonify({'error': 'Invalid or expired recovery token'}), 400
 
-        # Check if token is expired
+        # Check if token is expired (now effectively never expires)
         if recovery_token.expires_at < datetime.utcnow():
             return jsonify({'error': 'Recovery token has expired'}), 400
 
