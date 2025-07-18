@@ -1790,19 +1790,23 @@
             const navLinks = document.querySelectorAll('.nav-links a');
             console.log('Found nav links:', navLinks.length);
             
-            // TEST: Manually set active on first link to test CSS
-            if (navLinks.length > 0) {
-                navLinks[0].classList.add('active');
-                console.log('TEST: Manually set active on first link');
-                console.log('First link classes:', navLinks[0].className);
-            }
-            
             navLinks.forEach((link, index) => {
-                // Remove the test active class from all links first
                 link.classList.remove('active');
-                let linkPage = link.getAttribute('href').replace('.html', '');
+                let linkHref = link.getAttribute('href');
+                let linkPage = '';
                 
-                console.log(`Link ${index}:`, link.getAttribute('href'), '->', linkPage);
+                // Handle different URL formats
+                if (linkHref === '/' || linkHref === 'index.html' || linkHref === 'index') {
+                    linkPage = 'index';
+                } else if (linkHref.startsWith('/')) {
+                    // Handle relative paths like /hospitals
+                    linkPage = linkHref.substring(1); // Remove the leading slash
+                } else {
+                    // Handle .html files
+                    linkPage = linkHref.replace('.html', '');
+                }
+                
+                console.log(`Link ${index}:`, linkHref, '->', linkPage);
                 
                 // Handle special cases
                 if (linkPage === 'index' && currentPage === 'index') {
