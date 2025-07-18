@@ -7267,19 +7267,32 @@
             if (currentPage === '' || currentPage === 'index' || currentPage === 'index.html') {
                 currentPage = 'index';
             } else {
-            currentPage = currentPage.replace('.html', '');
+                currentPage = currentPage.replace('.html', '');
             }
             
-            console.log('Current page detected:', currentPage);
-            
             const navLinks = document.querySelectorAll('.nav-links a');
-            navLinks.forEach(link => {
+            
+            navLinks.forEach((link, index) => {
                 link.classList.remove('active');
-                let linkPage = link.getAttribute('href').replace('.html', '');
-                console.log('Checking link:', linkPage, 'against current:', currentPage);
-                if (linkPage === currentPage) {
+                let linkHref = link.getAttribute('href');
+                let linkPage = '';
+                
+                // Handle different URL formats
+                if (linkHref === '/' || linkHref === 'index.html' || linkHref === 'index') {
+                    linkPage = 'index';
+                } else if (linkHref.startsWith('/')) {
+                    // Handle relative paths like /hospitals
+                    linkPage = linkHref.substring(1); // Remove the leading slash
+                } else {
+                    // Handle .html files
+                    linkPage = linkHref.replace('.html', '');
+                }
+                
+                // Handle special cases
+                if (linkPage === 'index' && currentPage === 'index') {
                     link.classList.add('active');
-                    console.log('Setting active for:', linkPage);
+                } else if (linkPage === currentPage) {
+                    link.classList.add('active');
                 }
             });
         }
