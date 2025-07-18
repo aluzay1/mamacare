@@ -305,6 +305,191 @@
             color: white;
         }
 
+        .forgot-pin-link {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .forgot-pin-text {
+            color: #3498db;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .forgot-pin-text:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .forgot-pin-text i {
+            font-size: 0.8rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            padding: 20px 25px;
+            border-radius: 20px 20px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .recovery-step h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .recovery-step p {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .email-sent-message {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .email-sent-message i {
+            font-size: 3rem;
+            color: #27ae60;
+            margin-bottom: 15px;
+        }
+
+        .email-sent-message h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .email-tips {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .email-tips p {
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .email-tips ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #666;
+        }
+
+        .email-tips li {
+            margin-bottom: 5px;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-1px);
+        }
+
         .btn-primary {
             width: 100%;
             padding: 15px 20px;
@@ -1793,6 +1978,11 @@
                             <i class="bi bi-eye"></i>
                         </button>
                     </div>
+                    <div class="forgot-pin-link">
+                        <a href="#" onclick="showPinRecovery()" class="forgot-pin-text">
+                            <i class="fas fa-question-circle"></i> Forgot your PIN?
+                        </a>
+                    </div>
                 </div>
                 <button type="submit" class="btn-primary btn-block">
                     <i class="fas fa-sign-in-alt"></i> View Records
@@ -1801,6 +1991,75 @@
             </form>
         </div>
     </section>
+
+    <!-- PIN Recovery Modal -->
+    <div id="pinRecoveryModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-key"></i> PIN Recovery</h2>
+                <button class="close-modal" onclick="closePinRecovery()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="recovery-step" id="step1">
+                    <h3>Step 1: Verify Your Identity</h3>
+                    <p>Please provide your email address to receive a PIN reset link.</p>
+                    <div class="form-group">
+                        <label for="recoveryEmail">Email Address</label>
+                        <input type="email" id="recoveryEmail" placeholder="Enter your registered email" required>
+                    </div>
+                    <button type="button" class="btn-primary" onclick="sendPinRecoveryEmail()">
+                        <i class="fas fa-paper-plane"></i> Send Recovery Email
+                    </button>
+                </div>
+                
+                <div class="recovery-step" id="step2" style="display: none;">
+                    <h3>Step 2: Check Your Email</h3>
+                    <div class="email-sent-message">
+                        <i class="fas fa-envelope-open-text"></i>
+                        <h4>Recovery Email Sent!</h4>
+                        <p>We've sent a PIN reset link to your email address. Please check your inbox and follow the instructions.</p>
+                        <div class="email-tips">
+                            <p><strong>Didn't receive the email?</strong></p>
+                            <ul>
+                                <li>Check your spam/junk folder</li>
+                                <li>Make sure you entered the correct email address</li>
+                                <li>Wait a few minutes for the email to arrive</li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn-secondary" onclick="resendRecoveryEmail()">
+                            <i class="fas fa-redo"></i> Resend Email
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="recovery-step" id="step3" style="display: none;">
+                    <h3>Step 3: Enter New PIN</h3>
+                    <p>Please enter your new 6-digit PIN.</p>
+                    <div class="form-group">
+                        <label for="newPin">New PIN</label>
+                        <div class="pin-input-container">
+                            <input type="password" id="newPin" maxlength="6" pattern="\d{6}" placeholder="Enter new PIN" required>
+                            <button type="button" class="toggle-pin-visibility" onclick="toggleNewPinVisibility()">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmNewPin">Confirm New PIN</label>
+                        <div class="pin-input-container">
+                            <input type="password" id="confirmNewPin" maxlength="6" pattern="\d{6}" placeholder="Confirm new PIN" required>
+                            <button type="button" class="toggle-pin-visibility" onclick="toggleConfirmPinVisibility()">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-primary" onclick="resetPin()">
+                        <i class="fas fa-save"></i> Reset PIN
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <section class="medical-records" id="medicalRecords" style="display: none;">
         <div class="records-header-pro">
@@ -3143,6 +3402,259 @@
                 });
             }
         });
+
+        // PIN Recovery Functions
+        function showPinRecovery() {
+            document.getElementById('pinRecoveryModal').style.display = 'flex';
+            // Reset to step 1
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'none';
+            // Clear any previous inputs
+            document.getElementById('recoveryEmail').value = '';
+            document.getElementById('newPin').value = '';
+            document.getElementById('confirmNewPin').value = '';
+        }
+
+        function closePinRecovery() {
+            document.getElementById('pinRecoveryModal').style.display = 'none';
+        }
+
+        async function sendPinRecoveryEmail() {
+            const email = document.getElementById('recoveryEmail').value.trim();
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+                button.disabled = true;
+
+                // Make API call to send recovery email
+                const response = await apiCall('/api/patient/pin-recovery', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                if (response.ok) {
+                    // Show step 2
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'block';
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Failed to send recovery email. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error sending recovery email:', error);
+                alert('Failed to send recovery email. Please check your internet connection and try again.');
+            } finally {
+                // Restore button state
+                const button = event.target;
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function resendRecoveryEmail() {
+            const email = document.getElementById('recoveryEmail').value.trim();
+            
+            if (!email) {
+                alert('Please enter your email address first');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resending...';
+                button.disabled = true;
+
+                // Make API call to resend recovery email
+                const response = await apiCall('/api/patient/pin-recovery', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+
+                if (response.ok) {
+                    alert('Recovery email has been resent successfully!');
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Failed to resend recovery email. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error resending recovery email:', error);
+                alert('Failed to resend recovery email. Please check your internet connection and try again.');
+            } finally {
+                // Restore button state
+                const button = event.target;
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        async function resetPin() {
+            const newPin = document.getElementById('newPin').value;
+            const confirmPin = document.getElementById('confirmNewPin').value;
+            const email = document.getElementById('recoveryEmail').value.trim();
+
+            if (!newPin || !confirmPin) {
+                alert('Please enter both PIN fields');
+                return;
+            }
+
+            if (newPin.length !== 6 || !/^\d{6}$/.test(newPin)) {
+                alert('PIN must be exactly 6 digits');
+                return;
+            }
+
+            if (newPin !== confirmPin) {
+                alert('PINs do not match. Please try again.');
+                return;
+            }
+
+            try {
+                // Show loading state
+                const button = event.target;
+                const originalText = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resetting...';
+                button.disabled = true;
+
+                // Make API call to reset PIN
+                const response = await apiCall('/api/patient/reset-pin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        email: email,
+                        new_pin: newPin 
+                    })
+                });
+
+                if (response.ok) {
+                    alert('PIN has been reset successfully! You can now use your new PIN to access your records.');
+                    closePinRecovery();
+                    // Clear the main PIN form
+                    document.getElementById('pinForm').reset();
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Failed to reset PIN. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error resetting PIN:', error);
+                alert('Failed to reset PIN. Please check your internet connection and try again.');
+            } finally {
+                // Restore button state
+                const button = event.target;
+                button.innerHTML = originalText;
+                button.disabled = false;
+            }
+        }
+
+        function toggleNewPinVisibility() {
+            const pinInput = document.getElementById('newPin');
+            const toggleButton = event.target;
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleButton.className = 'bi bi-eye-slash';
+            } else {
+                pinInput.type = 'password';
+                toggleButton.className = 'bi bi-eye';
+            }
+        }
+
+        function toggleConfirmPinVisibility() {
+            const pinInput = document.getElementById('confirmNewPin');
+            const toggleButton = event.target;
+            
+            if (pinInput.type === 'password') {
+                pinInput.type = 'text';
+                toggleButton.className = 'bi bi-eye-slash';
+            } else {
+                pinInput.type = 'password';
+                toggleButton.className = 'bi bi-eye';
+            }
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('pinRecoveryModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePinRecovery();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePinRecovery();
+            }
+        });
+
+        // Check for recovery token in URL on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const recoveryToken = urlParams.get('token');
+            
+            if (recoveryToken) {
+                // Verify the token and show recovery modal
+                verifyRecoveryToken(recoveryToken);
+            }
+        });
+
+        async function verifyRecoveryToken(token) {
+            try {
+                const response = await apiCall('/api/patient/verify-recovery-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ token: token })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Pre-fill email and show step 3
+                    document.getElementById('recoveryEmail').value = data.email;
+                    document.getElementById('step1').style.display = 'none';
+                    document.getElementById('step2').style.display = 'none';
+                    document.getElementById('step3').style.display = 'block';
+                    showPinRecovery();
+                } else {
+                    const errorData = await response.json();
+                    alert(errorData.error || 'Invalid or expired recovery link');
+                    // Remove token from URL
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            } catch (error) {
+                console.error('Error verifying recovery token:', error);
+                alert('Failed to verify recovery link. Please try again.');
+                // Remove token from URL
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        }
 
 
     </script>

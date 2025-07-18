@@ -421,6 +421,18 @@ class BirthRecord(db.Model):
     # Relationship
     patient = db.relationship('User', backref='birth_records')
 
+class PinRecoveryToken(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    token = db.Column(db.String(255), unique=True, nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    used = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    # Relationship
+    user = db.relationship('User', backref='pin_recovery_tokens')
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -2192,6 +2204,264 @@ def get_medical_records():
 
     except Exception as e:
         logger.error(f"Error in get_medical_records: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+# PIN Recovery Endpoints
+@app.route('/api/patient/pin-recovery', methods=['POST'])
+def pin_recovery():
+    """Send PIN recovery email to patient"""
+    try:
+        data = request.get_json()
+        if not data or 'email' not in data:
+            return jsonify({'error': 'Email is required'}), 400
+
+        email = data['email'].strip().lower()
+        
+        # Validate email format
+        if not validate_email(email):
+            return jsonify({'error': 'Invalid email format'}), 400
+
+        # Find user by email
+        user = User.query.filter_by(email=email, role='individual').first()
+        if not user:
+            # Don't reveal if email exists or not for security
+            logger.info(f"PIN recovery requested for non-existent email: {email}")
+            return jsonify({'message': 'If the email exists in our system, a recovery link has been sent'}), 200
+
+        # Check if user has a PIN
+        if not user.pin:
+            logger.warning(f"PIN recovery requested for user without PIN: {email}")
+            return jsonify({'error': 'No PIN found for this account. Please contact support.'}), 400
+
+        # Generate recovery token
+        token = secrets.token_urlsafe(32)
+        expires_at = datetime.utcnow() + timedelta(hours=1)  # Token expires in 1 hour
+
+        # Create or update recovery token
+        existing_token = PinRecoveryToken.query.filter_by(user_id=user.id, used=False).first()
+        if existing_token:
+            existing_token.token = token
+            existing_token.expires_at = expires_at
+            existing_token.email = email
+        else:
+            recovery_token = PinRecoveryToken(
+                user_id=user.id,
+                token=token,
+                email=email,
+                expires_at=expires_at
+            )
+            db.session.add(recovery_token)
+
+        db.session.commit()
+
+        # Send recovery email
+        try:
+            recovery_url = f"https://mamacare.netlify.app/medical_records_view.html?token={token}"
+            
+            msg = Message(
+                'MamaCare PIN Recovery',
+                recipients=[email]
+            )
+            
+            msg.html = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                    <h1 style="margin: 0; font-size: 24px;">🔐 PIN Recovery</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">MamaCare Medical Records</p>
+                </div>
+                
+                <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px;">Hello {user.name},</h2>
+                    
+                    <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">
+                        We received a request to reset your PIN for accessing your medical records on MamaCare.
+                    </p>
+                    
+                    <div style="background: #f8f9fa; border-left: 4px solid #3498db; padding: 20px; margin: 20px 0; border-radius: 4px;">
+                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">⚠️ Important:</p>
+                        <p style="margin: 10px 0 0 0; color: #555;">
+                            This link will expire in <strong>1 hour</strong> for your security.
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="{recovery_url}" 
+                           style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
+                                  color: white; 
+                                  padding: 15px 30px; 
+                                  text-decoration: none; 
+                                  border-radius: 8px; 
+                                  font-weight: 600; 
+                                  display: inline-block;
+                                  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);">
+                            🔑 Reset My PIN
+                        </a>
+                    </div>
+                    
+                    <p style="color: #666; font-size: 14px; margin-top: 30px;">
+                        If you didn't request this PIN reset, please ignore this email. Your current PIN will remain unchanged.
+                    </p>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    
+                    <p style="color: #999; font-size: 12px; text-align: center;">
+                        This is an automated message from MamaCare. Please do not reply to this email.
+                    </p>
+                </div>
+            </div>
+            """
+            
+            mail.send(msg)
+            logger.info(f"PIN recovery email sent successfully to {email}")
+            
+            return jsonify({'message': 'Recovery email sent successfully'}), 200
+            
+        except Exception as e:
+            logger.error(f"Failed to send PIN recovery email to {email}: {str(e)}")
+            return jsonify({'error': 'Failed to send recovery email. Please try again later.'}), 500
+
+    except Exception as e:
+        logger.error(f"Error in pin_recovery: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/patient/reset-pin', methods=['POST'])
+def reset_pin():
+    """Reset PIN using recovery token"""
+    try:
+        data = request.get_json()
+        if not data or 'email' not in data or 'new_pin' not in data:
+            return jsonify({'error': 'Email and new PIN are required'}), 400
+
+        email = data['email'].strip().lower()
+        new_pin = data['new_pin'].strip()
+        
+        # Validate email format
+        if not validate_email(email):
+            return jsonify({'error': 'Invalid email format'}), 400
+
+        # Validate PIN format
+        if not new_pin.isdigit() or len(new_pin) != 6:
+            return jsonify({'error': 'PIN must be exactly 6 digits'}), 400
+
+        # Find user by email
+        user = User.query.filter_by(email=email, role='individual').first()
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        # Check if new PIN is already in use by another user
+        existing_user = User.query.filter_by(pin=new_pin).first()
+        if existing_user and existing_user.id != user.id:
+            return jsonify({'error': 'This PIN is already in use. Please choose a different PIN.'}), 400
+
+        # Update user's PIN
+        user.pin = new_pin
+        user.updated_at = datetime.utcnow()
+        
+        # Mark all recovery tokens for this user as used
+        PinRecoveryToken.query.filter_by(user_id=user.id).update({'used': True})
+        
+        db.session.commit()
+
+        # Send confirmation email
+        try:
+            msg = Message(
+                'MamaCare PIN Reset Confirmation',
+                recipients=[email]
+            )
+            
+            msg.html = f"""
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+                <div style="background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0;">
+                    <h1 style="margin: 0; font-size: 24px;">✅ PIN Reset Successful</h1>
+                    <p style="margin: 10px 0 0 0; opacity: 0.9;">MamaCare Medical Records</p>
+                </div>
+                
+                <div style="background: white; padding: 30px; border-radius: 0 0 10px 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <h2 style="color: #2c3e50; margin-bottom: 20px;">Hello {user.name},</h2>
+                    
+                    <p style="color: #555; line-height: 1.6; margin-bottom: 20px;">
+                        Your PIN has been successfully reset. You can now use your new PIN to access your medical records.
+                    </p>
+                    
+                    <div style="background: #f8f9fa; border-left: 4px solid #27ae60; padding: 20px; margin: 20px 0; border-radius: 4px;">
+                        <p style="margin: 0; color: #2c3e50; font-weight: 600;">🔐 Security Notice:</p>
+                        <p style="margin: 10px 0 0 0; color: #555;">
+                            For your security, please keep your PIN confidential and do not share it with anyone.
+                        </p>
+                    </div>
+                    
+                    <div style="text-align: center; margin: 30px 0;">
+                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
+                           style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
+                                  color: white; 
+                                  padding: 15px 30px; 
+                                  text-decoration: none; 
+                                  border-radius: 8px; 
+                                  font-weight: 600; 
+                                  display: inline-block;
+                                  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);">
+                            📋 Access My Records
+                        </a>
+                    </div>
+                    
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;">
+                    
+                    <p style="color: #999; font-size: 12px; text-align: center;">
+                        If you didn't request this PIN reset, please contact support immediately.
+                    </p>
+                </div>
+            </div>
+            """
+            
+            mail.send(msg)
+            logger.info(f"PIN reset confirmation email sent to {email}")
+            
+        except Exception as e:
+            logger.error(f"Failed to send PIN reset confirmation email to {email}: {str(e)}")
+            # Don't fail the reset if email fails
+
+        return jsonify({'message': 'PIN reset successfully'}), 200
+
+    except Exception as e:
+        logger.error(f"Error in reset_pin: {str(e)}")
+        return jsonify({'error': 'Internal server error'}), 500
+
+@app.route('/api/patient/verify-recovery-token', methods=['POST'])
+def verify_recovery_token():
+    """Verify recovery token and return user info"""
+    try:
+        data = request.get_json()
+        if not data or 'token' not in data:
+            return jsonify({'error': 'Token is required'}), 400
+
+        token = data['token'].strip()
+        
+        # Find recovery token
+        recovery_token = PinRecoveryToken.query.filter_by(
+            token=token, 
+            used=False
+        ).first()
+        
+        if not recovery_token:
+            return jsonify({'error': 'Invalid or expired recovery token'}), 400
+
+        # Check if token is expired
+        if recovery_token.expires_at < datetime.utcnow():
+            return jsonify({'error': 'Recovery token has expired'}), 400
+
+        # Get user info
+        user = recovery_token.user
+        if not user:
+            return jsonify({'error': 'User not found'}), 404
+
+        return jsonify({
+            'email': user.email,
+            'name': user.name,
+            'valid': True
+        }), 200
+
+    except Exception as e:
+        logger.error(f"Error in verify_recovery_token: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 # New endpoint for mobile app authentication
