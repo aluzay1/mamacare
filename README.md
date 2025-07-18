@@ -649,6 +649,29 @@ Frontend: https://mamacare.netlify.app
 Backend API: https://mamacare-backend.onrender.com
 ```
 
+### **🔑 Test Credentials**
+
+#### **Admin Dashboard Access**
+For testing the admin dashboard functionality, you can use these test credentials:
+
+- **Email**: `mamacare@gmail.com`
+- **Password**: `Admin123`
+- **Access URL**: [https://verdant-gumdrop-61281b.netlify.app/admin_dashboard](https://verdant-gumdrop-61281b.netlify.app/admin_dashboard)
+
+#### **Patient Records Access**
+For testing patient medical records access, use this test PIN:
+
+- **PIN**: `111111`
+- **Access URL**: [https://verdant-gumdrop-61281b.netlify.app/medical_records_view.html](https://verdant-gumdrop-61281b.netlify.app/medical_records_view.html)
+
+#### **Healthcare Provider Access**
+For testing healthcare provider access, use this test PIN:
+
+- **PIN**: `031323`
+- **Access URL**: [https://verdant-gumdrop-61281b.netlify.app/provider_access.html](https://verdant-gumdrop-61281b.netlify.app/provider_access.html)
+
+**⚠️ Important**: These are test credentials for demonstration purposes only. In production, use secure, unique credentials.
+
 ---
 
 ## 🧪 Testing
