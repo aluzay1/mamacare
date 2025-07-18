@@ -3620,17 +3620,24 @@
             const recoveryMode = urlParams.get('recovery');
             const recoveryEmail = urlParams.get('email');
             
+            console.log('URL Parameters:', { recoveryToken, recoveryMode, recoveryEmail });
+            
             if (recoveryToken) {
                 // Verify the token and show recovery modal
+                console.log('Found recovery token, verifying...');
                 verifyRecoveryToken(recoveryToken);
-            } else if (recoveryMode === 'true' && recoveryEmail) {
+            } else if (recoveryMode && recoveryEmail) {
                 // Simple recovery mode - pre-fill email and show recovery modal
+                console.log('Found recovery mode and email, showing recovery modal...');
+                document.getElementById('pinRecoveryModal').style.display = 'flex';
                 document.getElementById('recoveryEmail').value = recoveryEmail;
                 document.getElementById('step1').style.display = 'none';
                 document.getElementById('step2').style.display = 'block';
-                showPinRecovery();
+                document.getElementById('step3').style.display = 'none';
                 // Remove recovery parameters from URL
                 window.history.replaceState({}, document.title, window.location.pathname);
+            } else {
+                console.log('No recovery parameters found');
             }
         });
 
