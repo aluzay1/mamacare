@@ -8,6 +8,36 @@
 
 **MamaCare** is a comprehensive healthcare management platform designed specifically for Sierra Leone's healthcare infrastructure. The system provides a centralized platform for managing hospitals, pharmacies, healthcare professionals, and patient records, with a strong emphasis on maternal and child healthcare services.
 
+## 📋 Table of Contents
+
+- [🌐 Live Demo](#-live-demo)
+- [🌟 Mission & Vision](#-mission--vision)
+- [🏗️ System Architecture](#️-system-architecture)
+  - [Technology Stack](#technology-stack)
+- [🚀 Key Features](#-key-features)
+  - [🏥 Patient Management System](#-patient-management-system)
+  - [🏨 Healthcare Provider Management](#-healthcare-provider-management)
+  - [🔐 Security & Authentication](#-security--authentication)
+  - [📊 Administrative Dashboard](#-administrative-dashboard)
+  - [📱 User Experience Features](#-user-experience-features)
+  - [🤱 Maternal Care Specialization](#-maternal-care-specialization)
+- [📋 Pages & Features](#-pages--features)
+- [🗄️ Database Schema](#️-database-schema)
+- [🔧 Configuration](#-configuration)
+- [📚 API Documentation](#-api-documentation)
+- [🚀 Quick Start](#-quick-start)
+  - [🔑 Test Credentials](#-test-credentials)
+- [🧪 Testing](#-testing)
+- [🚀 Deployment](#-deployment)
+- [📊 Performance Optimization](#-performance-optimization)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🆘 Support](#-support)
+- [🔄 Changelog](#-changelog)
+- [🌟 Acknowledgments](#-acknowledgments)
+
+---
+
 ## 🌐 Live Demo
 
 ### **Main Application**
