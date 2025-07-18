@@ -2029,7 +2029,7 @@
                         <button type="button" class="btn-secondary" onclick="resendRecoveryEmail()">
                             <i class="fas fa-redo"></i> Resend Email
                         </button>
-                        <button type="button" class="btn-primary" onclick="proceedToResetPin()" style="margin-left: 10px;">
+                        <button type="button" class="btn-primary" id="continueToResetBtn" onclick="proceedToResetPin()" style="margin-left: 10px; display: none;">
                             <i class="fas fa-arrow-right"></i> Continue to Reset PIN
                         </button>
                     </div>
@@ -3413,6 +3413,8 @@
             document.getElementById('step1').style.display = 'block';
             document.getElementById('step2').style.display = 'none';
             document.getElementById('step3').style.display = 'none';
+            // Hide the continue button when opening normally
+            document.getElementById('continueToResetBtn').style.display = 'none';
             // Clear any previous inputs
             document.getElementById('recoveryEmail').value = '';
             document.getElementById('newPin').value = '';
@@ -3643,6 +3645,8 @@
                 document.getElementById('step1').style.display = 'none';
                 document.getElementById('step2').style.display = 'block';
                 document.getElementById('step3').style.display = 'none';
+                // Show the continue button since they came from email link
+                document.getElementById('continueToResetBtn').style.display = 'inline-block';
                 // Remove recovery parameters from URL
                 window.history.replaceState({}, document.title, window.location.pathname);
             } else {
