@@ -1805,7 +1805,7 @@
     <section class="medical-records" id="medicalRecords" style="display: none;">
         <div class="records-header-pro">
             <i class="fas fa-file-medical"></i>
-            <h1>Patient Medical Records</h1>
+        <h1>Patient Medical Records</h1>
         </div>
 
         <!-- Patient Overview -->
@@ -2199,8 +2199,8 @@
                             </thead>
                             <tbody id="birthRecordsTableBody">
                                 <!-- Birth records will be loaded here -->
-                            </tbody>
-                        </table>
+                    </tbody>
+                </table>
                     </div>
                 </div>
             </div>
@@ -2930,20 +2930,20 @@
                     // Check if table content overflows horizontally
                     const table = tableContainer.querySelector('.records-table');
                     if (table && table.scrollWidth > tableContainer.clientWidth) {
-                        scrollInstruction.style.display = 'block';
-                        
-                        // Hide instruction after 5 seconds
-                        setTimeout(() => {
-                            if (scrollInstruction) {
-                                scrollInstruction.style.opacity = '0';
-                                scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
-                                setTimeout(() => {
-                                    if (scrollInstruction) {
-                                        scrollInstruction.style.display = 'none';
-                                    }
-                                }, 300);
-                            }
-                        }, 5000);
+                    scrollInstruction.style.display = 'block';
+                    
+                    // Hide instruction after 5 seconds
+                    setTimeout(() => {
+                        if (scrollInstruction) {
+                            scrollInstruction.style.opacity = '0';
+                            scrollInstruction.style.transform = 'translateX(-50%) scale(0.9)';
+                            setTimeout(() => {
+                                if (scrollInstruction) {
+                                    scrollInstruction.style.display = 'none';
+                                }
+                            }, 300);
+                        }
+                    }, 5000);
                     } else {
                         scrollInstruction.style.display = 'none';
                     }

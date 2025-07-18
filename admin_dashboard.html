@@ -453,12 +453,12 @@
             /* Hide desktop sidebar on mobile */
             .sidebar {
                 display: none;
-            }
+        }
 
             /* Show mobile navigation */
             .mobile-nav {
                 display: block;
-            }
+        }
 
             /* Adjust content padding for mobile */
             .content {
@@ -469,7 +469,7 @@
             /* Make stats cards stack on mobile */
             .stats-card {
                 margin-bottom: 1rem;
-            }
+        }
 
             .stats-card .card-body {
                 padding: 1.5rem;
@@ -477,13 +477,13 @@
 
             .stats-card .display-4 {
                 font-size: 2rem;
-            }
+        }
 
             /* Adjust form sections for mobile */
             .form-section {
             padding: 1.5rem;
                 margin-bottom: 1.5rem;
-            }
+        }
 
             .form-section h4 {
                 font-size: 1.25rem;
@@ -502,7 +502,7 @@
 
             .table-responsive::-webkit-scrollbar {
                 height: 6px;
-            }
+        }
 
             .table-responsive::-webkit-scrollbar-track {
                 background: #f1f1f1;
@@ -615,7 +615,7 @@
                 padding: 0.5rem 0.75rem;
                 font-size: 0.875rem;
                 min-height: 36px;
-            }
+        }
 
             /* Stack form rows on mobile */
             .row .col-md-6,
@@ -728,7 +728,7 @@
             .filter-controls .form-select {
                 font-size: 0.9rem;
                 padding: 0.75rem;
-            }
+        }
 
             /* Table action buttons for very small screens */
             .table .btn {
@@ -801,40 +801,72 @@
             background: var(--primary-dark);
         }
 
-        /* Table scroll indicator */
-        .table-responsive {
-            position: relative;
-        }
-        
-        .table-scroll-indicator {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #ff6b6b;
+        /* Global scroll instruction banner */
+        .scroll-instruction-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
             color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            opacity: 1;
-            z-index: 1000;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-            white-space: nowrap;
-            pointer-events: none;
-            border: 2px solid white;
-            animation: pulse 2s infinite;
+            padding: 0.75rem 1rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            z-index: 1050;
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            display: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                transform: translateX(-50%) scale(1);
+        .scroll-instruction-banner .btn-close {
+            opacity: 0.8;
+            transition: opacity 0.2s ease;
+        }
+
+        .scroll-instruction-banner .btn-close:hover {
+            opacity: 1;
+        }
+
+
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
                 opacity: 1;
             }
-            50% {
-                transform: translateX(-50%) scale(1.05);
-                opacity: 0.9;
+        }
+
+        @keyframes gentlePulse {
+            0%, 100% {
+                box-shadow: 0 2px 10px rgba(255, 107, 107, 0.3);
             }
+            50% {
+                box-shadow: 0 2px 15px rgba(255, 107, 107, 0.5);
+            }
+        }
+
+        .scroll-instruction-banner.show {
+            display: flex;
+            animation: slideDown 0.3s ease-out, gentlePulse 2s ease-in-out 0.3s infinite;
+        }
+
+        /* Adjust content padding when banner is shown */
+        body.banner-visible .content {
+            padding-top: 4rem;
+        }
+
+        /* Table responsive styling */
+        .table-responsive {
+            position: relative;
         }
 
         /* Filter controls styling */
@@ -964,6 +996,12 @@
 
     <!-- Admin Dashboard -->
     <div id="dashboard-section" style="display: none;">
+        <!-- Global Scroll Instruction Banner -->
+        <div class="scroll-instruction-banner" id="scroll-instruction-banner">
+            📱 <strong>Mobile Tip:</strong> Swipe left/right on tables to view all columns
+            <button type="button" class="btn-close btn-close-white ms-2" onclick="dismissScrollBanner()" aria-label="Close"></button>
+        </div>
+        
         <!-- Mobile Navigation (moved here so it only shows when dashboard is visible) -->
         <nav class="navbar navbar-expand-lg mobile-nav">
             <div class="container-fluid">
@@ -3187,6 +3225,9 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
+            
+            // Update scroll banner after data is loaded
+            setTimeout(updateScrollBanner, 100);
                     } catch (error) {
             console.error('Error loading hospitals:', error);
             if (error.message === 'No authentication token found') {
@@ -3261,6 +3302,9 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
+            
+            // Update scroll banner after data is loaded
+            setTimeout(updateScrollBanner, 100);
         } catch (error) {
             console.error('Error loading pharmacies:', error);
             if (error.message === 'No authentication token found') {
@@ -3325,6 +3369,9 @@ function toggleAuthForm() {
 
             // Populate filter dropdowns after loading data
             populateFilterDropdowns();
+            
+            // Update scroll banner after data is loaded
+            setTimeout(updateScrollBanner, 100);
                     } catch (error) {
             console.error('Error loading doctors:', error);
             if (error.message === 'No authentication token found') {
@@ -3845,61 +3892,53 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Enhanced table scrolling for mobile
+    // Enhanced table scrolling for mobile with global banner
     const tableResponsive = document.querySelectorAll('.table-responsive');
+    const scrollBanner = document.getElementById('scroll-instruction-banner');
+    let bannerShown = false;
+    
     console.log('Found table-responsive elements:', tableResponsive.length);
     
-    tableResponsive.forEach((table, index) => {
-        console.log(`Processing table ${index + 1}:`, table);
+    // Function to show/hide scroll banner
+    function updateScrollBanner() {
+        const isMobile = window.innerWidth <= 768;
+        let hasScrollableTables = false;
         
-        // Add scroll indicator
-        const scrollIndicator = document.createElement('div');
-        scrollIndicator.className = 'table-scroll-indicator';
-        scrollIndicator.textContent = '← Scroll horizontally →';
-        scrollIndicator.style.display = 'none';
-        table.appendChild(scrollIndicator);
-        console.log(`Added scroll indicator to table ${index + 1}`);
-
-        // Show/hide scroll indicator based on scroll position
-        table.addEventListener('scroll', function() {
-            const isScrollable = this.scrollWidth > this.clientWidth;
-            const isAtStart = this.scrollLeft === 0;
-            const isAtEnd = this.scrollLeft + this.clientWidth >= this.scrollWidth;
-
+        tableResponsive.forEach((table, index) => {
+            const isScrollable = table.scrollWidth > table.clientWidth;
             if (isScrollable) {
-                scrollIndicator.style.display = 'block';
-                scrollIndicator.style.opacity = '1';
-                if (isAtStart) {
-                    scrollIndicator.textContent = '→ Scroll right →';
-                } else if (isAtEnd) {
-                    scrollIndicator.textContent = '← Scroll left ←';
-                } else {
-                    scrollIndicator.textContent = '← Scroll →';
-                }
-            } else {
-                scrollIndicator.style.display = 'none';
+                hasScrollableTables = true;
             }
         });
-
-        // Check initial scroll state and force show on mobile
-        setTimeout(() => {
-            const isScrollable = table.scrollWidth > table.clientWidth;
-            const isMobile = window.innerWidth <= 768;
-            console.log(`Table ${index + 1} - scrollable:`, isScrollable, 'mobile:', isMobile, 'scrollWidth:', table.scrollWidth, 'clientWidth:', table.clientWidth);
-            
-            // Show indicator on mobile regardless of scroll state for testing
-            if (isMobile) {
-                scrollIndicator.style.display = 'block';
-                scrollIndicator.style.opacity = '1';
-                scrollIndicator.textContent = '← Scroll horizontally →';
-                console.log(`Forced scroll indicator visible for table ${index + 1} on mobile`);
-            } else if (isScrollable) {
-                scrollIndicator.style.display = 'block';
-                scrollIndicator.style.opacity = '1';
-                console.log(`Scroll indicator visible for table ${index + 1}`);
-            }
-        }, 100);
-    });
+        
+        // Show banner on mobile if there are scrollable tables
+        if (isMobile && hasScrollableTables && !bannerShown) {
+            scrollBanner.classList.add('show');
+            document.body.classList.add('banner-visible');
+            bannerShown = true;
+            console.log('Showing scroll instruction banner');
+        } else if ((!isMobile || !hasScrollableTables) && bannerShown) {
+            scrollBanner.classList.remove('show');
+            document.body.classList.remove('banner-visible');
+            bannerShown = false;
+            console.log('Hiding scroll instruction banner');
+        }
+    }
+    
+    // Check tables after a short delay to ensure they're rendered
+    setTimeout(updateScrollBanner, 500);
+    
+    // Update banner on window resize
+    window.addEventListener('resize', updateScrollBanner);
+    
+    // Function to dismiss the scroll banner
+    window.dismissScrollBanner = function() {
+        const scrollBanner = document.getElementById('scroll-instruction-banner');
+        scrollBanner.classList.remove('show');
+        document.body.classList.remove('banner-visible');
+        bannerShown = false;
+        console.log('Scroll banner dismissed by user');
+    };
 
     // Add smooth scrolling to tables
     tableResponsive.forEach(table => {
