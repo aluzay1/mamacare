@@ -2258,7 +2258,7 @@ def pin_recovery():
         # Send recovery email
         try:
             # Simple recovery URL that goes to the main site
-            recovery_url = f"https://mamacare.netlify.app/medical_records_view.html?recovery=true&email={email}"
+            recovery_url = f"https://verdant-gumdrop-61281b.netlify.app/medical_records_view.html?recovery=true&email={email}"
             
             msg = Message(
                 'MamaCare PIN Recovery',
@@ -2393,7 +2393,7 @@ def reset_pin():
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
+                        <a href="https://verdant-gumdrop-61281b.netlify.app/medical_records_view.html" 
                            style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
                                   color: white; 
                                   padding: 15px 30px; 
@@ -2533,7 +2533,7 @@ def simple_pin_reset():
                     </div>
                     
                     <div style="text-align: center; margin: 30px 0;">
-                        <a href="https://mamacare.netlify.app/medical_records_view.html" 
+                        <a href="https://verdant-gumdrop-61281b.netlify.app/medical_records_view.html" 
                            style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); 
                                   color: white; 
                                   padding: 15px 30px; 
